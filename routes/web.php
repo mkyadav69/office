@@ -54,23 +54,31 @@ Route::get('show-quatation', [QuatationController::class, 'showQuatation'])->nam
 Route::post('store-quatation', [QuatationController::class, 'storeQuatation'])->name('store_quatation');
 Route::get('get-quatation', [QuatationController::class, 'getQuatation'])->name('get_quatation');
 
-# 6. Quatation Format
+# 6. Brand
 Route::get('show-brand', [BrandController::class, 'showBrand'])->name('show_brand');
 Route::post('store-brand', [BrandController::class, 'storeQuatation'])->name('store_brand');
 Route::get('get-brand', [BrandController::class, 'getQuatation'])->name('get_brand');
 
-# 7. Region
+# 7. Reason Format
 Route::get('show-reason', [ReasonController::class, 'showReason'])->name('show_reason');
 Route::post('store-reason', [ReasonController::class, 'storeReason'])->name('store_reason');
 Route::get('get-reason', [ReasonController::class, 'getReason'])->name('get_reason');
+Route::post('edit-reason/{id}',  [ReasonController::class, 'updateReason'])->name('edit_reason');
+Route::post('delete-reason/{id}',  [ReasonController::class, 'deleteReason'])->name('delete_reason');
 
 # 8. Usp
 Route::get('show-usp', [UspController::class, 'showUsp'])->name('show_usp');
-Route::post('stor-usp', [UspController::class, 'storeUsp'])->name('store_usp');
+Route::post('store-usp', [UspController::class, 'storeUsp'])->name('store_usp');
 Route::get('get-usp', [UspController::class, 'getUsp'])->name('get_usp');
+Route::post('edit-usp/{id}',  [UspController::class, 'updateUsp'])->name('edit_usp');
+Route::post('delete-usp/{id}',  [UspController::class, 'deleteUsp'])->name('delete_usp');
 
 # 9. Product Parameter
 Route::get('show-parameter', [ProductParameter::class, 'showParameter'])->name('show_parameter');
-Route::post('stor-parameter', [ProductParameter::class, 'storeParameter'])->name('store_parameter');
-Route::get('get-meter', [ProductParameter::class, 'getParameter'])->name('get_parameter');
+Route::post('store-parameter', [ProductParameter::class, 'storeParameter'])->name('store_parameter');
+Route::get('get-parameter', [ProductParameter::class, 'getParameter'])->name('get_parameter');
+Route::post('edit-parameter/{id}',  [ProductParameter::class, 'updateParameter'])->name('edit_parameter');
+Route::post('delete-parameter/{id}',  [ProductParameter::class, 'deleteParameter'])->name('delete_parameter');
+
+
 

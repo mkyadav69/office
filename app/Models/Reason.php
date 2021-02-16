@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Quatation extends Model
+class Reason extends Model
 {
-    protected $table = 'tbl_quot_format';
+     
+    protected $table = 'tbl_reasons';
     use HasFactory;
 }

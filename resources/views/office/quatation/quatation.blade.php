@@ -1,5 +1,5 @@
 @extends('theme.layout.base_layout')
-@section('title', 'Dashboard')
+@section('title', 'Quatation')
 @section('content')
 <style>
 .form-inline label {
@@ -51,6 +51,13 @@ table.dataTable {
     </div>
     
 </div>
+@if(Session::has('errors'))
+    <script>
+        $(document).ready(function(){
+            $('#largeModal').modal({show: true});
+        });
+    </script>
+@endif 
 <script>
     $(document).ready(function(){
         table = $('#quatation').DataTable({
@@ -66,7 +73,7 @@ table.dataTable {
                 scrollX: true,
                 responsive: true,
                 ajax: {
-                    url:'{{ route("show_quatation") }}',
+                    url:'{{ route("get_quatation") }}',
                 },
                 pageLength: 10,
                 columnDefs: [{ 
@@ -85,15 +92,47 @@ table.dataTable {
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'owner_name', title : 'Owner Name'},
-                    { data: 'owner_desc', title : 'Description'},
-                    { data: 'dt_created', title : 'Date'},
+                    { data: 'stn_bill_add', title : 'Billing Address'},
+                    { data: 'stn_branch_add', title : 'Branch Address'},
+                    { data: 'stn_tin_no', title : 'Tin Number'},
+                    { data: 'str_city', title : 'Branch Name'},
+                    { data: 'dt_created', title : 'Created At'},
+                    {
+                        'data': null,
+                        'render': function (data, type, row) {
+                            return '<button row-id="' + row.id + '" class="btn btn-primary edit">Edit</button> <button row-id="' + row.id + '" class="btn btn-danger delete">Delete</button>'
+                        }, title: 'Actions'
+                    }
                 ],                            
+        });
+        table.on('click', '.edit', function(){
+            $tr = $(this).closest('tr');
+            if($($tr).hasClass('child')){
+                $tr = $tr.prev('.parent');
+            }
+            var data = table.row($tr).data();
+            console.log(data);
+            $('div #reason_name').val(data['stn_reasons']);
+            $('div #select_mode').val(data['stn_reason_type']);
+
+            $('#editForm').attr('action', '/edit-reason/'+data['int_id']);
+            $('#editModal').modal('show');  
+        });
+
+        table.on('click', '.delete', function(){
+            $tr = $(this).closest('tr');
+            if($($tr).hasClass('child')){
+                $tr = $tr.prev('.parent');
+            }
+            var data = table.row($tr).data();
+            $('#deleteForm').attr('action', '/delete-reason/'+data['int_id']);
+            $('#deleteModal').modal('show');  
         });
     });
 </script>
 @endsection
-<!-- modal large -->
+
+<!-- add record -->
 <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -105,44 +144,245 @@ table.dataTable {
             </div>
             <div class="modal-body">
                 <div class="card">
-                    <div class="card-body card-block">
-                        <div class="form-group">
-                            <label for="company" class="form-control-label required"> Add Billing Address</label>
-                            <textarea type="text" id="company" placeholder="Address . . . !" class="form-control"></textarea>
+                    <form  action="{{route('store_quatation')}}"method="post" id="editForm">
+                        @csrf
+                        <div class="card-body card-block">
+                            <div class="form-group">
+                                <label for="company" class="form-control-label required"> Add Billing Address</label>
+                                <textarea type="text" id="billing_address" name="billing_address" placeholder="address . . . " class="form-control"></textarea>
+                                @if ($errors->has('billing_address'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('billing_address') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="vat" class=" form-control-label required"> Add Branch Address</label>
+                                <textarea type="text" id="branch_address" name="branch_address" placeholder="branch . . . " class="form-control"></textarea>
+                                @if ($errors->has('branch_address'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('branch_address') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="street" class=" form-control-label required"> Billing Note</label>
+                                <textarea type="text" id="billing_notes" name="billing_notes" placeholder="notes . . . " class="form-control"></textarea>
+                                @if ($errors->has('billing_notes'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('billing_notes') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="city" class=" form-control-label required"> Select Branch</label>
+                                <select name="select_branch" id="select_branch" name="select_branch" class="form-control">
+                                    <option value="">Select Branch</option>
+                                    @if(!empty($branch_wise))
+                                        @foreach($branch_wise as $id=>$name)
+                                        <option value="{{ $id }}">{{ $name}}</option>
+                                        @endforeach
+                                    @else
+                                        <option value="">No branch found</option>
+                                    @endif
+                                </select>
+                                @if ($errors->has('select_branch'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('select_branch') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="street" class=" form-control-label required">Add Tin No.</label>
+                                <input type="text" id="add_tin" name="add_tin" placeholder="tin No. . . . " class="form-control">
+                                @if ($errors->has('add_tin'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('add_tin') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+
+                            </div>
+                            <div class="form-group">
+                                <label for="street" class=" form-control-label required">Mobile No. </label>
+                                <input type="text" id="mobile_no" name="mobile_no" placeholder="mobile No. . . . " class="form-control">
+                                @if ($errors->has('mobile_no'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('mobile_no') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="street" class=" form-control-label required">Email Address</label>
+                                <input type="text" id="email_address" name="email_address" placeholder="email address . . . !" class="form-control">
+                                @if ($errors->has('email_address'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('email_address') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Confirm</button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="vat" class=" form-control-label required"> Add Branch Address</label>
-                            <textarea type="text" id="company" placeholder="Branch . . . !" class="form-control"></textarea>
-                         </div>
-                        <div class="form-group">
-                            <label for="street" class=" form-control-label required"> Billing Note</label>
-                            <textarea type="text" id="company" placeholder="Notes . . . !" class="form-control"></textarea>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal large -->
+
+<!-- edit record -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="largeModalLabel">Update Quatations</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <form  action="{{route('store_quatation')}}"method="post" id="editForm">
+                        @csrf
+                        <div class="card-body card-block">
+                            <div class="form-group">
+                                <label for="company" class="form-control-label required"> Add Billing Address</label>
+                                <textarea type="text" id="billing_address" name="billing_address" placeholder="address . . . " class="form-control"></textarea>
+                                @if ($errors->has('billing_address'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('billing_address') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="vat" class=" form-control-label required"> Add Branch Address</label>
+                                <textarea type="text" id="branch_address" name="branch_address" placeholder="branch . . . " class="form-control"></textarea>
+                                @if ($errors->has('branch_address'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('branch_address') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="street" class=" form-control-label required"> Billing Note</label>
+                                <textarea type="text" id="billing_notes" name="billing_notes" placeholder="notes . . . " class="form-control"></textarea>
+                                @if ($errors->has('billing_notes'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('billing_notes') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="city" class=" form-control-label required"> Select Branch</label>
+                                <select name="select_branch" id="select_branch" name="select_branch" class="form-control">
+                                    <option value="">Select Branch</option>
+                                    @if(!empty($branch_wise))
+                                        @foreach($branch_wise as $id=>$name)
+                                        <option value="{{ $id }}">{{ $name}}</option>
+                                        @endforeach
+                                    @else
+                                        <option value="">No branch found</option>
+                                    @endif
+                                </select>
+                                @if ($errors->has('select_branch'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('select_branch') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="street" class=" form-control-label required">Add Tin No.</label>
+                                <input type="text" id="add_tin" name="add_tin" placeholder="tin No. . . . " class="form-control">
+                                @if ($errors->has('add_tin'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('add_tin') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+
+                            </div>
+                            <div class="form-group">
+                                <label for="street" class=" form-control-label required">Mobile No. </label>
+                                <input type="text" id="mobile_no" name="mobile_no" placeholder="mobile No. . . . " class="form-control">
+                                @if ($errors->has('mobile_no'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('mobile_no') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="street" class=" form-control-label required">Email Address</label>
+                                <input type="text" id="email_address" name="email_address" placeholder="email address . . . !" class="form-control">
+                                @if ($errors->has('email_address'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('email_address') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Confirm</button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="city" class=" form-control-label required"> Select Branch</label>
-                            <select name="select" id="select" class="form-control">
-                                <option value="">Select Principals</option>
-                                <option value="authorized">Authorized</option>
-                                <option value="dealers">Dealers</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="street" class=" form-control-label required">Add Tin No.</label>
-                            <input type="text" id="company" placeholder="Tin No. . . . !" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="street" class=" form-control-label required">Mobile No. </label>
-                            <input type="text" id="company" placeholder="Mobile No. . . . !" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="street" class=" form-control-label required">Email Address</label>
-                            <input type="text" id="company" placeholder="Email address . . . !" class="form-control">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Confirm</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

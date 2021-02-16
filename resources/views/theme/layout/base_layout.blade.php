@@ -11,7 +11,7 @@
     <meta name="csrf-token" content="{{csrf_token()}}">
 
     <!-- Title Page-->
-    <title>Dashboard</title>
+    <title>@yield('title')</title>
 
     <!-- Fontfaces CSS-->
     <link href="{{asset('css/font-face.css') }}" rel="stylesheet">
@@ -50,7 +50,7 @@
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
                 <a href="#">
-                    <img src="images/icon/logo.png" alt="Cool Admin" />
+                    <img src="images/icon/cromo.png" alt="Cool Admin" />
                 </a>
             </div>
             @include('theme.layout.sidebar')

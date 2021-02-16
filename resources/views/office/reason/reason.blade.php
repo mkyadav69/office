@@ -36,7 +36,7 @@ table.dataTable {
         </div>
     @endif
     <div class="col-md-12">
-        <h3 class="title-5 m-b-35">Principals</h3>
+        <h3 class="title-5 m-b-35">Manage Reason</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
                 <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#largeModal">
@@ -51,6 +51,13 @@ table.dataTable {
     </div>
     
 </div>
+@if(Session::has('errors'))
+    <script>
+        $(document).ready(function(){
+            $('#largeModal').modal({show: true});
+        });
+    </script>
+@endif 
 <script>
     $(document).ready(function(){
         table = $('#reason').DataTable({
@@ -85,15 +92,45 @@ table.dataTable {
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'owner_name', title : 'Owner Name'},
-                    { data: 'owner_desc', title : 'Description'},
-                    { data: 'dt_created', title : 'Date'},
+                    { data: 'stn_reasons', title : 'Reason Name'},
+                    { data: 'stn_reason_type', title : 'Reason Mode'},
+                    { data: 'dt_created', title : 'Created Date'},
+                    {
+                        'data': null,
+                        'render': function (data, type, row) {
+                            return '<button row-id="' + row.id + '" class="btn btn-primary edit">Edit</button> <button row-id="' + row.id + '" class="btn btn-danger delete">Delete</button>'
+                        }, title: 'Actions'
+                    }
                 ],                            
+        });
+        table.on('click', '.edit', function(){
+            $tr = $(this).closest('tr');
+            if($($tr).hasClass('child')){
+                $tr = $tr.prev('.parent');
+            }
+            var data = table.row($tr).data();
+            console.log(data);
+            $('div #reason_name').val(data['stn_reasons']);
+            $('div #select_mode').val(data['stn_reason_type']);
+
+            $('#editForm').attr('action', '/edit-reason/'+data['int_id']);
+            $('#editModal').modal('show');  
+        });
+
+        table.on('click', '.delete', function(){
+            $tr = $(this).closest('tr');
+            if($($tr).hasClass('child')){
+                $tr = $tr.prev('.parent');
+            }
+            var data = table.row($tr).data();
+            $('#deleteForm').attr('action', '/delete-reason/'+data['int_id']);
+            $('#deleteModal').modal('show');  
         });
     });
 </script>
 @endsection
-<!-- modal large -->
+
+<!-- add  reason -->
 <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -105,14 +142,23 @@ table.dataTable {
             </div>
             <div class="modal-body">
                 <div class="card">
-                    <form action="{{route('store_owner')}}" method="post">
+                    <form action="{{route('store_reason')}}" method="post">
                         @csrf
                         <div class="row form-group">
                             <div class="col col-md-3">
                                 <label for="file-input" class=" form-control-label required">Reason Name</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="file-input" placeholder="Name" name="principal_name"  class="form-control">
+                                <input type="text" id="reason_name" placeholder="Name" name="reason_name"  class="form-control">
+                                @if ($errors->has('reason_name'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('reason_name') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                            
@@ -122,11 +168,20 @@ table.dataTable {
                                 <label for="file-input" class=" form-control-label required">Reason Mode</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <select name="select" id="select" class="form-control">
+                                <select name="select_mode" id="select_mode" class="form-control">
                                     <option value="">Select Reason</option>
-                                    <option value="pending_order">Pending Order</option>
-                                    <option value="pending_shipment">Pending Shipment</option>
+                                    <option value="1">Pending Order</option>
+                                    <option value="2">Pending Shipment</option>
                                 </select>
+                                @if ($errors->has('select_mode'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('select_mode') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
@@ -138,6 +193,100 @@ table.dataTable {
                 </div>
             </div>
           
+        </div>
+    </div>
+</div>
+<!-- end modal large -->
+
+
+<!-- update  reason -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="largeModalLabel">Update Reason</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <form  method="post" id="editForm">
+                        @csrf
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Reason Name</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="reason_name" placeholder="Name" name="reason_name"  class="form-control">
+                                @if ($errors->has('reason_name'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('reason_name') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                           
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Reason Mode</label>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <select name="select_mode" id="select_mode" class="form-control">
+                                    <option value="">Select Reason</option>
+                                    <option value="1">Pending Order</option>
+                                    <option value="2">Pending Shipment</option>
+                                </select>
+                                @if ($errors->has('select_mode'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('select_mode') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Confirm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+          
+        </div>
+    </div>
+</div>
+<!-- end modal large -->
+
+<!-- Delete-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="largeModalLabel">Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" id="deleteForm">
+                @csrf
+                <div class="modal-body">
+                    <p>Are you sure to delete the record ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Usp extends Model
 {
+    protected $table = 'tbl_usp';
     use HasFactory;
 }

@@ -75,7 +75,7 @@
                     <i class="fas fa-tasks"></i>Usp List</a>
                 <ul class="list-unstyled navbar__sub-list js-sub-list">
                     <li>
-                        <a href="{{ route('show_usp')}}">Usp</a>
+                        <a href="{{ route('show_usp')}}">Manage Usp</a>
                     </li>
                 </ul>
             </li>

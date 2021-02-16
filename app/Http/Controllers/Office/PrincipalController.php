@@ -16,8 +16,8 @@ class PrincipalController extends Controller
 
     public function storePrincipal(Request $request){
         $this->validate($request,[
-            'owner_name' => 'required|string|max:255',
-            'owner_desciption'=>'required',
+            'parameter_name' => 'required|string|max:255',
+            'principal_name'=>'required',
         ]);
         $check_status = Courier::insertGetId([
             'owner_name'=>$request->owner_name,
@@ -37,4 +37,6 @@ class PrincipalController extends Controller
     public function getPrincipal(Request $request){
         return Datatables::of(Courier::query())->make(true);
     }
+
+    
 }

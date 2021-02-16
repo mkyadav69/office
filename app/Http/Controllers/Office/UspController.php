@@ -16,14 +16,19 @@ class UspController extends Controller
 
     public function storeUsp(Request $request){
         $this->validate($request,[
-            'owner_name' => 'required|string|max:255',
-            'owner_desciption'=>'required',
+            'usp_type' => 'required',
+            'packing'=>'required',
+            'brand'=>'required',
+            'select_category'=>'required',
+            'select_principal'=>'required',
+
         ]);
         $check_status = Usp::insertGetId([
-            'owner_name'=>$request->owner_name,
-            'owner_desc'=>$request->owner_desciption,
-            'dt_created'=>Carbon::now(),
-            'dt_modify'=>Carbon::now(),
+            'usp_type'=>$request->usp_type,
+            'packing'=>$request->packing,
+            'brand'=>$request->brand,
+            'category'=>$request->select_category,
+            'principal'=>$request->select_principal,
         ]);
 
        
@@ -37,4 +42,43 @@ class UspController extends Controller
     public function getUsp(Request $request){
         return Datatables::of(Usp::query())->make(true);
     }
+
+    public function updateUsp(Request $request, $id){
+
+        $this->validate($request,[
+            'usp_type' => 'required',
+            'packing'=>'required',
+            'brand'=>'required',
+            'select_category'=>'required',
+            'select_principal'=>'required',
+        ]);
+        $check_status = Usp::where('id', $id)->update([
+            'usp_type'=>$request->usp_type,
+            'packing'=>$request->packing,
+            'brand'=>$request->packing,
+            'category'=>$request->select_category,
+            'principal'=>$request->select_principal,
+
+
+        ]);
+        if(!empty($check_status)){
+            return back()->with([
+                'message' => 'Product Usp updated successfully !',
+            ]);
+        }
+    }
+
+    public function deleteUsp(Request $request, $id){
+        $records = Usp::where('id', $id)->get()->first();
+        if($records){
+            $records->delete();
+            $message =  'Records deleted successfully !';
+        }else{
+            $message ='Fail to successfully !';
+        }
+        return back()->with([
+            'message' =>$message
+        ]);
+    }
+    
 }
