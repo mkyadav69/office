@@ -1,5 +1,5 @@
 @extends('theme.layout.base_layout')
-@section('title', 'Dashboard')
+@section('title', 'Parameter')
 @section('content')
 <style>
 .form-inline label {

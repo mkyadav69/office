@@ -16,25 +16,51 @@ class BrandController extends Controller
 
     public function storeBrand(Request $request){
         $this->validate($request,[
-            'owner_name' => 'required|string|max:255',
-            'owner_desciption'=>'required',
+            'brand_name' => 'required',
         ]);
-        $check_status = Quatation::insertGetId([
-            'owner_name'=>$request->owner_name,
-            'owner_desc'=>$request->owner_desciption,
+        $check_status = Brand::insertGetId([
+            'brand_name'=>$request->brand_name,
             'dt_created'=>Carbon::now(),
-            'dt_modify'=>Carbon::now(),
         ]);
 
        
         if(!empty($check_status)){
             return back()->with([
-                'message' => 'Pricipal created successfully !',
+                'message' => 'Brand created successfully !',
             ]);
         }
     }
 
     public function getBrand(Request $request){
         return Datatables::of(Brand::query())->make(true);
+    }
+
+    public function updateBrand(Request $request, $id){
+
+        $this->validate($request,[
+            'brand_name' => 'required',
+        ]);
+
+        $check_status = Brand::where('id', $id)->update([
+            'brand_name'=>$request->brand_name,
+            'dt_modify'=>Carbon::now(),
+        ]);
+        if(!empty($check_status)){
+            return back()->with([
+                'message' => 'Brand updated successfully !',
+            ]);
+        }
+    }
+
+    public function deleteBrand(Request $request, $id){
+        $records = Brand::where('id', $id)->delete();
+        if($records == '1'){
+            $message =  'Records deleted successfully !';
+        }else{
+            $message ='Fail to delete record !';
+        }
+        return back()->with([
+            'message' =>$message
+        ]);
     }
 }

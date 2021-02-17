@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Principal extends Model
 {
-    protected $table = 'tbl_custowner';
+    protected $table = 'tbl_make';
     protected $fillable = [
         'ownber_name',
         'owner_desciption',

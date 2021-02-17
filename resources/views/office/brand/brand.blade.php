@@ -1,5 +1,5 @@
 @extends('theme.layout.base_layout')
-@section('title', 'Dashboard')
+@section('title', 'Brand')
 @section('content')
 <style>
 .form-inline label {
@@ -81,8 +81,14 @@ table.dataTable {
         <table id="courier" class="table table-borderless table-striped table-earning">
         </table>
     </div>
-    
 </div>
+@if(Session::has('errors'))
+    <script>
+        $(document).ready(function(){
+            $('#largeModal').modal({show: true});
+        });
+    </script>
+@endif 
 <script>
     $(document).ready(function(){
         table = $('#courier').DataTable({
@@ -98,7 +104,7 @@ table.dataTable {
                 scrollX: true,
                 responsive: true,
                 ajax: {
-                    url:'{{ route("get_courier") }}',
+                    url:'{{ route("get_brand") }}',
                 },
                 pageLength: 10,
                 columnDefs: [{ 
@@ -117,15 +123,44 @@ table.dataTable {
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'owner_name', title : 'Owner Name'},
-                    { data: 'owner_desc', title : 'Description'},
-                    { data: 'dt_created', title : 'Date'},
+                    { data: 'brand_name', title : 'Brand Name'},
+                    {
+                        'data': null,
+                        'render': function (data, type, row) {
+                            return '<button row-id="' + row.id + '" class="btn btn-primary edit">Edit</button> <button row-id="' + row.id + '" class="btn btn-danger delete">Delete</button>'
+                        }, title: 'Actions'
+                    }
                 ],                            
+        });
+
+        table.on('click', '.edit', function(){
+            $tr = $(this).closest('tr');
+            if($($tr).hasClass('child')){
+                $tr = $tr.prev('.parent');
+            }
+            var data = table.row($tr).data();
+            console.log(data);
+
+            $('div #brand_name').val(data['brand_name']);
+
+            $('#editForm').attr('action', '/edit-brand/'+data['id']);
+            $('#editModal').modal('show');  
+        });
+
+        table.on('click', '.delete', function(){
+            $tr = $(this).closest('tr');
+            if($($tr).hasClass('child')){
+                $tr = $tr.prev('.parent');
+            }
+            var data = table.row($tr).data();
+            $('#deleteForm').attr('action', '/delete-brand/'+data['id']);
+            $('#deleteModal').modal('show');  
         });
     });
 </script>
 @endsection
-<!-- modal large -->
+
+<!-- add record -->
 <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -137,24 +172,24 @@ table.dataTable {
             </div>
             <div class="modal-body">
                 <div class="card">
-                    <form action="{{route('store_owner')}}" method="post">
+                    <form action="{{route('store_brand')}}" method="post">
                         @csrf
                         <div class="row form-group">
                             <div class="col col-md-3">
                                 <label for="file-input" class=" form-control-label required">Brand Name</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <input type="text" id="courier_name" name="courier_name"placeholder="Brand name" class="form-control">
+                                <input type="text" id="brand_name" name="brand_name"placeholder="brand" class="form-control">
+                                @if ($errors->has('brand_name'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('brand_name') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
-                            @if ($errors->has('courier_name'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->first('courier_name') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -164,6 +199,75 @@ table.dataTable {
                 </div>
             </div>
           
+        </div>
+    </div>
+</div>
+<!-- end modal large -->
+
+<!-- edit records -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="largeModalLabel">Update Brand</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <form method="post" id="editForm">
+                        @csrf
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Brand Name</label>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <input type="text" id="brand_name" name="brand_name"placeholder="brand" class="form-control">
+                                @if ($errors->has('brand_name'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('brand_name') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Confirm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+          
+        </div>
+    </div>
+</div>
+<!-- end modal large -->
+
+<!-- Delete-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="largeModalLabel">Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" id="deleteForm">
+                @csrf
+                <div class="modal-body">
+                    <p>Are you sure to delete the record ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

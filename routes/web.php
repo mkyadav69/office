@@ -43,21 +43,31 @@ Route::get('get-owner', [CustomerController::class, 'getOwner'])->name('get_owne
 Route::get('show-principals', [PrincipalController::class, 'showPrincipal'])->name('show_principals');
 Route::post('store-principals', [PrincipalController::class, 'storePrincipal'])->name('store_principals');
 Route::get('get-principals', [PrincipalController::class, 'getPrincipal'])->name('get_principals');
+Route::post('edit-principals/{id}',  [PrincipalController::class, 'updatePrincipals'])->name('edit_principals');
+Route::post('delete-principals/{id}',  [PrincipalController::class, 'deletePrincipals'])->name('delete_principals');
 
 # 4. Manage Courier
 Route::get('show-courier', [CourierController::class, 'showCourier'])->name('show_courier');
 Route::post('store-courier', [CourierController::class, 'storeCourier'])->name('store_courier');
 Route::get('get-courier', [CourierController::class, 'getCourier'])->name('get_courier');
+Route::post('edit-courier/{id}',  [CourierController::class, 'updateCourier'])->name('edit_courier');
+Route::post('delete-courier/{id}',  [CourierController::class, 'deleteCourier'])->name('delete_courier');
+
 
 # 5. Quatation Format
 Route::get('show-quatation', [QuatationController::class, 'showQuatation'])->name('show_quatation');
 Route::post('store-quatation', [QuatationController::class, 'storeQuatation'])->name('store_quatation');
 Route::get('get-quatation', [QuatationController::class, 'getQuatation'])->name('get_quatation');
+Route::post('edit-quatation/{id}',  [QuatationController::class, 'updateQuatation'])->name('edit_quatation');
+Route::post('delete-quatation/{id}',  [QuatationController::class, 'deleteQuatation'])->name('delete_quatation');
 
 # 6. Brand
 Route::get('show-brand', [BrandController::class, 'showBrand'])->name('show_brand');
-Route::post('store-brand', [BrandController::class, 'storeQuatation'])->name('store_brand');
-Route::get('get-brand', [BrandController::class, 'getQuatation'])->name('get_brand');
+Route::post('store-brand', [BrandController::class, 'storeBrand'])->name('store_brand');
+Route::get('get-brand', [BrandController::class, 'getBrand'])->name('get_brand');
+Route::post('edit-brand/{id}',  [BrandController::class, 'updateBrand'])->name('edit_brand');
+Route::post('delete-brand/{id}',  [BrandController::class, 'deleteBrand'])->name('delete_brand');
+
 
 # 7. Reason Format
 Route::get('show-reason', [ReasonController::class, 'showReason'])->name('show_reason');

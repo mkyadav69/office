@@ -33,7 +33,7 @@ class QuatationController extends Controller
             'str_branch_phnumber'=>$request->mobile_no,
             'stn_billing_note'=>$request->billing_notes,
             'stn_tin_no'=>$request->add_tin,
-            'str_city'=>$request->select_branch,
+            'int_branch_id'=>$request->select_branch,
             'dt_created'=>Carbon::now(),
         ]);
 
@@ -59,20 +59,26 @@ class QuatationController extends Controller
             'mobile_no'=>'required',
             'email_address'=>'required',
         ]);
-        $check_status = Quatation::where('int_id', $id)->update([
-            'stn_reasons'=>$request->reason_name,
-            'stn_reason_type'=>$request->select_mode,
+
+        $check_status = Quatation::where('int_quotformat_id', $id)->update([
+            'stn_bill_add'=>$request->billing_address,
+            'stn_branch_add'=>$request->branch_address,
+            'str_branch_email'=>$request->email_address,
+            'str_branch_phnumber'=>$request->mobile_no,
+            'stn_billing_note'=>$request->billing_notes,
+            'stn_tin_no'=>$request->add_tin,
+            'int_branch_id'=>$request->select_branch,
             'updated_at'=>Carbon::now(),
         ]);
         if(!empty($check_status)){
             return back()->with([
-                'message' => 'Reason updated successfully !',
+                'message' => 'Quatation format updated successfully !',
             ]);
         }
     }
 
     public function deleteQuatation(Request $request, $id){
-        $records = Quatation::where('int_id', $id)->delete();
+        $records = Quatation::where('int_quotformat_id', $id)->delete();
         if($records == '1'){
             $message =  'Records deleted successfully !';
         }else{
