@@ -2,23 +2,6 @@
 @section('title', 'Customer')
 @section('content')
 <style>
-.form-inline label {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-align: center;
-    align-items: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    margin-top: -86px;
-}
-table.dataTable {
- clear:both;
- margin-top:77px !important;
- margin-bottom:6px !important;
- max-width:none !important;
- border-collapse:separate !important
-}
-
 .required:after {
     content: '*';
     color: red;
@@ -76,16 +59,28 @@ table.dataTable {
                         <i class="zmdi zmdi-plus"></i> Add Customer
                     </button>
             </div>
-        </div>
-
-       
+        </div>       
     </div>
-    <div class="col-lg-12">
-        <div class="table-responsive table--no-card m-b-30">
-            <table id="customer" class="table table-borderless table-striped table-earning">
+   
+    <div class="col-md-12">
+        <!-- DATA TABLE-->
+        <div class="table-responsive m-b-40">
+            <table id="customer" class="table table-borderless table-data3" style="width:100%">
+                <!-- <thead>
+                    <tr>
+                        <th>date</th>
+                        <th>type</th>
+                        <th>description</th>
+                        <th>status</th>
+                        <th>price</th>
+                    </tr>
+                </thead> -->
+                
             </table>
         </div>
+        <!-- END DATA TABLE-->
     </div>
+                       
 </div>
 <script>
     $(document).ready(function(){
@@ -115,11 +110,17 @@ table.dataTable {
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'st_cust_fname', title : 'GST'},
-                    { data: 'st_com_name', title : 'Company'},
+                    { data: 'st_cust_fname', title : 'Name'},
+                    { data: 'st_com_name', title : 'Company Name'},
                     { data: 'st_cust_city', title : 'City'},
                     { data: 'st_cust_state', title : 'State'},
                     { data: 'st_regions', title : 'Region'},
+                    {
+                        'data': null,
+                        'render': function (data, type, row) {
+                            return '<div class="table-data-feature"><button row-id="' + row.id + '" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button> <button row-id="' + row.id + '" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>'
+                        }, title: 'Actions'
+                    }
                 ],                            
         });
     });

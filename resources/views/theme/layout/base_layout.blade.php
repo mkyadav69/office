@@ -19,6 +19,10 @@
     <link href="{{asset('vendor/font-awesome-5/css/fontawesome-all.min.css')}}" rel="stylesheet">
     <link href="{{asset('vendor/mdi-font/css/material-design-iconic-font.min.css')}}" rel="stylesheet" media="all">
 
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('vendor/datatables-new/datatables.min.css') }}" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+
     <!-- Bootstrap CSS-->
     <link href="{{asset('vendor/bootstrap-4.1/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
 
@@ -36,7 +40,6 @@
         <!-- Jquery JS-->
         <script src="{{asset('vendor/jquery-3.2.1.min.js')}}"></script>
     <!-- Bootstrap JS-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('vendor/datatables-new/datatables.min.css') }}" />
 
     <script src="{{asset('vendor/bootstrap-4.1/popper.min.js')}}"></script>
     <script src="{{asset('vendor/bootstrap-4.1/bootstrap.min.js')}}"></script>
@@ -73,7 +76,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
-                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                                    <p>© Chromatographyworld All rights reserved </p>
                                 </div>
                             </div>
                         </div>
@@ -87,13 +90,14 @@
     </div>
 
 
-    
+    <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https:///cdn.datatables.net/select/1.3.0/js/select.bootstrap4.min.js"></script>
     <!-- Vendor JS       -->
     <script src="{{asset('vendor/slick/slick.min.js')}}"></script>
     <script src="{{asset('vendor/wow/wow.min.js')}}"></script>
     <script src="{{asset('vendor/animsition/animsition.min.js')}}"></script>
-    <script type="text/javascript" src="{{ asset('vendor/datatables-new/datatables.min.js') }}"></script>
-
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    
     <script src="{{asset('vendor/bootstrap-progressbar/bootstrap-progressbar.min.js')}}"></script>
     <script src="{{asset('vendor/counter-up/jquery.waypoints.min.js')}}"></script>
     <script src="{{asset('vendor/counter-up/jquery.counterup.min.js')}}"></script>

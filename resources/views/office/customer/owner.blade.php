@@ -2,22 +2,6 @@
 @section('title', 'Owner')
 @section('content')
 <style>
-.form-inline label {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-align: center;
-    align-items: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    margin-top: -86px;
-}
-table.dataTable {
-    clear:both;
-    margin-top:77px !important;
-    margin-bottom:6px !important;
-    max-width:none !important;
-    border-collapse:separate !important
-}
 
 </style>
 <div class="row">

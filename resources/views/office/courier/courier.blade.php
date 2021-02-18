@@ -2,23 +2,6 @@
 @section('title', 'Courier')
 @section('content')
 <style>
-.form-inline label {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-align: center;
-    align-items: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    margin-top: -86px;
-}
-table.dataTable {
-    clear:both;
-    margin-top:77px !important;
-    margin-bottom:6px !important;
-    max-width:none !important;
-    border-collapse:separate !important
-}
-
 .required:after {
     content: '*';
     color: red;
@@ -59,7 +42,7 @@ table.dataTable {
         </div>
     </div>
     <div class="table-responsive table--no-card m-b-30">
-        <table id="courier" class="table table-borderless table-striped table-earning">
+        <table id="courier" class="table table-borderless table-striped table-earning" style="width:100%">
         </table>
     </div>
 </div>
@@ -104,12 +87,12 @@ table.dataTable {
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'st_courier_name', title : 'Courier Agency Name'},
-                    { data: 'dt_created', title : 'Created At'},
+                    { data: 'st_courier_name', title : 'Courier Agency Name', className: "tr-shadow"},
+                    { data: 'dt_created', title : 'Created At', className: "tr-shadow"},
                     {
                         'data': null,
                         'render': function (data, type, row) {
-                            return '<button row-id="' + row.id + '" class="btn btn-primary edit">Edit</button> <button row-id="' + row.id + '" class="btn btn-danger delete">Delete</button>'
+                            return '<div class="table-data-feature"><button row-id="' + row.id + '" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button> <button row-id="' + row.id + '" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>'
                         }, title: 'Actions'
                     }
                 ],                            
