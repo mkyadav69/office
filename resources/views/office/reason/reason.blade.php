@@ -19,15 +19,16 @@
         </div>
     @endif
     <div class="col-md-12">
-        <h3 class="title-5 m-b-35">Manage Reason</h3>
+        <h3 class="title-5 m-b-35">Manage Reasons</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
                 <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#largeModal">
-                        <i class="zmdi zmdi-plus"></i> Add Reason
-                    </button>
+                    <i class="zmdi zmdi-plus"></i> Add Reason
+                </button>
             </div>
         </div>
-    </div>
+    </div> 
+
     <div class="table-responsive table--no-card m-b-30">
         <table id="reason" class="table table-borderless table-striped table-earning" style="width:100%">
         </table>
@@ -75,8 +76,8 @@
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'stn_reasons', title : 'Reason Name'},
-                    { data: 'stn_reason_type', title : 'Reason Mode'},
+                    { data: 'stn_reasons', title : 'Reason Name', className: "text"},
+                    { data: 'stn_reason_type', title : 'Reason Mode', className: "text"},
                     { data: 'dt_created', title : 'Created Date'},
                     {
                         'data': null,
@@ -84,7 +85,36 @@
                             return '<div class="table-data-feature"><button row-id="' + row.id + '" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button> <button row-id="' + row.id + '" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>'
                         }, title: 'Actions'
                     }
-                ],                            
+                ],
+                initComplete: function () {
+                    this.api().columns().every(function () {
+                        var column = this;
+                        if ($(column.header()).hasClass('select')) {
+                            console.log(column);
+                            var select = $('<select  tyle="width:150px; height: 30px;  font-weight: normal;  border-radius: 5px;" class="js-select2" ><option value="">' + $(column.header()).html() + '</option></select>')
+                                    .appendTo($(column.header()).empty())
+                                    .on('change', function (e) {
+                                        e.stopImmediatePropagation();
+                                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                        column.search(val ? '^' + val + '$' : '', true, false).draw();
+                                        return false;
+                                    });
+                            column.data().unique().sort().each(function (d, j) {
+                                select.append('<option value="' + d + '">' + d + '</option>');
+                            });
+                        }else if ($(column.header()).hasClass('text')) {
+                            var text = $('<input style="width:150px; height: 30px;  font-weight: normal;  border-radius: 5px;" type="text" placeholder="' + $(column.header()).html() + '" />')
+                            .appendTo($(column.header()).empty())
+                            .on('keyup change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                if (column.search() !== this.value) {
+                                    column.search(val).draw();
+                                }
+                                return false;
+                            });
+                        }
+                    });
+                }                              
         });
         table.on('click', '.edit', function(){
             $tr = $(this).closest('tr');

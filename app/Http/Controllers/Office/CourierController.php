@@ -17,6 +17,10 @@ class CourierController extends Controller
     }
 
     public function storeCourier(Request $request){
+        $branch_wise = Config::get('constant.branch_wise');
+        if(!empty($request->select_branch)){
+            $branch_name = $branch_wise[$request->select_branch];
+        }
         $this->validate($request,[
             'courier_name' => 'required',
             'select_branch'=>'required',
@@ -24,6 +28,7 @@ class CourierController extends Controller
         $check_status = Courier::insertGetId([
             'st_courier_name'=>$request->courier_name,
             'in_branch_id'=>$request->select_branch,
+            'st_branch_name'=>$branch_name,
             'dt_created'=>Carbon::now(),
         ]);
 
@@ -45,10 +50,16 @@ class CourierController extends Controller
             'courier_name' => 'required',
             'select_branch'=> 'required',
         ]);
-
+        
+        $branch_wise = Config::get('constant.branch_wise');
+        
+        if(!empty($request->select_branch)){
+            $branch_name = $branch_wise[$request->select_branch];
+        }
         $check_status = Courier::where('in_courier_id', $id)->update([
             'st_courier_name'=>$request->courier_name,
             'in_branch_id'=>$request->select_branch,
+            'st_branch_name'=>$branch_name,
             'dt_modified'=>Carbon::now(),
         ]);
         if(!empty($check_status)){

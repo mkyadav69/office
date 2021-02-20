@@ -13,6 +13,6 @@ class DashboardController extends Controller
     }
     
     public function dashboard(){
-        return view('office.dashboard');
+        return view('office.customer.customer');
     }
 }

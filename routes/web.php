@@ -12,7 +12,7 @@ use App\Http\Controllers\Office\BrandController;
 use App\Http\Controllers\Office\ReasonController;
 use App\Http\Controllers\Office\UspController;
 use App\Http\Controllers\Office\ProductParameter;
-
+use App\Http\Controllers\Office\CategoryController;
 
 # Register
 Route::get('register', [RegisterController::class, 'viewRegister'])->name('register');
@@ -29,15 +29,21 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
 
 # office 
+
 # 1. Customer
 Route::get('show-customer', [CustomerController::class, 'showCustomer'])->name('show_customer');
 Route::post('store-customer', [CustomerController::class, 'storeCustomer'])->name('store_customer');
 Route::get('get-customer', [CustomerController::class, 'getCustomer'])->name('get_customer');
+Route::post('edit-customer/{id}',  [CustomerController::class, 'updateCustomer'])->name('edit_customer');
+Route::post('delete-customer/{id}',  [CustomerController::class, 'deleteCustomer'])->name('delete_customer');
 
 # 2. Owner
 Route::get('show-owner', [CustomerController::class, 'showOwner'])->name('show_owner');
 Route::post('store-owner', [CustomerController::class, 'storeOwner'])->name('store_owner');
 Route::get('get-owner', [CustomerController::class, 'getOwner'])->name('get_owner');
+Route::post('edit-owner/{id}',  [CustomerController::class, 'updateOwner'])->name('edit_owner');
+Route::post('delete-owner/{id}',  [CustomerController::class, 'deleteOwner'])->name('delete_owner');
+
 
 # 3. Principals
 Route::get('show-principals', [PrincipalController::class, 'showPrincipal'])->name('show_principals');
@@ -89,6 +95,13 @@ Route::post('store-parameter', [ProductParameter::class, 'storeParameter'])->nam
 Route::get('get-parameter', [ProductParameter::class, 'getParameter'])->name('get_parameter');
 Route::post('edit-parameter/{id}',  [ProductParameter::class, 'updateParameter'])->name('edit_parameter');
 Route::post('delete-parameter/{id}',  [ProductParameter::class, 'deleteParameter'])->name('delete_parameter');
+
+# 10. Category 
+Route::get('show-category', [CategoryController::class, 'showCategory'])->name('show_category');
+Route::post('store-category', [CategoryController::class, 'storeCategory'])->name('store_category');
+Route::get('get-category', [CategoryController::class, 'getCategory'])->name('get_category');
+Route::post('edit-category/{id}',  [CategoryController::class, 'updateCategory'])->name('edit_category');
+Route::post('delete-category/{id}',  [CategoryController::class, 'deleteCategory'])->name('delete_category');
 
 
 

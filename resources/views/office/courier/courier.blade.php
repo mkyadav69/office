@@ -19,28 +19,15 @@
         </div>
     @endif
     <div class="col-md-12">
-        <h3 class="title-5 m-b-35">Manage Courier</h3>
+        <h3 class="title-5 m-b-35">Manage Couriers</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
                 <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#largeModal">
-                        <i class="zmdi zmdi-plus"></i> Add Courier
-                    </button>
-                    <div class="rs-select2--light rs-select2--md">
-                        <select id="select_branch" name="select_branch" class="form-control">
-                            <option value="">Select Branch</option>
-                            @if(!empty($branch_wise))
-                                @foreach($branch_wise as $id=>$name)
-                                <option value="{{ $id }}">{{ $name}}</option>
-                                @endforeach
-                            @else
-                                <option value="">No branch found</option>
-                            @endif
-                        </select>
-                    <div class="dropDownSelect2"></div>
-                </div>
+                    <i class="zmdi zmdi-plus"></i> Add Courier
+                </button>
             </div>
         </div>
-    </div>
+    </div> 
     <div class="table-responsive table--no-card m-b-30">
         <table id="courier" class="table table-borderless table-striped table-earning" style="width:100%">
         </table>
@@ -87,15 +74,45 @@
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'st_courier_name', title : 'Courier Agency Name', className: "tr-shadow"},
-                    { data: 'dt_created', title : 'Created At', className: "tr-shadow"},
+                    { data: 'st_courier_name', title : 'Courier Agency Name', className: "text"},
+                    { data: 'st_branch_name', title : 'Branch Name', className: "select"},
+                    { data: 'dt_created', title : 'Created At'},
                     {
                         'data': null,
                         'render': function (data, type, row) {
                             return '<div class="table-data-feature"><button row-id="' + row.id + '" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button> <button row-id="' + row.id + '" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>'
                         }, title: 'Actions'
                     }
-                ],                            
+                ],
+                initComplete: function () {
+                    this.api().columns().every(function () {
+                        var column = this;
+                        if ($(column.header()).hasClass('select')) {
+                            console.log(column);
+                            var select = $('<select  tyle="width:150px; height: 30px;  font-weight: normal;  border-radius: 5px;" class="js-select2" ><option value="">' + $(column.header()).html() + '</option></select>')
+                                    .appendTo($(column.header()).empty())
+                                    .on('change', function (e) {
+                                        e.stopImmediatePropagation();
+                                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                        column.search(val ? '^' + val + '$' : '', true, false).draw();
+                                        return false;
+                                    });
+                            column.data().unique().sort().each(function (d, j) {
+                                select.append('<option value="' + d + '">' + d + '</option>');
+                            });
+                        }else if ($(column.header()).hasClass('text')) {
+                            var text = $('<input style="width:150px; height: 30px;  font-weight: normal;  border-radius: 5px;" type="text" placeholder="' + $(column.header()).html() + '" />')
+                            .appendTo($(column.header()).empty())
+                            .on('keyup change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                if (column.search() !== this.value) {
+                                    column.search(val).draw();
+                                }
+                                return false;
+                            });
+                        }
+                    });
+                }                            
         });
 
         table.on('click', '.edit', function(){

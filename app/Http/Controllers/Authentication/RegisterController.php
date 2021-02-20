@@ -18,7 +18,7 @@ class RegisterController extends Controller
         try {
             $this->validate($request,[
                 'username' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
+                'email' => 'required|string|email|max:255|unique:tbl_admin',
                 "password"    => 'required_with:password_confirmation|string|confirmed',
                 'password_confirmation' =>'required'
             ]);

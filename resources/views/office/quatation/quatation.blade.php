@@ -1,5 +1,5 @@
 @extends('theme.layout.base_layout')
-@section('title', 'Quatation')
+@section('title', 'Quatation Format')
 @section('content')
 <style>
 .required:after {
@@ -19,15 +19,15 @@
         </div>
     @endif
     <div class="col-md-12">
-        <h3 class="title-5 m-b-35">Quatations</h3>
+        <h3 class="title-5 m-b-35">Manage Quatations</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
                 <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#largeModal">
-                        <i class="zmdi zmdi-plus"></i> Add Quatation
+                    <i class="zmdi zmdi-plus"></i> Add Quatation
                 </button>
             </div>
         </div>
-    </div>
+    </div> 
     <div class="table-responsive table--no-card m-b-30">
         <table id="quatation" class="table table-borderless table-striped table-earning" style="width:100%">
         </table>
@@ -75,10 +75,10 @@
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'stn_bill_add', title : 'Billing Address'},
-                    { data: 'stn_branch_add', title : 'Branch Address'},
-                    { data: 'stn_tin_no', title : 'Tin Number'},
-                    { data: 'int_branch_id', title : 'Branch Name'},
+                    { data: 'stn_bill_add', title : 'Billing Address', className: "text"},
+                    { data: 'stn_branch_add', title : 'Branch Address', className: "text"},
+                    { data: 'stn_tin_no', title : 'Tin Number', className: "text"},
+                    { data: 'int_branch_id', title : 'Branch Name', className: "text"},
                     { data: 'dt_created', title : 'Created At'},
                     {
                         'data': null,
@@ -86,7 +86,36 @@
                             return '<div class="table-data-feature"><button row-id="' + row.id + '" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button> <button row-id="' + row.id + '" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>'
                         }, title: 'Actions'
                     }
-                ],                            
+                ], 
+                initComplete: function () {
+                    this.api().columns().every(function () {
+                        var column = this;
+                        if ($(column.header()).hasClass('select')) {
+                            console.log(column);
+                            var select = $('<select  tyle="width:150px; height: 30px;  font-weight: normal;  border-radius: 5px;" class="js-select2" ><option value="">' + $(column.header()).html() + '</option></select>')
+                                    .appendTo($(column.header()).empty())
+                                    .on('change', function (e) {
+                                        e.stopImmediatePropagation();
+                                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                        column.search(val ? '^' + val + '$' : '', true, false).draw();
+                                        return false;
+                                    });
+                            column.data().unique().sort().each(function (d, j) {
+                                select.append('<option value="' + d + '">' + d + '</option>');
+                            });
+                        }else if ($(column.header()).hasClass('text')) {
+                            var text = $('<input style="width:150px; height: 30px;  font-weight: normal;  border-radius: 5px;" type="text" placeholder="' + $(column.header()).html() + '" />')
+                            .appendTo($(column.header()).empty())
+                            .on('keyup change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                if (column.search() !== this.value) {
+                                    column.search(val).draw();
+                                }
+                                return false;
+                            });
+                        }
+                    });
+                }                                                  
         });
         
         table.on('click', '.edit', function(){

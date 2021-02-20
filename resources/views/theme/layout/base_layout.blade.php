@@ -19,11 +19,11 @@
     <link href="{{asset('vendor/font-awesome-5/css/fontawesome-all.min.css')}}" rel="stylesheet">
     <link href="{{asset('vendor/mdi-font/css/material-design-iconic-font.min.css')}}" rel="stylesheet" media="all">
 
-
-    <link rel="stylesheet" type="text/css" href="{{ asset('vendor/datatables-new/datatables.min.css') }}" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="{{asset('css/dataTables.bootstrap4.min.css')}}">
 
     <!-- Bootstrap CSS-->
+
+
     <link href="{{asset('vendor/bootstrap-4.1/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
 
     <!-- Vendor CSS-->
@@ -88,15 +88,14 @@
         </div>
 
     </div>
+ 
 
-
-    <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
-    <script src="https:///cdn.datatables.net/select/1.3.0/js/select.bootstrap4.min.js"></script>
+    
     <!-- Vendor JS       -->
     <script src="{{asset('vendor/slick/slick.min.js')}}"></script>
     <script src="{{asset('vendor/wow/wow.min.js')}}"></script>
     <script src="{{asset('vendor/animsition/animsition.min.js')}}"></script>
-    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
     
     <script src="{{asset('vendor/bootstrap-progressbar/bootstrap-progressbar.min.js')}}"></script>
     <script src="{{asset('vendor/counter-up/jquery.waypoints.min.js')}}"></script>
@@ -107,6 +106,7 @@
     <script src="{{asset('vendor/chartjs/Chart.bundle.min.js')}}"></script>
     <script src="{{asset('vendor/select2/select2.min.js')}}"></script>
 
+    <script src="{{asset('js/dataTables.bootstrap4.min.js')}}"></script>
     <!-- Main JS-->
     <script src="{{asset('js/main.js')}}"></script>
 

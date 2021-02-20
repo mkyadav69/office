@@ -1,5 +1,5 @@
 @extends('theme.layout.base_layout')
-@section('title', 'Parameter')
+@section('title', 'Category')
 @section('content')
 <style>
 .required:after {
@@ -19,21 +19,24 @@
         </div>
     @endif
     <div class="col-md-12">
-        <h3 class="title-5 m-b-35">Manage Parameters</h3>
+        <h3 class="title-5 m-b-35">Manage Category</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
                 <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#largeModal">
-                    <i class="zmdi zmdi-plus"></i> Add Parameter
+                    <i class="zmdi zmdi-plus"></i> Add Category
+                </button>
+                <input type="file" class="au-btn-filter">
+                <button class="au-btn-filter">
+                    <i class="zmdi zmdi-upload"></i> Import
                 </button>
             </div>
         </div>
-    </div> 
+    </div>
 
     <div class="table-responsive table--no-card m-b-30">
-        <table id="product_parameter" class="table table-borderless table-striped table-earning" style="width:100%">
+        <table id="category" class="table table-borderless table-striped table-earning" style="width:100%">
         </table>
     </div>
-    
 </div>
 @if(Session::has('errors'))
     <script>
@@ -41,24 +44,23 @@
             $('#largeModal').modal({show: true});
         });
     </script>
-@endif  
+@endif 
 <script>
     $(document).ready(function(){
-        table = $('#product_parameter').DataTable({
+        table = $('#category').DataTable({
                 processing: true,
                 orderCellsTop: true,
                 fixedHeader: true,
                 sort : true,
                 scrollX: true,
                 bDestroy: true,
-                responsive:true,
                 destroy: true,
                 sort : true,
                 cache: true,
                 scrollX: true,
                 responsive: true,
                 ajax: {
-                    url:'{{ route("get_parameter") }}',
+                    url:'{{ route("get_category") }}',
                 },
                 pageLength: 10,
                 columnDefs: [{ 
@@ -77,9 +79,10 @@
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'p_name', title : 'Product Name', className: "text"},
-                    { data: 'column_name', title : 'Column Name', className: "text"},
-                    { data: 'dt_created', title : 'Created at'},
+                    { data: 'st_cat_name', title : 'Category Name', className: "text"},
+                    { data: 'st_cat_disc', title : 'Description', className: "text"},
+                    // { data: 'str_img_src', title : 'Category Image'},
+                    { data: 'dt_created', title : 'Created At'},
                     {
                         'data': null,
                         'render': function (data, type, row) {
@@ -115,7 +118,7 @@
                             });
                         }
                     });
-                }                                                 
+                }                            
         });
 
         table.on('click', '.edit', function(){
@@ -125,10 +128,11 @@
             }
             var data = table.row($tr).data();
             console.log(data);
-            $('div #parameter_name').val(data['p_name']);
-            $('div #column_name').val(data['column_name']);
 
-            $('#editForm').attr('action', '/edit-parameter/'+data['id']);
+            $('div #category_name').val(data['st_cat_name']);
+            $('div #category_desc').val(data['st_cat_disc']);
+        
+            $('#editForm').attr('action', '/edit-category/'+data['cat_id']);
             $('#editModal').modal('show');  
         });
 
@@ -138,37 +142,37 @@
                 $tr = $tr.prev('.parent');
             }
             var data = table.row($tr).data();
-            $('#deleteForm').attr('action', '/delete-parameter/'+data['id']);
+            $('#deleteForm').attr('action', '/delete-category/'+data['cat_id']);
             $('#deleteModal').modal('show');  
         });
     });
 </script>
 @endsection
 
-<!-- Add  Data-->
+<!-- add  record -->
 <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Add Parameter</h5>
+                <h5 class="modal-title" id="largeModalLabel">Add Category</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="card">
-                    <form action="{{route('store_parameter')}}" method="post">
+                    <form action="{{route('store_category')}}" method="post">
                         @csrf
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Parameter Name</label>
+                                <label for="file-input" class=" form-control-label required">Category Name</label>
                             </div>
-                            <div class="col-12 col-md-9">
-                                <input type="text" id="parameter_name" placeholder="parameter" name="parameter_name" value="{{old('parameter_name')}}" class="form-control">
-                                @if ($errors->has('parameter_name'))
+                            <div class="col-12 col-md-6">
+                                <input type="text" id="category_name" name="category_name"placeholder="Enter category name" class="form-control">
+                                @if ($errors->has('category_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('parameter_name') }}
+                                        {{ $errors->first('category_name') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -179,61 +183,14 @@
 
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Column Name</label>
+                                <label for="file-input" class=" form-control-label required">Description</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="column_name" placeholder="column name" name="column_name" value="{{old('column_name')}}"  class="form-control">
-                                @if ($errors->has('column_name'))
+                                <textarea id="category_desc" placeholder="write description  . . . " name="category_desc"  class="form-control"></textarea>
+                                @if ($errors->has('category_desc'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('column_name') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Confirm</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-          
-        </div>
-    </div>
-</div>
-<!-- End Add-->
-
-
-<!-- Update  Data-->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Update Parameter</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="card">
-                    <form method="post" id="editForm">
-                        @csrf
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Parameter Name</label>
-                            </div>
-                            <div class="col-12 col-md-9 param_name">
-                                <input type="text" id="parameter_name" placeholder="parameter" name="parameter_name" value="{{old('parameter_name')}}" class="form-control">
-                                @if ($errors->has('parameter_name'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('parameter_name') }}
+                                        {{ $errors->first('category_desc') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -244,14 +201,14 @@
 
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Column Name</label>
+                                <label for="file-input" class=" form-control-label required">Principal Image</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="column_name" placeholder="column name" name="column_name" value="{{old('column_name')}}"  class="form-control">
-                                @if ($errors->has('column_name'))
+                                <input type="file" id="principal_image" name="principal_image" class="form-control-file">
+                                @if ($errors->has('principal_image'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('column_name') }}
+                                        {{ $errors->first('principal_image') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -260,7 +217,21 @@
                             </div>
                         </div>
 
-                
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="multiple-select" class=" form-control-label">Product Fields Type</label>
+                            </div>
+                            <div class="col col-md-9">
+                                <select name="product_param[]" id="product_param" multiple="" class="form-control">
+                                @if(!empty($param))
+                                    @foreach($param as  $p)
+                                        <option value="{{$p}}">{{$p}}</option>
+                                    @endforeach
+                                @endif
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary">Confirm</button>
@@ -274,6 +245,86 @@
 </div>
 <!-- end modal large -->
 
+<!-- edit  record -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="largeModalLabel">Update Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <form  method="post" id="editForm">
+                        @csrf
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Category Name</label>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <input type="text" id="category_name" name="category_name"placeholder="Enter category name" class="form-control">
+                                @if ($errors->has('category_name'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('category_name') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Description</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <textarea id="category_desc" placeholder="write description  . . . " name="category_desc"  class="form-control"></textarea>
+                                @if ($errors->has('category_desc'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('category_desc') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Principal Image</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="file" id="principal_image" name="principal_image" class="form-control-file">
+                                @if ($errors->has('principal_image'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('principal_image') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Confirm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+          
+        </div>
+    </div>
+</div>
+<!-- end modal large -->
 
 <!-- Delete-->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">

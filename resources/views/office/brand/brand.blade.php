@@ -19,47 +19,20 @@
         </div>
     @endif
     <div class="col-md-12">
-        <h3 class="title-5 m-b-35">Manage Brand</h3>
+        <h3 class="title-5 m-b-35">Manage Brands</h3>
         <div class="table-data__tool">
-            <div class="table-data__tool-left">
-                <div class="rs-select2--light rs-select2--md">
-                    <select class="js-select2" name="property">
-                        <option selected="selected">View Branch Wise</option>
-                        <option value="">Option 1</option>
-                        <option value="">Option 2</option>
-                    </select>
-                    <div class="dropDownSelect2"></div>
-                </div>
-                <div class="rs-select2--light rs-select2--md">
-                    <select class="js-select2" name="property">
-                        <option selected="selected">View Region Wise</option>
-                        <option value="">Option 1</option>
-                        <option value="">Option 2</option>
-                    </select>
-                    <div class="dropDownSelect2"></div>
-                </div>
-
-                <div class="rs-select2--light rs-select2--md">
-                    <button class="au-btn-filter">
-                        <i class="zmdi zmdi-filter-list"></i>filters
-                    </button>
-                </div>
-            
-            </div>
-            <div class="table-data__tool-right">
-                <input type="file" class="au-btn-filter">
-                <button class="au-btn-filter">
-                        <i class="zmdi zmdi-upload"></i> Upload
-                </button>
-            </div>
-
             <div class="table-data__tool-right">
                 <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#largeModal">
-                        <i class="zmdi zmdi-plus"></i> Add Brand
-                    </button>
+                    <i class="zmdi zmdi-plus"></i> Add Brand
+                </button>
+                <input type="file" class="au-btn-filter">
+                <button class="au-btn-filter">
+                    <i class="zmdi zmdi-upload"></i> Import
+                </button>
             </div>
         </div>
     </div>
+
     <div class="table-responsive table--no-card m-b-30">
         <table id="brand" class="table table-borderless table-striped table-earning" style="width:100%">
         </table>
@@ -106,14 +79,44 @@
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'brand_name', title : 'Brand Name'},
+                    { data: 'brand_name', title : 'Brand Name', className: "text"},
                     {
                         'data': null,
                         'render': function (data, type, row) {
                             return '<div class="table-data-feature"><button row-id="' + row.id + '" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button> <button row-id="' + row.id + '" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>'
                         }, title: 'Actions'
                     }
-                ],                            
+                ],
+                initComplete: function () {
+                    this.api().columns().every(function () {
+                        var column = this;
+                        if ($(column.header()).hasClass('select')) {
+                            console.log(column);
+                            var select = $('<select  tyle="width:150px; height: 30px;  font-weight: normal;  border-radius: 5px;" class="js-select2" ><option value="">' + $(column.header()).html() + '</option></select>')
+                                    .appendTo($(column.header()).empty())
+                                    .on('change', function (e) {
+                                        e.stopImmediatePropagation();
+                                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                        column.search(val ? '^' + val + '$' : '', true, false).draw();
+                                        return false;
+                                    });
+                            column.data().unique().sort().each(function (d, j) {
+                                select.append('<option value="' + d + '">' + d + '</option>');
+                            });
+                        }else if ($(column.header()).hasClass('text')) {
+                            var text = $('<input style="width:150px; height: 30px;  font-weight: normal;  border-radius: 5px;" type="text" placeholder="' + $(column.header()).html() + '" />')
+                            .appendTo($(column.header()).empty())
+                            .on('keyup change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                if (column.search() !== this.value) {
+                                    column.search(val).draw();
+                                }
+                                return false;
+                            });
+                        }
+                    });
+                }                
+                                            
         });
 
         table.on('click', '.edit', function(){
