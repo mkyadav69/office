@@ -72,7 +72,7 @@
                 "columns":[
                     { data: 'owner_name', title : 'Owner Name',className: "text"},
                     { data: 'owner_desc', title : 'Description', className: "text"},
-                    { data: 'dt_created', title : 'Date'},
+                    { data: 'dt_created', title : 'Created At'},
                     {
                         'data': null,
                         'render': function (data, type, row) {
@@ -153,7 +153,7 @@
                     <form action="{{route('store_owner')}}" method="post">
                         @csrf
                         <div class="form-group">
-                            <input type="text" id="owner_name" name="owner_name"placeholder="name" class="form-control">
+                            <input type="text" name="owner_name"placeholder="name" class="form-control">
                             @if ($errors->has('owner_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
@@ -165,7 +165,7 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <textarea type="text" id="owner_desciption" name="owner_desciption"placeholder="Write descption . . . !" class="form-control"></textarea>
+                            <textarea type="text" name="owner_desciption"placeholder="Write descption . . . !" class="form-control"></textarea>
                             @if ($errors->has('owner_desciption'))
                             <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                 <span class="badge badge-pill badge-danger">Error</span>
@@ -205,11 +205,11 @@
                     <form method="post" id="editForm">
                         @csrf
                         <div class="form-group">
-                            <input type="text" id="owner_name" name="owner_name"placeholder="name" class="form-control">
-                            @if ($errors->has('owner_name'))
+                            <input type="text" id="owner_name" name="update_owner_name" placeholder="name" class="form-control">
+                            @if ($errors->has('update_owner_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->first('owner_name') }}
+                                    {{ $errors->first('update_owner_name') }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -217,11 +217,11 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <textarea type="text" id="owner_desciption" name="owner_desciption"placeholder="Write descption . . . !" class="form-control"></textarea>
-                            @if ($errors->has('owner_desciption'))
+                            <textarea type="text" id="owner_desciption" name="update_owner_desciption" placeholder="Write descption . . . !" class="form-control"></textarea>
+                            @if ($errors->has('update_owner_desciption'))
                             <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                 <span class="badge badge-pill badge-danger">Error</span>
-                                {{ $errors->first('owner_desciption') }}
+                                {{ $errors->first('update_owner_desciption') }}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>

@@ -47,18 +47,18 @@ class CourierController extends Controller
     public function updateCourier(Request $request, $id){
 
         $this->validate($request,[
-            'courier_name' => 'required',
-            'select_branch'=> 'required',
+            'update_courier_name' => 'required',
+            'update_select_branch'=> 'required',
         ]);
         
         $branch_wise = Config::get('constant.branch_wise');
         
-        if(!empty($request->select_branch)){
-            $branch_name = $branch_wise[$request->select_branch];
+        if(!empty($request->update_select_branch)){
+            $branch_name = $branch_wise[$request->update_select_branch];
         }
         $check_status = Courier::where('in_courier_id', $id)->update([
-            'st_courier_name'=>$request->courier_name,
-            'in_branch_id'=>$request->select_branch,
+            'st_courier_name'=>$request->update_courier_name,
+            'in_branch_id'=>$request->update_select_branch,
             'st_branch_name'=>$branch_name,
             'dt_modified'=>Carbon::now(),
         ]);

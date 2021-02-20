@@ -20,7 +20,7 @@ class UspController extends Controller
             'packing'=>'required',
             'brand'=>'required',
             'select_category'=>'required',
-            'select_principal'=>'required',
+            'principal'=>'required',
 
         ]);
         $check_status = Usp::insertGetId([
@@ -28,7 +28,7 @@ class UspController extends Controller
             'packing'=>$request->packing,
             'brand'=>$request->brand,
             'category'=>$request->select_category,
-            'principal'=>$request->select_principal,
+            'principal'=>$request->principal,
         ]);
 
        
@@ -40,24 +40,31 @@ class UspController extends Controller
     }
 
     public function getUsp(Request $request){
-        return Datatables::of(Usp::query())->make(true);
+        $usp = Usp::get();
+        return Datatables::of($usp)
+           ->editColumn('dt_created', function ($usp) {
+                $date = $usp['dt_created'];
+                if(!empty($date)){
+                    return date('d-m-Y', strtotime($date));
+                }
+           })->make(true);
     }
 
     public function updateUsp(Request $request, $id){
 
         $this->validate($request,[
-            'usp_type' => 'required',
-            'packing'=>'required',
-            'brand'=>'required',
-            'select_category'=>'required',
-            'select_principal'=>'required',
+            'update_usp_type' => 'required',
+            'update_packing'=>'required',
+            'update_brand'=>'required',
+            'update_select_category'=>'required',
+            'update_principal'=>'required',
         ]);
         $check_status = Usp::where('id', $id)->update([
-            'usp_type'=>$request->usp_type,
-            'packing'=>$request->packing,
-            'brand'=>$request->packing,
-            'category'=>$request->select_category,
-            'principal'=>$request->select_principal,
+            'usp_type'=>$request->update_usp_type,
+            'packing'=>$request->update_packing,
+            'brand'=>$request->update_brand,
+            'category'=>$request->update_select_category,
+            'principal'=>$request->update_principal,
 
 
         ]);

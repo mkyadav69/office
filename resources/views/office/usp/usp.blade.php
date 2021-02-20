@@ -77,9 +77,11 @@
             "columns":[
                 { data: 'category', title : 'Category', className: "text"},
                 { data: 'usp_type', title : 'Usp Type', className: "text"},
-                { data: 'packing', title : 'Packing', className: "text"},
+                { data: 'packing', title : 'Packing', className: "text td_ellipsis"},
                 { data: 'brand', title : 'Brand', className: "text"},
-                { data: 'principal', title : 'Principal', className: "text"},
+                { data: 'principal', title : 'Principal', className: "select"},
+                { data: 'dt_created', title : 'Created At'},
+
                 {
                     'data': null,
                     'render': function (data, type, row) {
@@ -115,7 +117,27 @@
                         });
                     }
                 });
-            }                                           
+            },
+            "drawCallback": function( settings ) {
+                $('td.td_ellipsis').css('text-overflow', 'ellipsis');
+                $('td.td_ellipsis').css('width', '50px');
+                $('td.td_ellipsis').css('overflow', 'hidden');
+                $('td.td_ellipsis').css('white-space', 'nowrap'); 
+                $('td.td_ellipsis').addClass('ellipsisd'); 
+                $('td.td_ellipsis').unbind('click');
+                $('td.date').addClass('date_format');
+                $('td.td_ellipsis').click(function(){
+                    if($(this).hasClass('ellipsisd')){
+                        $(this).removeAttr('style');
+                        $(this).removeClass('ellipsisd'); 
+                    }else{
+                        $(this).css('text-overflow', 'ellipsis');
+                        $(this).css('overflow', 'hidden');
+                        $(this).css('white-space', 'nowrap'); 
+                        $(this).addClass('ellipsisd'); 
+                    }
+                });
+            }                                   
         });
         table.on('click', '.edit', function(){
             $tr = $(this).closest('tr');
@@ -128,7 +150,7 @@
             $('div #packing').val(data['packing']);
             $('div #brand').val(data['brand']);
             $('div #select_category').val(data['category']);
-            $('div #select_principal').val(data['principal']);
+            $('div #principal').val(data['principal']);
             $('#editForm').attr('action', '/edit-usp/'+data['id']);
             $('#editModal').modal('show');  
         });
@@ -166,7 +188,7 @@
                                 <label for="file-input" class=" form-control-label required">Usp Type</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="usp_type" placeholder="Type" name="usp_type"  value="{{old('usp_type')}}"  class="form-control">
+                                <input type="text" placeholder="Type" name="usp_type"  value="{{old('usp_type')}}"  class="form-control">
                                 @if ($errors->has('usp_type'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -184,7 +206,7 @@
                                 <label for="file-input" class=" form-control-label required">Packing</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <textarea id="packing" placeholder="Packing details . . . " name="packing"  class="form-control"></textarea>
+                                <textarea placeholder="Packing details . . . " name="packing"  class="form-control"></textarea>
                                 @if ($errors->has('packing'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -202,7 +224,7 @@
                                 <label for="file-input" class=" form-control-label required">Brand</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="brand" placeholder="Brand" name="brand"  class="form-control">
+                                <input type="text" placeholder="Brand" name="brand"  class="form-control">
                                 @if ($errors->has('brand'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -221,10 +243,10 @@
                                 <label for="file-input" class=" form-control-label required">Category</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <select name="select_category" id="select" class="form-control">
+                                <select name="select_category" class="form-control">
                                     <option value="">Select Category</option>
-                                    <option value="hpcl_columns">HPCL Columns</option>
-                                    <option value="gc_capillary_column">GC Capillary Column</option>
+                                    <option value="HPCL Columns">HPCL Columns</option>
+                                    <option value="GC Capillary Column">GC Capillary Column</option>
                                 </select>
                                 @if ($errors->has('select_category'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
@@ -242,16 +264,12 @@
                             <div class="col col-md-3">
                                 <label for="file-input" class=" form-control-label required">Principal</label>
                             </div>
-                            <div class="col-12 col-md-6">
-                                <select name="select_principal" id="select_principal" class="form-control">
-                                    <option value="">Select Principal</option>
-                                    <option value="pending_order">Pending Order</option>
-                                    <option value="pending_shipment">Pending Shipment</option>
-                                </select>
-                                @if ($errors->has('select_principal'))
+                            <div class="col-12 col-md-9">
+                                <input type="text" placeholder="Principal" name="principal"  class="form-control">
+                                @if ($errors->has('principal'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('select_principal') }}
+                                        {{ $errors->first('principal') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -278,7 +296,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Edit Usp</h5>
+                <h5 class="modal-title" id="largeModalLabel">Update Usp</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -292,11 +310,11 @@
                                 <label for="file-input" class=" form-control-label required">Usp Type</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="usp_type" placeholder="Name" name="usp_type"  class="form-control">
-                                @if ($errors->has('usp_type'))
+                                <input type="text" id="usp_type" placeholder="Name" name="update_usp_type"  class="form-control">
+                                @if ($errors->has('update_usp_type'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('usp_type') }}
+                                        {{ $errors->first('update_usp_type') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -310,11 +328,11 @@
                                 <label for="file-input" class=" form-control-label required">Packing</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <textarea id="packing" placeholder="packing . . . " name="packing"  class="form-control"></textarea>
-                                @if ($errors->has('packing'))
+                                <textarea id="packing" placeholder="packing . . . " name="update_packing"  class="form-control"></textarea>
+                                @if ($errors->has('update_packing'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('packing') }}
+                                        {{ $errors->first('update_packing') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -328,11 +346,11 @@
                                 <label for="file-input" class=" form-control-label required">Brand</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="brand" placeholder="Name" name="brand"  class="form-control">
-                                @if ($errors->has('brand'))
+                                <input type="text" id="brand" placeholder="Name" name="update_brand"  class="form-control">
+                                @if ($errors->has('update_brand'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('brand') }}
+                                        {{ $errors->first('update_brand') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -347,15 +365,15 @@
                                 <label for="file-input" class=" form-control-label required">Category</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <select name="select_category" id="select_category" class="form-control">
+                                <select name="update_select_category" id="select_category" class="form-control">
                                     <option value="">Select Category</option>
-                                    <option value="hpcl_columns">HPCL Columns</option>
-                                    <option value="gc_capillary_column">GC Capillary Column</option>
+                                    <option value="HPLC Columns">HPCL Columns</option>
+                                    <option value="GC Capillary Column">GC Capillary Column</option>
                                 </select>
-                                @if ($errors->has('select_category'))
+                                @if ($errors->has('update_select_category'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('select_category') }}
+                                        {{ $errors->first('update_select_category') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -368,16 +386,12 @@
                             <div class="col col-md-3">
                                 <label for="file-input" class=" form-control-label required">Principal</label>
                             </div>
-                            <div class="col-12 col-md-6">
-                                <select name="select_principal" id="select_principal" class="form-control">
-                                    <option value="">Select Principal</option>
-                                    <option value="pending_order">Pending Order</option>
-                                    <option value="pending_shipment">Pending Shipment</option>
-                                </select>
-                                @if ($errors->has('select_principal'))
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="principal" placeholder="Principal" name="update_principal"  class="form-control">
+                                @if ($errors->has('update_principal'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('select_principal') }}
+                                        {{ $errors->first('update_principal') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>

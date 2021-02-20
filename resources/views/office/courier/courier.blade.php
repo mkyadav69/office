@@ -162,7 +162,7 @@
                                 <label for="file-input" class=" form-control-label required">Courier Name</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <input type="text" id="courier_name" name="courier_name"placeholder="Enter courier name" class="form-control">
+                                <input type="text" name="courier_name"placeholder="Enter courier name" class="form-control">
                                 @if ($errors->has('courier_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -180,7 +180,7 @@
                                 <label for="file-input" class=" form-control-label required">Select Branch</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <select id="select_branch" name="select_branch" class="form-control">
+                                <select name="select_branch" class="form-control">
                                     <option value="">Select Branch</option>
                                     @if(!empty($branch_wise))
                                         @foreach($branch_wise as $id=>$name)
@@ -234,11 +234,11 @@
                                 <label for="file-input" class=" form-control-label required">Courier Name</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <input type="text" id="courier_name" name="courier_name"placeholder="Enter courier name" class="form-control">
-                                @if ($errors->has('courier_name'))
+                                <input type="text" id="courier_name" name="update_courier_name"placeholder="Enter courier name" class="form-control">
+                                @if ($errors->has('update_courier_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('courier_name') }}
+                                        {{ $errors->first('update_courier_name') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -252,7 +252,7 @@
                                 <label for="file-input" class=" form-control-label required">Select Branch</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <select id="select_branch" name="select_branch" class="form-control">
+                                <select id="select_branch" name="update_select_branch" class="form-control">
                                     <option value="">Select Branch</option>
                                     @if(!empty($branch_wise))
                                         @foreach($branch_wise as $id=>$name)
@@ -262,10 +262,10 @@
                                         <option value="">No branch found</option>
                                     @endif
                                 </select>
-                                @if ($errors->has('select_branch'))
+                                @if ($errors->has('update_select_branch'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('select_branch') }}
+                                        {{ $errors->first('update_select_branch') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>

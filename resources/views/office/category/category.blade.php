@@ -168,7 +168,7 @@
                                 <label for="file-input" class=" form-control-label required">Category Name</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <input type="text" id="category_name" name="category_name"placeholder="Enter category name" class="form-control">
+                                <input type="text" name="category_name"placeholder="Enter category name" class="form-control">
                                 @if ($errors->has('category_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -186,7 +186,7 @@
                                 <label for="file-input" class=" form-control-label required">Description</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <textarea id="category_desc" placeholder="write description  . . . " name="category_desc"  class="form-control"></textarea>
+                                <textarea placeholder="write description  . . . " name="category_desc"  class="form-control"></textarea>
                                 @if ($errors->has('category_desc'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -204,7 +204,7 @@
                                 <label for="file-input" class=" form-control-label required">Principal Image</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="file" id="principal_image" name="principal_image" class="form-control-file">
+                                <input type="file" name="principal_image" class="form-control-file">
                                 @if ($errors->has('principal_image'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -222,7 +222,7 @@
                                 <label for="multiple-select" class=" form-control-label">Product Fields Type</label>
                             </div>
                             <div class="col col-md-9">
-                                <select name="product_param[]" id="product_param" multiple="" class="form-control">
+                                <select name="product_param[]" multiple="" class="form-control">
                                 @if(!empty($param))
                                     @foreach($param as  $p)
                                         <option value="{{$p}}">{{$p}}</option>
@@ -264,11 +264,11 @@
                                 <label for="file-input" class=" form-control-label required">Category Name</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <input type="text" id="category_name" name="category_name"placeholder="Enter category name" class="form-control">
-                                @if ($errors->has('category_name'))
+                                <input type="text" id="category_name" name="update_category_name"placeholder="Enter category name" class="form-control">
+                                @if ($errors->has('update_category_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('category_name') }}
+                                        {{ $errors->first('update_category_name') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -282,11 +282,11 @@
                                 <label for="file-input" class=" form-control-label required">Description</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <textarea id="category_desc" placeholder="write description  . . . " name="category_desc"  class="form-control"></textarea>
-                                @if ($errors->has('category_desc'))
+                                <textarea id="category_desc" placeholder="write description  . . . " name="update_category_desc"  class="form-control"></textarea>
+                                @if ($errors->has('update_category_desc'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('category_desc') }}
+                                        {{ $errors->first('update_category_desc') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -300,11 +300,11 @@
                                 <label for="file-input" class=" form-control-label required">Principal Image</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="file" id="principal_image" name="principal_image" class="form-control-file">
-                                @if ($errors->has('principal_image'))
+                                <input type="file" id="principal_image" name="update_principal_image" class="form-control-file">
+                                @if ($errors->has('update_principal_image'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('principal_image') }}
+                                        {{ $errors->first('update_principal_image') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>

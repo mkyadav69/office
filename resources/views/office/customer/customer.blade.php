@@ -81,11 +81,12 @@
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'st_cust_fname', className: "text", title : 'Name'},
+                    { data: 'cust_pin_no', className: "text", title : 'GST No'},
                     { data: 'st_com_name', className: "text", title : 'Company Name'},
                     { data: 'st_cust_city', className: "select", title : 'View Branch Wise'},
                     { data: 'st_cust_state', className: "text", title : 'State'},
                     { data: 'st_regions', className: "select",title : 'View Regions Wise'},
+                    { data: 'dt_created', title : 'Created At'},
                     {
                         'data': null,
                         'render': function (data, type, row) {
@@ -145,7 +146,7 @@
             $('div #persion2_mobile').val(data['st_con_person2_mobile']);
 
             $('div #customer_city').val(data['st_cust_city']);
-            $('div #customer_pincode').val(data['cust_pin_no']);
+            $('div #gst_no').val(data['cust_pin_no']);
             $('div #customer_pincode').val(data['in_pincode']);
 
             $('div #customer_contry').val(data['st_country']);
@@ -188,7 +189,7 @@
                     <form action="{{route('store_customer')}}" method="post">
                         @csrf
                         <div class="form-group">
-                            <input type="text" id="customer_name" name="customer_name"placeholder="name" class="form-control">
+                            <input type="text" name="customer_name"placeholder="name" class="form-control">
                             @if ($errors->has('customer_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
@@ -200,7 +201,7 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <input type="text" id="customer_last_name" name="customer_last_name"placeholder="Last name" class="form-control">
+                            <input type="text" name="customer_last_name"placeholder="Last name" class="form-control">
                             @if ($errors->has('customer_last_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
@@ -212,70 +213,73 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <textarea type="text" id="customer_address" name="customer_address"placeholder="Address . . . !" class="form-control"></textarea>
+                            <textarea type="text" name="customer_address"placeholder="Address . . . !" class="form-control"></textarea>
                             
                         </div>
                         <div class="form-group">
-                            <input type="text" id="customer_region" name="customer_region" placeholder="region" class="form-control">
+                            <input type="text"  name="customer_region" placeholder="region" class="form-control">
                         </div>
                         <div class="form-group">
-                            <input type="text" id="customer_mobile" name="customer_mobile" placeholder="Mobile" class="form-control">
+                            <input type="text"  name="customer_mobile" placeholder="Mobile" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text"  name="gst_no" placeholder="GST No." class="form-control">
                         </div>
         
                         <div class="row form-group">
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" id="customer_city" name= "customer_city" placeholder="city" class="form-control">
+                                    <input type="text" name= "customer_city" placeholder="city" class="form-control">
                                 </div>
                             </div>
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" id="customer_state" name="customer_state" placeholder="State city" class="form-control">
+                                    <input type="text"  name="customer_state" placeholder="State city" class="form-control">
                                 </div>
                             </div>
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" id="customer_pincode" name="customer_pincode" placeholder="Pin Code" class="form-control">
+                                    <input type="text"  name="customer_pincode" placeholder="Pin Code" class="form-control">
                                 </div>
                             </div>
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" id="customer_contry" name="customer_contry" placeholder="Country" class="form-control">
+                                    <input type="text"  name="customer_contry" placeholder="Country" class="form-control">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="persion1_name" name="persion1_name"placeholder="Person 1 name" class="form-control">
+                            <input type="text" name="persion1_name"placeholder="Person 1 name" class="form-control">
                         </div>
                         <div class="row form-group">
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" id="persion1_email" name= "persion1_email" placeholder="Email" class="form-control">
+                                    <input type="text" name= "persion1_email" placeholder="Email" class="form-control">
                                 </div>
                             </div>
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" id="persion1_mobile" name="persion1_mobile" placeholder="Mobile" class="form-control">
+                                    <input type="text"  name="persion1_mobile" placeholder="Mobile" class="form-control">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="persion2_name" name="persion2_name"placeholder="Person 2 name" class="form-control">
+                            <input type="text" name="persion2_name"placeholder="Person 2 name" class="form-control">
                         </div>
                         <div class="row form-group">
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" id="persion2_email" name= "persion1_email" placeholder="email" class="form-control">
+                                    <input type="text" name= "persion1_email" placeholder="email" class="form-control">
                                 </div>
                             </div>
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" id="persion2_mobile" name="persion1_mobile" placeholder="Mobile" class="form-control">
+                                    <input type="text"  name="persion1_mobile" placeholder="Mobile" class="form-control">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="branch_name" name="branch_name"placeholder="Branch name" class="form-control">
+                            <input type="text" name="branch_name"placeholder="Branch name" class="form-control">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -306,11 +310,11 @@
                     <form method="post" id="editForm">
                         @csrf
                         <div class="form-group">
-                            <input type="text" id="customer_name" name="customer_name"placeholder="name" class="form-control">
-                            @if ($errors->has('customer_name'))
+                            <input type="text" id="customer_name" name="update_customer_name"placeholder="name" class="form-control">
+                            @if ($errors->has('update_customer_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->first('customer_name') }}
+                                    {{ $errors->first('update_customer_name') }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -318,11 +322,11 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <input type="text" id="customer_last_name" name="customer_last_name"placeholder="Last name" class="form-control">
-                            @if ($errors->has('customer_last_name'))
+                            <input type="text" id="customer_last_name" name="update_customer_last_name"placeholder="Last name" class="form-control">
+                            @if ($errors->has('update_customer_last_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->first('customer_last_name') }}
+                                    {{ $errors->first('update_customer_last_name') }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -330,70 +334,74 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <textarea type="text" id="customer_address" name="customer_address"placeholder="Address . . . !" class="form-control"></textarea>
+                            <textarea type="text" id="customer_address" name="update_customer_address"placeholder="Address . . . !" class="form-control"></textarea>
                             
                         </div>
                         <div class="form-group">
-                            <input type="text" id="customer_region" name="customer_region" placeholder="region" class="form-control">
+                            <input type="text" id="customer_region" name="update_customer_region" placeholder="region" class="form-control">
                         </div>
                         <div class="form-group">
-                            <input type="text" id="customer_mobile" name="customer_mobile" placeholder="Mobile" class="form-control">
+                            <input type="text" id="customer_mobile" name="update_customer_mobile" placeholder="Mobile" class="form-control">
                         </div>
-        
+
+                        <div class="form-group">
+                            <input type="text" id="gst_no" name="update_gst_no" placeholder="GST No." class="form-control">
+                        </div>
+
                         <div class="row form-group">
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" id="customer_city" name= "customer_city" placeholder="city" class="form-control">
+                                    <input type="text" id="customer_city" name="update_customer_city" placeholder="city" class="form-control">
                                 </div>
                             </div>
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" id="customer_state" name="customer_state" placeholder="State city" class="form-control">
+                                    <input type="text" id="customer_state" name="update_customer_state" placeholder="State city" class="form-control">
                                 </div>
                             </div>
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" id="customer_pincode" name="customer_pincode" placeholder="Pin Code" class="form-control">
+                                    <input type="text" id="customer_pincode" name="update_customer_pincode" placeholder="Pin Code" class="form-control">
                                 </div>
                             </div>
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" id="customer_contry" name="customer_contry" placeholder="Country" class="form-control">
+                                    <input type="text" id="customer_contry" name="update_customer_contry" placeholder="Country" class="form-control">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="persion1_name" name="persion1_name"placeholder="Person 1 name" class="form-control">
-                        </div>
-                        <div class="row form-group">
-                            <div class="col-8">
-                                <div class="form-group">
-                                    <input type="text" id="persion1_email" name= "persion1_email" placeholder="Email" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-8">
-                                <div class="form-group">
-                                    <input type="text" id="persion1_mobile" name="persion1_mobile" placeholder="Mobile" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="persion2_name" name="persion2_name"placeholder="Person 2 name" class="form-control">
+                            <input type="text" id="persion1_name" name="update_persion1_name" placeholder="Person 1 name" class="form-control">
                         </div>
                         <div class="row form-group">
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" id="persion2_email" name= "persion1_email" placeholder="email" class="form-control">
+                                    <input type="text" id="persion1_email" name="update_persion1_email" placeholder="Email" class="form-control">
                                 </div>
                             </div>
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" id="persion2_mobile" name="persion1_mobile" placeholder="Mobile" class="form-control">
+                                    <input type="text" id="persion1_mobile" name="update_persion1_mobile" placeholder="Mobile" class="form-control">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="text" id="branch_name" name="branch_name"placeholder="Branch name" class="form-control">
+                            <input type="text" id="persion2_name" name="update_persion2_name"placeholder="Person 2 name" class="form-control">
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <input type="text" id="persion2_email" name="update_persion1_email" placeholder="email" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <input type="text" id="persion2_mobile" name="update_persion1_mobile" placeholder="Mobile" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="branch_name" name="update_branch_name"placeholder="Branch name" class="form-control">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

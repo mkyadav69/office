@@ -165,7 +165,7 @@
                                 <label for="file-input" class=" form-control-label required">Brand Name</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <input type="text" id="brand_name" name="brand_name"placeholder="brand" class="form-control">
+                                <input type="text" name="brand_name"placeholder="brand" class="form-control">
                                 @if ($errors->has('brand_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -209,11 +209,11 @@
                                 <label for="file-input" class=" form-control-label required">Brand Name</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <input type="text" id="brand_name" name="brand_name"placeholder="brand" class="form-control">
-                                @if ($errors->has('brand_name'))
+                                <input type="text" id="brand_name" name="update_brand_name"placeholder="brand" class="form-control">
+                                @if ($errors->has('update_brand_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('brand_name') }}
+                                        {{ $errors->first('update_brand_name') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>

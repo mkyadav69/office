@@ -164,7 +164,7 @@
                                 <label for="file-input" class=" form-control-label required">Parameter Name</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="parameter_name" placeholder="parameter" name="parameter_name" value="{{old('parameter_name')}}" class="form-control">
+                                <input type="text" placeholder="parameter" name="parameter_name" value="{{old('parameter_name')}}" class="form-control">
                                 @if ($errors->has('parameter_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -182,7 +182,7 @@
                                 <label for="file-input" class=" form-control-label required">Column Name</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="column_name" placeholder="column name" name="column_name" value="{{old('column_name')}}"  class="form-control">
+                                <input type="text" placeholder="column name" name="column_name" value="{{old('column_name')}}"  class="form-control">
                                 @if ($errors->has('column_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -229,11 +229,11 @@
                                 <label for="file-input" class=" form-control-label required">Parameter Name</label>
                             </div>
                             <div class="col-12 col-md-9 param_name">
-                                <input type="text" id="parameter_name" placeholder="parameter" name="parameter_name" value="{{old('parameter_name')}}" class="form-control">
-                                @if ($errors->has('parameter_name'))
+                                <input type="text" id="parameter_name" placeholder="parameter" name="update_parameter_name" value="{{old('update_parameter_name')}}" class="form-control">
+                                @if ($errors->has('update_parameter_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('parameter_name') }}
+                                        {{ $errors->first('update_parameter_name') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -247,11 +247,11 @@
                                 <label for="file-input" class=" form-control-label required">Column Name</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="column_name" placeholder="column name" name="column_name" value="{{old('column_name')}}"  class="form-control">
-                                @if ($errors->has('column_name'))
+                                <input type="text" id="column_name" placeholder="column name" name="update_column_name" value="{{old('update_column_name')}}"  class="form-control">
+                                @if ($errors->has('update_column_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('column_name') }}
+                                        {{ $errors->first('update_column_name') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>

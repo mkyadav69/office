@@ -20,16 +20,23 @@ class CategoryController extends Controller
     }
 
     public function storeCategory(Request $request){
-        dd($request->all());
         $this->validate($request,[
             'category_name' => 'required',
             'category_desc'=>'required',
             'principal_image'=>'required',
         ]);
+        
+        if(!empty($request->product_param)){
+            $param = implode(',', $request->product_param);
+        }else{
+            $param = null;
+        }
+
         $check_status = Category::insertGetId([
             'st_cat_name'=>$request->category_name,
             'st_cat_disc'=>$request->category_desc,
             'str_img_src'=>$request->principal_image,
+            'st_product_fields'=>$param,
             'dt_created'=>Carbon::now(),
             'category_banner_image'=>$request->principal_image,
             'category_small_banner_image'=>$request->principal_image,
@@ -51,18 +58,18 @@ class CategoryController extends Controller
 
     public function updateCategory(Request $request, $id){
         $this->validate($request,[
-            'category_name' => 'required',
-            'category_desc'=>'required',
-            'principal_image'=>'required',
+            'update_category_name' => 'required',
+            'update_category_desc'=>'required',
+            'update_principal_image'=>'required',
         ]);
 
         $check_status = Category::where('cat_id', $id)->update([
-            'st_cat_name'=>$request->category_name,
-            'st_cat_disc'=>$request->category_desc,
-            'str_img_src'=>$request->principal_image,
+            'st_cat_name'=>$request->update_category_name,
+            'st_cat_disc'=>$request->update_category_desc,
+            'str_img_src'=>$request->update_principal_image,
             'dt_created'=>Carbon::now(),
-            'category_banner_image'=>$request->principal_image,
-            'category_small_banner_image'=>$request->principal_image,
+            'category_banner_image'=>$request->update_principal_image,
+            'category_small_banner_image'=>$request->update_principal_image,
             'user_id'=>Auth::user()->id,
             'status'=>1,
             'dt_modify'=>Carbon::now(),

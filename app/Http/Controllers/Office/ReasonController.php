@@ -34,17 +34,35 @@ class ReasonController extends Controller
     }
 
     public function getReason(Request $request){
-        return Datatables::of(Reason::query())->make(true);
+        $reason = Reason::get();
+
+        return Datatables::of($reason)
+           ->editColumn('stn_reason_type', function ($reason) {
+                $data = $reason['stn_reason_type'];
+                $msg = null;
+                if($data == 1){
+                    $msg = 'Pending Order';
+                }else{
+                    $msg = 'Pending Shipment';
+                }
+                return $msg;
+           })->editColumn('dt_created', function ($reason) {
+                $date = $reason['dt_created'];
+                if(!empty($date)){
+                    return date('d-m-Y', strtotime($date));
+                }
+            
+        })->make(true);
     }
 
     public function updateReason(Request $request, $id){
         $this->validate($request,[
-            'reason_name' => 'required',
-            'select_mode'=>'required',
+            'update_reason_name' => 'required',
+            'update_select_mode'=>'required',
         ]);
         $check_status = Reason::where('int_id', $id)->update([
-            'stn_reasons'=>$request->reason_name,
-            'stn_reason_type'=>$request->select_mode,
+            'stn_reasons'=>$request->update_reason_name,
+            'stn_reason_type'=>$request->update_select_mode,
             'updated_at'=>Carbon::now(),
         ]);
         if(!empty($check_status)){

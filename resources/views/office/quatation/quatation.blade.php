@@ -28,6 +28,7 @@
             </div>
         </div>
     </div> 
+    
     <div class="table-responsive table--no-card m-b-30">
         <table id="quatation" class="table table-borderless table-striped table-earning" style="width:100%">
         </table>
@@ -168,7 +169,7 @@
                         <div class="card-body card-block">
                             <div class="form-group">
                                 <label for="company" class="form-control-label required"> Add Billing Address</label>
-                                <textarea type="text" id="billing_address" name="billing_address" placeholder="address . . . " class="form-control"></textarea>
+                                <textarea type="text" name="billing_address" placeholder="address . . . " class="form-control"></textarea>
                                 @if ($errors->has('billing_address'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -181,7 +182,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="vat" class=" form-control-label required"> Add Branch Address</label>
-                                <textarea type="text" id="branch_address" name="branch_address" placeholder="branch . . . " class="form-control"></textarea>
+                                <textarea type="text" name="branch_address" placeholder="branch . . . " class="form-control"></textarea>
                                 @if ($errors->has('branch_address'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -194,7 +195,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="street" class=" form-control-label required"> Billing Note</label>
-                                <textarea type="text" id="billing_notes" name="billing_notes" placeholder="notes . . . " class="form-control"></textarea>
+                                <textarea type="text"  name="billing_notes" placeholder="notes . . . " class="form-control"></textarea>
                                 @if ($errors->has('billing_notes'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -207,7 +208,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="city" class=" form-control-label required"> Select Branch</label>
-                                <select id="select_branch" name="select_branch" class="form-control">
+                                <select name="select_branch" class="form-control">
                                     <option value="">Select Branch</option>
                                     @if(!empty($branch_wise))
                                         @foreach($branch_wise as $id=>$name)
@@ -229,7 +230,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="street" class=" form-control-label required">Add Tin No.</label>
-                                <input type="text" id="add_tin" name="add_tin" placeholder="tin No. . . . " class="form-control">
+                                <input type="text" name="add_tin" placeholder="tin No. . . . " class="form-control">
                                 @if ($errors->has('add_tin'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -243,7 +244,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="street" class=" form-control-label required">Mobile No. </label>
-                                <input type="text" id="mobile_no" name="mobile_no" placeholder="mobile No. . . . " class="form-control">
+                                <input type="text"  name="mobile_no" placeholder="mobile No. . . . " class="form-control">
                                 @if ($errors->has('mobile_no'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -256,7 +257,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="street" class=" form-control-label required">Email Address</label>
-                                <input type="text" id="email_address" name="email_address" placeholder="email address . . . !" class="form-control">
+                                <input type="text" name="email_address" placeholder="email address . . . !" class="form-control">
                                 @if ($errors->has('email_address'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -297,11 +298,11 @@
                         <div class="card-body card-block">
                             <div class="form-group">
                                 <label for="company" class="form-control-label required"> Add Billing Address</label>
-                                <textarea type="text" id="billing_address" name="billing_address" placeholder="address . . . " class="form-control"></textarea>
-                                @if ($errors->has('billing_address'))
+                                <textarea type="text" id="billing_address" name="update_billing_address" placeholder="address . . . " class="form-control"></textarea>
+                                @if ($errors->has('update_billing_address'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('billing_address') }}
+                                        {{ $errors->first('update_billing_address') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -310,11 +311,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="vat" class=" form-control-label required"> Add Branch Address</label>
-                                <textarea type="text" id="branch_address" name="branch_address" placeholder="branch . . . " class="form-control"></textarea>
-                                @if ($errors->has('branch_address'))
+                                <textarea type="text" id="branch_address" name="update_branch_address" placeholder="branch . . . " class="form-control"></textarea>
+                                @if ($errors->has('update_branch_address'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('branch_address') }}
+                                        {{ $errors->first('update_branch_address') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -323,11 +324,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="street" class=" form-control-label required"> Billing Note</label>
-                                <textarea type="text" id="billing_notes" name="billing_notes" placeholder="notes . . . " class="form-control"></textarea>
-                                @if ($errors->has('billing_notes'))
+                                <textarea type="text" id="billing_notes" name="update_billing_notes" placeholder="notes . . . " class="form-control"></textarea>
+                                @if ($errors->has('update_billing_notes'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('billing_notes') }}
+                                        {{ $errors->first('update_billing_notes') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -336,7 +337,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="city" class=" form-control-label required"> Select Branch</label>
-                                <select name="select_branch" id="select_branch" name="select_branch" class="form-control">
+                                <select name="select_branch" id="select_branch" name="update_select_branch" class="form-control">
                                     <option value="">Select Branch</option>
                                     @if(!empty($branch_wise))
                                         @foreach($branch_wise as $id=>$name)
@@ -346,10 +347,10 @@
                                         <option value="">No branch found</option>
                                     @endif
                                 </select>
-                                @if ($errors->has('select_branch'))
+                                @if ($errors->has('update_select_branch'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('select_branch') }}
+                                        {{ $errors->first('update_select_branch') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -358,11 +359,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="street" class=" form-control-label required">Add Tin No.</label>
-                                <input type="text" id="add_tin" name="add_tin" placeholder="tin No. . . . " class="form-control">
-                                @if ($errors->has('add_tin'))
+                                <input type="text" id="add_tin" name="update_add_tin" placeholder="tin No. . . . " class="form-control">
+                                @if ($errors->has('update_add_tin'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('add_tin') }}
+                                        {{ $errors->first('update_add_tin') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -372,11 +373,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="street" class=" form-control-label required">Mobile No. </label>
-                                <input type="text" id="mobile_no" name="mobile_no" placeholder="mobile No. . . . " class="form-control">
-                                @if ($errors->has('mobile_no'))
+                                <input type="text" id="mobile_no" name="update_mobile_no" placeholder="mobile No. . . . " class="form-control">
+                                @if ($errors->has('update_mobile_no'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('mobile_no') }}
+                                        {{ $errors->first('update_mobile_no') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -385,11 +386,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="street" class=" form-control-label required">Email Address</label>
-                                <input type="text" id="email_address" name="email_address" placeholder="email address . . . !" class="form-control">
-                                @if ($errors->has('email_address'))
+                                <input type="text" id="email_address" name="update_email_address" placeholder="email address . . . !" class="form-control">
+                                @if ($errors->has('update_email_address'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('email_address') }}
+                                        {{ $errors->first('update_email_address') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>

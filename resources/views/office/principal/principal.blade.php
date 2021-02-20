@@ -167,7 +167,7 @@
                                 <label for="file-input" class=" form-control-label required">Principal Name</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="principal_name" placeholder="Name" name="principal_name"  class="form-control">
+                                <input type="text" placeholder="Name" name="principal_name"  class="form-control">
                                 @if ($errors->has('principal_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -186,7 +186,7 @@
                                 <label for="file-input" class=" form-control-label required">Principal Type</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <select name="select_principal" id="select_principal" class="form-control">
+                                <select name="select_principal" class="form-control">
                                     <option value="">Select Principals</option>
                                     <option value="Authorised">Authorized</option>
                                     <option value="Dealers">Dealers</option>
@@ -208,7 +208,7 @@
                                 <label for="file-input" class=" form-control-label required">Principal Image</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="file" id="principal_image" name="principal_image" class="form-control-file">
+                                <input type="file" name="principal_image" class="form-control-file">
                                 @if ($errors->has('principal_image'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -254,11 +254,11 @@
                                 <label for="file-input" class=" form-control-label required">Principal Name</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="principal_name" placeholder="Name" name="principal_name"  class="form-control">
-                                @if ($errors->has('principal_name'))
+                                <input type="text" id="principal_name" placeholder="Name" name="update_principal_name"  class="form-control">
+                                @if ($errors->has('update_principal_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('principal_name') }}
+                                        {{ $errors->first('update_principal_name') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -273,15 +273,15 @@
                                 <label for="file-input" class=" form-control-label required">Principal Type</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <select name="select_principal" id="select_principal" class="form-control">
+                                <select name="update_select_principal" id="select_principal" class="form-control">
                                     <option value="">Select Principals</option>
                                     <option value="Authorised">Authorized</option>
                                     <option value="Dealers">Dealers</option>
                                 </select>
-                                @if ($errors->has('select_principal'))
+                                @if ($errors->has('update_select_principal'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('select_principal') }}
+                                        {{ $errors->first('update_select_principal') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -295,11 +295,11 @@
                                 <label for="file-input" class=" form-control-label required">Principal Image</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="file" id="principal_image" name="principal_image" class="form-control-file">
-                                @if ($errors->has('principal_image'))
+                                <input type="file" id="principal_image" name="update_principal_image" class="form-control-file">
+                                @if ($errors->has('update_principal_image'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('principal_image') }}
+                                        {{ $errors->first('update_principal_image') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>

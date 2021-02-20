@@ -123,8 +123,16 @@
             }
             var data = table.row($tr).data();
             console.log(data);
+            var type = data['stn_reason_type'];
+            var r_field = null;
+            
+            if(type == 'Pending Order'){
+                r_field = 1;
+            }else{
+                r_field = 2;
+            }
             $('div #reason_name').val(data['stn_reasons']);
-            $('div #select_mode').val(data['stn_reason_type']);
+            $('div #select_mode').val(r_field);
 
             $('#editForm').attr('action', '/edit-reason/'+data['int_id']);
             $('#editModal').modal('show');  
@@ -162,7 +170,7 @@
                                 <label for="file-input" class=" form-control-label required">Reason Name</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="reason_name" placeholder="Name" name="reason_name"  class="form-control">
+                                <input type="text" placeholder="Name" name="reason_name"  class="form-control">
                                 @if ($errors->has('reason_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -181,7 +189,7 @@
                                 <label for="file-input" class=" form-control-label required">Reason Mode</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <select name="select_mode" id="select_mode" class="form-control">
+                                <select name="select_mode" class="form-control">
                                     <option value="">Select Reason</option>
                                     <option value="1">Pending Order</option>
                                     <option value="2">Pending Shipment</option>
@@ -231,11 +239,11 @@
                                 <label for="file-input" class=" form-control-label required">Reason Name</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="reason_name" placeholder="Name" name="reason_name"  class="form-control">
-                                @if ($errors->has('reason_name'))
+                                <input type="text" id="reason_name" placeholder="Name" name="update_reason_name"  class="form-control">
+                                @if ($errors->has('update_reason_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('reason_name') }}
+                                        {{ $errors->first('update_reason_name') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -250,15 +258,15 @@
                                 <label for="file-input" class=" form-control-label required">Reason Mode</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <select name="select_mode" id="select_mode" class="form-control">
+                                <select name="update_select_mode" id="select_mode" class="form-control">
                                     <option value="">Select Reason</option>
                                     <option value="1">Pending Order</option>
                                     <option value="2">Pending Shipment</option>
                                 </select>
-                                @if ($errors->has('select_mode'))
+                                @if ($errors->has('update_select_mode'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('select_mode') }}
+                                        {{ $errors->first('update_select_mode') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>

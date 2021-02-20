@@ -38,11 +38,11 @@ class BrandController extends Controller
     public function updateBrand(Request $request, $id){
 
         $this->validate($request,[
-            'brand_name' => 'required',
+            'update_brand_name' => 'required',
         ]);
 
         $check_status = Brand::where('id', $id)->update([
-            'brand_name'=>$request->brand_name,
+            'brand_name'=>$request->update_brand_name,
             'dt_modify'=>Carbon::now(),
         ]);
         if(!empty($check_status)){

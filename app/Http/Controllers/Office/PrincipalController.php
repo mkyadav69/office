@@ -52,9 +52,9 @@ class PrincipalController extends Controller
 
     public function updatePrincipals(Request $request, $id){
         $this->validate($request,[
-            'principal_name' => 'required',
-            'select_principal'=>'required',
-            'principal_image'=>'required',
+            'update_principal_name' => 'required',
+            'update_select_principal'=>'required',
+            'update_principal_image'=>'required',
         ]);
         
         $is_authorized = null;
@@ -67,10 +67,10 @@ class PrincipalController extends Controller
             $status = 0;
         }
         $check_status = Principal::where('in_make_id', $id)->update([
-            'stn_make'=>$request->principal_name,
-            'make_type'=>$request->select_principal,
+            'stn_make'=>$request->update_principal_name,
+            'make_type'=>$request->update_select_principal,
             'is_authorized'=>$is_authorized,
-            'small_logo_image'=>$request->principal_image,
+            'small_logo_image'=>$request->update_principal_image,
             'status'=>$status,
             'dt_modify'=>Carbon::now(),
             'updated_at'=>Carbon::now(),

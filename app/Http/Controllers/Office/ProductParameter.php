@@ -33,17 +33,24 @@ class ProductParameter extends Controller
     }
 
     public function getParameter(Request $request){
-        return Datatables::of(Parameter::query())->make(true);
+        $param = Parameter::get();
+        return Datatables::of($param)
+           ->editColumn('dt_created', function ($param) {
+                $date = $param['dt_created'];
+                if(!empty($date)){
+                    return date('d-m-Y', strtotime($date));
+                }
+           })->make(true);
     }
 
     public function updateParameter(Request $request, $id){
         $this->validate($request,[
-            'parameter_name' => 'required',
-            'column_name'=>'required',
+            'update_parameter_name' => 'required',
+            'update_column_name'=>'required',
         ]);
         $check_status = Parameter::where('id', $id)->update([
-            'p_name'=>$request->parameter_name,
-            'column_name'=>$request->column_name,
+            'p_name'=>$request->update_parameter_name,
+            'column_name'=>$request->update_column_name,
         ]);
         if(!empty($check_status)){
             return back()->with([
