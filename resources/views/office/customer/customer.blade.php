@@ -23,7 +23,7 @@
         <h3 class="title-5 m-b-35">Manage Customers</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
-                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#largeModal">
+                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#addModal">
                     <i class="zmdi zmdi-plus"></i> Add Customer
                 </button>
                 <input type="file" class="au-btn-filter">
@@ -41,12 +41,22 @@
                        
 </div>
 @if(Session::has('errors'))
-    <script>
-        $(document).ready(function(){
-            $('#largeModal').modal({show: true});
-        });
-    </script>
+    @if(!empty($errors->cutomer_add->any()))
+        <script>
+            $(document).ready(function(){
+                $('#addModal').modal({show: true});
+            });
+        </script>
+    @endif
 @endif  
+
+@if(Session::has('errors'))
+    @if($errors->cutomer_update->any()))
+        <script>
+            $('#editModal').modal('show');  
+        </script>
+    @endif
+@endif 
 <script>
     $(document).ready(function(){
         table = $('#customer').DataTable({
@@ -171,11 +181,12 @@
             $('#deleteModal').modal('show');  
         });
     });
+    
 </script>
 @endsection
 
 <!-- add records -->
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -188,99 +199,361 @@
                 <div class="card">
                     <form action="{{route('store_customer')}}" method="post">
                         @csrf
-                        <div class="form-group">
-                            <input type="text" name="customer_name"placeholder="name" class="form-control">
-                            @if ($errors->has('customer_name'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->first('customer_name') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="customer_last_name"placeholder="Last name" class="form-control">
-                            @if ($errors->has('customer_last_name'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->first('customer_last_name') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="form-group">
-                            <textarea type="text" name="customer_address"placeholder="Address . . . !" class="form-control"></textarea>
-                            
-                        </div>
-                        <div class="form-group">
-                            <input type="text"  name="customer_region" placeholder="region" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <input type="text"  name="customer_mobile" placeholder="Mobile" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <input type="text"  name="gst_no" placeholder="GST No." class="form-control">
-                        </div>
-        
                         <div class="row form-group">
-                            <div class="col-8">
-                                <div class="form-group">
-                                    <input type="text" name= "customer_city" placeholder="city" class="form-control">
-                                </div>
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Customer Name</label>
                             </div>
-                            <div class="col-8">
-                                <div class="form-group">
-                                    <input type="text"  name="customer_state" placeholder="State city" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-8">
-                                <div class="form-group">
-                                    <input type="text"  name="customer_pincode" placeholder="Pin Code" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-8">
-                                <div class="form-group">
-                                    <input type="text"  name="customer_contry" placeholder="Country" class="form-control">
-                                </div>
+                            <div class="col-12 col-md-8">
+                                <input type="text" name="customer_name" placeholder="Name" value="{{old('customer_name')}}" class="form-control">
+                                @if ($errors->cutomer_add->has('customer_name'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('customer_name') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
                         </div>
-                        <div class="form-group">
-                            <input type="text" name="persion1_name"placeholder="Person 1 name" class="form-control">
-                        </div>
+
                         <div class="row form-group">
-                            <div class="col-8">
-                                <div class="form-group">
-                                    <input type="text" name= "persion1_email" placeholder="Email" class="form-control">
-                                </div>
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Last Name</label>
                             </div>
-                            <div class="col-8">
-                                <div class="form-group">
-                                    <input type="text"  name="persion1_mobile" placeholder="Mobile" class="form-control">
-                                </div>
+                            <div class="col-12 col-md-8">
+                                <input type="text" name="customer_last_name" placeholder="Last name" value="{{old('customer_last_name')}}" class="form-control">
+                                @if ($errors->cutomer_add->has('customer_last_name'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('customer_last_name') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
                         </div>
-                        <div class="form-group">
-                            <input type="text" name="persion2_name"placeholder="Person 2 name" class="form-control">
-                        </div>
+
+
                         <div class="row form-group">
-                            <div class="col-8">
-                                <div class="form-group">
-                                    <input type="text" name= "persion1_email" placeholder="email" class="form-control">
-                                </div>
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Company Name</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <input type="text" name="customer_company_name" placeholder="company name" value="{{old('customer_company_name')}}" class="form-control">
+                                @if ($errors->cutomer_add->has('customer_company_name'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('customer_company_name') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Email</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <input type="text" name="customer_email" placeholder="Email" value="{{old('customer_email')}}" class="form-control">
+                                @if ($errors->cutomer_add->has('customer_email'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('customer_email') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Select Region</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                @if(!empty($regions_id))
+                                    <select name="customer_region" class="form-control" value="{{old('customer_region')}}">
+                                        <option value="">Select Region</option>
+                                        @foreach($regions_id as $k=>$v)
+                                            <option value="{{$k}}">{{$v}}</option>
+                                        @endforeach
+                                    </select>
+                                @endif
+                                @if ($errors->cutomer_add->has('customer_region'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('customer_region') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Mobile No.</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <input type="text"  name="customer_mobile" placeholder="Mobile" value="{{old('customer_mobile')}}" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                @if ($errors->cutomer_add->has('customer_mobile'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('customer_mobile') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">GST No.</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <input type="text"  name="gst_no" placeholder="GST No." maxlength="15" value="{{old('gst_no')}}" class="form-control" >
+                                @if ($errors->cutomer_add->has('gst_no'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('gst_no') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Tin No.</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <input type="text"  name="tin_no" placeholder="Tin No." maxlength="15" value="{{old('tin_no')}}" class="form-control" >
+                                @if ($errors->cutomer_add->has('tin_no'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('tin_no') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">First Person Details</label>
                             </div>
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text"  name="persion1_mobile" placeholder="Mobile" class="form-control">
+                                    <input type="text" name="persion1_name" placeholder="Name" value="{{old('persion1_name')}}"  class="form-control">
+                                    @if ($errors->cutomer_add->has('persion1_name'))
+                                        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                            <span class="badge badge-pill badge-danger">Error</span>
+                                            {{ $errors->cutomer_add->first('persion1_name') }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col col-md-3">
+                            </div>
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <input type="text" name="persion1_email" placeholder="Email" value="{{old('persion1_email')}}"  class="form-control">
+                                    @if ($errors->cutomer_add->has('persion1_email'))
+                                        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                            <span class="badge badge-pill badge-danger">Error</span>
+                                            {{ $errors->cutomer_add->first('persion1_email') }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col col-md-3">
+                            </div>
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <input type="text"  name="persion1_mobile" placeholder="Mobile" value="{{old('persion1_mobile')}}"  class="form-control" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                    @if ($errors->cutomer_add->has('persion1_mobile'))
+                                        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                            <span class="badge badge-pill badge-danger">Error</span>
+                                            {{ $errors->cutomer_add->first('persion1_mobile') }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <input type="text" name="branch_name"placeholder="Branch name" class="form-control">
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class="form-control-label required">Second Person Details</label>
+                            </div>
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <input type="text" name="persion2_name" placeholder="name" value="{{old('persion2_name')}}" class="form-control">
+                                    @if ($errors->cutomer_add->has('persion2_name'))
+                                        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                            <span class="badge badge-pill badge-danger">Error</span>
+                                            {{ $errors->cutomer_add->first('persion2_name') }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col col-md-3">
+                            </div>
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <input type="text" name= "persion2_email" value="{{old('persion2_email')}}" placeholder="email" class="form-control">
+                                    @if ($errors->cutomer_add->has('persion2_email'))
+                                        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                            <span class="badge badge-pill badge-danger">Error</span>
+                                            {{ $errors->cutomer_add->first('persion2_email') }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col col-md-3">
+                            </div>
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <input type="text"  name="persion2_mobile" value="{{old('persion2_mobile')}}" placeholder="Mobile" class="form-control" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                    @if ($errors->cutomer_add->has('persion2_mobile'))
+                                        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                            <span class="badge badge-pill badge-danger">Error</span>
+                                            {{ $errors->cutomer_add->first('persion2_mobile') }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
+
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Address</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <textarea type="text" name="customer_address"placeholder="Address . . . !" value="{{old('customer_address')}}" class="form-control"></textarea>
+                                @if ($errors->cutomer_add->has('customer_address'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('customer_address') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">City</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <input type="text" name= "customer_city" placeholder="city" value="{{old('customer_city')}}" class="form-control">
+                                @if ($errors->cutomer_add->has('customer_city'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('customer_city') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">State</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <input type="text"  name="customer_state" placeholder="State city"  value="{{old('customer_state')}}" class="form-control">
+                                @if ($errors->cutomer_add->has('customer_state'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('customer_state') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Pin Code</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <input type="text"  name="customer_pincode" placeholder="Pin Code" value="{{old('customer_pincode')}}" class="form-control">
+                                @if ($errors->cutomer_add->has('customer_pincode'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('customer_pincode') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+   
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Select Branch</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                @if(!empty($branch_wise))
+                                    <select name="customer_branch" class="form-control" value="{{old('customer_branch')}}">
+                                        <option value="">Select Branch</option>
+                                        @foreach($branch_wise as $kb=>$vb)
+                                            <option {{ old('customer_branch') == $kb ? "selected" : "" }} >{{$vb}}</option>
+                                        @endforeach
+                                    </select>
+                                @endif
+                                @if ($errors->cutomer_add->has('customer_branch'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('customer_branch') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary">Confirm</button>
@@ -321,6 +594,7 @@
                                 </div>
                             @endif
                         </div>
+
                         <div class="form-group">
                             <input type="text" id="customer_last_name" name="update_customer_last_name"placeholder="Last name" class="form-control">
                             @if ($errors->has('update_customer_last_name'))
@@ -333,13 +607,16 @@
                                 </div>
                             @endif
                         </div>
+
                         <div class="form-group">
                             <textarea type="text" id="customer_address" name="update_customer_address"placeholder="Address . . . !" class="form-control"></textarea>
                             
                         </div>
+
                         <div class="form-group">
                             <input type="text" id="customer_region" name="update_customer_region" placeholder="region" class="form-control">
                         </div>
+
                         <div class="form-group">
                             <input type="text" id="customer_mobile" name="update_customer_mobile" placeholder="Mobile" class="form-control">
                         </div>

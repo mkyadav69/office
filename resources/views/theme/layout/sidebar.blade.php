@@ -1,7 +1,7 @@
 <div class="menu-sidebar__content js-scrollbar1">
     <nav class="navbar-sidebar">
         <ul class="list-unstyled navbar__list">
-            <li class="{{ request()->is('show-customer') ? 'active' : request()->is('show-owner') ? 'active' : '' }} has-sub">
+            <li class="{{ request()->is('show-customer') ? 'active' :( request()->is('show-owner') ? 'active' : '') }} has-sub">
                 <a class="js-arrow" href="#">
                     <i class="fas fa-users"></i>Customers & Owner</a>
                 <ul class="list-unstyled navbar__sub-list js-sub-list">

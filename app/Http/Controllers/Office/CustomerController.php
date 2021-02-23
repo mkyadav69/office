@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Office;
 
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use App\Models\Customer;
 use App\Models\Owner;
 use Carbon\Carbon;
 use DataTables;
+use Config;
 
 
 class CustomerController extends Controller
@@ -16,18 +18,47 @@ class CustomerController extends Controller
     
     public function showCustomer(){
         
-        return view('office.customer.customer');
+        $regions_id = Config::get('constant.regions_id');
+        $countries = Config::get('constant.countries');
+        $branch_wise = Config::get('constant.branch_wise');
+        return view('office.customer.customer', compact('regions_id', 'countries', 'branch_wise'));
     }
 
     public function storeCustomer(Request $request){
-        $this->validate($request,[
-            'customer_name' => 'required|string|max:255',
-            'customer_last_name'=>'required|string|max:255',
-        ])->with(['create']);
+        $validator = Validator::make($request->all(), [
+            'customer_name' => 'required',
+            'customer_last_name' =>  'required',
+            'customer_company_name' =>  'required',
+            'customer_region' =>  'required',
+            'customer_mobile' =>  'required',
+            'gst_no' =>  'required',
+            'tin_no' =>  'required',
+            'customer_email'=> 'required',
+            'customer_branch'=> 'required',
+
+            'persion1_name' => 'required',
+            'persion1_email' => 'required',
+            'persion1_mobile' => 'required',
+
+            'persion2_name' =>  'required',
+            'persion2_email' =>  'required',
+            'persion2_mobile' =>  'required',
+
+            'customer_address' =>  'required',
+            'customer_city' =>  'required',
+            'customer_state' =>  'required',
+            'customer_pincode' =>  'required',
+        ]);
+
+
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'cutomer_add')->withInput();
+        }
         $check_status = Customer::insertGetId([
             'st_cust_fname'=>$request->customer_name,
             'st_cust_lname'=>$request->customer_last_name,
-            'st_com_name'=>$request->customer_name,
+            'st_com_name'=>$request->customer_company_name,
             'st_regions'=>$request->customer_region,
             'st_com_address'=>$request->customer_address,
 
@@ -40,15 +71,15 @@ class CustomerController extends Controller
             'st_con_person2_mobile'=>$request->persion2_name,
 
             'st_cust_city'=>$request->customer_city,
-            'cust_tin_no'=>$request->customer_name,
+            'cust_tin_no'=>$request->tin_no,
             'cust_pin_no'=>$request->gst_no,
             'in_pincode'=>$request->customer_pincode,
             'st_country'=>$request->customer_contry,
             'st_cust_state'=>$request->customer_state,
             'st_cust_mobile'=>$request->customer_mobile,
-            'st_cust_email'=>$request->customer_name,
-            'st_cust_email_cc'=>$request->customer_name,
-            'in_branch'=>$request->branch_name,
+            'st_cust_email'=>$request->customer_email,
+            'st_cust_email_cc'=>$request->customer_email,
+            'in_branch'=>$request->customer_branch,
             'owner_id'=>Auth::user()->id,
             'user_id'=>Auth::user()->id,
             'dt_created'=>Carbon::now(),
@@ -74,10 +105,14 @@ class CustomerController extends Controller
     }
 
     public function updateCustomer(Request $request, $id){
-        $this->validate($request,[
+        $validator = Validator::make($request->all(), [
             'update_customer_name' => 'required|string|max:255',
             'update_customer_last_name'=>'required|string|max:255',
         ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'cutomer_update');
+        }
         
         $check_status = Customer::where('in_cust_id', $id)->update([
             'st_cust_fname'=>$request->update_customer_name,

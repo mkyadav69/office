@@ -73,6 +73,7 @@
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         @yield('content')
+                        @yield('modal')
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">

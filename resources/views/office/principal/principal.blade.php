@@ -167,7 +167,7 @@
                                 <label for="file-input" class=" form-control-label required">Principal Name</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" placeholder="Name" name="principal_name"  class="form-control">
+                                <input type="text" placeholder="Name" name="principal_name"  value="{{old('principal_name')}}" class="form-control">
                                 @if ($errors->has('principal_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
