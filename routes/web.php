@@ -13,6 +13,7 @@ use App\Http\Controllers\Office\ReasonController;
 use App\Http\Controllers\Office\UspController;
 use App\Http\Controllers\Office\ProductParameter;
 use App\Http\Controllers\Office\CategoryController;
+use App\Http\Controllers\Office\ProductController;
 
 # Register
 Route::get('register', [RegisterController::class, 'viewRegister'])->name('register');
@@ -103,5 +104,10 @@ Route::get('get-category', [CategoryController::class, 'getCategory'])->name('ge
 Route::post('edit-category/{id}',  [CategoryController::class, 'updateCategory'])->name('edit_category');
 Route::post('delete-category/{id}',  [CategoryController::class, 'deleteCategory'])->name('delete_category');
 
-
+# 11. Product 
+Route::get('show-product', [ProductController::class, 'showProduct'])->name('show_product');
+Route::get('add-product', [ProductController::class, 'addProduct'])->name('add_product');
+Route::post('store-product', [ProductController::class, 'storeProduct'])->name('store_product');
+// Route::post('edit-category/{id}',  [ProductController::class, 'updateCategory'])->name('edit_category');
+// Route::post('delete-category/{id}',  [ProductController::class, 'deleteCategory'])->name('delete_category');
 

@@ -19,7 +19,6 @@ class CustomerController extends Controller
     public function showCustomer(){
         
         $regions_id = Config::get('constant.regions_id');
-        // dd($regions_id);
         $countries = Config::get('constant.countries');
         $branch_wise = Config::get('constant.branch_wise');
         return view('office.customer.customer', compact('regions_id', 'countries', 'branch_wise'));

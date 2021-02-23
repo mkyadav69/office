@@ -61,18 +61,15 @@
                 </ul>
             </li>
 
-            <!-- <li class="has-sub">
+            <li class="{{ request()->is('show-product') ? 'active' :( request()->is('add-product') ? 'active' : '') }} has-sub">
                 <a class="js-arrow" href="#">
                     <i class="fas fa-briefcase"></i>Products</a>
                 <ul class="list-unstyled navbar__sub-list js-sub-list">
                     <li>
-                        <a href="index.html">Add New Item</a>
-                    </li>
-                    <li>
-                        <a href="index.html">View All Product</a>
+                        <a href="{{ route('show_product')}}">Manage Product</a>
                     </li>
                 </ul>
-            </li> -->
+            </li>
             
             <li class="{{ request()->is('show-parameter') ? 'active' : '' }} has-sub">
                 <a class="js-arrow" href="#">
