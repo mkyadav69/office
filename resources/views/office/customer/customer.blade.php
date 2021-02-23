@@ -204,7 +204,7 @@
                                 <label for="file-input" class=" form-control-label required">Customer Name</label>
                             </div>
                             <div class="col-12 col-md-8">
-                                <input type="text" name="customer_name" placeholder="Name" value="{{old('customer_name')}}" class="form-control">
+                                <input type="text" name="customer_name" required placeholder="Name" value="{{old('customer_name')}}" class="form-control">
                                 @if ($errors->cutomer_add->has('customer_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -222,7 +222,7 @@
                                 <label for="file-input" class=" form-control-label required">Last Name</label>
                             </div>
                             <div class="col-12 col-md-8">
-                                <input type="text" name="customer_last_name" placeholder="Last name" value="{{old('customer_last_name')}}" class="form-control">
+                                <input type="text" name="customer_last_name"  required  placeholder="Last name" value="{{old('customer_last_name')}}" class="form-control">
                                 @if ($errors->cutomer_add->has('customer_last_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -241,7 +241,7 @@
                                 <label for="file-input" class=" form-control-label required">Company Name</label>
                             </div>
                             <div class="col-12 col-md-8">
-                                <input type="text" name="customer_company_name" placeholder="company name" value="{{old('customer_company_name')}}" class="form-control">
+                                <input type="text" name="customer_company_name"  required  placeholder="company name" value="{{old('customer_company_name')}}" class="form-control">
                                 @if ($errors->cutomer_add->has('customer_company_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -259,7 +259,7 @@
                                 <label for="file-input" class=" form-control-label required">Email</label>
                             </div>
                             <div class="col-12 col-md-8">
-                                <input type="text" name="customer_email" placeholder="Email" value="{{old('customer_email')}}" class="form-control">
+                                <input type="text" name="customer_email"  required  placeholder="Email" value="{{old('customer_email')}}" class="form-control">
                                 @if ($errors->cutomer_add->has('customer_email'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -278,10 +278,14 @@
                             </div>
                             <div class="col-12 col-md-8">
                                 @if(!empty($regions_id))
-                                    <select name="customer_region" class="form-control" value="{{old('customer_region')}}">
+                                    <select name="customer_region"  required class="form-control">
                                         <option value="">Select Region</option>
-                                        @foreach($regions_id as $k=>$v)
-                                            <option value="{{$k}}">{{$v}}</option>
+                                        @foreach($regions_id as $rk=>$rv)
+                                            @if (old('customer_region') == $rk)
+                                                <option value="{{$rk}}" selected>{{ $rv }}</option>
+                                            @else
+                                                <option value="{{ $rk }}">{{ $rv }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 @endif
@@ -302,7 +306,7 @@
                                 <label for="file-input" class=" form-control-label required">Mobile No.</label>
                             </div>
                             <div class="col-12 col-md-8">
-                                <input type="text"  name="customer_mobile" placeholder="Mobile" value="{{old('customer_mobile')}}" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                <input type="text"  name="customer_mobile"  required  placeholder="Mobile" value="{{old('customer_mobile')}}" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                                 @if ($errors->cutomer_add->has('customer_mobile'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -320,7 +324,7 @@
                                 <label for="file-input" class=" form-control-label required">GST No.</label>
                             </div>
                             <div class="col-12 col-md-8">
-                                <input type="text"  name="gst_no" placeholder="GST No." maxlength="15" value="{{old('gst_no')}}" class="form-control" >
+                                <input type="text"  name="gst_no"  required  placeholder="GST No." maxlength="15" value="{{old('gst_no')}}" class="form-control" >
                                 @if ($errors->cutomer_add->has('gst_no'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -338,7 +342,7 @@
                                 <label for="file-input" class=" form-control-label required">Tin No.</label>
                             </div>
                             <div class="col-12 col-md-8">
-                                <input type="text"  name="tin_no" placeholder="Tin No." maxlength="15" value="{{old('tin_no')}}" class="form-control" >
+                                <input type="text"  name="tin_no" placeholder="Tin No."  required  maxlength="15" value="{{old('tin_no')}}" class="form-control" >
                                 @if ($errors->cutomer_add->has('tin_no'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -357,7 +361,7 @@
                             </div>
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" name="persion1_name" placeholder="Name" value="{{old('persion1_name')}}"  class="form-control">
+                                    <input type="text" name="persion1_name"  required  placeholder="Name" value="{{old('persion1_name')}}"  class="form-control">
                                     @if ($errors->cutomer_add->has('persion1_name'))
                                         <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                             <span class="badge badge-pill badge-danger">Error</span>
@@ -373,7 +377,7 @@
                             </div>
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" name="persion1_email" placeholder="Email" value="{{old('persion1_email')}}"  class="form-control">
+                                    <input type="text" name="persion1_email"  required  placeholder="Email" value="{{old('persion1_email')}}"  class="form-control">
                                     @if ($errors->cutomer_add->has('persion1_email'))
                                         <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                             <span class="badge badge-pill badge-danger">Error</span>
@@ -389,7 +393,7 @@
                             </div>
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text"  name="persion1_mobile" placeholder="Mobile" value="{{old('persion1_mobile')}}"  class="form-control" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                    <input type="text"  name="persion1_mobile"  required  placeholder="Mobile" value="{{old('persion1_mobile')}}"  class="form-control" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                                     @if ($errors->cutomer_add->has('persion1_mobile'))
                                         <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                             <span class="badge badge-pill badge-danger">Error</span>
@@ -409,7 +413,7 @@
                             </div>
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" name="persion2_name" placeholder="name" value="{{old('persion2_name')}}" class="form-control">
+                                    <input type="text" name="persion2_name"  required  placeholder="name" value="{{old('persion2_name')}}" class="form-control">
                                     @if ($errors->cutomer_add->has('persion2_name'))
                                         <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                             <span class="badge badge-pill badge-danger">Error</span>
@@ -425,7 +429,7 @@
                             </div>
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text" name= "persion2_email" value="{{old('persion2_email')}}" placeholder="email" class="form-control">
+                                    <input type="text" name= "persion2_email"  required  value="{{old('persion2_email')}}" placeholder="email" class="form-control">
                                     @if ($errors->cutomer_add->has('persion2_email'))
                                         <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                             <span class="badge badge-pill badge-danger">Error</span>
@@ -441,7 +445,7 @@
                             </div>
                             <div class="col-8">
                                 <div class="form-group">
-                                    <input type="text"  name="persion2_mobile" value="{{old('persion2_mobile')}}" placeholder="Mobile" class="form-control" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                    <input type="text"  name="persion2_mobile"  required  value="{{old('persion2_mobile')}}" placeholder="Mobile" class="form-control" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                                     @if ($errors->cutomer_add->has('persion2_mobile'))
                                         <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                             <span class="badge badge-pill badge-danger">Error</span>
@@ -461,7 +465,7 @@
                                 <label for="file-input" class=" form-control-label required">Address</label>
                             </div>
                             <div class="col-12 col-md-8">
-                                <textarea type="text" name="customer_address"placeholder="Address . . . !" value="{{old('customer_address')}}" class="form-control"></textarea>
+                                <textarea type="text" name="customer_address"  required  placeholder="Address . . . !" value="{{old('customer_address')}}" class="form-control"></textarea>
                                 @if ($errors->cutomer_add->has('customer_address'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -480,7 +484,7 @@
                                 <label for="file-input" class=" form-control-label required">City</label>
                             </div>
                             <div class="col-12 col-md-8">
-                                <input type="text" name= "customer_city" placeholder="city" value="{{old('customer_city')}}" class="form-control">
+                                <input type="text" name= "customer_city" placeholder="city"  required  value="{{old('customer_city')}}" class="form-control">
                                 @if ($errors->cutomer_add->has('customer_city'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -498,7 +502,7 @@
                                 <label for="file-input" class=" form-control-label required">State</label>
                             </div>
                             <div class="col-12 col-md-8">
-                                <input type="text"  name="customer_state" placeholder="State city"  value="{{old('customer_state')}}" class="form-control">
+                                <input type="text"  name="customer_state" placeholder="State"  required  value="{{old('customer_state')}}" class="form-control">
                                 @if ($errors->cutomer_add->has('customer_state'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -516,7 +520,7 @@
                                 <label for="file-input" class=" form-control-label required">Pin Code</label>
                             </div>
                             <div class="col-12 col-md-8">
-                                <input type="text"  name="customer_pincode" placeholder="Pin Code" value="{{old('customer_pincode')}}" class="form-control">
+                                <input type="text"  name="customer_pincode"  required  placeholder="Pin Code" value="{{old('customer_pincode')}}" class="form-control">
                                 @if ($errors->cutomer_add->has('customer_pincode'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -535,10 +539,10 @@
                             </div>
                             <div class="col-12 col-md-8">
                                 @if(!empty($branch_wise))
-                                    <select name="customer_branch" class="form-control" value="{{old('customer_branch')}}">
+                                    <select name="customer_branch" class="form-control"  required >
                                         <option value="">Select Branch</option>
                                         @foreach($branch_wise as $kb=>$vb)
-                                            <option {{ old('customer_branch') == $kb ? "selected" : "" }} >{{$vb}}</option>
+                                            <option  value="{{$kb}}"  {{ ($kb == old('customer_branch',$vb))?'selected':'' }} >{{$vb}}</option>
                                         @endforeach
                                     </select>
                                 @endif
