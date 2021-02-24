@@ -80,9 +80,10 @@
                             <label for="vat" class=" form-control-label required">Category</label>
                             <select id="in_cat_id" required name="in_cat_id" class="form-control">
                                 <option value="">Select Category</option>
-                                @if(!empty($category))
-                                    @foreach($category as $c_name=>$prod_field)
-                                        <option value="{{$c_name}}">{{$c_name}}</option>
+                                @if(!empty($cat_key))
+                                    @foreach($cat_key as $c_name=>$prod_field)
+                                        $name = explode('_/', $c_name)[0];
+                                        <option value="{{$c_name}}">{{ explode('_/', $c_name)[0] }}</option>
                                     @endforeach
                                 @else
                                     <p>No categories are available.</p>
@@ -239,14 +240,12 @@
     $(document).ready(function(){
         $('#in_cat_id').on('change', function(){
             var c_name = $('#in_cat_id').val();
-            var product_field = {!! json_encode($category) !!};
+            var product_field = {!! json_encode($cat_key) !!};
             var param_list = product_field[c_name];
             if (param_list != null && param_list != ''){
                 var param_array = param_list.split(',');
                 $.each(param_array, function (key, field) {
-                    console.log("lll");
-                    console.log(field);
-                   var col = '<div class="form-group col-2 field"><label for="vat" class="form-control-label" style="color: green">'+field+'</label><input type="text" id="hsn_no" name="'+field+'" placeholder="'+field+'" class="form-control"></div></div>';
+                   var col = '<div class="form-group col-2 field"><label for="vat" class="form-control-label" style="color: green">'+field+'</label><input type="text" id="hsn_no" required name="'+field+'" placeholder="'+field+'" class="form-control"></div></div>';
                    $('#cat').append(col);
                 });
             }else{

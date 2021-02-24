@@ -23,7 +23,7 @@ class ProductController extends Controller
         $countries = Config::get('constant.countries');
         $branch_wise = Config::get('constant.branch_wise');
         $principal = Principal::get()->toArray();
-        $category = Category::get()->toArray();
+        $category = Category::all('st_product_fields', 'st_cat_name', 'cat_id')->toArray();
         $brand = Brand::get()->toArray();
 
         if(!empty($principal)){
@@ -31,19 +31,17 @@ class ProductController extends Controller
         }else{
             $principal = '';
         }
-
-        if(!empty($category)){
-            $category = collect($category)->pluck('st_product_fields', 'st_cat_name')->toArray();
-        }else{
-            $category = '';
-        }
-
+        
         if(!empty($brand)){
             $brand = collect($brand)->pluck('brand_name', 'id')->toArray();
         }else{
             $brand = '';
         }
-        return view('office.product.add_product', compact('principal', 'category', 'brand'));
+        $cat_key = [];
+        foreach($category as $cat){
+           $cat_key[$cat['st_cat_name'].'_/'.$cat['cat_id']] = $cat['st_product_fields'];
+        }
+        return view('office.product.add_product', compact('principal', 'cat_key', 'brand'));
     }
 
     public function storeProduct(Request $request){
@@ -61,7 +59,10 @@ class ProductController extends Controller
             'st_pro_desc'=>'required',
             'extra_desc'=>'required',
         ]);
+
         $principal_id = $request->principal_id;
+        $category = $request->in_cat_id;
+        
         if(!empty($principal_id)){
             $sep_name_id = explode("_", $principal_id);
             $st_pro_maker = ['st_pro_maker'=>$sep_name_id[0]];
@@ -70,22 +71,31 @@ class ProductController extends Controller
             $st_pro_maker = [];
             $p_id = [];
         }
+
+        if(!empty($category)){
+            $sep_name_id = explode("_/", $category);
+            $in_cat_id = ['in_cat_id'=>$sep_name_id[0]];
+            $category_id = ['category_id'=>$sep_name_id[1]];
+        }else{
+            $st_pro_maker = [];
+            $p_id = [];
+        }
+
+        $product_seo_url = ['product_seo_url'=>''];
         $all_filed = $request->all();
         unset($all_filed['_token']);
         unset($all_filed['principal_id']);
+        unset($all_filed['in_cat_id']);
         if(!empty($all_filed)){
             $new_arr = [];
             foreach($all_filed as $ky=>$fld){
                 $new_arr[$ky] = $request->$ky;
             }
-            $x = $new_arr+['dt_created'=>Carbon::now()]+$st_pro_maker+$p_id;
+            $x = $new_arr+['dt_created'=>Carbon::now()]+$st_pro_maker+$p_id+$product_seo_url+$in_cat_id+$category_id;
             $check_status = Product::insertGetId($x);
             if(!empty($check_status)){
-                return back()->with([
-                    'message' => 'Product created successfully !',
-                ]);
+                return redirect()->route('show_product')->with('message', 'Product created successfull.');
             }
-
         }
     }
 
