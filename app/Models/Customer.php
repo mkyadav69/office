@@ -10,6 +10,4 @@ class Customer extends Model
 
     protected $table = 'tbl_customer';
     public $timestamps = false;
-    const CREATED_AT = null;
-    const UPDATED_AT = null;
 }

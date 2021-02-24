@@ -2,7 +2,17 @@
 @section('title', 'Owner')
 @section('content')
 <style>
-
+.required:after {
+    content: '*';
+    color: red;
+    padding-left: 5px;
+}
+.td-limit {
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
 </style>
 <div class="row">
     @if (session()->has('message'))
@@ -17,7 +27,7 @@
         <h3 class="title-5 m-b-35">Manage Owners</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
-                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#largeModal">
+                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#addModal">
                     <i class="zmdi zmdi-plus"></i> Add Owner
                 </button>
             </div>
@@ -30,12 +40,23 @@
     </div>
 </div>
 @if(Session::has('errors'))
-    <script>
-        $(document).ready(function(){
-            $('#largeModal').modal({show: true});
-        });
-    </script>
+    @if(!empty($errors->owner_add->any()))
+        <script>
+            $(document).ready(function(){
+                $('#addModal').modal({show: true});
+            });
+        </script>
+    @endif
 @endif  
+
+@if(Session::has('errors'))
+    @if($errors->owner_update->any()))
+        <script>
+            $('#editModal').modal('show');  
+        </script>
+    @endif
+@endif 
+
 <script>
     $(document).ready(function(){
         table = $('#owner').DataTable({
@@ -139,7 +160,7 @@
 @endsection
 
 <!-- add records -->
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -152,30 +173,42 @@
                 <div class="card">
                     <form action="{{route('store_owner')}}" method="post">
                         @csrf
-                        <div class="form-group">
-                            <input type="text" name="owner_name"placeholder="name" class="form-control">
-                            @if ($errors->has('owner_name'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->first('owner_name') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="form-group">
-                            <textarea type="text" name="owner_desciption"placeholder="Write descption . . . !" class="form-control"></textarea>
-                            @if ($errors->has('owner_desciption'))
-                            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                <span class="badge badge-pill badge-danger">Error</span>
-                                {{ $errors->first('owner_desciption') }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Owner Name</label>
                             </div>
-                        @endif
+                            <div class="col-12 col-md-9">
+                                <input type="text" name="owner_name" placeholder="name" required value="{{old('owner_name')}}" class="form-control">
+                                @if ($errors->owner_add->has('owner_name'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->owner_add->first('owner_name') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Description</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <textarea type="text" name="owner_desciption" required value="{{ old('owner_desciption')}}"placeholder="Write descption . . . !" class="form-control">{{ old('owner_desciption') }}</textarea>
+                                @if ($errors->owner_add->has('owner_desciption'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->owner_add->first('owner_desciption') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary">Confirm</button>
@@ -204,30 +237,42 @@
                 <div class="card">
                     <form method="post" id="editForm">
                         @csrf
-                        <div class="form-group">
-                            <input type="text" id="owner_name" name="update_owner_name" placeholder="name" class="form-control">
-                            @if ($errors->has('update_owner_name'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->first('update_owner_name') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="form-group">
-                            <textarea type="text" id="owner_desciption" name="update_owner_desciption" placeholder="Write descption . . . !" class="form-control"></textarea>
-                            @if ($errors->has('update_owner_desciption'))
-                            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                <span class="badge badge-pill badge-danger">Error</span>
-                                {{ $errors->first('update_owner_desciption') }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Owner Name</label>
                             </div>
-                        @endif
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="owner_name" name="update_owner_name" value="{{ old('update_owner_name')}}" required placeholder="name" class="form-control">
+                                @if ($errors->owner_update->has('update_owner_name'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->owner_update->first('update_owner_name') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="file-input" class=" form-control-label required">Description</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <textarea type="text" id="owner_desciption" required name="update_owner_desciption" placeholder="Write descption . . . !" class="form-control">{{ old('update_owner_desciption') }}</textarea>
+                                @if ($errors->owner_update->has('update_owner_desciption'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->owner_update->first('update_owner_desciption') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary">Confirm</button>
@@ -239,7 +284,7 @@
         </div>
     </div>
 </div>
-<!-- end add  -->
+<!-- end edit  -->
 
 <!-- Delete-->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">

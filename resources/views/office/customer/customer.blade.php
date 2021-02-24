@@ -7,8 +7,12 @@
     color: red;
     padding-left: 5px;
 }
-
-
+.td-limit {
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
 </style>
 <div class="row">
     @if (session()->has('customer_message'))
@@ -57,6 +61,7 @@
         </script>
     @endif
 @endif 
+
 <script>
     $(document).ready(function(){
         table = $('#customer').DataTable({
@@ -67,6 +72,7 @@
                 scrollX: true,
                 bDestroy: true,
                 destroy: true,
+                autoWidth: false,
                 sort : true,
                 cache: true,
                 scrollX: true,
@@ -91,11 +97,11 @@
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'cust_pin_no', className: "text", title : 'GST No'},
-                    { data: 'st_com_name', className: "text", title : 'Company Name'},
-                    { data: 'st_cust_city', className: "select", title : 'View Branch Wise'},
-                    { data: 'st_cust_state', className: "text", title : 'State'},
-                    { data: 'st_regions', className: "select",title : 'View Regions Wise'},
+                    { data: 'cust_pin_no', className: "text td-limit", title : 'GST No'},
+                    { data: 'st_com_name', className: "text td-limit", title : 'Company Name'},
+                    { data: 'st_cust_city', className: "select td-limit", title : 'View Branch Wise'},
+                    { data: 'st_cust_state', className: "text td-limit", title : 'State'},
+                    { data: 'st_regions', className: "select td-limit",title : 'View Regions Wise'},
                     { data: 'dt_created', title : 'Created At'},
                     {
                         'data': null,

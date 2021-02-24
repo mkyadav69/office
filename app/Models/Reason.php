@@ -9,5 +9,6 @@ class Reason extends Model
 {
      
     protected $table = 'tbl_reasons';
+    public $timestamps = false;
     use HasFactory;
 }

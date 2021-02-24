@@ -187,15 +187,18 @@ class CustomerController extends Controller
     }
 
     public function storeOwner(Request $request){
-        $this->validate($request,[
+        $validator = Validator::make($request->all(), [
             'owner_name' => 'required',
             'owner_desciption'=>'required',
         ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'owner_add')->withInput();
+        }
         $check_status = Owner::insertGetId([
             'owner_name'=>$request->owner_name,
             'owner_desc'=>$request->owner_desciption,
             'dt_created'=>Carbon::now(),
-            'dt_modify'=>Carbon::now(),
         ]);
 
        
@@ -218,17 +221,21 @@ class CustomerController extends Controller
     }
 
     public function updateOwner(Request $request, $id){
-        $this->validate($request,[
+        $validator = Validator::make($request->all(), [
             'update_owner_name' => 'required',
             'update_owner_desciption'=>'required',
         ]);
         
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'owner_update')->withInput();
+        }
+
         $check_status = Owner::where('id', $id)->update([
             'owner_name'=>$request->update_owner_name,
             'owner_desc'=>$request->update_owner_desciption,
             'dt_modify'=>Carbon::now(),
-            'updated_at'=>Carbon::now(),
         ]);
+        
         if(!empty($check_status)){
             return back()->with([
                 'message' => 'Customer updated successfully !',

@@ -7,7 +7,12 @@
     color: red;
     padding-left: 5px;
 }
-
+.td-limit {
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
 </style>
 <div class="row">
     @if (session()->has('message'))
@@ -22,7 +27,7 @@
         <h3 class="title-5 m-b-35">Manage Reasons</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
-                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#largeModal">
+                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#addModal">
                     <i class="zmdi zmdi-plus"></i> Add Reason
                 </button>
             </div>
@@ -36,12 +41,23 @@
     
 </div>
 @if(Session::has('errors'))
-    <script>
-        $(document).ready(function(){
-            $('#largeModal').modal({show: true});
-        });
-    </script>
+    @if(!empty($errors->reason_add->any()))
+        <script>
+            $(document).ready(function(){
+                $('#addModal').modal({show: true});
+            });
+        </script>
+    @endif
+@endif  
+
+@if(Session::has('errors'))
+    @if($errors->reason_update->any()))
+        <script>
+            $('#editModal').modal('show');  
+        </script>
+    @endif
 @endif 
+
 <script>
     $(document).ready(function(){
         table = $('#reason').DataTable({
@@ -76,8 +92,8 @@
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'stn_reasons', title : 'Reason Name', className: "text"},
-                    { data: 'stn_reason_type', title : 'Reason Mode', className: "text"},
+                    { data: 'stn_reasons', title : 'Reason Name', className: "text td-limit"},
+                    { data: 'stn_reason_type', title : 'Reason Mode', className: "text td-limit"},
                     { data: 'dt_created', title : 'Created Date'},
                     {
                         'data': null,
@@ -152,7 +168,7 @@
 @endsection
 
 <!-- add  reason -->
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -170,11 +186,11 @@
                                 <label for="file-input" class=" form-control-label required">Reason Name</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" placeholder="Name" name="reason_name"  class="form-control">
-                                @if ($errors->has('reason_name'))
+                                <input type="text" placeholder="Name" required name="reason_name"  value="{{ old('reason_name')}}" class="form-control">
+                                @if ($errors->reason_add->has('reason_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('reason_name') }}
+                                        {{ $errors->reason_add->first('reason_name') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -189,15 +205,15 @@
                                 <label for="file-input" class=" form-control-label required">Reason Mode</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <select name="select_mode" class="form-control">
+                                <select name="select_mode" required class="form-control">
                                     <option value="">Select Reason</option>
-                                    <option value="1">Pending Order</option>
-                                    <option value="2">Pending Shipment</option>
+                                    <option value="1" {{ old('select_mode') == 1 ? "selected" : "" }} >Pending Order</option>
+                                    <option value="2" {{ old('select_mode') == 2 ? "selected" : "" }} >Pending Shipment</option>
                                 </select>
-                                @if ($errors->has('select_mode'))
+                                @if ($errors->reason_add->has('select_mode'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('select_mode') }}
+                                        {{ $errors->reason_add->first('select_mode') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -239,7 +255,7 @@
                                 <label for="file-input" class=" form-control-label required">Reason Name</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="reason_name" placeholder="Name" name="update_reason_name"  class="form-control">
+                                <input type="text" id="reason_name" placeholder="Name" required name="update_reason_name"  class="form-control">
                                 @if ($errors->has('update_reason_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -258,7 +274,7 @@
                                 <label for="file-input" class=" form-control-label required">Reason Mode</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <select name="update_select_mode" id="select_mode" class="form-control">
+                                <select name="update_select_mode" id="select_mode" required class="form-control">
                                     <option value="">Select Reason</option>
                                     <option value="1">Pending Order</option>
                                     <option value="2">Pending Shipment</option>

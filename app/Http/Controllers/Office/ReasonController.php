@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Reason;
 use Carbon\Carbon;
@@ -15,17 +16,21 @@ class ReasonController extends Controller
     }
 
     public function storeReason(Request $request){
-        $this->validate($request,[
+        $validator = Validator::make($request->all(), [
             'reason_name' => 'required',
             'select_mode'=>'required',
         ]);
+        
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'reason_add')->withInput();
+        }
+
         $check_status = Reason::insertGetId([
             'stn_reasons'=>$request->reason_name,
             'stn_reason_type'=>$request->select_mode,
             'dt_created'=>Carbon::now(),
         ]);
 
-       
         if(!empty($check_status)){
             return back()->with([
                 'message' => 'Reason created successfully !',
@@ -56,14 +61,18 @@ class ReasonController extends Controller
     }
 
     public function updateReason(Request $request, $id){
-        $this->validate($request,[
+        $validator = Validator::make($request->all(), [
             'update_reason_name' => 'required',
             'update_select_mode'=>'required',
         ]);
+        
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'reason_update')->withInput();
+        }
         $check_status = Reason::where('int_id', $id)->update([
             'stn_reasons'=>$request->update_reason_name,
             'stn_reason_type'=>$request->update_select_mode,
-            'updated_at'=>Carbon::now(),
+            'dt_modify'=>Carbon::now(),
         ]);
         if(!empty($check_status)){
             return back()->with([
