@@ -68,18 +68,18 @@ class CustomerController extends Controller
 
             'st_con_person2'=>$request->persion2_name,
             'st_con_person2_email'=>$request->persion2_email,
-            'st_con_person2_mobile'=>$request->persion2_name,
+            'st_con_person2_mobile'=>$request->persion2_mobile,
 
             'st_cust_city'=>$request->customer_city,
             'cust_tin_no'=>$request->tin_no,
             'cust_pin_no'=>$request->gst_no,
             'in_pincode'=>$request->customer_pincode,
-            'st_country'=>$request->customer_contry,
             'st_cust_state'=>$request->customer_state,
             'st_cust_mobile'=>$request->customer_mobile,
             'st_cust_email'=>$request->customer_email,
             'st_cust_email_cc'=>$request->customer_email,
             'in_branch'=>$request->customer_branch,
+
             'owner_id'=>Auth::user()->id,
             'user_id'=>Auth::user()->id,
             'dt_created'=>Carbon::now(),
@@ -106,8 +106,28 @@ class CustomerController extends Controller
 
     public function updateCustomer(Request $request, $id){
         $validator = Validator::make($request->all(), [
-            'update_customer_name' => 'required|string|max:255',
-            'update_customer_last_name'=>'required|string|max:255',
+            "update_customer_name" => 'required',
+            "update_customer_last_name" => 'required',
+            "update_customer_company_name" => 'required',
+            "update_customer_email" => 'required',
+            "update_customer_region" => 'required',
+            "update_customer_mobile" => 'required',
+            "update_gst_no" => 'required',
+            "update_tin_no" => 'required',
+
+            "update_persion1_name" => 'required',
+            "update_persion1_email" => 'required',
+            "update_persion1_mobile" => 'required',
+
+            "update_persion2_name" => 'required',
+            "update_persion2_email" => 'required',
+            "update_persion2_mobile" => 'required',
+
+            "update_customer_address" => 'required',
+            "update_customer_city" => 'required',
+            "update_customer_state" => 'required',
+            "update_customer_pincode" => 'required',
+            "update_customer_branch" => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -117,7 +137,7 @@ class CustomerController extends Controller
         $check_status = Customer::where('in_cust_id', $id)->update([
             'st_cust_fname'=>$request->update_customer_name,
             'st_cust_lname'=>$request->update_customer_last_name,
-            'st_com_name'=>$request->update_customer_name,
+            'st_com_name'=>$request->update_customer_company_name,
             'st_regions'=>$request->update_customer_region,
             'st_com_address'=>$request->update_customer_address,
 
@@ -127,23 +147,21 @@ class CustomerController extends Controller
 
             'st_con_person2'=>$request->update_persion2_name,
             'st_con_person2_email'=>$request->update_persion2_email,
-            'st_con_person2_mobile'=>$request->update_persion2_name,
+            'st_con_person2_mobile'=>$request->update_persion2_mobile,
 
             'st_cust_city'=>$request->update_customer_city,
-            'cust_tin_no'=>$request->update_customer_name,
+            'cust_tin_no'=>$request->update_tin_no,
             'cust_pin_no'=>$request->update_gst_no,
             'in_pincode'=>$request->update_customer_pincode,
-            'st_country'=>$request->update_customer_contry,
             'st_cust_state'=>$request->update_customer_state,
             'st_cust_mobile'=>$request->update_customer_mobile,
-            'st_cust_email'=>$request->update_customer_name,
-            'st_cust_email_cc'=>$request->update_customer_name,
-            'in_branch'=>$request->update_branch_name,
+            'st_cust_email'=>$request->update_customer_email,
+            'st_cust_email_cc'=>$request->update_customer_email,
+            'in_branch'=>$request->update_customer_branch,
+
             'owner_id'=>Auth::user()->id,
             'user_id'=>Auth::user()->id,
-            'dt_created'=>Carbon::now(),
             'dt_modify'=>Carbon::now(),
-            'updated_at'=>Carbon::now(),
         ]);
         if(!empty($check_status)){
             return back()->with([
