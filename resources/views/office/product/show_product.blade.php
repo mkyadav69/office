@@ -66,7 +66,7 @@
                 scrollX: true,
                 responsive: true,
                 ajax: {
-                    url:'{{ route("get_customer") }}',
+                    url:'{{ route("get_product") }}',
                 },
                 pageLength: 10,
                 columnDefs: [{ 
@@ -85,16 +85,21 @@
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'cust_pin_no', className: "text", title : 'GST No'},
-                    { data: 'st_com_name', className: "text", title : 'Company Name'},
-                    { data: 'st_cust_city', className: "select", title : 'View Branch Wise'},
-                    { data: 'st_cust_state', className: "text", title : 'State'},
-                    { data: 'st_regions', className: "select",title : 'View Regions Wise'},
-                    { data: 'dt_created', title : 'Created At'},
+                    { data: 'st_part_No', className: "text", title : 'Part No.'},
+                    { data: 'st_pro_desc', className: "text", title : 'Description'},
+                    { data: 'in_pro_qty', className: "text", title : 'Qty'},
+                    { data: 'fl_pro_price', className: "text", title : 'Price'},
+                    { data: 'dt_created', title : 'Price Date'},
+                    { data: 'in_pro_disc', className: "text", title : 'Discount(%)'},
+                    { data: 'str_igst_rate', className: "text", title : 'IGST'},
+                    { data: 'stn_hsn_no', className: "text", title : 'HSN'},
+                    { data: 'st_pro_maker', className: "select", title : 'Principals'},
+                    { data: 'stn_brand', className: "select", title : 'Brand'},
+                    { data: 'in_cat_id', className: "select", title : 'Category'},
                     {
                         'data': null,
                         'render': function (data, type, row) {
-                            return '<div class="table-data-feature"><button row-id="' + row.id + '" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button> <button row-id="' + row.id + '" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>'
+                            return '<div class="table-data-feature"><button row-id="' + row.id + '" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>'
                         }, title: 'Actions'
                     }
                 ],  

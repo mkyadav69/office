@@ -108,6 +108,7 @@ Route::post('delete-category/{id}',  [CategoryController::class, 'deleteCategory
 Route::get('show-product', [ProductController::class, 'showProduct'])->name('show_product');
 Route::get('add-product', [ProductController::class, 'addProduct'])->name('add_product');
 Route::post('store-product', [ProductController::class, 'storeProduct'])->name('store_product');
+Route::get('get-product', [ProductController::class, 'getProduct'])->name('get_product');
 // Route::post('edit-category/{id}',  [ProductController::class, 'updateCategory'])->name('edit_category');
 // Route::post('delete-category/{id}',  [ProductController::class, 'deleteCategory'])->name('delete_category');
 
