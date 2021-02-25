@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Quatation;
 use Carbon\Carbon;
@@ -17,7 +18,7 @@ class QuatationController extends Controller
     }
 
     public function storeQuatation(Request $request){
-        $this->validate($request,[
+        $validator = Validator::make($request->all(), [
             'billing_address' => 'required',
             'branch_address'=>'required',
             'select_branch' => 'required',
@@ -26,6 +27,11 @@ class QuatationController extends Controller
             'mobile_no'=>'required',
             'email_address'=>'required',
         ]);
+        
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'quatation_add')->withInput();
+        }
+
         $check_status = Quatation::insertGetId([
             'stn_bill_add'=>$request->billing_address,
             'stn_branch_add'=>$request->branch_address,
@@ -67,7 +73,7 @@ class QuatationController extends Controller
     }
 
     public function updateQuatation(Request $request, $id){
-        $this->validate($request,[
+        $validator = Validator::make($request->all(), [
             'update_billing_address' => 'required',
             'update_branch_address'=>'required',
             'update_select_branch' => 'required',
@@ -76,6 +82,10 @@ class QuatationController extends Controller
             'update_mobile_no'=>'required',
             'update_email_address'=>'required',
         ]);
+        
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'quatation_update')->withInput();
+        }
 
         $check_status = Quatation::where('int_quotformat_id', $id)->update([
             'stn_bill_add'=>$request->update_billing_address,

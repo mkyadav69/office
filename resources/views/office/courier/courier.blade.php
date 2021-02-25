@@ -7,7 +7,12 @@
     color: red;
     padding-left: 5px;
 }
-
+.td-limit {
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
 </style>
 <div class="row">
     @if (session()->has('message'))
@@ -22,7 +27,7 @@
         <h3 class="title-5 m-b-35">Manage Couriers</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
-                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#largeModal">
+                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#addModal">
                     <i class="zmdi zmdi-plus"></i> Add Courier
                 </button>
             </div>
@@ -34,12 +39,23 @@
     </div>
 </div>
 @if(Session::has('errors'))
-    <script>
-        $(document).ready(function(){
-            $('#largeModal').modal({show: true});
-        });
-    </script>
-@endif 
+    @if(!empty($errors->courier_add->any()))
+        <script>
+            $(document).ready(function(){
+                $('#addModal').modal({show: true});
+            });
+        </script>
+    @endif
+@endif  
+
+@if(Session::has('errors'))
+    @if($errors->courier_update->any()))
+        <script>
+            $('#editModal').modal('show');  
+        </script>
+    @endif
+@endif
+  
 <script>
     $(document).ready(function(){
         table = $('#courier').DataTable({
@@ -74,13 +90,13 @@
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'st_courier_name', title : 'Courier Agency Name', className: "text"},
-                    { data: 'st_branch_name', title : 'Branch Name', className: "select"},
+                    { data: 'st_courier_name', title : 'Courier Agency Name', className: "text td-limit"},
+                    { data: 'st_branch_name', title : 'Branch Name', className: "select td-limit"},
                     { data: 'dt_created', title : 'Created At'},
                     {
                         'data': null,
                         'render': function (data, type, row) {
-                            return '<div class="table-data-feature"><button row-id="' + row.id + '" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button> <button row-id="' + row.id + '" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>'
+                            return '<div class="row form-group"><div class="table-data-feature"><button row-id="' + row.id + '" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button> <button row-id="' + row.id + '" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div></div>'
                         }, title: 'Actions'
                     }
                 ],
@@ -144,7 +160,7 @@
 @endsection
 
 <!-- add  record -->
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -162,11 +178,11 @@
                                 <label for="file-input" class=" form-control-label required">Courier Name</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <input type="text" name="courier_name"placeholder="Enter courier name" class="form-control">
-                                @if ($errors->has('courier_name'))
+                                <input type="text" name="courier_name" required placeholder="Enter courier name" value="{{old('courier_name')}}" class="form-control">
+                                @if ($errors->courier_add->has('courier_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('courier_name') }}
+                                        {{ $errors->courier_add->first('courier_name') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -180,20 +196,20 @@
                                 <label for="file-input" class=" form-control-label required">Select Branch</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <select name="select_branch" class="form-control">
+                                <select name="select_branch" required class="form-control">
                                     <option value="">Select Branch</option>
                                     @if(!empty($branch_wise))
                                         @foreach($branch_wise as $id=>$name)
-                                        <option value="{{ $id }}">{{ $name}}</option>
+                                            <option value="{{ $id }}" {{ old('select_branch') == $id ? "selected" : "" }}>{{ $name}}</option>
                                         @endforeach
                                     @else
                                         <option value="">No branch found</option>
                                     @endif
                                 </select>
-                                @if ($errors->has('select_branch'))
+                                @if ($errors->courier_add->has('select_branch'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('select_branch') }}
+                                        {{ $errors->courier_add->first('select_branch') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -234,11 +250,11 @@
                                 <label for="file-input" class=" form-control-label required">Courier Name</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <input type="text" id="courier_name" name="update_courier_name"placeholder="Enter courier name" class="form-control">
-                                @if ($errors->has('update_courier_name'))
+                                <input type="text" id="courier_name" required name="update_courier_name"placeholder="Enter courier name" class="form-control">
+                                @if ($errors->courier_update->has('update_courier_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_courier_name') }}
+                                        {{ $errors->courier_update-> first('update_courier_name') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -252,7 +268,7 @@
                                 <label for="file-input" class=" form-control-label required">Select Branch</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <select id="select_branch" name="update_select_branch" class="form-control">
+                                <select id="select_branch" required name="update_select_branch" class="form-control">
                                     <option value="">Select Branch</option>
                                     @if(!empty($branch_wise))
                                         @foreach($branch_wise as $id=>$name)

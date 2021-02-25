@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Courier;
 use Carbon\Carbon;
@@ -21,10 +22,16 @@ class CourierController extends Controller
         if(!empty($request->select_branch)){
             $branch_name = $branch_wise[$request->select_branch];
         }
-        $this->validate($request,[
+
+        $validator = Validator::make($request->all(), [
             'courier_name' => 'required',
             'select_branch'=>'required',
         ]);
+        
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'courier_add')->withInput();
+        }
+
         $check_status = Courier::insertGetId([
             'st_courier_name'=>$request->courier_name,
             'in_branch_id'=>$request->select_branch,
@@ -41,16 +48,27 @@ class CourierController extends Controller
     }
 
     public function getCourier(Request $request){
-        return Datatables::of(Courier::query())->make(true);
+        $courier = Courier::get();
+
+        return Datatables::of($courier)
+            ->editColumn('dt_created', function ($courier) {
+                $date = $courier['dt_created'];
+                if(!empty($date)){
+                    return date('d-m-Y', strtotime($date));
+                }
+            
+        })->make(true);
     }
 
     public function updateCourier(Request $request, $id){
-
-        $this->validate($request,[
+        $validator = Validator::make($request->all(), [
             'update_courier_name' => 'required',
             'update_select_branch'=> 'required',
         ]);
         
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'courier_update')->withInput();
+        }
         $branch_wise = Config::get('constant.branch_wise');
         
         if(!empty($request->update_select_branch)){

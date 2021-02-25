@@ -7,6 +7,12 @@
     color: red;
     padding-left: 5px;
 }
+.td-limit {
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
 
 </style>
 <div class="row">
@@ -22,7 +28,7 @@
         <h3 class="title-5 m-b-35">Manage Quatations</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
-                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#largeModal">
+                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#addModal">
                     <i class="zmdi zmdi-plus"></i> Add Quatation
                 </button>
             </div>
@@ -36,12 +42,22 @@
     
 </div>
 @if(Session::has('errors'))
-    <script>
-        $(document).ready(function(){
-            $('#largeModal').modal({show: true});
-        });
-    </script>
-@endif 
+    @if(!empty($errors->quatation_add->any()))
+        <script>
+            $(document).ready(function(){
+                $('#addModal').modal({show: true});
+            });
+        </script>
+    @endif
+@endif  
+
+@if(Session::has('errors'))
+    @if($errors->quatation_update->any()))
+        <script>
+            $('#editModal').modal('show');  
+        </script>
+    @endif
+@endif
 <script>
     $(document).ready(function(){
         table = $('#quatation').DataTable({
@@ -76,10 +92,10 @@
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'stn_bill_add', title : 'Billing Address', className: "text"},
-                    { data: 'stn_branch_add', title : 'Branch Address', className: "text"},
-                    { data: 'stn_tin_no', title : 'Tin Number', className: "text"},
-                    { data: 'int_branch_id', title : 'Branch Name', className: "text"},
+                    { data: 'stn_bill_add', title : 'Billing Address', className: "text td-limit"},
+                    { data: 'stn_branch_add', title : 'Branch Address', className: "text td-limit"},
+                    { data: 'stn_tin_no', title : 'Tin Number', className: "text td-limit"},
+                    { data: 'int_branch_id', title : 'Branch Name', className: "text td-limit"},
                     { data: 'dt_created', title : 'Created At'},
                     {
                         'data': null,
@@ -126,14 +142,20 @@
             }
             var data = table.row($tr).data();
             console.log(data);
-
+            var branch_wise = {!! json_encode($branch_wise) !!};
             $('div #billing_address').val(data['stn_bill_add']);
             $('div #branch_address').val(data['stn_branch_add']);
             $('div #billing_notes').val(data['stn_billing_note']);
             $('div #add_tin').val(data['stn_tin_no']);
             $('div #email_address').val(data['str_branch_email']);
             $('div #mobile_no').val(data['str_branch_phnumber']);
-            $('div #select_branch').val(data['int_branch_id']);
+            if(branch_wise != ''){
+                console.log("kkklll");
+                console.log(branch_wise[data['int_branch_id']]);
+                $('div #select_branch').val(branch_wise[data['int_branch_id']]);
+            }else{
+                $('div #select_branch').val(data['int_branch_id']);
+            }
 
             $('#editForm').attr('action', '/edit-quatation/'+data['int_quotformat_id']);
             $('#editModal').modal('show');  
@@ -153,7 +175,7 @@
 @endsection
 
 <!-- add record -->
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -169,11 +191,11 @@
                         <div class="card-body card-block">
                             <div class="form-group">
                                 <label for="company" class="form-control-label required"> Add Billing Address</label>
-                                <textarea type="text" name="billing_address" placeholder="address . . . " class="form-control"></textarea>
-                                @if ($errors->has('billing_address'))
+                                <textarea type="text" name="billing_address" placeholder="address . . . " class="form-control">{{old('billing_address')}}</textarea>
+                                @if ($errors->quatation_add->has('billing_address'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('billing_address') }}
+                                        {{ $errors->quatation_add->first('billing_address') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -182,11 +204,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="vat" class=" form-control-label required"> Add Branch Address</label>
-                                <textarea type="text" name="branch_address" placeholder="branch . . . " class="form-control"></textarea>
-                                @if ($errors->has('branch_address'))
+                                <textarea type="text" name="branch_address" placeholder="branch . . . " class="form-control">{{old('branch_address')}}</textarea>
+                                @if ($errors->quatation_add->has('branch_address'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('branch_address') }}
+                                        {{ $errors->quatation_add->first('branch_address') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -195,11 +217,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="street" class=" form-control-label required"> Billing Note</label>
-                                <textarea type="text"  name="billing_notes" placeholder="notes . . . " class="form-control"></textarea>
-                                @if ($errors->has('billing_notes'))
+                                <textarea type="text"  name="billing_notes" placeholder="notes . . . " class="form-control">{{old('billing_notes')}}</textarea>
+                                @if ($errors->quatation_add->has('billing_notes'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('billing_notes') }}
+                                        {{ $errors->quatation_add->first('billing_notes') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -212,16 +234,16 @@
                                     <option value="">Select Branch</option>
                                     @if(!empty($branch_wise))
                                         @foreach($branch_wise as $id=>$name)
-                                        <option value="{{ $id }}">{{ $name}}</option>
+                                            <option value="{{ $id }}" {{ old('select_branch') == $id ? "selected" : "" }}>{{ $name}}</option>
                                         @endforeach
                                     @else
                                         <option value="">No branch found</option>
                                     @endif
                                 </select>
-                                @if ($errors->has('select_branch'))
+                                @if ($errors->quatation_add->has('select_branch'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('select_branch') }}
+                                        {{ $errors->quatation_add->first('select_branch') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -230,11 +252,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="street" class=" form-control-label required">Add Tin No.</label>
-                                <input type="text" name="add_tin" placeholder="tin No. . . . " class="form-control">
-                                @if ($errors->has('add_tin'))
+                                <input type="text" name="add_tin" value="{{old('add_tin')}}" placeholder="tin No. . . . " class="form-control">
+                                @if ($errors->quatation_add->has('add_tin'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('add_tin') }}
+                                        {{ $errors->quatation_add->first('add_tin') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -243,12 +265,12 @@
 
                             </div>
                             <div class="form-group">
-                                <label for="street" class=" form-control-label required">Mobile No. </label>
-                                <input type="text"  name="mobile_no" placeholder="mobile No. . . . " class="form-control">
-                                @if ($errors->has('mobile_no'))
+                                <label for="street" class="form-control-label required">Mobile No. </label>
+                                <input type="text"  name="mobile_no" value="{{old('mobile_no')}}" placeholder="mobile No. . . . " maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control">
+                                @if ($errors->quatation_add->has('mobile_no'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('mobile_no') }}
+                                        {{ $errors->quatation_add->first('mobile_no') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -257,11 +279,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="street" class=" form-control-label required">Email Address</label>
-                                <input type="text" name="email_address" placeholder="email address . . . !" class="form-control">
-                                @if ($errors->has('email_address'))
+                                <input type="text" name="email_address" value="{{old('email_address')}}" placeholder="email address . . . !" class="form-control">
+                                @if ($errors->quatation_add->has('email_address'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('email_address') }}
+                                        {{ $errors->quatation_add->first('email_address') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -298,11 +320,11 @@
                         <div class="card-body card-block">
                             <div class="form-group">
                                 <label for="company" class="form-control-label required"> Add Billing Address</label>
-                                <textarea type="text" id="billing_address" name="update_billing_address" placeholder="address . . . " class="form-control"></textarea>
-                                @if ($errors->has('update_billing_address'))
+                                <textarea type="text" id="billing_address" name="update_billing_address" placeholder="address . . . " class="form-control">{{old('update_billing_address')}}</textarea>
+                                @if ($errors->quatation_update->has('update_billing_address'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_billing_address') }}
+                                        {{ $errors->quatation_update->first('update_billing_address') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -311,11 +333,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="vat" class=" form-control-label required"> Add Branch Address</label>
-                                <textarea type="text" id="branch_address" name="update_branch_address" placeholder="branch . . . " class="form-control"></textarea>
-                                @if ($errors->has('update_branch_address'))
+                                <textarea type="text" id="branch_address" name="update_branch_address" placeholder="branch . . . " class="form-control">{{old('update_branch_address')}}</textarea>
+                                @if ($errors->quatation_update->has('update_branch_address'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_branch_address') }}
+                                        {{ $errors->quatation_update->first('update_branch_address') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -324,11 +346,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="street" class=" form-control-label required"> Billing Note</label>
-                                <textarea type="text" id="billing_notes" name="update_billing_notes" placeholder="notes . . . " class="form-control"></textarea>
-                                @if ($errors->has('update_billing_notes'))
+                                <textarea type="text" id="billing_notes" name="update_billing_notes" placeholder="notes . . . " class="form-control">{{old('update_billing_notes')}}</textarea>
+                                @if ($errors->quatation_update->has('update_billing_notes'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_billing_notes') }}
+                                        {{ $errors->quatation_update->first('update_billing_notes') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -341,13 +363,13 @@
                                     <option value="">Select Branch</option>
                                     @if(!empty($branch_wise))
                                         @foreach($branch_wise as $id=>$name)
-                                        <option value="{{ $id }}">{{ $name}}</option>
+                                            <option value="{{ $id }}" { old('select_mode') == $id ? "selected" : "" }}>{{ $name}}</option>
                                         @endforeach
                                     @else
                                         <option value="">No branch found</option>
                                     @endif
                                 </select>
-                                @if ($errors->has('update_select_branch'))
+                                @if ($errors->quatation_update->has('update_select_branch'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
                                         {{ $errors->first('update_select_branch') }}
@@ -359,11 +381,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="street" class=" form-control-label required">Add Tin No.</label>
-                                <input type="text" id="add_tin" name="update_add_tin" placeholder="tin No. . . . " class="form-control">
-                                @if ($errors->has('update_add_tin'))
+                                <input type="text" id="add_tin" name="update_add_tin" value="{{old('update_add_tin')}}"placeholder="tin No. . . . " class="form-control">
+                                @if ($errors->quatation_update->has('update_add_tin'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_add_tin') }}
+                                        {{ $errors->quatation_update->first('update_add_tin') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -373,11 +395,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="street" class=" form-control-label required">Mobile No. </label>
-                                <input type="text" id="mobile_no" name="update_mobile_no" placeholder="mobile No. . . . " class="form-control">
-                                @if ($errors->has('update_mobile_no'))
+                                <input type="text" id="mobile_no" name="update_mobile_no" value="{{old('update_mobile_no')}}" placeholder="mobile No. . . . " class="form-control">
+                                @if ($errors->quatation_update->has('update_mobile_no'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_mobile_no') }}
+                                        {{ $errors->quatation_update->first('update_mobile_no') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -386,11 +408,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="street" class=" form-control-label required">Email Address</label>
-                                <input type="text" id="email_address" name="update_email_address" placeholder="email address . . . !" class="form-control">
-                                @if ($errors->has('update_email_address'))
+                                <input type="text" id="email_address" name="update_email_address" value="{{old('update_email_address')}}" placeholder="email address . . . !" class="form-control">
+                                @if ($errors->quatation_update->has('update_email_address'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_email_address') }}
+                                        {{ $errors->quatation_update->first('update_email_address') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
