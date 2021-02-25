@@ -142,7 +142,7 @@
             }
             var data = table.row($tr).data();
             console.log(data);
-            var branch_wise = {!! json_encode($branch_wise) !!};
+            var branch_wise = {!! json_encode($swipe_branch) !!};
             $('div #billing_address').val(data['stn_bill_add']);
             $('div #branch_address').val(data['stn_branch_add']);
             $('div #billing_notes').val(data['stn_billing_note']);
@@ -150,11 +150,9 @@
             $('div #email_address').val(data['str_branch_email']);
             $('div #mobile_no').val(data['str_branch_phnumber']);
             if(branch_wise != ''){
-                console.log("kkklll");
-                console.log(branch_wise[data['int_branch_id']]);
                 $('div #select_branch').val(branch_wise[data['int_branch_id']]);
             }else{
-                $('div #select_branch').val(data['int_branch_id']);
+                $('div #select_branch').val('');
             }
 
             $('#editForm').attr('action', '/edit-quatation/'+data['int_quotformat_id']);
@@ -234,7 +232,7 @@
                                     <option value="">Select Branch</option>
                                     @if(!empty($branch_wise))
                                         @foreach($branch_wise as $id=>$name)
-                                            <option value="{{ $id }}" {{ old('select_branch') == $id ? "selected" : "" }}>{{ $name}}</option>
+                                            <option value="{{ $id.'_'.$name }}" {{ old('select_branch') == $id ? "selected" : "" }}>{{ $name}}</option>
                                         @endforeach
                                     @else
                                         <option value="">No branch found</option>

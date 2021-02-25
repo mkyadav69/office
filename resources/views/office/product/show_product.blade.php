@@ -7,6 +7,12 @@
     color: red;
     padding-left: 5px;
 }
+.td-limit {
+    max-width: 75px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
 </style>
 <div class="row">
     @if (session()->has('message'))
@@ -85,17 +91,17 @@
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'st_part_No', className: "text", title : 'Part No.'},
-                    { data: 'st_pro_desc', className: "text", title : 'Description'},
-                    { data: 'in_pro_qty', className: "text", title : 'Qty'},
-                    { data: 'fl_pro_price', className: "text", title : 'Price'},
+                    { data: 'st_part_No', className: "text td-limit", title : 'Part No.'},
+                    { data: 'st_pro_desc', className: "text text td-limit", title : 'Description'},
+                    { data: 'in_pro_qty', className: "text text td-limit", title : 'Qty'},
+                    { data: 'fl_pro_price', className: "text text td-limit", title : 'Price'},
                     { data: 'dt_created', title : 'Price Date'},
-                    { data: 'in_pro_disc', className: "text", title : 'Discount(%)'},
-                    { data: 'str_igst_rate', className: "text", title : 'IGST'},
-                    { data: 'stn_hsn_no', className: "text", title : 'HSN'},
-                    { data: 'st_pro_maker', className: "select", title : 'Principals'},
-                    { data: 'stn_brand', className: "select", title : 'Brand'},
-                    { data: 'in_cat_id', className: "select", title : 'Category'},
+                    { data: 'in_pro_disc', className: "text text td-limit", title : 'Discount(%)'},
+                    { data: 'str_igst_rate', className: "text text td-limit", title : 'IGST'},
+                    { data: 'stn_hsn_no', className: "text text td-limit", title : 'HSN'},
+                    { data: 'st_pro_maker', className: "select text td-limit", title : 'Principals'},
+                    { data: 'stn_brand', className: "select text td-limit", title : 'Brand'},
+                    { data: 'in_cat_id', className: "select text td-limit", title : 'Category'},
                     {
                         'data': null,
                         'render': function (data, type, row) {

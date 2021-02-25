@@ -14,7 +14,8 @@ class QuatationController extends Controller
 {
     public function showQuatation(){
         $branch_wise = Config::get('constant.branch_wise');
-        return view('office.quatation.quatation', compact('branch_wise'));
+        $swipe_branch = array_flip($branch_wise);
+        return view('office.quatation.quatation', compact('branch_wise', 'swipe_branch'));
     }
 
     public function storeQuatation(Request $request){
@@ -31,7 +32,14 @@ class QuatationController extends Controller
         if ($validator->fails()) {
             return back()->withErrors($validator, 'quatation_add')->withInput();
         }
-
+        $quatation = $request->select_branch;
+        if(!empty($quatation)){
+            $branch_id = explode('_', $quatation)[0];
+            $branch_name = explode('_', $quatation)[1];
+        }else{
+            $branch_id = null;
+            $branch_name = null;
+        }   
         $check_status = Quatation::insertGetId([
             'stn_bill_add'=>$request->billing_address,
             'stn_branch_add'=>$request->branch_address,
@@ -39,7 +47,8 @@ class QuatationController extends Controller
             'str_branch_phnumber'=>$request->mobile_no,
             'stn_billing_note'=>$request->billing_notes,
             'stn_tin_no'=>$request->add_tin,
-            'int_branch_id'=>$request->select_branch,
+            'int_branch_id'=>$request->branch_id,
+            'str_city'=>$request->branch_name,
             'dt_created'=>Carbon::now(),
         ]);
 

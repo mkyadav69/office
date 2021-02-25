@@ -109,4 +109,8 @@ class ProductController extends Controller
                 }
            })->make(true);
     }
+
+    public function updateProduct(Request $request , $id){
+        return view('office.product.update_product');
+    }
 }
