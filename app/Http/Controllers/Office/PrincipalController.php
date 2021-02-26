@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Principal;
 use Carbon\Carbon;
@@ -15,11 +16,15 @@ class PrincipalController extends Controller
     }
 
     public function storePrincipal(Request $request){
-        $this->validate($request,[
+        $validator = Validator::make($request->all(), [
             'principal_name' => 'required',
             'select_principal'=>'required',
             'principal_image'=>'required',
         ]);
+        
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'principal_add')->withInput();
+        }
 
         $is_authorized = null;
         $status = null;
@@ -51,11 +56,15 @@ class PrincipalController extends Controller
     }
 
     public function updatePrincipals(Request $request, $id){
-        $this->validate($request,[
+        $validator = Validator::make($request->all(), [
             'update_principal_name' => 'required',
             'update_select_principal'=>'required',
             'update_principal_image'=>'required',
         ]);
+        
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'principal_update')->withInput();
+        }
         
         $is_authorized = null;
         $status = null;

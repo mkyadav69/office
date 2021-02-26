@@ -22,7 +22,7 @@
         <h3 class="title-5 m-b-35">Manage Principals</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
-                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#largeModal">
+                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#addModal">
                     <i class="zmdi zmdi-plus"></i> Add Principal
                 </button>
                 <input type="file" class="au-btn-filter">
@@ -39,12 +39,22 @@
     
 </div>
 @if(Session::has('errors'))
-    <script>
-        $(document).ready(function(){
-            $('#largeModal').modal({show: true});
-        });
-    </script>
-@endif 
+    @if(!empty($errors->principal_add->any()))
+        <script>
+            $(document).ready(function(){
+                $('#addModal').modal({show: true});
+            });
+        </script>
+    @endif
+@endif  
+
+@if(Session::has('errors'))
+    @if($errors->principal_update->any()))
+        <script>
+            $('#editModal').modal('show');  
+        </script>
+    @endif
+@endif
 <script>
     $(document).ready(function(){
         table = $('#customer').DataTable({
@@ -149,7 +159,7 @@
 @endsection
 
 <!-- add records -->
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -166,12 +176,12 @@
                             <div class="col col-md-3">
                                 <label for="file-input" class=" form-control-label required">Principal Name</label>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <input type="text" placeholder="Name" name="principal_name"  value="{{old('principal_name')}}" class="form-control">
-                                @if ($errors->has('principal_name'))
+                                @if ($errors->principal_add->has('principal_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('principal_name') }}
+                                        {{ $errors->principal_add->first('principal_name') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -186,15 +196,15 @@
                                 <label for="file-input" class=" form-control-label required">Principal Type</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <select name="select_principal" class="form-control">
+                                <select name="select_principal" class="form-control" >
                                     <option value="">Select Principals</option>
-                                    <option value="Authorised">Authorized</option>
-                                    <option value="Dealers">Dealers</option>
+                                    <option value="Authorised" {{ old('select_principal') == 'Authorised' ? "selected" : "" }} >Authorized</option>
+                                    <option value="Dealers" {{ old('select_principal') == 'Dealers' ? "selected" : "" }}>Dealers</option>
                                 </select>
-                                @if ($errors->has('select_principal'))
+                                @if ($errors->principal_add->has('select_principal'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('select_principal') }}
+                                        {{ $errors->principal_add->first('select_principal') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -209,10 +219,10 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="file" name="principal_image" class="form-control-file">
-                                @if ($errors->has('principal_image'))
+                                @if ($errors->principal_add->has('principal_image'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('principal_image') }}
+                                        {{ $errors->principal_add->first('principal_image') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -234,7 +244,6 @@
 </div>
 <!-- end modal large -->
 
-
 <!-- edit records -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -255,10 +264,10 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="principal_name" placeholder="Name" name="update_principal_name"  class="form-control">
-                                @if ($errors->has('update_principal_name'))
+                                @if ($errors->principal_add->has('update_principal_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_principal_name') }}
+                                        {{ $errors->principal_add->first('update_principal_name') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -278,10 +287,10 @@
                                     <option value="Authorised">Authorized</option>
                                     <option value="Dealers">Dealers</option>
                                 </select>
-                                @if ($errors->has('update_select_principal'))
+                                @if ($errors->principal_add->has('update_select_principal'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_select_principal') }}
+                                        {{ $errors->principal_add->first('update_select_principal') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -296,10 +305,10 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="file" id="principal_image" name="update_principal_image" class="form-control-file">
-                                @if ($errors->has('update_principal_image'))
+                                @if ($errors->principal_add->has('update_principal_image'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_principal_image') }}
+                                        {{ $errors->principal_add->first('update_principal_image') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>

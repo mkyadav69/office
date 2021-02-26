@@ -30,12 +30,20 @@
                 <a href="{{route('add_product')}}">
                     <button type="button" class="au-btn-filter mb-1" data-dismiss="modal"><i class="zmdi zmdi-plus"></i> Add Product</button>
                 </a>
+                <input type="file" class="au-btn-filter">
+                <button class="au-btn-filter">
+                    <i class="zmdi zmdi-upload"></i> Product Qty
+                </button>
+                <input type="file" class="au-btn-filter">
+                <button class="au-btn-filter">
+                    <i class="zmdi zmdi-upload"></i> Product Price
+                </button>
             </div>
         </div>
     </div>
  
     <div class="table-responsive table--no-card m-b-30">
-        <table id="customer" class="table table-borderless table-striped table-earning" style="width:100%">
+        <table id="product" class="table table-borderless table-striped table-earning" style="width:100%">
         </table>
     </div>
                        
@@ -59,17 +67,17 @@
 @endif 
 <script>
     $(document).ready(function(){
-        table = $('#customer').DataTable({
+        table = $('#product').DataTable({
                 processing: true,
                 orderCellsTop: true,
                 fixedHeader: true,
                 sort : true,
                 scrollX: true,
+                scrollCollapse: true,
                 bDestroy: true,
                 destroy: true,
                 sort : true,
                 cache: true,
-                scrollX: true,
                 responsive: true,
                 ajax: {
                     url:'{{ route("get_product") }}',

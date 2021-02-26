@@ -14,18 +14,14 @@
                 </ul>
             </li>
 
-            <!-- <li class="has-sub">
+            <li class="has-sub">
                 <a class="js-arrow" href="#">
                     <i class="fas fa-book"></i>Quatations</a>
                 <ul class="list-unstyled navbar__sub-list js-sub-list">
                     <li>
-                        <a href="index.html">View All Orders</a>
-                    </li>
-                    <li>
-                        <a href="index2.html">View All Partial Orders</a>
-                    </li>
+                        <a href="index.html">Manage Quatations</a>
                 </ul>
-            </li> -->
+            </li>
 
             <!-- <li class="has-sub">
                 <a class="js-arrow" href="#">

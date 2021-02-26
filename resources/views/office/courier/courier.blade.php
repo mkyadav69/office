@@ -250,7 +250,7 @@
                                 <label for="file-input" class=" form-control-label required">Courier Name</label>
                             </div>
                             <div class="col-12 col-md-6">
-                                <input type="text" id="courier_name" required name="update_courier_name"placeholder="Enter courier name" class="form-control">
+                                <input type="text" id="courier_name" required name="update_courier_name" placeholder="Enter courier name" class="form-control">
                                 @if ($errors->courier_update->has('update_courier_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
