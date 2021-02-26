@@ -110,5 +110,6 @@ Route::get('add-product', [ProductController::class, 'addProduct'])->name('add_p
 Route::post('store-product', [ProductController::class, 'storeProduct'])->name('store_product');
 Route::get('get-product', [ProductController::class, 'getProduct'])->name('get_product');
 Route::get('edit-category/{id}',  [ProductController::class, 'updateProduct'])->name('edit_product');
-// Route::post('delete-category/{id}',  [ProductController::class, 'deleteCategory'])->name('delete_category');
+Route::post('update-product/{id}',  [ProductController::class, 'storeUpdateProduct'])->name('store_update_product');
+Route::post('delete-category/{id}',  [ProductController::class, 'deleteCategory'])->name('delete_category');
 

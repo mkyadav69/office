@@ -145,35 +145,9 @@
                 $tr = $tr.prev('.parent');
             }
             var data = table.row($tr).data();
-            console.log(data);
-            $('div #customer_name').val(data['st_com_name']);
-            $('div #customer_last_name').val(data['st_cust_lname']);
-            $('div #customer_name').val(data['st_com_name']);
-            $('div #customer_region').val(data['st_regions']);
-
-            $('div #customer_address').val(data['st_com_address']);
-            $('div #persion1_name').val(data['st_con_person1']);
-            $('div #persion1_email').val(data['st_con_person1_email']);
-            $('div #persion1_mobile').val(data['st_con_person1_mobile']);
-
-            $('div #persion2_name').val(data['st_con_person2']);
-            $('div #persion2_email').val(data['st_con_person2_email']);
-            $('div #persion2_mobile').val(data['st_con_person2_mobile']);
-
-            $('div #customer_city').val(data['st_cust_city']);
-            $('div #gst_no').val(data['cust_pin_no']);
-            $('div #customer_pincode').val(data['in_pincode']);
-
-            $('div #customer_contry').val(data['st_country']);
-            $('div #customer_state').val(data['st_cust_state']);
-
-            $('div #customer_mobile').val(data['st_cust_mobile']);
-            $('div #customer_name').val(data['st_cust_email']);
-            $('div #customer_name').val(data['st_cust_email_cc']);
-            $('div #customer_name').val(data['in_branch']);
-
-            $('#editForm').attr('action', '/edit-customer/'+data['in_cust_id']);
-            $('#editModal').modal('show');  
+            var url = '{{ route("edit_product", ":id") }}';
+            url = url.replace(':id', data['pro_id']);
+            window.location.replace(url);
         });
 
         table.on('click', '.delete', function(){
