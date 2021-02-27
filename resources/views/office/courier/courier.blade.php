@@ -159,165 +159,64 @@
 </script>
 @endsection
 
+@section('addModal')
 <!-- add  record -->
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Add Courier</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="card">
-                    <form action="{{route('store_courier')}}" method="post">
-                        @csrf
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Courier Name</label>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <input type="text" name="courier_name" required placeholder="Enter courier name" value="{{old('courier_name')}}" class="form-control">
-                                @if ($errors->courier_add->has('courier_name'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->courier_add->first('courier_name') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Select Branch</label>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <select name="select_branch" required class="form-control">
-                                    <option value="">Select Branch</option>
-                                    @if(!empty($branch_wise))
-                                        @foreach($branch_wise as $id=>$name)
-                                            <option value="{{ $id }}" {{ old('select_branch') == $id ? "selected" : "" }}>{{ $name}}</option>
-                                        @endforeach
-                                    @else
-                                        <option value="">No branch found</option>
-                                    @endif
-                                </select>
-                                @if ($errors->courier_add->has('select_branch'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->courier_add->first('select_branch') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Confirm</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-          
-        </div>
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">Add Courier</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-</div>
-<!-- end modal large -->
-
-<!-- edit record -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Update Courier</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="card">
-                    <form method="post" id="editForm">
-                        @csrf
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Courier Name</label>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <input type="text" id="courier_name" required name="update_courier_name" placeholder="Enter courier name" class="form-control">
-                                @if ($errors->courier_update->has('update_courier_name'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->courier_update-> first('update_courier_name') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Select Branch</label>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <select id="select_branch" required name="update_select_branch" class="form-control">
-                                    <option value="">Select Branch</option>
-                                    @if(!empty($branch_wise))
-                                        @foreach($branch_wise as $id=>$name)
-                                        <option value="{{ $id }}">{{ $name}}</option>
-                                        @endforeach
-                                    @else
-                                        <option value="">No branch found</option>
-                                    @endif
-                                </select>
-                                @if ($errors->has('update_select_branch'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_select_branch') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Confirm</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-          
-        </div>
-    </div>
-</div>
-<!-- end modal large -->
-
-<!-- Delete-->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Delete</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="post" id="deleteForm">
+    <div class="modal-body">
+        <div class="card">
+            <form action="{{route('store_courier')}}" method="post">
                 @csrf
-                <div class="modal-body">
-                    <p>Are you sure to delete the record ?</p>
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="file-input" class=" form-control-label required">Courier Name</label>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <input type="text" name="courier_name" required placeholder="Enter courier name" value="{{old('courier_name')}}" class="form-control">
+                        @if ($errors->courier_add->has('courier_name'))
+                            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                <span class="badge badge-pill badge-danger">Error</span>
+                                {{ $errors->courier_add->first('courier_name') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+                    </div>
                 </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="file-input" class=" form-control-label required">Select Branch</label>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <select name="select_branch" required class="form-control">
+                            <option value="">Select Branch</option>
+                            @if(!empty($branch_wise))
+                                @foreach($branch_wise as $id=>$name)
+                                    <option value="{{ $id }}" {{ old('select_branch') == $id ? "selected" : "" }}>{{ $name}}</option>
+                                @endforeach
+                            @else
+                                <option value="">No branch found</option>
+                            @endif
+                        </select>
+                        @if ($errors->courier_add->has('select_branch'))
+                            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                <span class="badge badge-pill badge-danger">Error</span>
+                                {{ $errors->courier_add->first('select_branch') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary">Confirm</button>
@@ -325,5 +224,100 @@
             </form>
         </div>
     </div>
+    
 </div>
 <!-- end modal large -->
+@endsection
+
+@section('editModal')
+<!-- edit record -->
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">Update Courier</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <form method="post" id="editForm">
+                @csrf
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="file-input" class=" form-control-label required">Courier Name</label>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <input type="text" id="courier_name" required name="update_courier_name" placeholder="Enter courier name" class="form-control">
+                        @if ($errors->courier_update->has('update_courier_name'))
+                            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                <span class="badge badge-pill badge-danger">Error</span>
+                                {{ $errors->courier_update-> first('update_courier_name') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="file-input" class=" form-control-label required">Select Branch</label>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <select id="select_branch" required name="update_select_branch" class="form-control">
+                            <option value="">Select Branch</option>
+                            @if(!empty($branch_wise))
+                                @foreach($branch_wise as $id=>$name)
+                                <option value="{{ $id }}">{{ $name}}</option>
+                                @endforeach
+                            @else
+                                <option value="">No branch found</option>
+                            @endif
+                        </select>
+                        @if ($errors->has('update_select_branch'))
+                            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                <span class="badge badge-pill badge-danger">Error</span>
+                                {{ $errors->first('update_select_branch') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+</div>
+<!-- end modal large -->
+@endsection
+
+@section('deleteModal')
+<!-- Delete-->
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">Delete</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form method="post" id="deleteForm">
+        @csrf
+        <div class="modal-body">
+            <p>Are you sure to delete the record ?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Confirm</button>
+        </div>
+    </form>
+</div>
+<!-- end modal large -->
+@endsection

@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Quatation extends Model
 {
     protected $table = 'tbl_quot_format';
-    use HasFactory;
+    public $timestamps = false;
 }

@@ -22,7 +22,7 @@
         <h3 class="title-5 m-b-35">Manage Category</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
-                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#largeModal">
+                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#addModal">
                     <i class="zmdi zmdi-plus"></i> Add Category
                 </button>
                 <input type="file" class="au-btn-filter">
@@ -39,12 +39,22 @@
     </div>
 </div>
 @if(Session::has('errors'))
-    <script>
-        $(document).ready(function(){
-            $('#largeModal').modal({show: true});
-        });
-    </script>
-@endif 
+    @if(!empty($errors->category_add->any()))
+        <script>
+            $(document).ready(function(){
+                $('#addModal').modal({show: true});
+            });
+        </script>
+    @endif
+@endif  
+
+@if(Session::has('errors'))
+    @if($errors->category_update->any()))
+        <script>
+            $('#editModal').modal('show');  
+        </script>
+    @endif
+@endif
 <script>
     $(document).ready(function(){
         table = $('#category').DataTable({
@@ -131,6 +141,28 @@
 
             $('div #category_name').val(data['st_cat_name']);
             $('div #category_desc').val(data['st_cat_disc']);
+            var field = data['st_product_fields'];
+            var product_field = {!! json_encode($param) !!};
+            if(field != null){
+                var select_array = field.split(',');
+                var option = '';
+                $.each(product_field, function (key, field) {
+                    var check_exist_filed = select_array.includes(field);
+                    if(check_exist_filed == true){
+                        option = option +'<option value="'+ field +'" selected >'+ field +'</option>';
+                    }else{
+                        option = option + '<option value="'+ field +'">'+ field +'</option>';
+                    }
+                });
+                var sel = '<select name="product_param[]" multiple="" required class="form-control">'+option+'</select>';
+                $('div #product_fields').html(sel);
+            }else{
+                $.each(product_field, function (key, field) {
+                   option = option + '<option value="'+ field +'">'+ field +'</option>';
+                });
+                var sel = '<select name="product_param[]" multiple="" required class="form-control">'+option+'</select>';
+                $('div #product_fields').html(sel);
+            }
         
             $('#editForm').attr('action', '/edit-category/'+data['cat_id']);
             $('#editModal').modal('show');  
@@ -149,204 +181,224 @@
 </script>
 @endsection
 
+@section('addModal')
 <!-- add  record -->
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Add Category</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Add Category</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="card">
+                <form action="{{route('store_category')}}" method="post">
+                    @csrf
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Category Name</label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <input type="text" name="category_name" required value="{{old('category_name')}}" placeholder="Enter category name" class="form-control">
+                            @if ($errors->category_add->has('category_name'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->category_add->first('category_name') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Description</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <textarea placeholder="write description  . . . " name="category_desc"  required class="form-control">{{old('category_desc')}}</textarea>
+                            @if ($errors->category_add->has('category_desc'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->category_add->first('category_desc') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Principal Image</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="file" name="principal_image" required class="form-control-file">
+                            @if ($errors->category_add->has('principal_image'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->category_add->first('principal_image') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="multiple-select" class=" form-control-label">Product Fields Type</label>
+                        </div>
+                        <div class="col col-md-9">
+                            <select name="product_param[]" multiple="" required class="form-control">
+                            @if(!empty($param))
+                                @foreach($param as  $p)
+                                    <option value="{{$p}}" {{ (old('product_param') == null ? '' : (in_array($p ,old('product_param')) ? "selected":"")) }} >{{$p}}</option>
+                                @endforeach
+                            @endif
+                            </select>
+                            @if ($errors->category_add->has('product_param'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->category_add->first('product_param') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Confirm</button>
+                    </div>
+                </form>
             </div>
-            <div class="modal-body">
-                <div class="card">
-                    <form action="{{route('store_category')}}" method="post">
-                        @csrf
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Category Name</label>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <input type="text" name="category_name"placeholder="Enter category name" class="form-control">
-                                @if ($errors->has('category_name'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('category_name') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Description</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <textarea placeholder="write description  . . . " name="category_desc"  class="form-control"></textarea>
-                                @if ($errors->has('category_desc'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('category_desc') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Principal Image</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="file" name="principal_image" class="form-control-file">
-                                @if ($errors->has('principal_image'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('principal_image') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="multiple-select" class=" form-control-label">Product Fields Type</label>
-                            </div>
-                            <div class="col col-md-9">
-                                <select name="product_param[]" multiple="" class="form-control">
-                                @if(!empty($param))
-                                    @foreach($param as  $p)
-                                        <option value="{{$p}}">{{$p}}</option>
-                                    @endforeach
-                                @endif
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Confirm</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-          
         </div>
     </div>
-</div>
-<!-- end modal large -->
+<!-- end add-->
+@endsection
 
+@section('editModal')
 <!-- edit  record -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Update Category</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="card">
-                    <form  method="post" id="editForm">
-                        @csrf
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Category Name</label>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <input type="text" id="category_name" name="update_category_name"placeholder="Enter category name" class="form-control">
-                                @if ($errors->has('update_category_name'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_category_name') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Description</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <textarea id="category_desc" placeholder="write description  . . . " name="update_category_desc"  class="form-control"></textarea>
-                                @if ($errors->has('update_category_desc'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_category_desc') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Principal Image</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="file" id="principal_image" name="update_principal_image" class="form-control-file">
-                                @if ($errors->has('update_principal_image'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_principal_image') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Confirm</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-          
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Update Category</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-    </div>
-</div>
-<!-- end modal large -->
+        <div class="modal-body">
+            <div class="card">
+                <form  method="post" id="editForm">
+                    @csrf
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Category Name</label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <input type="text" id="category_name" required name="update_category_name" value="{{old('update_category_name')}}" placeholder="Enter category name" class="form-control">
+                            @if ($errors->category_update->has('update_category_name'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->category_update->first('update_category_name') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
 
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Description</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <textarea id="category_desc" placeholder="write description  . . . " required name="update_category_desc"  class="form-control"> {{old('update_category_desc')}}</textarea>
+                            @if ($errors->category_update->has('update_category_desc'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->category_update->first('update_category_desc') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Principal Image</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="file" id="principal_image" required name="update_principal_image" class="form-control-file">
+                            @if ($errors->category_update->has('update_principal_image'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->category_update->first('update_principal_image') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="multiple-select" class=" form-control-label">Product Fields Type</label>
+                        </div>
+                        <div class="col col-md-9" id="product_fields">
+                        </div>
+                            @if ($errors->category_update->has('product_param'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->category_update->first('product_param') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+<!-- end modal large -->
+@endsection
+
+@section('deleteModal')
 <!-- Delete-->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Delete</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="post" id="deleteForm">
-                @csrf
-                <div class="modal-body">
-                    <p>Are you sure to delete the record ?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Confirm</button>
-                </div>
-            </form>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Delete</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
+        <form method="post" id="deleteForm">
+            @csrf
+            <div class="modal-body">
+                <p>Are you sure to delete the record ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Confirm</button>
+            </div>
+        </form>
     </div>
-</div>
-<!-- end modal large -->
+<!-- end delete -->
+@endsection

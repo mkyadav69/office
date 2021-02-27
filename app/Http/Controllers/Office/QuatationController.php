@@ -90,6 +90,7 @@ class QuatationController extends Controller
             'update_add_tin'=>'required',
             'update_mobile_no'=>'required',
             'update_email_address'=>'required',
+            'dt_modify'=>Carbon::now(),
         ]);
         
         if ($validator->fails()) {
@@ -104,7 +105,6 @@ class QuatationController extends Controller
             'stn_billing_note'=>$request->update_billing_notes,
             'stn_tin_no'=>$request->update_add_tin,
             'int_branch_id'=>$request->update_select_branch,
-            'updated_at'=>Carbon::now(),
         ]);
         if(!empty($check_status)){
             return back()->with([

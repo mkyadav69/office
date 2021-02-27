@@ -52,7 +52,14 @@ class PrincipalController extends Controller
     }
 
     public function getPrincipal(Request $request){
-        return Datatables::of(Principal::query())->make(true);
+        $principal = Principal::get();
+        return Datatables::of($principal)
+           ->editColumn('dt_created', function ($principal) {
+                $date = $principal['dt_created'];
+                if(!empty($date)){
+                    return date('d-m-Y', strtotime($date));
+                }
+           })->make(true);
     }
 
     public function updatePrincipals(Request $request, $id){
@@ -82,7 +89,6 @@ class PrincipalController extends Controller
             'small_logo_image'=>$request->update_principal_image,
             'status'=>$status,
             'dt_modify'=>Carbon::now(),
-            'updated_at'=>Carbon::now(),
         ]);
         if(!empty($check_status)){
             return back()->with([

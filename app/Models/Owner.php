@@ -9,5 +9,4 @@ class Owner extends Model
 {
     protected $table = 'tbl_custowner';
     public $timestamps = false;
-    
 }

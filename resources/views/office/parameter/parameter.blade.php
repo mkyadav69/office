@@ -36,12 +36,22 @@
     
 </div>
 @if(Session::has('errors'))
-    <script>
-        $(document).ready(function(){
-            $('#largeModal').modal({show: true});
-        });
-    </script>
+    @if(!empty($errors->parameter_add->any()))
+        <script>
+            $(document).ready(function(){
+                $('#addModal').modal({show: true});
+            });
+        </script>
+    @endif
 @endif  
+
+@if(Session::has('errors'))
+    @if($errors->parameter_update->any()))
+        <script>
+            $('#editModal').modal('show');  
+        </script>
+    @endif
+@endif
 <script>
     $(document).ready(function(){
         table = $('#product_parameter').DataTable({
@@ -163,11 +173,11 @@
                             <label for="file-input" class=" form-control-label required">Parameter Name</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text" placeholder="parameter" name="parameter_name" value="{{old('parameter_name')}}" class="form-control">
-                            @if ($errors->has('parameter_name'))
+                            <input type="text" placeholder="parameter" required name="parameter_name" value="{{old('parameter_name')}}" class="form-control">
+                            @if ($errors->parameter_add->has('parameter_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->first('parameter_name') }}
+                                    {{ $errors->parameter_add->first('parameter_name') }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -181,11 +191,11 @@
                             <label for="file-input" class=" form-control-label required">Column Name</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text" placeholder="column name" name="column_name" value="{{old('column_name')}}"  class="form-control">
-                            @if ($errors->has('column_name'))
+                            <input type="text" placeholder="column name" required name="column_name" value="{{old('column_name')}}"  class="form-control">
+                            @if ($errors->parameter_add->has('column_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->first('column_name') }}
+                                    {{ $errors->parameter_add->first('column_name') }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -224,11 +234,11 @@
                             <label for="file-input" class=" form-control-label required">Parameter Name</label>
                         </div>
                         <div class="col-12 col-md-9 param_name">
-                            <input type="text" id="parameter_name" placeholder="parameter" name="update_parameter_name" value="{{old('update_parameter_name')}}" class="form-control">
-                            @if ($errors->has('update_parameter_name'))
+                            <input type="text" id="parameter_name" placeholder="parameter" required name="update_parameter_name" value="{{old('update_parameter_name')}}" class="form-control">
+                            @if ($errors->parameter_update->has('update_parameter_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->first('update_parameter_name') }}
+                                    {{ $errors->parameter_update->first('update_parameter_name') }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -242,11 +252,11 @@
                             <label for="file-input" class=" form-control-label required">Column Name</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text" id="column_name" placeholder="column name" name="update_column_name" value="{{old('update_column_name')}}"  class="form-control">
-                            @if ($errors->has('update_column_name'))
+                            <input type="text" id="column_name" placeholder="column name" required name="update_column_name" value="{{old('update_column_name')}}"  class="form-control">
+                            @if ($errors->parameter_update->has('update_column_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->first('update_column_name') }}
+                                    {{ $errors->parameter_update->first('update_column_name') }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>

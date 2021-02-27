@@ -271,8 +271,8 @@
                         <div class="col-12 col-md-6">
                             <select name="update_select_mode" id="select_mode" required class="form-control">
                                 <option value="">Select Reason</option>
-                                <option value="1">Pending Order</option>
-                                <option value="2">Pending Shipment</option>
+                                <option value="1" {{old('update_select_mode')== '1' ? 'selected' : ''}}>Pending Order</option>
+                                <option value="2" {{old('update_select_mode')== '2' ? 'selected' : ''}}>Pending Shipment</option>
                             </select>
                             @if ($errors->has('update_select_mode'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">

@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Parameter extends Model
 {
     protected $table = 'tbl_parameter';
-    use HasFactory;
+    public $timestamps = false;
 }
