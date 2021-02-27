@@ -20,11 +20,16 @@ class CategoryController extends Controller
     }
 
     public function storeCategory(Request $request){
-        $this->validate($request,[
+        $validator = Validator::make($request->all(), [
             'category_name' => 'required',
             'category_desc'=>'required',
             'principal_image'=>'required',
         ]);
+        
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'category_add')->withInput();
+        }
+
         
         if(!empty($request->product_param)){
             $param = implode(',', $request->product_param);
@@ -57,11 +62,15 @@ class CategoryController extends Controller
     }
 
     public function updateCategory(Request $request, $id){
-        $this->validate($request,[
+        $validator = Validator::make($request->all(), [
             'update_category_name' => 'required',
             'update_category_desc'=>'required',
             'update_principal_image'=>'required',
         ]);
+        
+        if ($validator->fails()) {
+            return back()->withErrors($validator, 'category_update')->withInput();
+        }
 
         $check_status = Category::where('cat_id', $id)->update([
             'st_cat_name'=>$request->update_category_name,

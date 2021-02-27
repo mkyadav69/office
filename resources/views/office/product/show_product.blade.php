@@ -48,23 +48,6 @@
     </div>
                        
 </div>
-@if(Session::has('errors'))
-    @if(!empty($errors->cutomer_add->any()))
-        <script>
-            $(document).ready(function(){
-                $('#addModal').modal({show: true});
-            });
-        </script>
-    @endif
-@endif  
-
-@if(Session::has('errors'))
-    @if($errors->cutomer_update->any()))
-        <script>
-            $('#editModal').modal('show');  
-        </script>
-    @endif
-@endif 
 <script>
     $(document).ready(function(){
         table = $('#product').DataTable({
@@ -164,7 +147,7 @@
                 $tr = $tr.prev('.parent');
             }
             var data = table.row($tr).data();
-            $('#deleteForm').attr('action', '/delete-customer/'+data['in_cust_id']);
+            $('#deleteForm').attr('action', '/delete-product/'+data['pro_id']);
             $('#deleteModal').modal('show');  
         });
     });
@@ -173,28 +156,25 @@
 @endsection
 
 
-
+@section('deleteModal')
 <!-- Delete-->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Delete</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="post" id="deleteForm">
-                @csrf
-                <div class="modal-body">
-                    <p>Are you sure to delete the record ?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Confirm</button>
-                </div>
-            </form>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Delete</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
+        <form method="post" id="deleteForm">
+            @csrf
+            <div class="modal-body">
+                <p>Are you sure to delete the record ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Confirm</button>
+            </div>
+        </form>
     </div>
-</div>
 <!-- end modal large -->
+@endsection

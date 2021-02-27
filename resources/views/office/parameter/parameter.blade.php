@@ -22,7 +22,7 @@
         <h3 class="title-5 m-b-35">Manage Parameters</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
-                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#largeModal">
+                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#addModal">
                     <i class="zmdi zmdi-plus"></i> Add Parameter
                 </button>
             </div>
@@ -145,157 +145,148 @@
 </script>
 @endsection
 
+@section('addModal')
 <!-- Add  Data-->
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Add Parameter</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="card">
-                    <form action="{{route('store_parameter')}}" method="post">
-                        @csrf
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Parameter Name</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="text" placeholder="parameter" name="parameter_name" value="{{old('parameter_name')}}" class="form-control">
-                                @if ($errors->has('parameter_name'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('parameter_name') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Add Parameter</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="card">
+                <form action="{{route('store_parameter')}}" method="post">
+                    @csrf
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Parameter Name</label>
                         </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" placeholder="parameter" name="parameter_name" value="{{old('parameter_name')}}" class="form-control">
+                            @if ($errors->has('parameter_name'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->first('parameter_name') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
 
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Column Name</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="text" placeholder="column name" name="column_name" value="{{old('column_name')}}"  class="form-control">
-                                @if ($errors->has('column_name'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('column_name') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Column Name</label>
                         </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" placeholder="column name" name="column_name" value="{{old('column_name')}}"  class="form-control">
+                            @if ($errors->has('column_name'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->first('column_name') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
 
-                
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Confirm</button>
-                        </div>
-                    </form>
-                </div>
+            
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Confirm</button>
+                    </div>
+                </form>
             </div>
-          
         </div>
     </div>
-</div>
 <!-- End Add-->
+@endsection
 
-
+@section('editModal')
 <!-- Update  Data-->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Update Parameter</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="card">
-                    <form method="post" id="editForm">
-                        @csrf
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Parameter Name</label>
-                            </div>
-                            <div class="col-12 col-md-9 param_name">
-                                <input type="text" id="parameter_name" placeholder="parameter" name="update_parameter_name" value="{{old('update_parameter_name')}}" class="form-control">
-                                @if ($errors->has('update_parameter_name'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_parameter_name') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Column Name</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="text" id="column_name" placeholder="column name" name="update_column_name" value="{{old('update_column_name')}}"  class="form-control">
-                                @if ($errors->has('update_column_name'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_column_name') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Confirm</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-          
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Update Parameter</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
+        <div class="modal-body">
+            <div class="card">
+                <form method="post" id="editForm">
+                    @csrf
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Parameter Name</label>
+                        </div>
+                        <div class="col-12 col-md-9 param_name">
+                            <input type="text" id="parameter_name" placeholder="parameter" name="update_parameter_name" value="{{old('update_parameter_name')}}" class="form-control">
+                            @if ($errors->has('update_parameter_name'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->first('update_parameter_name') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Column Name</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="column_name" placeholder="column name" name="update_column_name" value="{{old('update_column_name')}}"  class="form-control">
+                            @if ($errors->has('update_column_name'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->first('update_column_name') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+            
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
     </div>
-</div>
 <!-- end modal large -->
+@endsection
 
-
+@section('deleteModal')
 <!-- Delete-->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Delete</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="post" id="deleteForm">
-                @csrf
-                <div class="modal-body">
-                    <p>Are you sure to delete the record ?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Confirm</button>
-                </div>
-            </form>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Delete</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
+        <form method="post" id="deleteForm">
+            @csrf
+            <div class="modal-body">
+                <p>Are you sure to delete the record ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Confirm</button>
+            </div>
+        </form>
     </div>
-</div>
 <!-- end modal large -->
+@endsection

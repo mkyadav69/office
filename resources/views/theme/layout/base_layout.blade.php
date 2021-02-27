@@ -73,7 +73,6 @@
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         @yield('content')
-                        @yield('modal')
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
@@ -88,7 +87,21 @@
             <!-- END PAGE CONTAINER-->
         </div>
 
-    </div>
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                @yield('addModal')
+            </div>
+        </div>
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                @yield('editModal')
+            </div>
+        </div>
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                @yield('deleteModal')
+            </div>
+        </div>
  
 
     

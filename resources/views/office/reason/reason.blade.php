@@ -167,164 +167,155 @@
 </script>
 @endsection
 
+@section('addModal')
 <!-- add  reason -->
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Add Reason</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="card">
-                    <form action="{{route('store_reason')}}" method="post">
-                        @csrf
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Reason Name</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="text" placeholder="Name" required name="reason_name"  value="{{ old('reason_name')}}" class="form-control">
-                                @if ($errors->reason_add->has('reason_name'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->reason_add->first('reason_name') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Add Reason</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="card">
+                <form action="{{route('store_reason')}}" method="post">
+                    @csrf
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Reason Name</label>
                         </div>
-                           
+                        <div class="col-12 col-md-9">
+                            <input type="text" placeholder="Name" required name="reason_name"  value="{{ old('reason_name')}}" class="form-control">
+                            @if ($errors->reason_add->has('reason_name'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->reason_add->first('reason_name') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                        
 
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Reason Mode</label>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <select name="select_mode" required class="form-control">
-                                    <option value="">Select Reason</option>
-                                    <option value="1" {{ old('select_mode') == 1 ? "selected" : "" }} >Pending Order</option>
-                                    <option value="2" {{ old('select_mode') == 2 ? "selected" : "" }} >Pending Shipment</option>
-                                </select>
-                                @if ($errors->reason_add->has('select_mode'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->reason_add->first('select_mode') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Reason Mode</label>
                         </div>
+                        <div class="col-12 col-md-6">
+                            <select name="select_mode" required class="form-control">
+                                <option value="">Select Reason</option>
+                                <option value="1" {{ old('select_mode') == 1 ? "selected" : "" }} >Pending Order</option>
+                                <option value="2" {{ old('select_mode') == 2 ? "selected" : "" }} >Pending Shipment</option>
+                            </select>
+                            @if ($errors->reason_add->has('select_mode'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->reason_add->first('select_mode') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Confirm</button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Confirm</button>
+                    </div>
+                </form>
             </div>
-          
         </div>
     </div>
-</div>
 <!-- end modal large -->
+@endsection
 
-
+@section('editModal')
 <!-- update  reason -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Update Reason</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="card">
-                    <form  method="post" id="editForm">
-                        @csrf
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Reason Name</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="text" id="reason_name" placeholder="Name" required name="update_reason_name"  class="form-control">
-                                @if ($errors->has('update_reason_name'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_reason_name') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Update Reason</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="card">
+                <form  method="post" id="editForm">
+                    @csrf
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Reason Name</label>
                         </div>
-                           
+                        <div class="col-12 col-md-9">
+                            <input type="text" id="reason_name" placeholder="Name" required name="update_reason_name"  class="form-control">
+                            @if ($errors->has('update_reason_name'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->first('update_reason_name') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                        
 
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">Reason Mode</label>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <select name="update_select_mode" id="select_mode" required class="form-control">
-                                    <option value="">Select Reason</option>
-                                    <option value="1">Pending Order</option>
-                                    <option value="2">Pending Shipment</option>
-                                </select>
-                                @if ($errors->has('update_select_mode'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('update_select_mode') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Reason Mode</label>
                         </div>
+                        <div class="col-12 col-md-6">
+                            <select name="update_select_mode" id="select_mode" required class="form-control">
+                                <option value="">Select Reason</option>
+                                <option value="1">Pending Order</option>
+                                <option value="2">Pending Shipment</option>
+                            </select>
+                            @if ($errors->has('update_select_mode'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->first('update_select_mode') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Confirm</button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Confirm</button>
+                    </div>
+                </form>
             </div>
-          
         </div>
     </div>
-</div>
 <!-- end modal large -->
+@endsection
 
+@section('deleteModal')
 <!-- Delete-->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Delete</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="post" id="deleteForm">
-                @csrf
-                <div class="modal-body">
-                    <p>Are you sure to delete the record ?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Confirm</button>
-                </div>
-            </form>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Delete</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
+        <form method="post" id="deleteForm">
+            @csrf
+            <div class="modal-body">
+                <p>Are you sure to delete the record ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Confirm</button>
+            </div>
+        </form>
     </div>
-</div>
 <!-- end modal large -->
+@endsection

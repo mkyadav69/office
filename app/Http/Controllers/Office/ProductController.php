@@ -203,4 +203,16 @@ class ProductController extends Controller
             }
         }
     }
+
+    public function deleteProduct(Request $request, $id){
+        $records = Product::where('pro_id', $id)->delete();
+        if($records == '1'){
+            $message =  'Records deleted successfully !';
+        }else{
+            $message ='Fail to delete record !';
+        }
+        return back()->with([
+            'message' =>$message
+        ]);
+    }
 }

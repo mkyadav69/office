@@ -1,7 +1,7 @@
 <div class="menu-sidebar__content js-scrollbar1">
     <nav class="navbar-sidebar">
         <ul class="list-unstyled navbar__list">
-            <li class="{{ request()->is('show-customer') ? 'active' :( request()->is('show-owner') ? 'active' : '') }} has-sub">
+            <li class="{{ request()->is('show-customer') ? 'active' :( request()->is('show-owner') ? 'active' : (URL::to('/') ? 'active' : '') )}} has-sub">
                 <a class="js-arrow" href="#">
                     <i class="fas fa-users"></i>Customers & Owner</a>
                 <ul class="list-unstyled navbar__sub-list js-sub-list">
@@ -14,14 +14,14 @@
                 </ul>
             </li>
 
-            <li class="has-sub">
+            <!-- <li class="has-sub">
                 <a class="js-arrow" href="#">
                     <i class="fas fa-book"></i>Quatations</a>
                 <ul class="list-unstyled navbar__sub-list js-sub-list">
                     <li>
                         <a href="index.html">Manage Quatations</a>
                 </ul>
-            </li>
+            </li> -->
 
             <!-- <li class="has-sub">
                 <a class="js-arrow" href="#">
