@@ -12,6 +12,11 @@ use DataTables;
 
 class CourierController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function showCourier(){
         $branch_wise = Config::get('constant.branch_wise');
         return view('office.courier.courier', compact('branch_wise'));

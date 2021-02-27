@@ -16,6 +16,11 @@ use Config;
 class CustomerController extends Controller
 {
     
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function showCustomer(){
         
         $regions_id = Config::get('constant.regions_id');

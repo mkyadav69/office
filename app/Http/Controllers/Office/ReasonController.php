@@ -11,6 +11,11 @@ use DataTables;
 
 class ReasonController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function showReason(){
         return view('office.reason.reason');
     }

@@ -12,6 +12,11 @@ use DataTables;
 
 class QuatationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function showQuatation(){
         $branch_wise = Config::get('constant.branch_wise');
         $swipe_branch = array_flip($branch_wise);

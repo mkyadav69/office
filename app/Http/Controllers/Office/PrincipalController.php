@@ -11,6 +11,11 @@ use DataTables;
 
 class PrincipalController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function showPrincipal(){
         return view('office.principal.principal');
     }

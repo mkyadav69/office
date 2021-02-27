@@ -11,6 +11,11 @@ use DataTables;
 
 class UspController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function showUsp(){
         return view('office.usp.usp');
     }
