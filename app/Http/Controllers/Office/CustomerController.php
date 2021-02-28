@@ -20,7 +20,7 @@ class CustomerController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     public function showCustomer(){
         
         $regions_id = Config::get('constant.regions_id');

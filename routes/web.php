@@ -7,6 +7,7 @@ use App\Http\Controllers\Office\DashboardController;
 use App\Http\Controllers\Office\CustomerController;
 use App\Http\Controllers\Office\PrincipalController;
 use App\Http\Controllers\Office\CourierController;
+use App\Http\Controllers\Office\QuatationFormatController;
 use App\Http\Controllers\Office\QuatationController;
 use App\Http\Controllers\Office\BrandController;
 use App\Http\Controllers\Office\ReasonController;
@@ -14,6 +15,8 @@ use App\Http\Controllers\Office\UspController;
 use App\Http\Controllers\Office\ProductParameter;
 use App\Http\Controllers\Office\CategoryController;
 use App\Http\Controllers\Office\ProductController;
+use App\Http\Controllers\Office\NotifyController;
+
 
 # Register
 Route::get('register', [RegisterController::class, 'viewRegister'])->name('register');
@@ -62,11 +65,11 @@ Route::post('delete-courier/{id}',  [CourierController::class, 'deleteCourier'])
 
 
 # 5. Quatation Format
-Route::get('show-quatation', [QuatationController::class, 'showQuatation'])->name('show_quatation');
-Route::post('store-quatation', [QuatationController::class, 'storeQuatation'])->name('store_quatation');
-Route::get('get-quatation', [QuatationController::class, 'getQuatation'])->name('get_quatation');
-Route::post('edit-quatation/{id}',  [QuatationController::class, 'updateQuatation'])->name('edit_quatation');
-Route::post('delete-quatation/{id}',  [QuatationController::class, 'deleteQuatation'])->name('delete_quatation');
+Route::get('show-quatation-format', [QuatationFormatController::class, 'showQuatationFormat'])->name('show_quatation_format');
+Route::post('store-quatation-format', [QuatationFormatController::class, 'storeQuatationFormat'])->name('store_quatation_format');
+Route::get('get-quatation-format', [QuatationFormatController::class, 'getQuatationFormat'])->name('get_quatation_format');
+Route::post('edit-quatation-format/{id}',  [QuatationFormatController::class, 'updateQuatationFormat'])->name('edit_quatation_format');
+Route::post('delete-quatation-format/{id}',  [QuatationFormatController::class, 'deleteQuatationFormat'])->name('delete_quatation_format');
 
 # 6. Brand
 Route::get('show-brand', [BrandController::class, 'showBrand'])->name('show_brand');
@@ -113,3 +116,17 @@ Route::get('edit-product/{id}',  [ProductController::class, 'updateProduct'])->n
 Route::post('update-product/{id}',  [ProductController::class, 'storeUpdateProduct'])->name('store_update_product');
 Route::post('delete-product/{id}',  [ProductController::class, 'deleteProduct'])->name('delete_product');
 
+# 12. Quatation
+Route::get('show-quatation', [QuatationController::class, 'showQuatation'])->name('show_quatation');
+Route::get('add-quatation', [QuatationController::class, 'addQuatation'])->name('add_quatation');
+// Route::post('store-quatation-format', [QuatationFormatController::class, 'storeQuatationFormat'])->name('store_quatation_format');
+// Route::post('edit-quatation-format/{id}',  [QuatationFormatController::class, 'updateQuatationFormat'])->name('edit_quatation_format');
+// Route::post('delete-quatation-format/{id}',  [QuatationFormatController::class, 'deleteQuatationFormat'])->name('delete_quatation_format');
+
+
+# 13. Notification
+Route::get('show-notify', [NotifyController::class, 'showNotify'])->name('show_notify');
+Route::post('store-notify', [NotifyController::class, 'storeNotify'])->name('store_notify');
+Route::get('get-notify', [NotifyController::class, 'getNotify'])->name('get_notify');
+Route::post('edit-notify/{id}',  [NotifyController::class, 'updateNotify'])->name('edit_notify');
+Route::post('delete-notify/{id}',  [NotifyController::class, 'deleteNotify'])->name('delete_notify');

@@ -7,6 +7,7 @@
     color: red;
     padding-left: 5px;
 }
+
 .td-limit {
     max-width: 200px;
     text-overflow: ellipsis;
@@ -24,6 +25,15 @@
             </button>
         </div>
     @endif
+    @if (session()->has('message_error'))
+        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+            {{ session('message_error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+    
     <div class="col-md-12">
         <h3 class="title-5 m-b-35">Manage Quatations</h3>
         <div class="table-data__tool">
@@ -73,7 +83,7 @@
                 scrollX: true,
                 responsive: true,
                 ajax: {
-                    url:'{{ route("get_quatation") }}',
+                    url:'{{ route("get_quatation_format") }}',
                 },
                 pageLength: 10,
                 columnDefs: [{ 
@@ -92,10 +102,14 @@
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'stn_bill_add', title : 'Billing Address', className: "text td-limit"},
-                    { data: 'stn_branch_add', title : 'Branch Address', className: "text td-limit"},
-                    { data: 'stn_tin_no', title : 'Tin Number', className: "text td-limit"},
-                    { data: 'int_branch_id', title : 'Branch Name', className: "text td-limit"},
+                    {   data: 'stn_bill_add', 
+                        name:'stn_bill_add',
+                        title : 'Billing Address', 
+                        className: "text td_ellipsis td-limit "
+                    },
+                    { data: 'stn_branch_add', title : 'Branch Address', className: "text td_ellipsis td-limit "},
+                    { data: 'stn_tin_no', title : 'Tin Number', className: "text td_ellipsis td-limit "},
+                    { data: 'int_branch_id', title : 'Branch Name', className: "text td_ellipsis td-limit "},
                     { data: 'dt_created', title : 'Created At'},
                     {
                         'data': null,
@@ -132,7 +146,29 @@
                             });
                         }
                     });
-                }                                                  
+            } 
+            // drawCallback: function( settings ) {
+            //     alert("uuu");
+            //         $('td.td_ellipsis').css('text-overflow', 'ellipsis');
+            //         $('td.td_ellipsis').css('overflow', 'hidden');
+            //         $('td.td_ellipsis').css(' white-space', 'nowrap');
+            //         $('td.td_ellipsis').addClass('ellipsisd'); 
+            //         $('td.td_ellipsis').unbind('click');
+            //         $('td.date').addClass('date_format');
+            //         $('td.td_ellipsis').click(function(){
+            //             if($(this).hasClass('ellipsisd')){
+            //                 alert("ll");
+            //                 $(this).removeAttr('style');
+            //                 $(this).removeClass('ellipsisd'); 
+            //             }else{
+            //                 alert("kk");
+            //                 $(this).css('text-overflow', 'ellipsis');
+            //                 $(this).css('overflow', 'hidden');
+            //                 $(this).css('white-space', 'nowrap'); 
+            //                 $(this).addClass('ellipsisd'); 
+            //             }
+            //         });
+            // }                                                  
         });
         
         table.on('click', '.edit', function(){
@@ -155,7 +191,7 @@
                 $('div #select_branch').val('');
             }
 
-            $('#editForm').attr('action', '/edit-quatation/'+data['int_quotformat_id']);
+            $('#editForm').attr('action', '/edit-quatation-format/'+data['int_quotformat_id']);
             $('#editModal').modal('show');  
         });
 
@@ -165,7 +201,7 @@
                 $tr = $tr.prev('.parent');
             }
             var data = table.row($tr).data();
-            $('#deleteForm').attr('action', '/delete-quatation/'+data['int_quotformat_id']);
+            $('#deleteForm').attr('action', '/delete-quatation-format/'+data['int_quotformat_id']);
             $('#deleteModal').modal('show');  
         });
     });
@@ -183,7 +219,7 @@
         </div>
         <div class="modal-body">
             <div class="card">
-                <form  action="{{route('store_quatation')}}"method="post">
+                <form  action="{{route('store_quatation_format')}}"method="post">
                     @csrf
                     <div class="card-body card-block">
                         <div class="form-group">

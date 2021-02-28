@@ -97,11 +97,11 @@
                     [5, 15, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'cust_pin_no', className: "text td-limit", title : 'GST No'},
-                    { data: 'st_com_name', className: "text td-limit", title : 'Company Name'},
-                    { data: 'st_cust_city', className: "select td-limit", title : 'View Branch Wise'},
-                    { data: 'st_cust_state', className: "text td-limit", title : 'State'},
-                    { data: 'st_regions', className: "select td-limit",title : 'View Regions Wise'},
+                    { data: 'cust_pin_no', className: "text td_ellipsis", title : 'GST No'},
+                    { data: 'st_com_name', className: "text td_ellipsis", title : 'Company Name'},
+                    { data: 'st_cust_city', className: "select td_ellipsis", title : 'View Branch Wise'},
+                    { data: 'st_cust_state', className: "text td_ellipsis", title : 'State'},
+                    { data: 'st_regions', className: "select td_ellipsis",title : 'View Regions Wise'},
                     { data: 'dt_created', title : 'Created At'},
                     {
                         'data': null,
@@ -138,7 +138,27 @@
                             });
                         }
                     });
-                }
+                },
+                drawCallback: function( settings ) {
+                    $('td.td_ellipsis').css('text-overflow', 'ellipsis');
+                    $('td.td_ellipsis').css('overflow', 'hidden');
+                    $('td.td_ellipsis').css('white-space', 'nowrap'); 
+                    $('td.td_ellipsis').addClass('ellipsisd'); 
+                    $('td.td_ellipsis').unbind('click');
+                    $('td.date').addClass('date_format');
+                    $('td.td_ellipsis').click(function(){
+                        if($(this).hasClass('ellipsisd')){
+                            $(this).removeAttr('style');
+                            $(this).removeClass('ellipsisd'); 
+                        }
+                        else{
+                            $(this).css('text-overflow', 'ellipsis');
+                            $(this).css('overflow', 'hidden');
+                            $(this).css('white-space', 'nowrap'); 
+                            $(this).addClass('ellipsisd'); 
+                        }
+                    });
+            } 
         });
         table.on('click', '.edit', function(){
             $tr = $(this).closest('tr');

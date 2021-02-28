@@ -14,14 +14,14 @@
                 </ul>
             </li>
 
-            <!-- <li class="has-sub">
+            <li class="{{ request()->is('show-quatation') ? 'active' : '' }} has-sub">
                 <a class="js-arrow" href="#">
                     <i class="fas fa-book"></i>Quatations</a>
                 <ul class="list-unstyled navbar__sub-list js-sub-list">
                     <li>
-                        <a href="index.html">Manage Quatations</a>
+                        <a href="{{route('show_quatation')}}">Manage Quatations</a>
                 </ul>
-            </li> -->
+            </li>
 
             <!-- <li class="has-sub">
                 <a class="js-arrow" href="#">
@@ -89,7 +89,7 @@
             
             <li class="{{ request()->is('show-brand') ? 'active' : '' }} has-sub">
                 <a class="js-arrow" href="#">
-                    <i class="fas fa-square"></i>Band</a>
+                    <i class="fas fa-square"></i>Brand</a>
                 <ul class="list-unstyled navbar__sub-list js-sub-list">
                     <li>
                         <a href="{{route('show_brand')}}">Manage Brands</a>
@@ -120,6 +120,16 @@
                 </ul>
             </li>
 
+            <li class="{{ request()->is('show-notify') ? 'active' : '' }} has-sub">
+                <a class="js-arrow" href="#">
+                    <i class="fas   fa-shopping-cart"></i>Notification</a>
+                <ul class="list-unstyled navbar__sub-list js-sub-list">
+                    <li>
+                        <a href="{{route('show_notify')}}">Manage Notification</a>
+                    </li>
+                </ul>
+            </li>
+
             <li class="{{ request()->is('show-principals') ? 'active' : '' }} has-sub">
                 <a class="js-arrow" href="#">
                     <i class="fas fa-tablet"></i>Principals</a>
@@ -130,12 +140,12 @@
                 </ul>
             </li>
 
-            <li class="{{ request()->is('show-quatation') ? 'active' : '' }} has-sub">
+            <li class="{{ request()->is('show-quatation-format') ? 'active' : '' }} has-sub">
                 <a class="js-arrow" href="#">
                     <i class="fas   fa-list-alt"></i>Quatations Format</a>
                 <ul class="list-unstyled navbar__sub-list js-sub-list">
                     <li>
-                        <a href="{{route('show_quatation')}}">Manage Quatation</a>
+                        <a href="{{route('show_quatation_format')}}">Manage Quatation Format</a>
                     </li>
                 </ul>
             </li>
