@@ -14,7 +14,7 @@
                 </ul>
             </li>
 
-            <li class="{{ request()->is('show-quatation') ? 'active' : '' }} has-sub">
+            <li class="{{ request()->is('show-quatation') ? 'active' : (request()->is('add-quatation') ? 'active' : '') }} has-sub">
                 <a class="js-arrow" href="#">
                     <i class="fas fa-book"></i>Quatations</a>
                 <ul class="list-unstyled navbar__sub-list js-sub-list">
@@ -122,7 +122,7 @@
 
             <li class="{{ request()->is('show-notify') ? 'active' : '' }} has-sub">
                 <a class="js-arrow" href="#">
-                    <i class="fas   fa-shopping-cart"></i>Notification</a>
+                    <i class="fas fa-tags"></i>Notification</a>
                 <ul class="list-unstyled navbar__sub-list js-sub-list">
                     <li>
                         <a href="{{route('show_notify')}}">Manage Notification</a>

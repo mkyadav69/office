@@ -592,7 +592,6 @@
     </div>
     
 <!-- end add record -->
-
 @endsection
 
 @section('editModal')

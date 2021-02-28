@@ -4,6 +4,11 @@ namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Notify;
+use App\Models\Customer;
+use Carbon\Carbon;
+use DataTables;
+use Config;
 
 class QuatationController extends Controller
 {
@@ -13,11 +18,22 @@ class QuatationController extends Controller
     }
     
     public function showQuatation(){
-        // $branch_wise = Config::get('constant.branch_wise');
-        // $swipe_branch = array_flip($branch_wise);
-        return view('office.quatation.show_quatation');
+        $notify = Notify::get();
+        return view('office.quatation.show_quatation', compact('notify'));
     }
     public function addQuatation(){
-        return view('office.quatation.add_quatation');
+        $notify = Notify::get();
+        $company = Customer::get();
+        if(!empty($notify)){
+            $notify = collect($notify)->pluck('name', 'id')->toArray();
+        }else{
+            $notify = '';
+        }
+        if(!empty($company)){
+            $company = collect($company)->pluck('st_com_name', 'in_cust_id')->toArray();
+        }else{
+            $company = '';
+        }
+        return view('office.quatation.add_quatation', compact('notify', 'company'));
     }
 }
