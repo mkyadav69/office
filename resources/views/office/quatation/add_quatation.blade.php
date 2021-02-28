@@ -126,7 +126,7 @@ datepicker,
 
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Date </label>
-                                <input type="text" name="datepicker" id="datepicker" class="form-control" placeholder="From Date" readonly />
+                                <input type="text" name="datepicker" id="datepicker" class="form-control" placeholder="DD-MM-YYY" readonly />
                                 @if ($errors->has('st_part_No'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -140,7 +140,7 @@ datepicker,
 
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Add Customer</label>
-                                    <span id="datepicker" class="form-control" style="background:gray" data-toggle="modal" data-target="#addModal"><i class="zmdi zmdi-plus"></i> Add</span>
+                                    <span id="datepicker" class="form-control btn btn-primary" data-toggle="modal" data-target="#addModal"><i class="zmdi zmdi-plus"></i> Add Customer</span>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -188,543 +188,135 @@ datepicker,
                         </div>
                     </div>
                     <div class="modal-header">
-                        <h5 class="modal-title" id="largeModalLabel">Billing Details</h5>
+                        <h5 class="modal-title" id="largeModalLabel">Billing / Shipping Details</h5>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="card">
                                     <div class="card-header">
-                                        <strong>Basic Form</strong> Elements
+                                        <strong>Billing </strong> Details
                                     </div>
                                     <div class="card-body card-block">
                                         <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label class=" form-control-label">Static</label>
+                                                    <label for="text-input" class=" form-control-label required">Address</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <p class="form-control-static">Username</p>
+                                                    <textarea type="text" id="text-input" name="text-input" placeholder="Address" class="form-control"></textarea>
                                                 </div>
                                             </div>
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label for="text-input" class=" form-control-label">Text Input</label>
+                                                    <label for="email-input" class=" form-control-label required">State</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="text" id="text-input" name="text-input" placeholder="Text" class="form-control">
-                                                    <small class="form-text text-muted">This is a help text</small>
+                                                    <input type="text" id="email-input" name="email-input" placeholder="State" class="form-control">
                                                 </div>
                                             </div>
+
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label for="email-input" class=" form-control-label">Email Input</label>
+                                                    <label for="email-input" class=" form-control-label required">Pin Code</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="email" id="email-input" name="email-input" placeholder="Enter Email" class="form-control">
-                                                    <small class="help-block form-text">Please enter your email</small>
+                                                    <input type="text" id="email-input" name="email-input" placeholder="Pin Code" class="form-control">
                                                 </div>
                                             </div>
+
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label for="password-input" class=" form-control-label">Password</label>
+                                                    <label for="email-input" class=" form-control-label required">Mobile No.</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="password" id="password-input" name="password-input" placeholder="Password" class="form-control">
-                                                    <small class="help-block form-text">Please enter a complex password</small>
+                                                    <input type="text" id="email-input" name="email-input" placeholder="Mobile No." class="form-control">
                                                 </div>
                                             </div>
+                                            
+                                            
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label for="disabled-input" class=" form-control-label">Disabled Input</label>
+                                                    <label for="email-input" class=" form-control-label required">Email</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="text" id="disabled-input" name="disabled-input" placeholder="Disabled" disabled="" class="form-control">
+                                                    <input type="email" id="email-input" name="email-input" placeholder="Email" class="form-control">
                                                 </div>
                                             </div>
+
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label for="textarea-input" class=" form-control-label">Textarea</label>
+                                                    <label for="email-input" class=" form-control-label required">Land-Line No.</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <textarea name="textarea-input" id="textarea-input" rows="9" placeholder="Content..." class="form-control"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="select" class=" form-control-label">Select</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <select name="select" id="select" class="form-control">
-                                                        <option value="0">Please select</option>
-                                                        <option value="1">Option #1</option>
-                                                        <option value="2">Option #2</option>
-                                                        <option value="3">Option #3</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="selectLg" class=" form-control-label">Select Large</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <select name="selectLg" id="selectLg" class="form-control-lg form-control">
-                                                        <option value="0">Please select</option>
-                                                        <option value="1">Option #1</option>
-                                                        <option value="2">Option #2</option>
-                                                        <option value="3">Option #3</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="selectSm" class=" form-control-label">Select Small</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <select name="selectSm" id="SelectLm" class="form-control-sm form-control">
-                                                        <option value="0">Please select</option>
-                                                        <option value="1">Option #1</option>
-                                                        <option value="2">Option #2</option>
-                                                        <option value="3">Option #3</option>
-                                                        <option value="4">Option #4</option>
-                                                        <option value="5">Option #5</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="disabledSelect" class=" form-control-label">Disabled Select</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <select name="disabledSelect" id="disabledSelect" disabled="" class="form-control">
-                                                        <option value="0">Please select</option>
-                                                        <option value="1">Option #1</option>
-                                                        <option value="2">Option #2</option>
-                                                        <option value="3">Option #3</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="multiple-select" class=" form-control-label">Multiple select</label>
-                                                </div>
-                                                <div class="col col-md-9">
-                                                    <select name="multiple-select" id="multiple-select" multiple="" class="form-control">
-                                                        <option value="1">Option #1</option>
-                                                        <option value="2">Option #2</option>
-                                                        <option value="3">Option #3</option>
-                                                        <option value="4">Option #4</option>
-                                                        <option value="5">Option #5</option>
-                                                        <option value="6">Option #6</option>
-                                                        <option value="7">Option #7</option>
-                                                        <option value="8">Option #8</option>
-                                                        <option value="9">Option #9</option>
-                                                        <option value="10">Option #10</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label class=" form-control-label">Radios</label>
-                                                </div>
-                                                <div class="col col-md-9">
-                                                    <div class="form-check">
-                                                        <div class="radio">
-                                                            <label for="radio1" class="form-check-label ">
-                                                                <input type="radio" id="radio1" name="radios" value="option1" class="form-check-input">Option 1
-                                                            </label>
-                                                        </div>
-                                                        <div class="radio">
-                                                            <label for="radio2" class="form-check-label ">
-                                                                <input type="radio" id="radio2" name="radios" value="option2" class="form-check-input">Option 2
-                                                            </label>
-                                                        </div>
-                                                        <div class="radio">
-                                                            <label for="radio3" class="form-check-label ">
-                                                                <input type="radio" id="radio3" name="radios" value="option3" class="form-check-input">Option 3
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label class=" form-control-label">Inline Radios</label>
-                                                </div>
-                                                <div class="col col-md-9">
-                                                    <div class="form-check-inline form-check">
-                                                        <label for="inline-radio1" class="form-check-label ">
-                                                            <input type="radio" id="inline-radio1" name="inline-radios" value="option1" class="form-check-input">One
-                                                        </label>
-                                                        <label for="inline-radio2" class="form-check-label ">
-                                                            <input type="radio" id="inline-radio2" name="inline-radios" value="option2" class="form-check-input">Two
-                                                        </label>
-                                                        <label for="inline-radio3" class="form-check-label ">
-                                                            <input type="radio" id="inline-radio3" name="inline-radios" value="option3" class="form-check-input">Three
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label class=" form-control-label">Checkboxes</label>
-                                                </div>
-                                                <div class="col col-md-9">
-                                                    <div class="form-check">
-                                                        <div class="checkbox">
-                                                            <label for="checkbox1" class="form-check-label ">
-                                                                <input type="checkbox" id="checkbox1" name="checkbox1" value="option1" class="form-check-input">Option 1
-                                                            </label>
-                                                        </div>
-                                                        <div class="checkbox">
-                                                            <label for="checkbox2" class="form-check-label ">
-                                                                <input type="checkbox" id="checkbox2" name="checkbox2" value="option2" class="form-check-input"> Option 2
-                                                            </label>
-                                                        </div>
-                                                        <div class="checkbox">
-                                                            <label for="checkbox3" class="form-check-label ">
-                                                                <input type="checkbox" id="checkbox3" name="checkbox3" value="option3" class="form-check-input"> Option 3
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label class=" form-control-label">Inline Checkboxes</label>
-                                                </div>
-                                                <div class="col col-md-9">
-                                                    <div class="form-check-inline form-check">
-                                                        <label for="inline-checkbox1" class="form-check-label ">
-                                                            <input type="checkbox" id="inline-checkbox1" name="inline-checkbox1" value="option1" class="form-check-input">One
-                                                        </label>
-                                                        <label for="inline-checkbox2" class="form-check-label ">
-                                                            <input type="checkbox" id="inline-checkbox2" name="inline-checkbox2" value="option2" class="form-check-input">Two
-                                                        </label>
-                                                        <label for="inline-checkbox3" class="form-check-label ">
-                                                            <input type="checkbox" id="inline-checkbox3" name="inline-checkbox3" value="option3" class="form-check-input">Three
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="file-input" class=" form-control-label">File input</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="file" id="file-input" name="file-input" class="form-control-file">
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="file-multiple-input" class=" form-control-label">Multiple File input</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="file" id="file-multiple-input" name="file-multiple-input" multiple="" class="form-control-file">
+                                                    <input type="text" id="email-input" name="email-input" placeholder="Land-Line No." class="form-control">
                                                 </div>
                                             </div>
                                         </form>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary btn-sm">
-                                            <i class="fa fa-dot-circle-o"></i> Submit
-                                        </button>
-                                        <button type="reset" class="btn btn-danger btn-sm">
-                                            <i class="fa fa-ban"></i> Reset
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">
-                                        <strong>Inline</strong> Form
-                                    </div>
-                                    <div class="card-body card-block">
-                                        <form action="" method="post" class="form-inline">
-                                            <div class="form-group">
-                                                <label for="exampleInputName2" class="pr-1  form-control-label">Name</label>
-                                                <input type="text" id="exampleInputName2" placeholder="Jane Doe" required="" class="form-control">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail2" class="px-1  form-control-label">Email</label>
-                                                <input type="email" id="exampleInputEmail2" placeholder="jane.doe@example.com" required="" class="form-control">
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary btn-sm">
-                                            <i class="fa fa-dot-circle-o"></i> Submit
-                                        </button>
-                                        <button type="reset" class="btn btn-danger btn-sm">
-                                            <i class="fa fa-ban"></i> Reset
-                                        </button>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="card">
                                     <div class="card-header">
-                                        <strong>Basic Form</strong> Elements
+                                        <strong>Shipping </strong> Details
                                     </div>
                                     <div class="card-body card-block">
                                         <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label class=" form-control-label">Static</label>
+                                                    <label for="text-input" class=" form-control-label required">Address</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <p class="form-control-static">Username</p>
+                                                    <textarea type="text" id="text-input" name="text-input" placeholder="Address" class="form-control"></textarea>
                                                 </div>
                                             </div>
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label for="text-input" class=" form-control-label">Text Input</label>
+                                                    <label for="email-input" class=" form-control-label required">State</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="text" id="text-input" name="text-input" placeholder="Text" class="form-control">
-                                                    <small class="form-text text-muted">This is a help text</small>
+                                                    <input type="text" id="email-input" name="email-input" placeholder="State" class="form-control">
                                                 </div>
                                             </div>
+
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label for="email-input" class=" form-control-label">Email Input</label>
+                                                    <label for="email-input" class=" form-control-label required">Pin Code</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="email" id="email-input" name="email-input" placeholder="Enter Email" class="form-control">
-                                                    <small class="help-block form-text">Please enter your email</small>
+                                                    <input type="text" id="email-input" name="email-input" placeholder="Pin Code" class="form-control">
                                                 </div>
                                             </div>
+
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label for="password-input" class=" form-control-label">Password</label>
+                                                    <label for="email-input" class=" form-control-label required">Mobile No.</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="password" id="password-input" name="password-input" placeholder="Password" class="form-control">
-                                                    <small class="help-block form-text">Please enter a complex password</small>
+                                                    <input type="text" id="email-input" name="email-input" placeholder="Mobile No." class="form-control">
                                                 </div>
                                             </div>
+                                            
+                                            
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label for="disabled-input" class=" form-control-label">Disabled Input</label>
+                                                    <label for="email-input" class=" form-control-label required">Email</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="text" id="disabled-input" name="disabled-input" placeholder="Disabled" disabled="" class="form-control">
+                                                    <input type="email" id="email-input" name="email-input" placeholder="Email" class="form-control">
                                                 </div>
                                             </div>
+
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label for="textarea-input" class=" form-control-label">Textarea</label>
+                                                    <label for="email-input" class=" form-control-label required">Land-Line No.</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <textarea name="textarea-input" id="textarea-input" rows="9" placeholder="Content..." class="form-control"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="select" class=" form-control-label">Select</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <select name="select" id="select" class="form-control">
-                                                        <option value="0">Please select</option>
-                                                        <option value="1">Option #1</option>
-                                                        <option value="2">Option #2</option>
-                                                        <option value="3">Option #3</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="selectLg" class=" form-control-label">Select Large</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <select name="selectLg" id="selectLg" class="form-control-lg form-control">
-                                                        <option value="0">Please select</option>
-                                                        <option value="1">Option #1</option>
-                                                        <option value="2">Option #2</option>
-                                                        <option value="3">Option #3</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="selectSm" class=" form-control-label">Select Small</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <select name="selectSm" id="SelectLm" class="form-control-sm form-control">
-                                                        <option value="0">Please select</option>
-                                                        <option value="1">Option #1</option>
-                                                        <option value="2">Option #2</option>
-                                                        <option value="3">Option #3</option>
-                                                        <option value="4">Option #4</option>
-                                                        <option value="5">Option #5</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="disabledSelect" class=" form-control-label">Disabled Select</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <select name="disabledSelect" id="disabledSelect" disabled="" class="form-control">
-                                                        <option value="0">Please select</option>
-                                                        <option value="1">Option #1</option>
-                                                        <option value="2">Option #2</option>
-                                                        <option value="3">Option #3</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="multiple-select" class=" form-control-label">Multiple select</label>
-                                                </div>
-                                                <div class="col col-md-9">
-                                                    <select name="multiple-select" id="multiple-select" multiple="" class="form-control">
-                                                        <option value="1">Option #1</option>
-                                                        <option value="2">Option #2</option>
-                                                        <option value="3">Option #3</option>
-                                                        <option value="4">Option #4</option>
-                                                        <option value="5">Option #5</option>
-                                                        <option value="6">Option #6</option>
-                                                        <option value="7">Option #7</option>
-                                                        <option value="8">Option #8</option>
-                                                        <option value="9">Option #9</option>
-                                                        <option value="10">Option #10</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label class=" form-control-label">Radios</label>
-                                                </div>
-                                                <div class="col col-md-9">
-                                                    <div class="form-check">
-                                                        <div class="radio">
-                                                            <label for="radio1" class="form-check-label ">
-                                                                <input type="radio" id="radio1" name="radios" value="option1" class="form-check-input">Option 1
-                                                            </label>
-                                                        </div>
-                                                        <div class="radio">
-                                                            <label for="radio2" class="form-check-label ">
-                                                                <input type="radio" id="radio2" name="radios" value="option2" class="form-check-input">Option 2
-                                                            </label>
-                                                        </div>
-                                                        <div class="radio">
-                                                            <label for="radio3" class="form-check-label ">
-                                                                <input type="radio" id="radio3" name="radios" value="option3" class="form-check-input">Option 3
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label class=" form-control-label">Inline Radios</label>
-                                                </div>
-                                                <div class="col col-md-9">
-                                                    <div class="form-check-inline form-check">
-                                                        <label for="inline-radio1" class="form-check-label ">
-                                                            <input type="radio" id="inline-radio1" name="inline-radios" value="option1" class="form-check-input">One
-                                                        </label>
-                                                        <label for="inline-radio2" class="form-check-label ">
-                                                            <input type="radio" id="inline-radio2" name="inline-radios" value="option2" class="form-check-input">Two
-                                                        </label>
-                                                        <label for="inline-radio3" class="form-check-label ">
-                                                            <input type="radio" id="inline-radio3" name="inline-radios" value="option3" class="form-check-input">Three
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label class=" form-control-label">Checkboxes</label>
-                                                </div>
-                                                <div class="col col-md-9">
-                                                    <div class="form-check">
-                                                        <div class="checkbox">
-                                                            <label for="checkbox1" class="form-check-label ">
-                                                                <input type="checkbox" id="checkbox1" name="checkbox1" value="option1" class="form-check-input">Option 1
-                                                            </label>
-                                                        </div>
-                                                        <div class="checkbox">
-                                                            <label for="checkbox2" class="form-check-label ">
-                                                                <input type="checkbox" id="checkbox2" name="checkbox2" value="option2" class="form-check-input"> Option 2
-                                                            </label>
-                                                        </div>
-                                                        <div class="checkbox">
-                                                            <label for="checkbox3" class="form-check-label ">
-                                                                <input type="checkbox" id="checkbox3" name="checkbox3" value="option3" class="form-check-input"> Option 3
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label class=" form-control-label">Inline Checkboxes</label>
-                                                </div>
-                                                <div class="col col-md-9">
-                                                    <div class="form-check-inline form-check">
-                                                        <label for="inline-checkbox1" class="form-check-label ">
-                                                            <input type="checkbox" id="inline-checkbox1" name="inline-checkbox1" value="option1" class="form-check-input">One
-                                                        </label>
-                                                        <label for="inline-checkbox2" class="form-check-label ">
-                                                            <input type="checkbox" id="inline-checkbox2" name="inline-checkbox2" value="option2" class="form-check-input">Two
-                                                        </label>
-                                                        <label for="inline-checkbox3" class="form-check-label ">
-                                                            <input type="checkbox" id="inline-checkbox3" name="inline-checkbox3" value="option3" class="form-check-input">Three
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="file-input" class=" form-control-label">File input</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="file" id="file-input" name="file-input" class="form-control-file">
-                                                </div>
-                                            </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="file-multiple-input" class=" form-control-label">Multiple File input</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="file" id="file-multiple-input" name="file-multiple-input" multiple="" class="form-control-file">
+                                                    <input type="text" id="email-input" name="email-input" placeholder="Land-Line No." class="form-control">
                                                 </div>
                                             </div>
                                         </form>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary btn-sm">
-                                            <i class="fa fa-dot-circle-o"></i> Submit
-                                        </button>
-                                        <button type="reset" class="btn btn-danger btn-sm">
-                                            <i class="fa fa-ban"></i> Reset
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header">
-                                        <strong>Inline</strong> Form
-                                    </div>
-                                    <div class="card-body card-block">
-                                        <form action="" method="post" class="form-inline">
-                                            <div class="form-group">
-                                                <label for="exampleInputName2" class="pr-1  form-control-label">Name</label>
-                                                <input type="text" id="exampleInputName2" placeholder="Jane Doe" required="" class="form-control">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail2" class="px-1  form-control-label">Email</label>
-                                                <input type="email" id="exampleInputEmail2" placeholder="jane.doe@example.com" required="" class="form-control">
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary btn-sm">
-                                            <i class="fa fa-dot-circle-o"></i> Submit
-                                        </button>
-                                        <button type="reset" class="btn btn-danger btn-sm">
-                                            <i class="fa fa-ban"></i> Reset
-                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -732,13 +324,13 @@ datepicker,
                             
                     </div>
                     <div class="modal-header">
-                        <h5 class="modal-title" id="largeModalLabel">Quatation Summary</h5>
+                        <h5 class="modal-title" id="largeModalLabel">Product Details</h5>
                     </div>
                     <div class="modal-body">
                         <div class="row form-group">
-                            <div class="form-group col-4">
-                                <label for="company" class="form-control-label required">Quatation Prepared By </label>
-                                <input type="text" id="st_part_No" required name="st_part_No"placeholder="Quatation Prepared By" class="form-control">
+                            <div class="form-group col-3">
+                                <label for="company" class="form-control-label required">Search Product</label>
+                                <input type="text" id="st_part_No" required name="st_part_No"placeholder="Type part no. / Description name" class="form-control">
                                 @if ($errors->has('st_part_No'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -749,9 +341,9 @@ datepicker,
                                     </div>
                                 @endif
                             </div>
-                            <div class="form-group col-4">
-                                <label for="vat" class=" form-control-label required">Lead From</label>
-                                <input type="text" id="stn_hsn_no" required name="stn_hsn_no" placeholder="Lead From" class="form-control">
+                            <div class="form-group col-3">
+                                <label for="vat" class=" form-control-label required">Qty</label>
+                                <input type="text" id="stn_hsn_no" required name="stn_hsn_no" placeholder="Qty" value="1" class="form-control">
                                 @if ($errors->has('stn_hsn_no'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -762,23 +354,39 @@ datepicker,
                                     </div>
                                 @endif
                             </div>
-                            
-                            <div class="form-group col-4">
-                                <label for="vat" class=" form-control-label required">Notify Group</label>
-                                <select id="principal_id" required name="principal_id" class="form-control">
-                                    <option value="">Select Notify Group</option>
-                                    @if(!empty($notify))
-                                        @foreach($notify as $id=>$name)
-                                            <option value="{{$id}}">{{$name}}</option>
-                                        @endforeach
-                                    @else
-                                        <p>Notification are not available.</p>
-                                    @endif
-                                </select>
-                                @if ($errors->has('principal_id'))
+                            <div class="form-group col-2">
+                                <label for="vat" class=" form-control-label required">Add Product</label>
+                                <span href="" id="stn_hsn_no" required name="stn_hsn_no" placeholder="Qty" value="1" class="form-control btn btn-primary"> Add Product</span>
+                                @if ($errors->has('stn_hsn_no'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('principal_id') }}
+                                        {{ $errors->first('stn_hsn_no') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group col-2">
+                                <label for="vat" class=" form-control-label required">Add New Product</label>
+                                <a href="{{route('add_product')}}" style="background:gree" id="stn_hsn_no" required name="stn_hsn_no" placeholder="Qty" value="1" class="form-control btn btn-primary"><i class="zmdi zmdi-plus"></i> Add New Product</a>
+                                @if ($errors->has('stn_hsn_no'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('stn_hsn_no') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group col-2">
+                                <label for="vat" class=" form-control-label required">Product Filter</label>
+                                <a href="{{route('show_product')}}" style="background:gree" id="stn_hsn_no" required name="stn_hsn_no" placeholder="Qty" value="1" class="form-control btn btn-primary">Product Filter</a>
+                                @if ($errors->has('stn_hsn_no'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->first('stn_hsn_no') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -788,30 +396,25 @@ datepicker,
                         </div>
                     </div>
                     <div class="modal-header">
-                        <h5 class="modal-title" id="largeModalLabel">Payment Term</h5>
+                        <h5 class="modal-title" id="largeModalLabel">Quotation Summary</h5>
                     </div>
                     <div class="modal-body">
                         <div class="row form-group">
-                            <div class="form-group col-4">
-                                <label for="company" class="form-control-label required">Quatation Prepared By </label>
-                                <input type="text" id="st_part_No" required name="st_part_No"placeholder="Quatation Prepared By" class="form-control">
-                                @if ($errors->has('st_part_No'))
+                            <div class="form-group col-3">
+                                <label for="vat" class=" form-control-label required">Currrency</label>
+                                <select id="principal_id" required name="principal_id" class="form-control">
+                                    @if(!empty($currency))
+                                        @foreach($currency as $id=>$cur)
+                                            <option value="{{$id}}">{{$cur}}</option>
+                                        @endforeach
+                                    @else
+                                        <p>Currrency are not available.</p>
+                                    @endif
+                                </select>
+                                @if ($errors->has('principal_id'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('st_part_No') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="form-group col-4">
-                                <label for="vat" class=" form-control-label required">Lead From</label>
-                                <input type="text" id="stn_hsn_no" required name="stn_hsn_no" placeholder="Lead From" class="form-control">
-                                @if ($errors->has('stn_hsn_no'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('stn_hsn_no') }}
+                                        {{ $errors->first('principal_id') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -819,22 +422,26 @@ datepicker,
                                 @endif
                             </div>
                             
-                            <div class="form-group col-4">
-                                <label for="vat" class=" form-control-label required">Notify Group</label>
+                            <div class="form-group col-3">
+                                <label for="vat" class=" form-control-label required">Payment Term</label>
                                 <select id="principal_id" required name="principal_id" class="form-control">
-                                    <option value="">Select Notify Group</option>
-                                    @if(!empty($notify))
-                                        @foreach($notify as $id=>$name)
-                                            <option value="{{$id}}">{{$name}}</option>
+                                    @if(!empty($payment_term))
+                                        @foreach($payment_term as $id=>$term)
+                                            <option value="{{$id}}">{{$term}}</option>
                                         @endforeach
                                     @else
-                                        <p>Notification are not available.</p>
+                                        <p>Currrency are not available.</p>
                                     @endif
                                 </select>
-                                @if ($errors->has('principal_id'))
+                            </div>
+
+                            <div class="form-group col-6">
+                                <label for="company" class="form-control-label required">Extra Comments, If Any </label>
+                                <textarea id="st_part_No" required name="st_part_No"placeholder="Write here . . . !" class="form-control"></textarea>
+                                @if ($errors->has('st_part_No'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('principal_id') }}
+                                        {{ $errors->first('st_part_No') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -844,58 +451,21 @@ datepicker,
                         </div>
                     </div>
                     <div class="modal-header">
-                        <h5 class="modal-title" id="largeModalLabel">Term & Conditions</h5>
+                        <h5 class="modal-title" id="largeModalLabel">Terms & Conditions</h5>
                     </div>
                     <div class="modal-body">
-                        <div class="row form-group">
+                        <div class="form-group">
                             <div class="form-group col-4">
-                                <label for="company" class="form-control-label required">Quatation Prepared By </label>
-                                <input type="text" id="st_part_No" required name="st_part_No"placeholder="Quatation Prepared By" class="form-control">
-                                @if ($errors->has('st_part_No'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('st_part_No') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
+                                <small> Payment Terms : </small>
                             </div>
                             <div class="form-group col-4">
-                                <label for="vat" class=" form-control-label required">Lead From</label>
-                                <input type="text" id="stn_hsn_no" required name="stn_hsn_no" placeholder="Lead From" class="form-control">
-                                @if ($errors->has('stn_hsn_no'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('stn_hsn_no') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
+                                <small> Tax :  </small>
                             </div>
-                            
                             <div class="form-group col-4">
-                                <label for="vat" class=" form-control-label required">Notify Group</label>
-                                <select id="principal_id" required name="principal_id" class="form-control">
-                                    <option value="">Select Notify Group</option>
-                                    @if(!empty($notify))
-                                        @foreach($notify as $id=>$name)
-                                            <option value="{{$id}}">{{$name}}</option>
-                                        @endforeach
-                                    @else
-                                        <p>Notification are not available.</p>
-                                    @endif
-                                </select>
-                                @if ($errors->has('principal_id'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('principal_id') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
+                                <small> Quotation is valid for 30 days </small>
+                            </div>
+                            <div class="form-group col-6">
+                                <small> Any Government / Local Body Levies, taxes, Cess, Duties, Octroi will be extra “At Actuals”  </small>
                             </div>
                         </div>
                     </div>

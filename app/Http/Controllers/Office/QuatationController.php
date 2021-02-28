@@ -24,6 +24,8 @@ class QuatationController extends Controller
     public function addQuatation(){
         $notify = Notify::get();
         $company = Customer::get();
+        $currency = Config::get('constant.currency');
+        $payment_term = Config::get('constant.payment_term');
         if(!empty($notify)){
             $notify = collect($notify)->pluck('name', 'id')->toArray();
         }else{
@@ -34,6 +36,6 @@ class QuatationController extends Controller
         }else{
             $company = '';
         }
-        return view('office.quatation.add_quatation', compact('notify', 'company'));
+        return view('office.quatation.add_quatation', compact('notify', 'company', 'currency', 'payment_term'));
     }
 }

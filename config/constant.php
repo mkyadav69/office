@@ -24,6 +24,23 @@ return [
         'WESTERN'=>'WESTERN'
     ],
 
+    'currency' =>[
+        'INR'=>'INR',
+        'USD'=>'USD', 
+        'EUR'=>'EUR',
+        'JPY'=>'JPY',
+        'GBP'=>'GBP',
+    ],
+
+    'payment_term' =>[
+        'Advance Against Proforma Invoice'=>'Advance Against Proforma Invoice',
+        'Against PDC'=>'Against PDC', 
+        '30 Days from Date of Shipment'=>'30 Days from Date of Shipment',
+        '45 Days from Date of Shipment'=>'45 Days from Date of Shipment',
+        '60 Days from Date of Shipment'=>'60 Days from Date of Shipment',
+        '90 Days from Date of Shipment'=>'90 Days from Date of Shipment',
+    ],
+
     'countries' =>[
         "US" => "USA",
         "CA" => "Canada",
