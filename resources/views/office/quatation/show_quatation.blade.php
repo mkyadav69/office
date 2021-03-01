@@ -8,7 +8,7 @@
     padding-left: 5px;
 }
 .td-limit {
-    max-width: 75px;
+    max-width: 100px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -65,7 +65,7 @@
                     "searchable": true,
                     "targets": [0]
                 }],
-                aaSorting: [[0, 'asc']],
+                aaSorting: [[0, 'desc']],
                 language: {
                     processing: '<i class="fa fa-spinner fa-spin fa-4x fa-fw" style="font-size:60px;"></i>'
                 },
@@ -75,15 +75,18 @@
                 ],
                 "columns":[
                     { data: 'in_cust_id', className: "text td-limit", title : 'Customer'},
-                    { data: 'owner_id', className: "text text td-limit", title : 'Owner'},
-                    { data: 'st_currency_applied', className: "text text td-limit", title : 'Currency'},
-                    { data: 'in_quot_num', className: "text text td-limit", title : 'Quatation Id'},
-                    { data: 'final_amount', className: "text text td-limit", title : 'Total'},
-                    { data: 'dt_date_created', className: "text text td-limit", title : 'Created At'},
-                    { data: 'lead_from', className: "text text td-limit", title : 'Lead From'},
-                    { data: 'lead_from', className: "text text td-limit", title : 'Status'},
-                    { data: 'lead_from', className: "text text td-limit", title : 'Download'},
-                    { data: 'lead_from', className: "text text td-limit", title : 'Reason'},
+                    { data: 'owner_id', className: "select td-limit", title : 'Owner'},
+                    { data: 'st_currency_applied', className: "select td-limit", title : 'Currency'},
+                    { data: 'in_quot_num', className: "text td-limit", title : 'Quatation Id'},
+                    { data: 'final_amount', className: "text td-limit", title : 'Total'},
+                    { data: 'lead_from', className: "text td-limit", title : 'Lead From'},
+                    { data: 'in_branch_id', className: "select td-limit", title : 'Branch'},
+
+                    
+                    { data: 'dt_date_created', className: "td-limit", title : 'Created At'},
+                    { data: 'lead_from', className: "td-limit", title : 'Status'},
+                    { data: 'lead_from', className: "td-limit", title : 'Download'},
+                    { data: 'lead_from', className: "td-limit", title : 'Reason'},
                     {
                         'data': null,
                         'render': function (data, type, row) {
@@ -91,22 +94,6 @@
                         }, title: 'Actions'
                     }
                 ],  
-                // ajax: function ( data, callback, settings ) {
-                //     var out = [];
-        
-                //     for ( var i=data.start, ien=data.start+data.length ; i<ien ; i++ ) {
-                //         out.push( [ i+'-1', i+'-2', i+'-3', i+'-4', i+'-5' ] );
-                //     }
-        
-                //     setTimeout( function () {
-                //         callback( {
-                //             draw: data.draw,
-                //             data: out,
-                //             recordsTotal: 100000,
-                //             recordsFiltered: 100000
-                //         } );
-                //     }, 50 );
-                // },
                 initComplete: function () {
                     this.api().columns().every(function () {
                         var column = this;
