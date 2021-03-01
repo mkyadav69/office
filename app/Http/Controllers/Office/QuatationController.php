@@ -47,6 +47,9 @@ class QuatationController extends Controller
         }
         $cust_details = [];
         if(!empty($customer)){
+            $company_name = $customer->pluck('st_com_name', 'in_cust_id', )->toArray();
+            $c_person_name = $customer->pluck('st_con_person1', 'in_cust_id', )->toArray();
+            
             $address = $customer->pluck('st_com_address', 'in_cust_id', )->toArray();
             $state = $customer->pluck('st_cust_state', 'in_cust_id', )->toArray();
             $city = $customer->pluck('st_cust_city', 'in_cust_id', )->toArray();
@@ -55,6 +58,8 @@ class QuatationController extends Controller
             $email = $customer->pluck('st_cust_email', 'in_cust_id', )->toArray();
             $land_line = $customer->pluck('st_cust_mobile', 'in_cust_id', )->toArray();
 
+            $cust_details['company_name'] = $company_name;
+            $cust_details['c_person_name'] = $c_person_name;
             $cust_details['address'] = $address;
             $cust_details['state'] = $state;
             $cust_details['city'] = $city;

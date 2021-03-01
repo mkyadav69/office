@@ -160,11 +160,11 @@ datepicker,
 
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Contact Person</label>
-                                    <input type="text" id="contact_person" required name="contact_person" placeholder="Contact Person" class="form-control">
-                                @if ($errors->has('contact_person'))
+                                    <input type="text" id="c_person_name" required name="c_person_name" placeholder="Contact Person" class="form-control">
+                                @if ($errors->has('c_person_name'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('contact_person') }}
+                                        {{ $errors->first('c_person_name') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -172,18 +172,7 @@ datepicker,
                                 @endif
                             </div>
 
-                            <div class="form-group col-3">
-                                <label for="vat" class=" form-control-label required">Owner</label>
-                                <select id="owner" required name="owner" class="form-control">
-                                    <option value="">Select Owner</option>
-                                    @if(!empty($owner))
-                                        @foreach($owner as $id=>$name)
-                                            <option value="{{$id}}">{{$name}}</option>
-                                        @endforeach
-                                    @else
-                                        <p>Owner are not available.</p>
-                                    @endif
-                                </select>
+                            <div class="form-group col-3" id="owner">
                                 @if ($errors->has('owner'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -304,6 +293,15 @@ datepicker,
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <input type="text" id="s_state" name="s_state" placeholder="State" class="form-control">
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="email-input" class=" form-control-label required">City</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <input type="text" id="s_city" name="s_city" placeholder="City" class="form-control">
                                                 </div>
                                             </div>
 
@@ -914,12 +912,37 @@ $('#datepicker').datepicker({
     </div>
 <script>
 $(document).ready(function(){
+        
         $('#select_company').on('change', function(){
+            // Clear shiping address
+            $('#same_as').prop('checked', false);
+            $('#s_address').val('');
+            $('#s_state').val('');
+            $('#s_pin_code').val('');
+            $('#s_city').val('');
+            $('#s_mobile').val('');
+            $('#s_email').val('');
+            $('#s_land_line').val('');
+
             var c_id = $('#select_company').val();
             var product_field = {!! json_encode($cust_details) !!};
+            
+            // Customer Details
+            if(product_field['company_name'][c_id] != 'undefined' && product_field['company_name'][c_id] != ''){
+                var company_name = product_field['company_name'][c_id];
+                $('#company_name').val(company_name);
+            }
+
+            if(product_field['c_person_name'][c_id] != 'undefined' && product_field['c_person_name'][c_id] != ''){
+                var c_person_name = product_field['c_person_name'][c_id];
+                $('#c_person_name').val(c_person_name);
+            }
+
+            // Billing Address
+
             if(product_field['address'][c_id] != 'undefined' && product_field['address'][c_id] != ''){
                 var address = product_field['address'][c_id];
-                $('#b_address').html(address);
+                $('#b_address').val(address);
             }
             if(product_field['state'][c_id] != 'undefined' && product_field['state'][c_id] != ''){
                 var state = product_field['state'][c_id];
@@ -928,7 +951,6 @@ $(document).ready(function(){
             }
             if(product_field['pincode'][c_id] != 'undefined' && product_field['pincode'][c_id] != ''){
                 var pincode = product_field['pincode'][c_id];
-                console.log(pincode);
                 $('#b_pin_code').val(pincode);
             }
             if(product_field['city'][c_id] != 'undefined' && product_field['city'][c_id] != ''){
@@ -947,11 +969,55 @@ $(document).ready(function(){
                 var land_line = product_field['land_line'][c_id];
                 $('#b_land_line').val(land_line);
             }
+
+            // Owner
+
+            var owner_field = {!! json_encode($owner) !!};
+            if(owner_field != null){
+                var option = '<option value=""> Select Owner</option>';
+                $.each(owner_field, function (key, field) {
+                    if(key == c_id){
+                        option = option +'<option value="'+ key +'" selected >'+ field +'</option>';
+                    }else{
+                        option = option + '<option value="'+ key +'">'+ field +'</option>';
+                    }
+                });
+                var sel = '<label for="vat" class=" form-control-label required" id="own_label">Owner</label><select name="owner" required class="form-control">'+option+'</select>';
+                $('div #owner').html(sel);
+            }else{
+                
+            }
         });
+        var owner_field = {!! json_encode($owner) !!};
+        var option = '<option value="" > Select Owner</option>';
+        $.each(owner_field, function (key, field) {
+           option = option + '<option value="'+ key +'">'+ field +'</option>';
+        });
+        var sel = '<label for="vat" class=" form-control-label required" id="own_label">Owner</label><select name="owner" required class="form-control">'+option+'</select>';
+        $('div #owner').html(sel);
     });
 
     $('#same_as').on('click', function(){
-        alert("kkk");
+        var address = $('#b_address').val();
+        $('#s_address').val(address);
+
+        var state = $('#b_state').val();
+        $('#s_state').val(state);
+
+        var pincode = $('#b_pin_code').val();
+        $('#s_pin_code').val(pincode);
+
+        var city = $('#b_city').val();
+        $('#s_city').val(city);
+
+        var mobile = $('#b_mobile').val();
+        $('#s_mobile').val(mobile);
+
+        var email = $('#b_email').val();
+        $('#s_email').val(email);
+
+        var land_line = $('#b_land_line').val();
+        $('#s_land_line').val(land_line);
     });
     
 </script>
