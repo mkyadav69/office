@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Notify;
 use App\Models\Customer;
+use App\Models\QuatationAdd;
 use Carbon\Carbon;
 use DataTables;
 use Config;
@@ -37,5 +38,16 @@ class QuatationController extends Controller
             $company = '';
         }
         return view('office.quatation.add_quatation', compact('notify', 'company', 'currency', 'payment_term'));
+    }
+
+    public function getQuatation(){
+        $quatation = QuatationAdd::get();
+        return Datatables::of($quatation)
+           ->editColumn('dt_created', function ($quatation) {
+                $date = $quatation['dt_created'];
+                if(!empty($date)){
+                    return date('d-m-Y', strtotime($date));
+                }
+           })->make(true);
     }
 }

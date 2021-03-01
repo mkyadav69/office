@@ -53,7 +53,7 @@
     <div class="page-wrapper">
        
         <!-- MENU SIDEBAR-->
-        <aside class="menu-sidebar d-none d-lg-block">
+        <aside class="menu-sidebar d-none d-block">
             <div class="logo">
                 <a href="#">
                     <img src="images/icon/cromo.png" alt="Cool Admin" />
