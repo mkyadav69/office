@@ -39,7 +39,7 @@
     </div>
  
     <div class="table-responsive table--no-card m-b-30">
-        <table id="customer" class="table table-borderless table-striped table-earning" style="width:100%">
+        <table id="customer" class="table table-borderless table--no-card m-b-30 table-striped table-earning" style="width:100%">
         </table>
     </div>
                        
