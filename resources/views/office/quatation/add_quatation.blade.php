@@ -504,21 +504,12 @@ datepicker,
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>part346456451233</td>
-                                                <td>KETEYEYEYY</td>
-                                                <td>4</td>
-                                                <td>45</td>
-                                                <td>878</td>
-                                                <td>5</td>
-                                                <td>58</td>
-                                                <td>555</td>
-                                                <td>900</td>
-                                                <td>34</td>
-                                                <td>12</td>
-                                                <td>5656</td>
+                                            <tr class="odd gradeX classOdd tr-subtotal">
+                                                <td colspan="9" ><strong class="pull-right pull-right">Sub Total</strong></td>
+                                                <td id="row_sub_total" style="text-align: left;"><strong class="final_subtotal">0.00</strong></td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
                                             </tr>
-                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -802,6 +793,7 @@ $(document).ready(function(){
     }
 
     function qty_change(prod_id ,prodqty, prod_net_price, prod_row_total){
+        alert(prodqty);
         if((prodqty <= 0) || ($.isNumeric(prodqty) == false)){
             alert("Pleas enter a valid quantity.");
         }else{
@@ -1279,22 +1271,24 @@ $(document).ready(function(){
 		var sel_prods = [];
 		var prod_qunt = 0;
 		var prod_id = 0; 
+        var new_product_list = {!! json_encode($new_product_list) !!};
 		var prod_id_exist = 0;
 		var str = $('#hid_selprod').val();
 		if($('#hid_selprod').val() != ''){
-			sel_prods.push( $("#hid_selprod").val() );
+			sel_prods.push( $("#hid_selprod").val());
 		}
-		prod_id = $('#order_product').val();	
+		prod_id = $('#order_product').val();
 		var arr = str.split(',');
-		
-		if($.inArray(prod_id,arr) == -1){
+        if($.inArray(prod_id,arr) == -1){
 			sel_prods.push(prod_id);
-			
-		}else 
+		}else{
 			prod_id_exist = 1;
+        } 
+		
 		$('#hid_selprod').val(sel_prods);
 		
-		var products = '';<?php //echo json_encode($product_list); ?>//;
+		// var products = '';<?php //echo json_encode($product_list); ?>//;
+        
 		var html = '';	
 		var prodqty = 0;
 		var free_prod_qty = 0;
@@ -1312,73 +1306,72 @@ $(document).ready(function(){
 		var prod_qty_left = 0;
 		var call_sub_total = false;
 		var hsn ='HSN Code: Awaited OR Provide Soon';
-		
-		
-		var partNoHtml ='';
-		$.each(products,function(k,v){
-			if(v.pro_id == prod_id && prod_id_exist == 1){ 
-				var prev_prod_qnt = $(".prodqty_"+v.pro_id).val();
-				prodqty = parseInt(parseInt(prev_prod_qnt) + parseInt($('#prod_qty').val()));
-				prod_igst_rate = v.str_igst_rate;
-				prod_price = v.fl_pro_price;
-				prod_discount = v.in_pro_disc;
-				prod_net_price = parseFloat(prod_price - parseFloat((prod_price*prod_discount)/(100)));
-                hsn = v.stn_hsn_no;
-                if(prod_igst_rate != '' && prod_igst_rate != null)
-                {
+		var new_product_list = {!! json_encode($new_product_list) !!};
+        if( new_product_list[prod_id] !='undefined' && new_product_list[prod_id] !=''){
+            var products = new_product_list[prod_id];
+            var partNoHtml ='';
+            if(products.st_part_No == prod_id && prod_id_exist == 1){ 
+                var prev_prod_qnt = $(".prodqty_"+products.pro_id).val();
+                prodqty = parseInt(parseInt(prev_prod_qnt) + parseInt($('#prod_qty').val()));
+                prod_igst_rate = products.str_igst_rate;
+                prod_price = products.fl_pro_price;
+                prod_discount = products.in_pro_disc;
+                prod_net_price = parseFloat(prod_price - parseFloat((prod_price*prod_discount)/(100)));
+                hsn = products.stn_hsn_no;
+                if(prod_igst_rate != '' && prod_igst_rate != null){
                     prod_row_total = parseFloat(prod_net_price + parseFloat((prod_net_price*prod_igst_rate)/(100)));
                 }else{ 
                     prod_igst_rate = 0.00;
                     prod_row_total = parseFloat(prod_net_price*prodqty);
                 }
-                                   
-				
-                $(".prodqty_"+v.pro_id).val(prodqty);
-                $(".prod_disc_price_"+v.pro_id).val(prod_discount);
-                $(".prod_unit_price_"+v.pro_id).html(prod_price);
-                $(".prod_igst_rate_"+v.pro_id).html(prod_igst_rate);
-                $(".prod_netprice_"+v.pro_id).html(prod_net_price);
-                qty_change(v.pro_id, prodqty, prod_net_price, prod_row_total);
-				
-			}else if(v.pro_id == prod_id && prod_id_exist == 0){       
-				call_sub_total = true;
-				prodqty = $('#prod_qty').val();
-				prod_part_No = v.st_part_No;
-				cat_name = v.st_cat_name;
-                hsn = v.stn_hsn_no;
-				prod_price = v.fl_pro_price;
-				prod_desc = v.st_pro_desc;
-				prod_igst_rate = v.str_igst_rate;
-				prod_maker = v.st_pro_maker;
-				prod_discount = v.in_pro_disc;
-				
-				prod_net_price = parseFloat(prod_price - parseFloat((prod_price*prod_discount)/(100)));
+                $(".prodqty_"+products.pro_id).val(prodqty);
+                $(".prod_disc_price_"+products.pro_id).val(prod_discount);
+                $(".prod_unit_price_"+products.pro_id).html(prod_price);
+                $(".prod_igst_rate_"+products.pro_id).html(prod_igst_rate);
+                $(".prod_netprice_"+products.pro_id).html(prod_net_price);
+                qty_change(products.pro_id, prodqty, prod_net_price, prod_row_total);
+                
+            }else if(products.st_part_No == prod_id && prod_id_exist == 0){    
+                call_sub_total = true;
+                prodqty = $('#prod_qty').val();
+                prod_part_No = products.st_part_No;
+                cat_name = products.st_cat_name;
+                hsn = products.stn_hsn_no;
+                prod_price = products.fl_pro_price;
+                prod_desc = products.st_pro_desc;
+                prod_igst_rate = products.str_igst_rate;
+                prod_maker = products.st_pro_maker;
+                prod_discount = products.in_pro_disc;
+                
+                prod_net_price = parseFloat(prod_price - parseFloat((prod_price*prod_discount)/(100)));
                 var prod_row_without_igst_total = parseFloat(prod_net_price*prodqty);
                 if(prod_igst_rate != '' && prod_igst_rate != null){
                     prod_row_total = parseFloat(prod_row_without_igst_total + parseFloat((prod_row_without_igst_total*prod_igst_rate)/(100)));
-                        
                 }else{
                     prod_igst_rate = 0.00;
                     prod_row_total = parseFloat(prod_net_price*prodqty);
                 }
-				prod_qty_left = parseInt(v.in_pro_qty) - parseInt(prodqty);
-				
-				if(admin_rights == '1'){
-					partNoHtml = '<input type="text" style="width: 100px;" value="'+prod_part_No+'" name="prod_part_No" class="prod_part_No">';
-					var classs = '';
-				}else{
-					partNoHtml = prod_part_No;
-					var classs = 'prod_part_No';
-				}
-				html = '<tr id="prod_row_'+v.pro_id+'" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="'+prod_maker+'" name="prod_maker" class="prod_maker"><td class="'+classs+'">'+partNoHtml+'</td><td  style="word-break:break-all;" class="prod_desc">'+prod_desc+'</td><td  style="word-break:break-all;" class="prod_hsn">'+hsn+'</td><td style="word-break:break-all;"  class="prod_qty"><input style="width: 35px;" type="text" class="quentity_changed prodqty_'+v.pro_id+'" id="'+v.pro_id+'" value="'+prodqty+'" onchange="quentity_changed(this);"></td><td style="word-break:break-all;" >'+v.in_pro_qty+'</td><td style="word-break:break-all;" ><div class="tooltips"><input style="width: 75px;" type="text" class="prod_unit_price prod_unit_price_'+v.pro_id+'" value="'+prod_price+'" onchange="prod_price_changed(this,'+v.pro_id+');"><span class="tooltiptext">'+ formatDate(v.dt_price_update) +'</span></div></td><td style="word-break:break-all;" ><input type="text" style="width: 55px;" class="prod_disc_price prod_disc_price_'+v.pro_id+'" value="'+prod_discount+'" onchange="prod_discount_price_changed(this,'+v.pro_id+');"></td><td style="width: 75px; text-align: left;word-break:break-all;"  class="prod_net_price prod_netprice_'+v.pro_id+'">'+prod_net_price+'</td><td style="text-align: left;word-break:break-all;width: 60px;" class=" "><input style="width: 45px;" type="text" class="prod_igst_rate prod_igst_rate_'+v.pro_id+'" id="'+v.pro_id+'" value="'+prod_igst_rate+'" onchange="igsttaxrate_changed(this);"></td><td style="text-align: left;word-break:break-all;width: 75px;" class="prod_row_total prod_row_total_'+v.pro_id+'">'+prod_row_total+'</td><td class="prod_deli_period prod_deli_period_'+v.pro_id+'" style="word-break:break-all;"><input type="text" style="word-break:break-all; width:75px"  name="prod_deli_period" id="prod_deli_period_'+v.pro_id+'" value=""></td><td><a href="javascript:void(0);" onClick=delete_row('+v.pro_id+'); class="btn" style="float:left;padding:0"><span class="pull-left"> </span>  <i class="fa fa-times-circle"></i></a><a href="javascript:void(0);"  class="addCF_'+v.pro_id+' btn" style="float:left;padding:0" onClick=addCF('+v.pro_id+'); data-id='+v.pro_id+'><span class="pull-left"> </span>  <i class="fa fa-comment"></i></a></td>\n\</tr>';
-			}
-		});
+                prod_qty_left = parseInt(products.in_pro_qty) - parseInt(prodqty);
+                if(admin_rights == '1'){
+                    partNoHtml = '<input type="text" style="width: 100px;" value="'+prod_part_No+'" name="prod_part_No" class="prod_part_No">';
+                    var classs = '';
+                }else{
+                    partNoHtml = prod_part_No;
+                    var classs = 'prod_part_No';
+                }
+                html = '<tr id="prod_row_'+products.pro_id+'" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="'+prod_maker+'" name="prod_maker" class="prod_maker"><td class="'+classs+'">'+partNoHtml+'</td><td  style="word-break:break-all;" class="prod_desc">'+prod_desc+'</td><td  style="word-break:break-all;" class="prod_hsn">'+hsn+'</td><td style="word-break:break-all;"  class="prod_qty"><input style="width: 35px;" type="text" class="quentity_changed prodqty_'+products.pro_id+'" id="'+products.pro_id+'" value="'+prodqty+'" onchange="quentity_changed(this);"></td><td style="word-break:break-all;" >'+products.in_pro_qty+'</td><td style="word-break:break-all;" ><div class="tooltips"><input style="width: 75px;" type="text" class="prod_unit_price prod_unit_price_'+products.pro_id+'" value="'+prod_price+'" onchange="prod_price_changed(this,'+products.pro_id+');"></div></td><td style="word-break:break-all;" ><input type="text" style="width: 55px;" class="prod_disc_price prod_disc_price_'+products.pro_id+'" value="'+prod_discount+'" onchange="prod_discount_price_changed(this,'+products.pro_id+');"></td><td style="width: 75px; text-align: left;word-break:break-all;"  class="prod_net_price prod_netprice_'+products.pro_id+'">'+prod_net_price+'</td><td style="text-align: left;word-break:break-all;width: 60px;" class=" "><input style="width: 45px;" type="text" class="prod_igst_rate prod_igst_rate_'+products.pro_id+'" id="'+products.pro_id+'" value="'+prod_igst_rate+'" onchange="igsttaxrate_changed(this);"></td><td style="text-align: left;word-break:break-all;width: 75px;" class="prod_row_total prod_row_total_'+products.pro_id+'">'+prod_row_total+'</td><td class="prod_deli_period prod_deli_period_'+products.pro_id+'" style="word-break:break-all;"><input type="text" style="word-break:break-all; width:75px"  name="prod_deli_period" id="prod_deli_period_'+products.pro_id+'" value=""></td><td><a href="javascript:void(0);" onClick=delete_row('+products.pro_id+'); class="btn" style="float:left;padding:0"><span class="pull-left"> </span>  <i class="fa fa-times-circle"></i></a><a href="javascript:void(0);"  class="addCF_'+products.pro_id+' btn" style="float:left;padding:0" onClick=addCF('+products.pro_id+'); data-id='+products.pro_id+'><span class="pull-left"> </span>  <i class="fa fa-comment"></i></a></td>\n\</tr>';
+            }
+            // });
+            console.log(html);
+            $( html ).insertBefore( "#tblsummary .tr-subtotal" );
+            if(call_sub_total == true){
+                get_prod_row_sub_total();
+            }
+        }else{
+            html = '<tr id="prod_row" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="" name="" class=""><td class=""></td></tr>';
+            $( html ).insertBefore( "#tblsummary .tr-subtotal" );
+        }
 		
-		$( html ).insertBefore( "#tblsummary .tr-subtotal" );
-		if(call_sub_total == true){
-			get_prod_row_sub_total();
-			alter_all_data();
-		}
 	}
 });
 
@@ -1477,19 +1470,11 @@ $(function(){
         }
     });
     $("#product_search").blur(function(){
-        var part_no = $(this).val();
-        var get_details = 
-        var filepath = "{{ route('get_filter_product')}}";
-        $.ajax({
-        	url:filepath,
-        	type:'POST',
-        	async:false,
-			dataType: 'text',
-        	data: {'part_no': part_no, "_token": $('#token').val()},		
-        	success: function(res) {
-        		$("#order_product").val(res);
-        	}
-        });
+        var product_search = $(this).val();
+        var products = {!! json_encode($new_product_list) !!};
+        if( products[product_search] !='undefined' && products[product_search] !=''){
+            $("#order_product").val(product_search);
+        }
     });
 });
 </script>

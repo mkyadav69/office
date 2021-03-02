@@ -27,6 +27,7 @@ class QuatationController extends Controller
     public function addQuatation(){
         $notify = Notify::get();
         $company = Customer::get();
+        $product = Product::all('pro_id', 'st_part_No', 'str_igst_rate', 'fl_pro_price', 'in_pro_disc', 'st_pro_desc', 'stn_hsn_no', 'in_pro_qty', 'dt_price_update');
         $customer = $company;
         $currency = Config::get('constant.currency');
         $payment_term = Config::get('constant.payment_term');
@@ -45,6 +46,22 @@ class QuatationController extends Controller
             $owner = collect($owner)->pluck('owner_name', 'id')->toArray();
         }else{
             $owner = '';
+        }
+        if(!empty($product)){
+            $product =$product->toArray();
+        }else{
+            $product = '';
+        }
+        $new_product_list = [];
+        $dup = [];
+        if(!empty($product)){
+            foreach($product as $pro){
+                if(!isset($new_product[$pro['st_part_No']])){
+                    $new_product_list[$pro['st_part_No']] = $pro;
+                }else{
+                    $dup[$pro['st_part_No']] = $pro;
+                }
+            }   
         }
         $cust_details = [];
         if(!empty($customer)){
@@ -72,7 +89,7 @@ class QuatationController extends Controller
         }else{
             $customer = ''; 
         }
-        return view('office.quatation.add_quatation', compact('notify', 'company', 'currency', 'payment_term', 'owner', 'cust_details'));
+        return view('office.quatation.add_quatation', compact('notify', 'company', 'currency', 'payment_term', 'owner', 'cust_details', 'new_product_list'));
     }
 
     public function getQuatation(){
