@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Notify;
 use App\Models\Customer;
+use App\Models\Product;
 use App\Models\Owner;
 use App\Models\QuatationAdd;
 use Carbon\Carbon;
@@ -110,5 +111,28 @@ class QuatationController extends Controller
             }
         
         })->make(true);
+    }
+
+    public function allProduct(Request $request){
+        $query = $request->get('term','');
+        $products = Product::where('st_part_No','LIKE','%'.$query.'%')->orWhere('st_pro_desc','LIKE','%'.$query.'%')->get();
+        if(!empty($products)){
+            $data = collect($products)->pluck('st_part_No')->toArray();
+            if(count($data)){
+                return $data;
+            }else{
+                return ['message'=>'No Result Found'];
+    
+            }
+        }else{
+            return ['message'=>'No Result Found'];
+        }
+    }
+
+    public function filterProduct(Request $request){
+        if(!empty($request->part_no)){
+            return true;
+        }
+
     }
 }

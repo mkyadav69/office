@@ -121,6 +121,8 @@ Route::get('show-quatation', [QuatationController::class, 'showQuatation'])->nam
 Route::get('add-quatation', [QuatationController::class, 'addQuatation'])->name('add_quatation');
 // Route::post('store-quatation-format', [QuatationFormatController::class, 'storeQuatationFormat'])->name('store_quatation_format');
 Route::get('get-quatation', [QuatationController::class, 'getQuatation'])->name('get_quatation');
+Route::get('all-product', [QuatationController::class, 'allProduct'])->name('all_product');
+Route::post('filter-product', [QuatationController::class, 'filterProduct'])->name('get_filter_product');
 
 // Route::post('edit-quatation-format/{id}',  [QuatationFormatController::class, 'updateQuatationFormat'])->name('edit_quatation_format');
 // Route::post('delete-quatation-format/{id}',  [QuatationFormatController::class, 'deleteQuatationFormat'])->name('delete_quatation_format');

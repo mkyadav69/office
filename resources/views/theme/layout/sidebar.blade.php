@@ -20,8 +20,11 @@
                 <ul class="list-unstyled navbar__sub-list js-sub-list">
                     <li>
                         <a href="{{route('show_quatation')}}">Manage Quatations</a>
+                    </li>
+                    <li>
+                        <a href="{{route('add_quatation')}}">Add Quatation</a>
+                    </li>
                 </ul>
-            </li>
 
             <!-- <li class="has-sub">
                 <a class="js-arrow" href="#">

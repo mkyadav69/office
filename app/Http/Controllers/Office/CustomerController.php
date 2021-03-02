@@ -60,6 +60,8 @@ class CustomerController extends Controller
         if ($validator->fails()) {
             return back()->withErrors($validator, 'cutomer_add')->withInput();
         }
+
+        
         $check_status = Customer::insertGetId([
             'st_cust_fname'=>$request->customer_name,
             'st_cust_lname'=>$request->customer_last_name,
