@@ -28,7 +28,7 @@ datepicker,
             <div class="modal-header">
                 <h5 class="modal-title" id="largeModalLabel">Lead & Group</h5>
             </div>
-            <form action="{{route('store_product')}}" method="post">
+            <form action="{{route('store_product')}}" method="post" name="quotation_form" id="quotation_form">
                     <div class="modal-body">
                         @csrf
                         <div class="row form-group">
@@ -539,7 +539,7 @@ datepicker,
                         <a href="{{route('show_quatation')}}">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </a>
-                        <button type="submit" class="btn btn-primary">Confirm</button>
+                        <button type="submit" class="btn btn-primary add-quotation">Confirm</button>
                     </div>
                     </div>
             </form>
@@ -972,201 +972,201 @@ $(document).ready(function(){
         qty_change(prod_id, prodqty, prod_row_without_igst_total, prod_row_total);
     }
 
-    // $(function() {
-    //         jQuery.validator.addMethod("phoneUS", function(phone_number, element) {
-    //         phone_number = phone_number.replace(/\s+/g, "");
-    //         return this.optional(element) || phone_number.length > 9 && 
-    //         phone_number.match(/^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
-    //         }, "Please specify a valid phone number");
-    //         $("#quotation_form").validate({
-    //                 rules: {
-    //                     customer_id: "required",
-    //                     shipping_addr: "required",
-    //                     com_name: "required",
-    //                     preparing_by: "required",
-    //                     shipping_state: "required",
-    //                     shipping_city: "required",
-    //                     reference: "required",
-    //                     reference_date: "required",
-    //                     quotation_date:"required",
-    //                     notify_group:"required",
-    //                     select_owner:"required",
-    //                     auto_pop_pincod:{number: true,},
-    //                     shipping_pincod:{
-    //                     number: true,
-    //                 },
-    //                 auto_pop_phone:{
-    //                     number: true
-    //                 },
-    //                 shipping_telephone:{
-    //                     number: true
-    //                 },
-    //                 shipping_email: {
-    //                     required: true,
-    //                     email: true
-    //                 },
-    //                 auto_pop_email: {
-    //                     required: true,
-    //                     email: true
-    //                 },
+    $(function() {
+            jQuery.validator.addMethod("phoneUS", function(phone_number, element) {
+            phone_number = phone_number.replace(/\s+/g, "");
+            return this.optional(element) || phone_number.length > 9 && 
+            phone_number.match(/^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+            }, "Please specify a valid phone number");
+            $("#quotation_form").validate({
+                    rules: {
+                        customer_id: "required",
+                        shipping_addr: "required",
+                        com_name: "required",
+                        preparing_by: "required",
+                        shipping_state: "required",
+                        shipping_city: "required",
+                        reference: "required",
+                        reference_date: "required",
+                        quotation_date:"required",
+                        notify_group:"required",
+                        select_owner:"required",
+                        auto_pop_pincod:{number: true,},
+                        shipping_pincod:{
+                        number: true,
+                    },
+                    auto_pop_phone:{
+                        number: true
+                    },
+                    shipping_telephone:{
+                        number: true
+                    },
+                    shipping_email: {
+                        required: true,
+                        email: true
+                    },
+                    auto_pop_email: {
+                        required: true,
+                        email: true
+                    },
                     
-    //                 enq_ref_no: "required",
-    //                 payment_turm: "required"
-    //             },
-    //             // Specify the validation error messages
-    //             messages: {
-    //                 customer_id: "Please select a customer",
-    //                 preparing_by: "Please enter preparing qoutation person name",
-    //                 shipping_addr: "Please enter shipping address",
-    //                 shipping_state: "Please enter shipping state",
-    //                 shipping_city: "Please enter shipping city",
-    //                 shipping_pincod: "Please enter Pin Code",
-    //                 auto_pop_pincod: "Please enter Pin Code",
-    //                 shipping_telephone: "Please enter phone number",
-    //                 reference: "Please select a reference",
-    //                 reference_date: "Please enter reference date",
-    //                 quotation_date: "Please select Quotation Create Date",
-    //                 notify_group: "Please select Notification Group",
-    //                 select_owner: "Please select Customer Owner",
-    //                 shipping_email: "Please enter a valid email address ",
-    //                 auto_pop_email: "Please enter a valid email address ",
-    //                 enq_ref_no: "Please enter a enq. ref. No. ",
-    //                 //bank_details: "Please select a bank",
-    //                 payment_turm: "Please select payment turm"
+                    enq_ref_no: "required",
+                    payment_turm: "required"
+                },
+                // Specify the validation error messages
+                messages: {
+                    customer_id: "Please select a customer",
+                    preparing_by: "Please enter preparing qoutation person name",
+                    shipping_addr: "Please enter shipping address",
+                    shipping_state: "Please enter shipping state",
+                    shipping_city: "Please enter shipping city",
+                    shipping_pincod: "Please enter Pin Code",
+                    auto_pop_pincod: "Please enter Pin Code",
+                    shipping_telephone: "Please enter phone number",
+                    reference: "Please select a reference",
+                    reference_date: "Please enter reference date",
+                    quotation_date: "Please select Quotation Create Date",
+                    notify_group: "Please select Notification Group",
+                    select_owner: "Please select Customer Owner",
+                    shipping_email: "Please enter a valid email address ",
+                    auto_pop_email: "Please enter a valid email address ",
+                    enq_ref_no: "Please enter a enq. ref. No. ",
+                    //bank_details: "Please select a bank",
+                    payment_turm: "Please select payment turm"
                 
-    //             },
-    //             submitHandler: function(form) {
-    //                     sel_prods_details.length = 0;
-    //                     $(".prod_row_deatails").each(function(key,obj){
-    //                         var prod_comments='';
-    //                         if(admin_rights == '1'){
-    //                             var prod_part_No = $(this).find('.prod_part_No').val().trim();
-    //                         }else{
-    //                             var prod_part_No = $(this).find('.prod_part_No').text();
-    //                             prod_part_No = prod_part_No.replace('#', '').trim();
-    //                         }
-    //                         var prod_id = parseInt($(this).attr("id").replace(/[^\d]/g, ''), 10);
-    //                         var prod_desc = $(this).find('.prod_desc').text().trim();
-    //                         var prod_maker = $(this).find('.prod_maker').val().trim();
-    //                         var prod_hsn = $(this).find('.prod_hsn').text().trim();
-    //                         var prodqty = $('.prodqty_'+prod_id).val().trim();
-    //                         var prod_unit_price     = $(this).find('.prod_unit_price').val().trim();
-    //                         var prod_disc_price     = $(this).find('.prod_disc_price').val().trim();
-    //                         var prod_deli_period    = $('#prod_deli_period_'+prod_id).val().trim();
-    //                         var prod_net_price      = $(this).find('.prod_net_price').text().trim();
-    //                         var prod_igst_rate      = $(this).find('.prod_igst_rate ').val().trim();
-    //                         var prod_row_total      = $(this).find('.prod_row_total').text().trim();
-    //                         if($('#comments_'+prod_id).val()){
-    //                             prod_comments          = $('#comments_'+prod_id).val().trim();
-    //                         }
-    //                         var customer_id = $( "#customer_id option:selected" ).val();
-    //                         sel_prods_details.push({
-    //                                     'in_cust_id':           customer_id,
-    //                                     'in_product_id':        prod_id, 
-    //                                     'st_part_no':           prod_part_No,
-    //                                     'st_product_desc':      prod_desc,
-    //                                     'stn_hsn_no':           prod_hsn,
-    //                                     'st_maker':             prod_maker,
-    //                                     'in_pro_qty':           prodqty,
-    //                                     'fl_pro_unitprice':     prod_unit_price,
-    //                                     'fl_discount':          prod_disc_price,
-    //                                     'in_pro_deli_period':   prod_deli_period,
-    //                                     'in_igst_rate':         prod_igst_rate,
-    //                                     'fl_net_price':         prod_net_price,
-    //                                     'fl_row_total':         prod_row_total,
-    //                                     'prod_comments':        prod_comments
-    //                         });
-    //                 });
-    //                 $("#hid_order_prod_details").val(JSON.stringify(sel_prods_details)); 
-    //                 $("#hid_quotation_sub_total").val($(".final_subtotal").text());
-    //                 $("#order_nego_amount").val($('#prod_grand_total').text().trim());
-    //                 if(sel_prods_details.length > 0){ 
-    //                     if($("#is_submit_quotation").val() == 0){ 
-    //                         var quotation_info = {};
-    //                         var customer_info = {};
-    //                         quotation_info.length = 0;
-    //                         customer_info.length = 0;
+                },
+                submitHandler: function(form) {
+                        sel_prods_details.length = 0;
+                        $(".prod_row_deatails").each(function(key,obj){
+                            var prod_comments='';
+                            if(admin_rights == '1'){
+                                var prod_part_No = $(this).find('.prod_part_No').val().trim();
+                            }else{
+                                var prod_part_No = $(this).find('.prod_part_No').text();
+                                prod_part_No = prod_part_No.replace('#', '').trim();
+                            }
+                            var prod_id = parseInt($(this).attr("id").replace(/[^\d]/g, ''), 10);
+                            var prod_desc = $(this).find('.prod_desc').text().trim();
+                            var prod_maker = $(this).find('.prod_maker').val().trim();
+                            var prod_hsn = $(this).find('.prod_hsn').text().trim();
+                            var prodqty = $('.prodqty_'+prod_id).val().trim();
+                            var prod_unit_price     = $(this).find('.prod_unit_price').val().trim();
+                            var prod_disc_price     = $(this).find('.prod_disc_price').val().trim();
+                            var prod_deli_period    = $('#prod_deli_period_'+prod_id).val().trim();
+                            var prod_net_price      = $(this).find('.prod_net_price').text().trim();
+                            var prod_igst_rate      = $(this).find('.prod_igst_rate ').val().trim();
+                            var prod_row_total      = $(this).find('.prod_row_total').text().trim();
+                            if($('#comments_'+prod_id).val()){
+                                prod_comments          = $('#comments_'+prod_id).val().trim();
+                            }
+                            var customer_id = $( "#customer_id option:selected" ).val();
+                            sel_prods_details.push({
+                                        'in_cust_id':           customer_id,
+                                        'in_product_id':        prod_id, 
+                                        'st_part_no':           prod_part_No,
+                                        'st_product_desc':      prod_desc,
+                                        'stn_hsn_no':           prod_hsn,
+                                        'st_maker':             prod_maker,
+                                        'in_pro_qty':           prodqty,
+                                        'fl_pro_unitprice':     prod_unit_price,
+                                        'fl_discount':          prod_disc_price,
+                                        'in_pro_deli_period':   prod_deli_period,
+                                        'in_igst_rate':         prod_igst_rate,
+                                        'fl_net_price':         prod_net_price,
+                                        'fl_row_total':         prod_row_total,
+                                        'prod_comments':        prod_comments
+                            });
+                    });
+                    $("#hid_order_prod_details").val(JSON.stringify(sel_prods_details)); 
+                    $("#hid_quotation_sub_total").val($(".final_subtotal").text());
+                    $("#order_nego_amount").val($('#prod_grand_total').text().trim());
+                    if(sel_prods_details.length > 0){ 
+                        if($("#is_submit_quotation").val() == 0){ 
+                            var quotation_info = {};
+                            var customer_info = {};
+                            quotation_info.length = 0;
+                            customer_info.length = 0;
                             
-    //                         var shipping_addr           = $("#shipping_addr").val();
-    //                         var shipping_email          = $("#shipping_email").val();
-    //                         var shipping_telephone      = $("#shipping_telephone").val();
-    //                         var shipping_pin_code       = $("#shipping_pincod").val();
-    //                         var shipping_state          = $('#shipping_state').val();
-    //                         var shipping_city           = $('#shipping_city').val();
-    //                         var enq_ref_no              = $('#enq_ref_no').val();
-    //                         var dt_ref                  = $('#datepicker').val();
-    //                         var fl_fleight_pack_charg   = $('input[name="frieght_pack_charges"]').val();
-    //                         var st_tax_text             = $("#prod_tax option:selected" ).text();
-    //                         var vat_tax                 = $('#vat_tax').text();
-    //                         var fl_nego_amt             = $('.final_subtotal').text();
-    //                         var bill_add_id             = $('#bill_add_id').val();
-    //                         var preparing_by            = $('#preparing_by').val();
-    //                         var lead_from               = $('#lead_from').val();
-    //                         var currency  				= $( "#currency option:selected" ).text();
-    //                         var auto_pop_landline       = $('#auto_pop_landline').val();
-    //                         var payment_turm            = $("#payment_turm option:selected" ).text();
-    //                         quotation_info = {
-    //                                     'st_shiping_add' 	: shipping_addr,
-    //                                     'st_shiping_city' 	: shipping_city,
-    //                                     'st_shiping_state'      : shipping_state,
-    //                                     'st_shiping_pincode'    : shipping_pin_code,
-    //                                     'st_shipping_email'     : shipping_email,
-    //                                     'st_shipping_phone'     : shipping_telephone,
-    //                                     'st_enq_ref_number'     : enq_ref_no,
-    //                                     'dt_ref'                : dt_ref,
-    //                                     'fl_fleight_pack_charg' : fl_fleight_pack_charg,
-    //                                     'st_tax_text' 			: st_tax_text,
-    //                                     'fl_sales_tax_amt' 		: vat_tax,
-    //                                     'bill_add_id' 			: bill_add_id,
-    //                                     'payment_turm'			: payment_turm,
-    //                                     'lead_from'				: lead_from,
-    //                                     'currency'				: currency,
-    //                                     'st_landline'			: auto_pop_landline,
-    //                                     'fl_nego_amt' 			: fl_nego_amt
-    //                         };
+                            var shipping_addr           = $("#shipping_addr").val();
+                            var shipping_email          = $("#shipping_email").val();
+                            var shipping_telephone      = $("#shipping_telephone").val();
+                            var shipping_pin_code       = $("#shipping_pincod").val();
+                            var shipping_state          = $('#shipping_state').val();
+                            var shipping_city           = $('#shipping_city').val();
+                            var enq_ref_no              = $('#enq_ref_no').val();
+                            var dt_ref                  = $('#datepicker').val();
+                            var fl_fleight_pack_charg   = $('input[name="frieght_pack_charges"]').val();
+                            var st_tax_text             = $("#prod_tax option:selected" ).text();
+                            var vat_tax                 = $('#vat_tax').text();
+                            var fl_nego_amt             = $('.final_subtotal').text();
+                            var bill_add_id             = $('#bill_add_id').val();
+                            var preparing_by            = $('#preparing_by').val();
+                            var lead_from               = $('#lead_from').val();
+                            var currency  				= $( "#currency option:selected" ).text();
+                            var auto_pop_landline       = $('#auto_pop_landline').val();
+                            var payment_turm            = $("#payment_turm option:selected" ).text();
+                            quotation_info = {
+                                        'st_shiping_add' 	: shipping_addr,
+                                        'st_shiping_city' 	: shipping_city,
+                                        'st_shiping_state'      : shipping_state,
+                                        'st_shiping_pincode'    : shipping_pin_code,
+                                        'st_shipping_email'     : shipping_email,
+                                        'st_shipping_phone'     : shipping_telephone,
+                                        'st_enq_ref_number'     : enq_ref_no,
+                                        'dt_ref'                : dt_ref,
+                                        'fl_fleight_pack_charg' : fl_fleight_pack_charg,
+                                        'st_tax_text' 			: st_tax_text,
+                                        'fl_sales_tax_amt' 		: vat_tax,
+                                        'bill_add_id' 			: bill_add_id,
+                                        'payment_turm'			: payment_turm,
+                                        'lead_from'				: lead_from,
+                                        'currency'				: currency,
+                                        'st_landline'			: auto_pop_landline,
+                                        'fl_nego_amt' 			: fl_nego_amt
+                            };
 
-    //                         var auto_pop_phone = $("#auto_pop_phone").val();
-    //                         var auto_pop_company = $(".auto_pop_company").text();
-    //                         var auto_pop_cust_name = $("#auto_pop_cust_name").val();
-    //                         var auto_pop_state = $("#auto_pop_state").val();
-    //                         customer_info = {
-    //                                     'st_com_name' 		: auto_pop_company,
-    //                                     'auto_pop_cust_name'	: auto_pop_cust_name,
-    //                                     'st_cust_mobile'	: auto_pop_phone,
-    //                                     'auto_pop_state'	: auto_pop_state,
-    //                                     'preparing_by' 		: preparing_by
-    //                         };
+                            var auto_pop_phone = $("#auto_pop_phone").val();
+                            var auto_pop_company = $(".auto_pop_company").text();
+                            var auto_pop_cust_name = $("#auto_pop_cust_name").val();
+                            var auto_pop_state = $("#auto_pop_state").val();
+                            customer_info = {
+                                        'st_com_name' 		: auto_pop_company,
+                                        'auto_pop_cust_name'	: auto_pop_cust_name,
+                                        'st_cust_mobile'	: auto_pop_phone,
+                                        'auto_pop_state'	: auto_pop_state,
+                                        'preparing_by' 		: preparing_by
+                            };
 
-    //                         var filepath = '<?php //echo base_url();?>quotation/ajax_get_quote_preview';
-    //                         $.ajax({
-    //                             url:filepath,
-    //                             type:'POST',
-    //                             beforeSend: function() {
-    //                                 $("body").addClass("loading");
-    //                             },
-    //                             complete: function() {
-    //                                 $("body").removeClass("loading");
-    //                             },
-    //                             async:false,
-    //                             dataType: 'json',
-    //                             data: {'sel_prods_details' : sel_prods_details, 'customer_info' : customer_info, 'quotation_info' : quotation_info},		
-    //                             success: function(res) {
-    //                                 $("#is_submit_quotation").val('1');
-    //                                 $("#privew-quote").html(res.quotation_data);
+                            var filepath = '<?php //echo base_url();?>quotation/ajax_get_quote_preview';
+                            $.ajax({
+                                url:filepath,
+                                type:'POST',
+                                beforeSend: function() {
+                                    $("body").addClass("loading");
+                                },
+                                complete: function() {
+                                    $("body").removeClass("loading");
+                                },
+                                async:false,
+                                dataType: 'json',
+                                data: {'sel_prods_details' : sel_prods_details, 'customer_info' : customer_info, 'quotation_info' : quotation_info},		
+                                success: function(res) {
+                                    $("#is_submit_quotation").val('1');
+                                    $("#privew-quote").html(res.quotation_data);
 
-    //                             }
-    //                         });
-    //                         $('#quotation-preview-model').modal('show');
-    //                     }else{	
-    //                         form.submit();
-    //                     }
-    //                 }else{
-    //                     alert("Minimum one product for quotation is required.");
-    //                     return false;
-    //                 }
-    //             }
-    //         });
-    // });
+                                }
+                            });
+                            $('#quotation-preview-model').modal('show');
+                        }else{	
+                            form.submit();
+                        }
+                    }else{
+                        alert("Minimum one product for quotation is required.");
+                        return false;
+                    }
+                }
+            });
+    });
 
     function quotation_submit(){
         $("#tax_text").val($( "#prod_tax option:selected" ).text());
