@@ -106,14 +106,33 @@
                 @yield('deleteModal')
             </div>
         </div>
-    
-        <div class="modal fade" id="quotation-preview-model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+        <div class="modal fade" id="minProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-                @yield('previewQuotation')
+                @yield('minProduct')
             </div>
         </div>
 
-    
+
+        <div class="modal fade" id="nameQuantity" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                @yield('nameQuantity')
+            </div>
+        </div>
+
+        <div class="modal fade" id="validQuantity" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                @yield('validQuantity')
+            </div>
+        </div>
+
+        <div class="modal fade" id="selectProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                @yield('selectProduct')
+            </div>
+        </div>
+
+        
     <!-- Vendor JS       -->
     <script src="{{asset('vendor/slick/slick.min.js')}}"></script>
     <script src="{{asset('vendor/wow/wow.min.js')}}"></script>

@@ -24,13 +24,11 @@ datepicker,
             </div>
         @endif
         <div class="modal-content">
-           
             <div class="modal-header">
                 <h5 class="modal-title" id="largeModalLabel">Lead & Group</h5>
             </div>
-            <form method="post" name="quotation_form" id="quotation_form">
+            <form action="" method="POST"  name="quotation_form" id="quotation_form"  role="form">
                     <div class="modal-body">
-                        @csrf
                         <div class="row form-group">
                             <div class="form-group col-4">
                                 <label for="company" class="form-control-label required">Quatation Prepared By </label>
@@ -42,7 +40,7 @@ datepicker,
                                 <input type="text" name="lead_from" required id="lead_from" placeholder="Lead From" class="form-control">
                                 <small class="help-block form-text text-danger" id="error_lead_from"></small>
                             </div>
-                            <input type="hidden" name="_token" required id="token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="_token"  id="token" value="{{ csrf_token() }}">
                             <div class="form-group col-4">
                                 <label for="vat" class=" form-control-label required">Notify Group</label>
                                 <select id="notify_group" required name="notify_group" class="form-control">
@@ -86,7 +84,7 @@ datepicker,
 
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Ref. Date </label>
-                                <input type="text" name="reference_date" required id="datepicker" class="form-control" placeholder="DD-MM-YYY" readonly />
+                                <input type="text" name="reference_date" required id="datepicker" class="form-control" placeholder="DD-MM-YYY" />
                                 <small class="help-block form-text text-danger" id="error_dt_ref"></small>
                             </div>
 
@@ -123,77 +121,76 @@ datepicker,
                                         <strong>Billing </strong> Details
                                     </div>
                                     <div class="card-body card-block">
-                                        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="text-input" class=" form-control-label">Address</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <textarea type="text" id="auto_pop_addr" required name="auto_pop_addr" placeholder="Address" class="form-control auto_pop_addr"></textarea>
-                                                    <small class="help-block form-text text-danger" id="error_auto_pop_addr"></small>
-                                                </div>
+                                       
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="text-input" class=" form-control-label">Address</label>
                                             </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="email-input" class="form-control-label required">State</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="text" id="auto_pop_state" required name="auto_pop_state" placeholder="State" class="form-control auto_pop_state">
-                                                    <small class="help-block form-text text-danger" id="error_auto_pop_state"></small>
-                                                </div>
+                                            <div class="col-12 col-md-9">
+                                                <textarea type="text" id="auto_pop_addr" required name="auto_pop_addr" placeholder="Address" class="form-control auto_pop_addr"></textarea>
+                                                <small class="help-block form-text text-danger" id="error_auto_pop_addr"></small>
                                             </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="email-input" class="form-control-label required">State</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <input type="text" id="auto_pop_state" required name="auto_pop_state" placeholder="State" class="form-control auto_pop_state">
+                                                <small class="help-block form-text text-danger" id="error_auto_pop_state"></small>
+                                            </div>
+                                        </div>
 
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="email-input" class=" form-control-label required">City</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="text" id="auto_pop_city" required name="auto_pop_city" placeholder="City" class="form-control auto_pop_city">
-                                                    <small class="help-block form-text text-danger" id="error_auto_pop_city"></small>
-                                                </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="email-input" class=" form-control-label required">City</label>
                                             </div>
+                                            <div class="col-12 col-md-9">
+                                                <input type="text" id="auto_pop_city" required name="auto_pop_city" placeholder="City" class="form-control auto_pop_city">
+                                                <small class="help-block form-text text-danger" id="error_auto_pop_city"></small>
+                                            </div>
+                                        </div>
 
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="email-input" class=" form-control-label required">Pin Code</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="text" id="auto_pop_pincod" required name="auto_pop_pincod" placeholder="Pin Code" class="form-control auto_pop_pincod">
-                                                    <small class="help-block form-text text-danger" id="error_auto_pop_pincod"></small>
-                                                </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="email-input" class=" form-control-label required">Pin Code</label>
                                             </div>
+                                            <div class="col-12 col-md-9">
+                                                <input type="text" id="auto_pop_pincod" required name="auto_pop_pincod" placeholder="Pin Code" class="form-control auto_pop_pincod">
+                                                <small class="help-block form-text text-danger" id="error_auto_pop_pincod"></small>
+                                            </div>
+                                        </div>
 
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="email-input" class="form-control-label required">Mobile No.</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="text" id="auto_pop_phone" required name="auto_pop_phone" placeholder="Mobile No." class="form-control auto_pop_phone">
-                                                    <small class="help-block form-text text-danger" id="error_auto_pop_phone"></small>
-                                                </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="email-input" class="form-control-label required">Mobile No.</label>
                                             </div>
-                                            
-                                            
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="email-input" class="form-control-label required">Email</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="email" id="auto_pop_email" required name="auto_pop_email" placeholder="Email" class="form-control auto_pop_email">
-                                                    <small class="help-block form-text text-danger" id="error_auto_pop_email"></small>
-                                                </div>
+                                            <div class="col-12 col-md-9">
+                                                <input type="text" id="auto_pop_phone" required name="auto_pop_phone" placeholder="Mobile No." class="form-control auto_pop_phone">
+                                                <small class="help-block form-text text-danger" id="error_auto_pop_phone"></small>
                                             </div>
+                                        </div>
+                                        
+                                        
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="email-input" class="form-control-label required">Email</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <input type="email" id="auto_pop_email" required name="auto_pop_email" placeholder="Email" class="form-control auto_pop_email">
+                                                <small class="help-block form-text text-danger" id="error_auto_pop_email"></small>
+                                            </div>
+                                        </div>
 
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="email-input" class=" form-control-label required">Land-Line No.</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="text" id="auto_pop_landline" required name="auto_pop_landline" placeholder="Land-Line No." class="form-control auto_pop_landline">
-                                                    <small class="help-block form-text text-danger" id="error_auto_pop_landline"></small>
-                                                </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="email-input" class=" form-control-label required">Land-Line No.</label>
                                             </div>
-                                        </form>
+                                            <div class="col-12 col-md-9">
+                                                <input type="text" id="auto_pop_landline" required name="auto_pop_landline" placeholder="Land-Line No." class="form-control auto_pop_landline">
+                                                <small class="help-block form-text text-danger" id="error_auto_pop_landline"></small>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -210,84 +207,82 @@ datepicker,
                                         </div>
                                     </div>
                                     <div class="card-body card-block">
-                                        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="text-input" class=" form-control-label required">Address</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <textarea type="text" id="shipping_addr" required name="shipping_addr" placeholder="Address" class="form-control auto_pop_ship_addr"></textarea>
-                                                    <small class="help-block form-text text-danger" id="error_st_shiping_add"></small>
-                                                </div>
+                                       
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="text-input" class=" form-control-label required">Address</label>
                                             </div>
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="email-input" class="form-control-label required">State</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="text" id="shipping_state" required name="shipping_state" placeholder="State" class="form-control">
-                                                    <small class="help-block form-text text-danger" id="error_st_shiping_state"></small>
-                                                </div>
+                                            <div class="col-12 col-md-9">
+                                                <textarea type="text" id="shipping_addr" required name="shipping_addr" placeholder="Address" class="form-control auto_pop_ship_addr"></textarea>
+                                                <small class="help-block form-text text-danger" id="error_st_shiping_add"></small>
                                             </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="email-input" class="form-control-label required">State</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <input type="text" id="shipping_state" required name="shipping_state" placeholder="State" class="form-control">
+                                                <small class="help-block form-text text-danger" id="error_st_shiping_state"></small>
+                                            </div>
+                                        </div>
 
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="email-input" class=" form-control-label required">City</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="text" id="shipping_city" required name="shipping_city" placeholder="City" class="form-control">
-                                                    <small class="help-block form-text text-danger" id="error_st_shiping_city"></small>
-                                                </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="email-input" class=" form-control-label required">City</label>
                                             </div>
+                                            <div class="col-12 col-md-9">
+                                                <input type="text" id="shipping_city" required name="shipping_city" placeholder="City" class="form-control">
+                                                <small class="help-block form-text text-danger" id="error_st_shiping_city"></small>
+                                            </div>
+                                        </div>
 
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="email-input" class=" form-control-label required">Pin Code</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="text" id="shipping_pincod" required name="shipping_pincod" placeholder="Pin Code" class="form-control">
-                                                    <small class="help-block form-text text-danger" id="error_st_shiping_pincode"></small>
-                                                </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="email-input" class=" form-control-label required">Pin Code</label>
                                             </div>
+                                            <div class="col-12 col-md-9">
+                                                <input type="text" id="shipping_pincod" required name="shipping_pincod" placeholder="Pin Code" class="form-control">
+                                                <small class="help-block form-text text-danger" id="error_st_shiping_pincode"></small>
+                                            </div>
+                                        </div>
 
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="email-input" class="form-control-label required">Mobile No.</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="text" id="shipping_telephone" required name="shipping_telephone" placeholder="Mobile No." class="form-control">
-                                                    <small class="help-block form-text text-danger" id="error_st_shipping_phone"></small>
-                                                </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="email-input" class="form-control-label required">Mobile No.</label>
                                             </div>
-                                            
-                                            
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="email-input" class="form-control-label required">Email</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="email" id="shipping_email" required name="shipping_email" placeholder="Email" class="form-control">
-                                                    <small class="help-block form-text text-danger" id="error_st_shipping_email"></small>
-                                                </div>
+                                            <div class="col-12 col-md-9">
+                                                <input type="text" id="shipping_telephone" required name="shipping_telephone" placeholder="Mobile No." class="form-control">
+                                                <small class="help-block form-text text-danger" id="error_st_shipping_phone"></small>
                                             </div>
+                                        </div>
+                                        
+                                        
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="email-input" class="form-control-label required">Email</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <input type="email" id="shipping_email" required name="shipping_email" placeholder="Email" class="form-control">
+                                                <small class="help-block form-text text-danger" id="error_st_shipping_email"></small>
+                                            </div>
+                                        </div>
 
-                                            <div class="row form-group">
-                                                <div class="col col-md-3">
-                                                    <label for="email-input" class=" form-control-label required">Land-Line No.</label>
-                                                </div>
-                                                <div class="col-12 col-md-9">
-                                                    <input type="text" id="shipping_lanline" required name="shipping_lanline" placeholder="Land-Line No." class="form-control">
-                                                    <small class="help-block form-text text-danger" id="error_shipping_lanline"></small>
-                                                </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="email-input" class=" form-control-label required">Land-Line No.</label>
                                             </div>
-                                        </form>
+                                            <div class="col-12 col-md-9">
+                                                <input type="text" id="shipping_lanline" required name="shipping_lanline" placeholder="Land-Line No." class="form-control">
+                                                <small class="help-block form-text text-danger" id="error_shipping_lanline"></small>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                            
+                        </div> 
                     </div>
-                    <div class="modal-header">
+                   <div class="modal-header">
                         <h5 class="modal-title" id="largeModalLabel">Product Details</h5>
                     </div>
                     <div class="modal-body">
@@ -420,13 +415,12 @@ datepicker,
                         </a>
                         <button type="submit" class="btn btn-primary confirm">Confirm</button>
                     </div>
-                    </div>
+                </div>
             </form>
         </div>
     </div>
 
     
-
     <div class="modal fade" id="" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -457,7 +451,7 @@ datepicker,
 <!-- end add record -->
 <script>
 $(document).ready(function(){
-    $('.confirm').on('click', function(){
+    $('#quotation_form').submit(function(e){
         sel_prods_details.length = 0;
         $(".prod_row_deatails").each(function(key,obj){
             var prod_comments='';
@@ -478,9 +472,9 @@ $(document).ready(function(){
             var prod_net_price      = $(this).find('.prod_net_price').text().trim();
             var prod_igst_rate      = $(this).find('.prod_igst_rate ').val().trim();
             var prod_row_total      = $(this).find('.prod_row_total').text().trim();
-            // if($('#comments_'+prod_id).val() != 'undefined' &&  $('#comments_'+prod_id).val() != ''){
-            //     prod_comments          = $('#comments_'+prod_id).val().trim();
-            // }
+            if($('#comments_'+prod_id).val() != 'undefined' &&  $('#comments_'+prod_id).val() != '' && $('#comments_'+prod_id).val() != null){
+                prod_comments          = $('#comments_'+prod_id).val().trim();
+            }
             var customer_id = $( "#customer_id option:selected" ).val();
             sel_prods_details.push({
                         'in_cust_id':           customer_id,
@@ -496,7 +490,7 @@ $(document).ready(function(){
                         'in_igst_rate':         prod_igst_rate,
                         'fl_net_price':         prod_net_price,
                         'fl_row_total':         prod_row_total,
-                        'prod_comments':        "ll"
+                        'prod_comments':        prod_comments
             });
         });
         $("#hid_order_prod_details").val(JSON.stringify(sel_prods_details)); 
@@ -531,7 +525,6 @@ $(document).ready(function(){
                 var notify_group            = $('#notify_group').val();
                 var select_owner            = $( "#select_owner option:selected" ).val();
 
-                 
                 var auto_pop_addr           = $("#auto_pop_addr").val();
                 var auto_pop_state          = $("#auto_pop_state").val();
                 var auto_pop_city           = $("#auto_pop_city").val();
@@ -541,8 +534,6 @@ $(document).ready(function(){
                 var product_search          = $('#product_search').val();
                 var prod_qty                = $('#prod_qty').val();
                 var ext_note                = $('#ext_note').val();
-
-                
 
                 quotation_info = {
                             'st_shiping_add' 	: shipping_addr,
@@ -559,7 +550,6 @@ $(document).ready(function(){
                             'fl_sales_tax_amt' 		: vat_tax,
                             'bill_add_id' 			: bill_add_id,
                             'payment_turm'			: payment_turm,
-                            'lead_from'				: lead_from,
                             'currency'				: currency,
                             'st_landline'			: auto_pop_landline,
                             'fl_nego_amt' 			: fl_nego_amt,
@@ -572,21 +562,22 @@ $(document).ready(function(){
                 var auto_pop_cust_name = $("#auto_pop_cust_name").val();
                 var auto_pop_state = $("#auto_pop_state").val();
                 customer_info = {
-                            'st_com_name' 		: auto_pop_company,
+                            'st_com_name' 		    : auto_pop_company,
                             'auto_pop_cust_name'	: auto_pop_cust_name,
-                            'st_cust_mobile'	: auto_pop_phone,
-                            'auto_pop_state'	: auto_pop_state,
-                            'preparing_by' 		: preparing_by,
-                            'notify_group'      : notify_group,
-                            'select_owner'       : select_owner,
-                            'auto_pop_addr'   :        auto_pop_addr,
-                            'auto_pop_state'  :        auto_pop_state,
-                            'auto_pop_city'   :        auto_pop_city,
-                            'auto_pop_pincod' :        auto_pop_pincod,
-                            'auto_pop_phone'   :      auto_pop_phone,
-                            'auto_pop_email'   :      auto_pop_email,
-                            'auto_pop_landline'  :    auto_pop_landline,
-                            'ext_note' : ext_note
+                            'st_cust_mobile'	    : auto_pop_phone,
+                            'auto_pop_state'	    : auto_pop_state,
+                            'preparing_by' 		    : preparing_by,
+                            'notify_group'          : notify_group,
+                            'select_owner'          : select_owner,
+                            'auto_pop_addr'         : auto_pop_addr,
+                            'auto_pop_state'        : auto_pop_state,
+                            'auto_pop_city'         : auto_pop_city,
+                            'auto_pop_pincod'       : auto_pop_pincod,
+                            'auto_pop_phone'        : auto_pop_phone,
+                            'auto_pop_email'        : auto_pop_email,
+                            'auto_pop_landline'     : auto_pop_landline,
+                            'ext_note'              : ext_note,
+                            'lead_from'				: lead_from,
 
                 };
                 var filepath = "{{route('preview_quatation')}}"
@@ -621,7 +612,7 @@ $(document).ready(function(){
                 form.submit();
             }
         }else{
-            alert("Minimum one product for quotation is required.");
+            $('#minProduct').modal('show');
             return false;
         }
     });
@@ -647,7 +638,7 @@ $(document).ready(function(){
         }
     }); 
 
-    $.fn.datepicker.defaults.format = "mm-dd-yyyy";
+    $.fn.datepicker.defaults.format = "dd-mm-yyyy";
     $('#datepicker').datepicker({
         leftArrow: '&laquo;',
         rightArrow: '&raquo;',
@@ -792,11 +783,7 @@ $(document).ready(function(){
             }else{
                 prod_id_exist = 1;
             } 
-            
-            $('#hid_selprod').val(sel_prods);
-            
-            // var products = '';<?php //echo json_encode($product_list); ?>//;
-            
+            $('#hid_selprod').val(sel_prods);            
             var html = '';	
             var prodqty = 0;
             var free_prod_qty = 0;
@@ -878,57 +865,8 @@ $(document).ready(function(){
                 html = '<tr id="prod_row" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="" name="" class=""><td class=""></td></tr>';
                 $( html ).insertBefore( "#tblsummary .tr-subtotal" );
             }
-            
         }
     });
-
-    $(".add-quotation").click(function(){ 
-        $(".prod_row_deatails").each(function(key,obj){
-            var prod_comments='';
-            var prod_part_No = $(this).find('.prod_part_No').text();
-            prod_part_No = prod_part_No.replace('#', '').trim();
-            var prod_id = parseInt($(this).attr("id").replace(/[^\d]/g, ''), 10);
-            var prod_desc = $(this).find('.prod_desc').text().trim();
-            var prod_maker = $(this).find('.prod_maker').val().trim();
-            var prodqty            = $('.prodqty_'+prod_id).val().trim();
-            var prod_unit_price 	= $(this).find('.prod_unit_price').val().trim();
-            var prod_disc_price 	= $(this).find('.prod_disc_price').val().trim();
-            var prod_deli_period 	= $(this).find('.prod_deli_period').val().trim();
-            var prod_net_price 	= $(this).find('.prod_net_price').text().trim();
-            var prod_igst_rate 	= $(this).find('.prod_igst_rate ').val().trim();
-            var prod_row_total 	= $(this).find('.prod_row_total').text().trim();
-            var prod_hsn   	= $(this).find('.prod_hsn').text().trim();
-            // prod_comments          = $('#comments_'+prod_id).val().trim();
-            var customer_id = $( "#customer_id option:selected" ).val();
-            sel_prods_details.push({
-                        'in_cust_id': 		customer_id,
-                        'in_product_id': 	prod_id, 
-                        'st_part_no':  		prod_part_No,
-                        'st_product_desc':      prod_desc,
-                        'st_maker':  		prod_maker,
-                        'in_pro_qty':  		prodqty,
-                        'fl_pro_unitprice':     prod_unit_price,
-                        'fl_discount':  	prod_disc_price,
-                        'in_pro_deli_period':   prod_deli_period,
-                        'fl_net_price':  	prod_net_price,
-                        'in_igst_rate':         prod_igst_rate,
-                        'fl_row_total':  	prod_row_total,
-                        'stn_hsn_no':  		prod_hsn,
-                        'prod_comments':  	'',
-            });
-        });
-
-        $("#hid_order_prod_details").val(JSON.stringify(sel_prods_details));
-        $("#hid_quotation_sub_total").val($(".final_subtotal").text());
-        if(sel_prods_details.length > 0){
-            $( "#quotation_form" ).submit();
-        }else{
-            alert("Minimum one product for quotation is required.");
-        }		
-    });
-
-
-    $()
 });
 
    
@@ -946,22 +884,28 @@ $(document).ready(function(){
         var prod_id = $('#order_product').val();
 
         if($('#order_product').val() =='' && parseInt($('#prod_qty').val()) == ''){
-            alert("Please select product name and quantity");
+            $('#nameQuantity').modal('show');
+            // alert("Please select product name and quantity");
             req = 0;			
         }else if( $('#order_product').val() !='' && $('#prod_qty').val()=='') {
-            alert("Please enter valid product quantity.");
+            $('#validQuantity').modal('show');
+            // alert("Please enter valid product quantity.");
             req = 0;		
         }else if( ($('#order_product').val() !='' && parseInt($('#prod_qty').val())=='')) {
-            alert("Please enter valid product quantity.");
+            $('#validQuantity').modal('show');
+            // alert("Please enter valid product quantity.");
             req = 0;		
         }else if( ($('#order_product').val() !='' && parseInt($('#prod_qty').val()) <=0)) {
-            alert("Please enter valid product quantity");
+            $('#validQuantity').modal('show');
+            // alert("Please enter valid product quantity");
             req = 0;		
         }else if( ($('#order_product').val() =='' && parseInt($('#prod_qty').val())!='') ) {
-            alert("Please select product.")
+            $('#selectProduct').modal('show');
+            // alert("Please select product.")
             req = 0;		
         }else if( $('#prod_qty').val()!='' && ($.isNumeric($('#prod_qty').val()) == false || (parseInt($('#prod_qty').val()) <= 0 || $('#prod_qty').val().indexOf('.') !== -1) )){
-            alert("Please enter valid product quantity");
+            $('#validQuantity').modal('show');
+            // alert("Please enter valid product quantity");
             req = 0;			
         }else{
             req = 1;	
@@ -1108,203 +1052,204 @@ $(document).ready(function(){
         qty_change(prod_id, prodqty, prod_row_without_igst_total, prod_row_total);
     }
 
-    $(function() {
-            jQuery.validator.addMethod("phoneUS", function(phone_number, element) {
-            phone_number = phone_number.replace(/\s+/g, "");
-            return this.optional(element) || phone_number.length > 9 && 
-            phone_number.match(/^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
-            }, "Please specify a valid phone number");
-            $("#quotation_form").validate({
-                    rules: {
-                        customer_id: "required",
-                        shipping_addr: "required",
-                        com_name: "required",
-                        preparing_by: "required",
-                        shipping_state: "required",
-                        shipping_city: "required",
-                        reference: "required",
-                        reference_date: "required",
-                        quotation_date:"required",
-                        notify_group:"required",
-                        select_owner:"required",
-                        auto_pop_pincod:{number: true,},
-                        shipping_pincod:{
-                        number: true,
-                    },
-                    auto_pop_phone:{
-                        number: true
-                    },
-                    shipping_telephone:{
-                        number: true
-                    },
-                    shipping_email: {
-                        required: true,
-                        email: true
-                    },
-                    auto_pop_email: {
-                        required: true,
-                        email: true
-                    },
+    // $(function() {
+    //         jQuery.validator.addMethod("phoneUS", function(phone_number, element) {
+    //         phone_number = phone_number.replace(/\s+/g, "");
+    //         return this.optional(element) || phone_number.length > 9 && 
+    //         phone_number.match(/^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+    //         }, "Please specify a valid phone number");
+    //         $("#quotation_form").validate({
+    //                 rules: {
+    //                     customer_id: "required",
+    //                     shipping_addr: "required",
+    //                     com_name: "required",
+    //                     preparing_by: "required",
+    //                     shipping_state: "required",
+    //                     shipping_city: "required",
+    //                     reference: "required",
+    //                     reference_date: "required",
+    //                     quotation_date:"required",
+    //                     notify_group:"required",
+    //                     select_owner:"required",
+    //                     auto_pop_pincod:{number: true,},
+    //                     shipping_pincod:{
+    //                     number: true,
+    //                 },
+    //                 auto_pop_phone:{
+    //                     number: true
+    //                 },
+    //                 shipping_telephone:{
+    //                     number: true
+    //                 },
+    //                 shipping_email: {
+    //                     required: true,
+    //                     email: true
+    //                 },
+    //                 auto_pop_email: {
+    //                     required: true,
+    //                     email: true
+    //                 },
                     
-                    enq_ref_no: "required",
-                    payment_turm: "required"
-                },
-                // Specify the validation error messages
-                messages: {
-                    customer_id: "Please select a customer",
-                    preparing_by: "Please enter preparing qoutation person name",
-                    shipping_addr: "Please enter shipping address",
-                    shipping_state: "Please enter shipping state",
-                    shipping_city: "Please enter shipping city",
-                    shipping_pincod: "Please enter Pin Code",
-                    auto_pop_pincod: "Please enter Pin Code",
-                    shipping_telephone: "Please enter phone number",
-                    reference: "Please select a reference",
-                    reference_date: "Please enter reference date",
-                    quotation_date: "Please select Quotation Create Date",
-                    notify_group: "Please select Notification Group",
-                    select_owner: "Please select Customer Owner",
-                    shipping_email: "Please enter a valid email address ",
-                    auto_pop_email: "Please enter a valid email address ",
-                    enq_ref_no: "Please enter a enq. ref. No. ",
-                    //bank_details: "Please select a bank",
-                    payment_turm: "Please select payment turm"
+    //                 enq_ref_no: "required",
+    //                 payment_turm: "required"
+    //             },
+    //             // Specify the validation error messages
+    //             messages: {
+    //                 customer_id: "Please select a customer",
+    //                 preparing_by: "Please enter preparing qoutation person name",
+    //                 shipping_addr: "Please enter shipping address",
+    //                 shipping_state: "Please enter shipping state",
+    //                 shipping_city: "Please enter shipping city",
+    //                 shipping_pincod: "Please enter Pin Code",
+    //                 auto_pop_pincod: "Please enter Pin Code",
+    //                 shipping_telephone: "Please enter phone number",
+    //                 reference: "Please select a reference",
+    //                 reference_date: "Please enter reference date",
+    //                 quotation_date: "Please select Quotation Create Date",
+    //                 notify_group: "Please select Notification Group",
+    //                 select_owner: "Please select Customer Owner",
+    //                 shipping_email: "Please enter a valid email address ",
+    //                 auto_pop_email: "Please enter a valid email address ",
+    //                 enq_ref_no: "Please enter a enq. ref. No. ",
+    //                 //bank_details: "Please select a bank",
+    //                 payment_turm: "Please select payment turm"
                 
-                },
-                submitHandler: function(form) {
-                        sel_prods_details.length = 0;
-                        $(".prod_row_deatails").each(function(key,obj){
-                            var prod_comments='';
-                            if(admin_rights == '1'){
-                                var prod_part_No = $(this).find('.prod_part_No').val().trim();
-                            }else{
-                                var prod_part_No = $(this).find('.prod_part_No').text();
-                                prod_part_No = prod_part_No.replace('#', '').trim();
-                            }
-                            var prod_id = parseInt($(this).attr("id").replace(/[^\d]/g, ''), 10);
-                            var prod_desc = $(this).find('.prod_desc').text().trim();
-                            var prod_maker = $(this).find('.prod_maker').val().trim();
-                            var prod_hsn = $(this).find('.prod_hsn').text().trim();
-                            var prodqty = $('.prodqty_'+prod_id).val().trim();
-                            var prod_unit_price     = $(this).find('.prod_unit_price').val().trim();
-                            var prod_disc_price     = $(this).find('.prod_disc_price').val().trim();
-                            var prod_deli_period    = $('#prod_deli_period_'+prod_id).val().trim();
-                            var prod_net_price      = $(this).find('.prod_net_price').text().trim();
-                            var prod_igst_rate      = $(this).find('.prod_igst_rate ').val().trim();
-                            var prod_row_total      = $(this).find('.prod_row_total').text().trim();
-                            if($('#comments_'+prod_id).val() != 'undefined'){
-                                prod_comments          = $('#comments_'+prod_id).val().trim();
-                            }
-                            var customer_id = $( "#customer_id option:selected" ).val();
-                            sel_prods_details.push({
-                                        'in_cust_id':           customer_id,
-                                        'in_product_id':        prod_id, 
-                                        'st_part_no':           prod_part_No,
-                                        'st_product_desc':      prod_desc,
-                                        'stn_hsn_no':           prod_hsn,
-                                        'st_maker':             prod_maker,
-                                        'in_pro_qty':           prodqty,
-                                        'fl_pro_unitprice':     prod_unit_price,
-                                        'fl_discount':          prod_disc_price,
-                                        'in_pro_deli_period':   prod_deli_period,
-                                        'in_igst_rate':         prod_igst_rate,
-                                        'fl_net_price':         prod_net_price,
-                                        'fl_row_total':         prod_row_total,
-                                        'prod_comments':        prod_comments
-                            });
-                    });
-                    $("#hid_order_prod_details").val(JSON.stringify(sel_prods_details)); 
-                    $("#hid_quotation_sub_total").val($(".final_subtotal").text());
-                    $("#order_nego_amount").val($('#prod_grand_total').text().trim());
-                    if(sel_prods_details.length > 0){ 
-                        if($("#is_submit_quotation").val() == 0){ 
-                            var quotation_info = {};
-                            var customer_info = {};
-                            quotation_info.length = 0;
-                            customer_info.length = 0;
+    //             },
+    //             submitHandler: function(form) {
+    //                     sel_prods_details.length = 0;
+    //                     $(".prod_row_deatails").each(function(key,obj){
+    //                         var prod_comments='';
+    //                         if(admin_rights == '1'){
+    //                             var prod_part_No = $(this).find('.prod_part_No').val().trim();
+    //                         }else{
+    //                             var prod_part_No = $(this).find('.prod_part_No').text();
+    //                             prod_part_No = prod_part_No.replace('#', '').trim();
+    //                         }
+    //                         var prod_id = parseInt($(this).attr("id").replace(/[^\d]/g, ''), 10);
+    //                         var prod_desc = $(this).find('.prod_desc').text().trim();
+    //                         var prod_maker = $(this).find('.prod_maker').val().trim();
+    //                         var prod_hsn = $(this).find('.prod_hsn').text().trim();
+    //                         var prodqty = $('.prodqty_'+prod_id).val().trim();
+    //                         var prod_unit_price     = $(this).find('.prod_unit_price').val().trim();
+    //                         var prod_disc_price     = $(this).find('.prod_disc_price').val().trim();
+    //                         var prod_deli_period    = $('#prod_deli_period_'+prod_id).val().trim();
+    //                         var prod_net_price      = $(this).find('.prod_net_price').text().trim();
+    //                         var prod_igst_rate      = $(this).find('.prod_igst_rate ').val().trim();
+    //                         var prod_row_total      = $(this).find('.prod_row_total').text().trim();
+    //                         if($('#comments_'+prod_id).val() != 'undefined'){
+    //                             prod_comments          = $('#comments_'+prod_id).val().trim();
+    //                         }
+    //                         var customer_id = $( "#customer_id option:selected" ).val();
+    //                         sel_prods_details.push({
+    //                                     'in_cust_id':           customer_id,
+    //                                     'in_product_id':        prod_id, 
+    //                                     'st_part_no':           prod_part_No,
+    //                                     'st_product_desc':      prod_desc,
+    //                                     'stn_hsn_no':           prod_hsn,
+    //                                     'st_maker':             prod_maker,
+    //                                     'in_pro_qty':           prodqty,
+    //                                     'fl_pro_unitprice':     prod_unit_price,
+    //                                     'fl_discount':          prod_disc_price,
+    //                                     'in_pro_deli_period':   prod_deli_period,
+    //                                     'in_igst_rate':         prod_igst_rate,
+    //                                     'fl_net_price':         prod_net_price,
+    //                                     'fl_row_total':         prod_row_total,
+    //                                     'prod_comments':        prod_comments
+    //                         });
+    //                 });
+    //                 $("#hid_order_prod_details").val(JSON.stringify(sel_prods_details)); 
+    //                 $("#hid_quotation_sub_total").val($(".final_subtotal").text());
+    //                 $("#order_nego_amount").val($('#prod_grand_total').text().trim());
+    //                 if(sel_prods_details.length > 0){ 
+    //                     if($("#is_submit_quotation").val() == 0){ 
+    //                         var quotation_info = {};
+    //                         var customer_info = {};
+    //                         quotation_info.length = 0;
+    //                         customer_info.length = 0;
                             
-                            var shipping_addr           = $("#shipping_addr").val();
-                            var shipping_email          = $("#shipping_email").val();
-                            var shipping_telephone      = $("#shipping_telephone").val();
-                            var shipping_pin_code       = $("#shipping_pincod").val();
-                            var shipping_state          = $('#shipping_state').val();
-                            var shipping_city           = $('#shipping_city').val();
-                            var enq_ref_no              = $('#enq_ref_no').val();
-                            var dt_ref                  = $('#datepicker').val();
-                            var fl_fleight_pack_charg   = $('input[name="frieght_pack_charges"]').val();
-                            var st_tax_text             = $("#prod_tax option:selected" ).text();
-                            var vat_tax                 = $('#vat_tax').text();
-                            var fl_nego_amt             = $('.final_subtotal').text();
-                            var bill_add_id             = $('#bill_add_id').val();
-                            var preparing_by            = $('#preparing_by').val();
-                            var lead_from               = $('#lead_from').val();
-                            var currency  				= $( "#currency option:selected" ).text();
-                            var auto_pop_landline       = $('#auto_pop_landline').val();
-                            var payment_turm            = $("#payment_turm option:selected" ).text();
-                            quotation_info = {
-                                        'st_shiping_add' 	: shipping_addr,
-                                        'st_shiping_city' 	: shipping_city,
-                                        'st_shiping_state'      : shipping_state,
-                                        'st_shiping_pincode'    : shipping_pin_code,
-                                        'st_shipping_email'     : shipping_email,
-                                        'st_shipping_phone'     : shipping_telephone,
-                                        'st_enq_ref_number'     : enq_ref_no,
-                                        'dt_ref'                : dt_ref,
-                                        'fl_fleight_pack_charg' : fl_fleight_pack_charg,
-                                        'st_tax_text' 			: st_tax_text,
-                                        'fl_sales_tax_amt' 		: vat_tax,
-                                        'bill_add_id' 			: bill_add_id,
-                                        'payment_turm'			: payment_turm,
-                                        'lead_from'				: lead_from,
-                                        'currency'				: currency,
-                                        'st_landline'			: auto_pop_landline,
-                                        'fl_nego_amt' 			: fl_nego_amt
-                            };
+    //                         var shipping_addr           = $("#shipping_addr").val();
+    //                         var shipping_email          = $("#shipping_email").val();
+    //                         var shipping_telephone      = $("#shipping_telephone").val();
+    //                         var shipping_pin_code       = $("#shipping_pincod").val();
+    //                         var shipping_state          = $('#shipping_state').val();
+    //                         var shipping_city           = $('#shipping_city').val();
+    //                         var enq_ref_no              = $('#enq_ref_no').val();
+    //                         var dt_ref                  = $('#datepicker').val();
+    //                         var fl_fleight_pack_charg   = $('input[name="frieght_pack_charges"]').val();
+    //                         var st_tax_text             = $("#prod_tax option:selected" ).text();
+    //                         var vat_tax                 = $('#vat_tax').text();
+    //                         var fl_nego_amt             = $('.final_subtotal').text();
+    //                         var bill_add_id             = $('#bill_add_id').val();
+    //                         var preparing_by            = $('#preparing_by').val();
+    //                         var lead_from               = $('#lead_from').val();
+    //                         var currency  				= $( "#currency option:selected" ).text();
+    //                         var auto_pop_landline       = $('#auto_pop_landline').val();
+    //                         var payment_turm            = $("#payment_turm option:selected" ).text();
+    //                         quotation_info = {
+    //                                     'st_shiping_add' 	: shipping_addr,
+    //                                     'st_shiping_city' 	: shipping_city,
+    //                                     'st_shiping_state'      : shipping_state,
+    //                                     'st_shiping_pincode'    : shipping_pin_code,
+    //                                     'st_shipping_email'     : shipping_email,
+    //                                     'st_shipping_phone'     : shipping_telephone,
+    //                                     'st_enq_ref_number'     : enq_ref_no,
+    //                                     'dt_ref'                : dt_ref,
+    //                                     'fl_fleight_pack_charg' : fl_fleight_pack_charg,
+    //                                     'st_tax_text' 			: st_tax_text,
+    //                                     'fl_sales_tax_amt' 		: vat_tax,
+    //                                     'bill_add_id' 			: bill_add_id,
+    //                                     'payment_turm'			: payment_turm,
+    //                                     'lead_from'				: lead_from,
+    //                                     'currency'				: currency,
+    //                                     'st_landline'			: auto_pop_landline,
+    //                                     'fl_nego_amt' 			: fl_nego_amt
+    //                         };
 
-                            var auto_pop_phone = $("#auto_pop_phone").val();
-                            var auto_pop_company = $(".auto_pop_company").text();
-                            var auto_pop_cust_name = $("#auto_pop_cust_name").val();
-                            var auto_pop_state = $("#auto_pop_state").val();
-                            customer_info = {
-                                        'st_com_name' 		: auto_pop_company,
-                                        'auto_pop_cust_name'	: auto_pop_cust_name,
-                                        'st_cust_mobile'	: auto_pop_phone,
-                                        'auto_pop_state'	: auto_pop_state,
-                                        'preparing_by' 		: preparing_by
-                            };
+    //                         var auto_pop_phone = $("#auto_pop_phone").val();
+    //                         var auto_pop_company = $(".auto_pop_company").text();
+    //                         var auto_pop_cust_name = $("#auto_pop_cust_name").val();
+    //                         var auto_pop_state = $("#auto_pop_state").val();
+    //                         customer_info = {
+    //                                     'st_com_name' 		: auto_pop_company,
+    //                                     'auto_pop_cust_name'	: auto_pop_cust_name,
+    //                                     'st_cust_mobile'	: auto_pop_phone,
+    //                                     'auto_pop_state'	: auto_pop_state,
+    //                                     'preparing_by' 		: preparing_by
+    //                         };
 
-                            var filepath = '<?php //echo base_url();?>quotation/ajax_get_quote_preview';
-                            $.ajax({
-                                url:filepath,
-                                type:'POST',
-                                beforeSend: function() {
-                                    $("body").addClass("loading");
-                                },
-                                complete: function() {
-                                    $("body").removeClass("loading");
-                                },
-                                async:false,
-                                dataType: 'json',
-                                data: {'sel_prods_details' : sel_prods_details, 'customer_info' : customer_info, 'quotation_info' : quotation_info},		
-                                success: function(res) {
-                                    $("#is_submit_quotation").val('1');
-                                    $("div #privew-quote").html(res.quotation_data);
+    //                         var filepath = '<?php //echo base_url();?>quotation/ajax_get_quote_preview';
+    //                         $.ajax({
+    //                             url:filepath,
+    //                             type:'POST',
+    //                             beforeSend: function() {
+    //                                 $("body").addClass("loading");
+    //                             },
+    //                             complete: function() {
+    //                                 $("body").removeClass("loading");
+    //                             },
+    //                             async:false,
+    //                             dataType: 'json',
+    //                             data: {'sel_prods_details' : sel_prods_details, 'customer_info' : customer_info, 'quotation_info' : quotation_info},		
+    //                             success: function(res) {
+    //                                 $("#is_submit_quotation").val('1');
+    //                                 $("div #privew-quote").html(res.quotation_data);
 
-                                }
-                            });
-                            $('#quotation-preview-model').modal('show');
-                        }else{	
-                            form.submit();
-                        }
-                    }else{
-                        alert("Minimum one product for quotation is required.");
-                        return false;
-                    }
-                }
-            });
-    });
+    //                             }
+    //                         });
+    //                         $('#quotation-preview-model').modal('show');
+    //                     }else{	
+    //                         form.submit();
+    //                     }
+    //                 }else{
+    //                     alert("Minimum one product for quotation is required.");
+    //                     return false;
+    //                 }
+    //             }
+    //         });
+    // });
 
     function quotation_submit(){
+        alert("ppp");
         $("#tax_text").val($( "#prod_tax option:selected" ).text());
         $("#quotation_form").submit();
     }
@@ -1743,6 +1688,88 @@ $(function(){
     </div>
     <!-- end add records -->
 @endsection
+
+@section('minProduct')
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Error</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form method="post" id="deleteForm">
+            @csrf
+            <div class="modal-body">
+                <p class="text-danger">Minimum one product for quotation is required.</p>
+            </div>
+            <div class="modal-footer">
+                <span  class="btn btn-primary" data-dismiss="modal">Ok</span>
+            </div>
+        </form>
+    </div>
+@endsection
+
+@section('nameQuantity')
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Error</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form method="post" id="deleteForm">
+            @csrf
+            <div class="modal-body">
+                <p class="text-danger">Please select product name and quantity.</p>
+            </div>
+            <div class="modal-footer">
+                <span  class="btn btn-primary" data-dismiss="modal">Ok</span>
+            </div>
+        </form>
+    </div>
+@endsection
+
+@section('validQuantity')
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Error</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form method="post" id="deleteForm">
+            @csrf
+            <div class="modal-body">
+                <p class="text-danger">Please enter valid product quantity.</p>
+            </div>
+            <div class="modal-footer">
+                <span  class="btn btn-primary" data-dismiss="modal">Ok</span>
+            </div>
+        </form>
+    </div>
+@endsection
+
+@section('selectProduct')
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Error</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form method="post" id="deleteForm">
+            @csrf
+            <div class="modal-body">
+                <p class="text-danger">Please select product.</p>
+            </div>
+            <div class="modal-footer">
+                <span  class="btn btn-primary" data-dismiss="modal">Ok</span>
+            </div>
+        </form>
+    </div>
+@endsection
+
+<!-- 
 <div class="modal fade" id="quotation-preview-model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
 	<div class="modal-content">
@@ -1759,4 +1786,4 @@ $(function(){
 	  </div>
 	</div>
   </div>
-</div>
+</div> -->

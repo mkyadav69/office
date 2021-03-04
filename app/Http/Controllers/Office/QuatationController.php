@@ -155,7 +155,6 @@ class QuatationController extends Controller
         if(!empty($sel_prods_details)){
             $validator = Validator::make($sel_prods_details[0], [
                 'in_cust_id' => 'required',
-                "prod_comments" => 'required',
             ]);
         }
         $msg1 = $validator->getMessageBag()->toArray();
