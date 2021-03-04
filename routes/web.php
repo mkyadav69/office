@@ -123,6 +123,7 @@ Route::get('add-quatation', [QuatationController::class, 'addQuatation'])->name(
 Route::get('get-quatation', [QuatationController::class, 'getQuatation'])->name('get_quatation');
 Route::get('all-product', [QuatationController::class, 'allProduct'])->name('all_product');
 Route::post('filter-product', [QuatationController::class, 'filterProduct'])->name('get_filter_product');
+Route::get('preview-quatation', [QuatationController::class, 'previewQuatation'])->name('preview_quatation');
 
 // Route::post('edit-quatation-format/{id}',  [QuatationFormatController::class, 'updateQuatationFormat'])->name('edit_quatation_format');
 // Route::post('delete-quatation-format/{id}',  [QuatationFormatController::class, 'deleteQuatationFormat'])->name('delete_quatation_format');

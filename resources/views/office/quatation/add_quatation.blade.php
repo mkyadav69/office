@@ -28,37 +28,21 @@ datepicker,
             <div class="modal-header">
                 <h5 class="modal-title" id="largeModalLabel">Lead & Group</h5>
             </div>
-            <form action="{{route('store_product')}}" method="post" name="quotation_form" id="quotation_form">
+            <form method="post" name="quotation_form" id="quotation_form">
                     <div class="modal-body">
                         @csrf
                         <div class="row form-group">
                             <div class="form-group col-4">
                                 <label for="company" class="form-control-label required">Quatation Prepared By </label>
-                                <input type="text" id="st_part_No" required name="preparing_by" id="preparing_by" placeholder="Quatation Prepared By" class="form-control">
-                                @if ($errors->has('preparing_by'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('preparing_by') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
+                                <input type="text" name="preparing_by" required id="preparing_by" placeholder="Quatation Prepared By" class="form-control">
+                                <b><small class="help-block form-text text-danger" id="error_preparing_by"></small></b>
                             </div>
                             <div class="form-group col-4">
-                                <label for="vat" class=" form-control-label required">Lead From</label>
-                                <input type="text" required name="lead_from" id="lead_from" placeholder="Lead From" class="form-control">
-                                @if ($errors->has('lead_from'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('lead_from') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
+                                <label for="lead_from" class=" form-control-label required">Lead From</label>
+                                <input type="text" name="lead_from" required id="lead_from" placeholder="Lead From" class="form-control">
+                                <small class="help-block form-text text-danger" id="error_lead_from"></small>
                             </div>
-                            <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="_token" required id="token" value="{{ csrf_token() }}">
                             <div class="form-group col-4">
                                 <label for="vat" class=" form-control-label required">Notify Group</label>
                                 <select id="notify_group" required name="notify_group" class="form-control">
@@ -71,15 +55,7 @@ datepicker,
                                         <p>Notification are not available.</p>
                                     @endif
                                 </select>
-                                @if ($errors->has('notify'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('notify') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
+                                <small class="help-block form-text text-danger" id="error_notify_group"></small>
                             </div>
                         </div>
                     </div>
@@ -100,42 +76,18 @@ datepicker,
                                         <p>Company are not available.</p>
                                     @endif
                                 </select>
-                                @if ($errors->has('customer_id'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('customer_id') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
+                                <small class="help-block form-text text-danger" id="error_in_cust_id"></small>
                             </div>
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Enq Ref. No. </label>
-                                    <input type="text" id="enq_ref_no" required name="enq_ref_no" placeholder="Enq Ref. No." class="form-control">
-                                @if ($errors->has('enq_ref_no'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('enq_ref_no') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
+                                    <input type="text" id="enq_ref_no" required  name="enq_ref_no" placeholder="Enq Ref. No." class="form-control">
+                                    <small class="help-block form-text text-danger" id="error_st_enq_ref_number"></small>
                             </div>
 
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Ref. Date </label>
-                                <input type="text" name="datepicker" id="datepicker" class="form-control" placeholder="DD-MM-YYY" readonly />
-                                @if ($errors->has('datepicker'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('datepicker') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
+                                <input type="text" name="reference_date" required id="datepicker" class="form-control" placeholder="DD-MM-YYY" readonly />
+                                <small class="help-block form-text text-danger" id="error_dt_ref"></small>
                             </div>
 
                             <div class="form-group col-3">
@@ -146,42 +98,17 @@ datepicker,
                         <div class="row form-group">
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Company Name </label>
-                                    <input type="text" id="company_name" required name="company_name" placeholder="Company Name" class="form-control">
-                                @if ($errors->has('company_name'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('company_name') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
+                                    <input type="text" id="company_name" required name="company_name" placeholder="Company Name" class="form-control auto_pop_company">
+                                    <small class="help-block form-text text-danger" id="error_st_com_name"></small>
                             </div>
 
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Contact Person</label>
-                                    <input type="text" id="c_person_name" required name="c_person_name" placeholder="Contact Person" class="form-control">
-                                @if ($errors->has('c_person_name'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('c_person_name') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
+                                    <input type="text" id="auto_pop_cust_name" required name="auto_pop_cust_name" placeholder="Contact Person" class="form-control auto_pop_cust_name">
+                                    <small class="help-block form-text text-danger" id="error_auto_pop_cust_name"></small>
                             </div>
 
                             <div class="form-group col-3" id="owner">
-                                @if ($errors->has('owner'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('owner') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
                             </div>
                         </div>
                     </div>
@@ -199,10 +126,11 @@ datepicker,
                                         <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label for="text-input" class=" form-control-label required">Address</label>
+                                                    <label for="text-input" class=" form-control-label">Address</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <textarea type="text" id="auto_pop_addr" name="auto_pop_addr" placeholder="Address" class="form-control"></textarea>
+                                                    <textarea type="text" id="auto_pop_addr" required name="auto_pop_addr" placeholder="Address" class="form-control auto_pop_addr"></textarea>
+                                                    <small class="help-block form-text text-danger" id="error_auto_pop_addr"></small>
                                                 </div>
                                             </div>
                                             <div class="row form-group">
@@ -210,7 +138,8 @@ datepicker,
                                                     <label for="email-input" class="form-control-label required">State</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="text" id="auto_pop_state" name="auto_pop_state" placeholder="State" class="form-control">
+                                                    <input type="text" id="auto_pop_state" required name="auto_pop_state" placeholder="State" class="form-control auto_pop_state">
+                                                    <small class="help-block form-text text-danger" id="error_auto_pop_state"></small>
                                                 </div>
                                             </div>
 
@@ -219,7 +148,8 @@ datepicker,
                                                     <label for="email-input" class=" form-control-label required">City</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="text" id="auto_pop_city" name="auto_pop_city" placeholder="City" class="form-control">
+                                                    <input type="text" id="auto_pop_city" required name="auto_pop_city" placeholder="City" class="form-control auto_pop_city">
+                                                    <small class="help-block form-text text-danger" id="error_auto_pop_city"></small>
                                                 </div>
                                             </div>
 
@@ -228,7 +158,8 @@ datepicker,
                                                     <label for="email-input" class=" form-control-label required">Pin Code</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="text" id="auto_pop_pincod" name="auto_pop_pincod" placeholder="Pin Code" class="form-control">
+                                                    <input type="text" id="auto_pop_pincod" required name="auto_pop_pincod" placeholder="Pin Code" class="form-control auto_pop_pincod">
+                                                    <small class="help-block form-text text-danger" id="error_auto_pop_pincod"></small>
                                                 </div>
                                             </div>
 
@@ -237,7 +168,8 @@ datepicker,
                                                     <label for="email-input" class="form-control-label required">Mobile No.</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="text" id="auto_pop_phone" name="auto_pop_phone" placeholder="Mobile No." class="form-control">
+                                                    <input type="text" id="auto_pop_phone" required name="auto_pop_phone" placeholder="Mobile No." class="form-control auto_pop_phone">
+                                                    <small class="help-block form-text text-danger" id="error_auto_pop_phone"></small>
                                                 </div>
                                             </div>
                                             
@@ -247,7 +179,8 @@ datepicker,
                                                     <label for="email-input" class="form-control-label required">Email</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="email" id="auto_pop_email" name="auto_pop_email" placeholder="Email" class="form-control">
+                                                    <input type="email" id="auto_pop_email" required name="auto_pop_email" placeholder="Email" class="form-control auto_pop_email">
+                                                    <small class="help-block form-text text-danger" id="error_auto_pop_email"></small>
                                                 </div>
                                             </div>
 
@@ -256,7 +189,8 @@ datepicker,
                                                     <label for="email-input" class=" form-control-label required">Land-Line No.</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="text" id="auto_pop_landline" name="auto_pop_landline" placeholder="Land-Line No." class="form-control">
+                                                    <input type="text" id="auto_pop_landline" required name="auto_pop_landline" placeholder="Land-Line No." class="form-control auto_pop_landline">
+                                                    <small class="help-block form-text text-danger" id="error_auto_pop_landline"></small>
                                                 </div>
                                             </div>
                                         </form>
@@ -282,7 +216,8 @@ datepicker,
                                                     <label for="text-input" class=" form-control-label required">Address</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <textarea type="text" id="shipping_addr" name="shipping_addr" placeholder="Address" class="form-control auto_pop_ship_addr"></textarea>
+                                                    <textarea type="text" id="shipping_addr" required name="shipping_addr" placeholder="Address" class="form-control auto_pop_ship_addr"></textarea>
+                                                    <small class="help-block form-text text-danger" id="error_st_shiping_add"></small>
                                                 </div>
                                             </div>
                                             <div class="row form-group">
@@ -290,7 +225,8 @@ datepicker,
                                                     <label for="email-input" class="form-control-label required">State</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="text" id="shipping_state" name="shipping_state" placeholder="State" class="form-control">
+                                                    <input type="text" id="shipping_state" required name="shipping_state" placeholder="State" class="form-control">
+                                                    <small class="help-block form-text text-danger" id="error_st_shiping_state"></small>
                                                 </div>
                                             </div>
 
@@ -299,7 +235,8 @@ datepicker,
                                                     <label for="email-input" class=" form-control-label required">City</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="text" id="shipping_city" name="shipping_city" placeholder="City" class="form-control">
+                                                    <input type="text" id="shipping_city" required name="shipping_city" placeholder="City" class="form-control">
+                                                    <small class="help-block form-text text-danger" id="error_st_shiping_city"></small>
                                                 </div>
                                             </div>
 
@@ -308,7 +245,8 @@ datepicker,
                                                     <label for="email-input" class=" form-control-label required">Pin Code</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="text" id="shipping_pincod" name="shipping_pincod" placeholder="Pin Code" class="form-control">
+                                                    <input type="text" id="shipping_pincod" required name="shipping_pincod" placeholder="Pin Code" class="form-control">
+                                                    <small class="help-block form-text text-danger" id="error_st_shiping_pincode"></small>
                                                 </div>
                                             </div>
 
@@ -317,7 +255,8 @@ datepicker,
                                                     <label for="email-input" class="form-control-label required">Mobile No.</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="text" id="shipping_telephone" name="shipping_telephone" placeholder="Mobile No." class="form-control">
+                                                    <input type="text" id="shipping_telephone" required name="shipping_telephone" placeholder="Mobile No." class="form-control">
+                                                    <small class="help-block form-text text-danger" id="error_st_shipping_phone"></small>
                                                 </div>
                                             </div>
                                             
@@ -327,7 +266,8 @@ datepicker,
                                                     <label for="email-input" class="form-control-label required">Email</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="email" id="shipping_email" name="shipping_email" placeholder="Email" class="form-control">
+                                                    <input type="email" id="shipping_email" required name="shipping_email" placeholder="Email" class="form-control">
+                                                    <small class="help-block form-text text-danger" id="error_st_shipping_email"></small>
                                                 </div>
                                             </div>
 
@@ -336,7 +276,8 @@ datepicker,
                                                     <label for="email-input" class=" form-control-label required">Land-Line No.</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="text" id="shipping_lanline" name="shipping_lanline" placeholder="Land-Line No." class="form-control">
+                                                    <input type="text" id="shipping_lanline" required name="shipping_lanline" placeholder="Land-Line No." class="form-control">
+                                                    <small class="help-block form-text text-danger" id="error_shipping_lanline"></small>
                                                 </div>
                                             </div>
                                         </form>
@@ -354,71 +295,25 @@ datepicker,
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Search Product</label>
                                 <input type="text" id="product_search" required name="product_search"placeholder="Type part no. / Description name" class="form-control">
+                                <small class="help-block form-text text-danger" id="error_product_search"></small>
                                 <input type="hidden" id="order_product" value="">
-                                @if ($errors->has('product_search'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('product_search') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
                             </div>
                             <div class="form-group col-3">
                                 <label for="vat" class=" form-control-label required">Qty</label>
                                 <input type="text" id="prod_qty" required name="prod_qty[]" maxlength="5" placeholder="Qty" value="1" class="form-control">
-                                <span class="error">
-
-                                </span>
-                                @if ($errors->has('stn_hsn_no'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('stn_hsn_no') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
+                                <small class="help-block form-text text-danger" id="error_prod_qty"></small>
                             </div>
                             <div class="form-group col-2">
                                 <label for="vat" class=" form-control-label required">Add Product</label>
-                                <span href="" id="stn_hsn_no" required name="stn_hsn_no" placeholder="Qty" value="1" class="form-control add_prod btn btn-primary"> Add Product</span>
-                                @if ($errors->has('stn_hsn_no'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('stn_hsn_no') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
+                                <span href="" placeholder="Qty" value="1" class="form-control add_prod btn btn-primary"> Add Product</span>
                             </div>
                             <div class="form-group col-2">
                                 <label for="vat" class=" form-control-label required">Add New Product</label>
-                                <a href="{{route('add_product')}}" style="background:gree" id="stn_hsn_no" required name="stn_hsn_no" placeholder="Qty" value="1" class="form-control btn btn-primary"><i class="zmdi zmdi-plus"></i> Add New Product</a>
-                                @if ($errors->has('stn_hsn_no'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('stn_hsn_no') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
+                                <a href="{{route('add_product')}}" style="background:gree" required name="stn_hsn_no" target="_blank" placeholder="Qty" value="1" class="form-control btn btn-primary"><i class="zmdi zmdi-plus"></i> Add New Product</a>
                             </div>
                             <div class="form-group col-2">
                                 <label for="vat" class=" form-control-label required">Product Filter</label>
-                                <a href="{{route('show_product')}}" style="background:gree" id="stn_hsn_no" required name="stn_hsn_no" placeholder="Qty" value="1" class="form-control btn btn-primary">Product Filter</a>
-                                @if ($errors->has('stn_hsn_no'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('stn_hsn_no') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
+                                <a href="{{route('show_product')}}" style="background:gree" placeholder="Qty" target="_blank" class="form-control btn btn-primary">Product Filter</a>
                             </div>
                         </div>
                     </div>
@@ -429,7 +324,7 @@ datepicker,
                         <div class="row form-group">
                             <div class="form-group col-3">
                                 <label for="vat" class=" form-control-label required">Currrency</label>
-                                <select id="principal_id" required name="principal_id" class="form-control">
+                                <select id="currency" required name="currency" class="form-control">
                                     @if(!empty($currency))
                                         @foreach($currency as $id=>$cur)
                                             <option value="{{$id}}">{{$cur}}</option>
@@ -438,20 +333,11 @@ datepicker,
                                         <p>Currrency are not available.</p>
                                     @endif
                                 </select>
-                                @if ($errors->has('principal_id'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('principal_id') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
                             </div>
                             
                             <div class="form-group col-3">
                                 <label for="vat" class=" form-control-label required">Payment Term</label>
-                                <select id="principal_id" required name="principal_id" class="form-control">
+                                <select id="payment_turm" name="payment_turm" class="form-control">
                                     @if(!empty($payment_term))
                                         @foreach($payment_term as $id=>$term)
                                             <option value="{{$id}}">{{$term}}</option>
@@ -464,17 +350,10 @@ datepicker,
 
                             <div class="form-group col-6">
                                 <label for="company" class="form-control-label required">Extra Comments, If Any </label>
-                                <textarea id="st_part_No" required name="st_part_No"placeholder="Write here . . . !" class="form-control"></textarea>
-                                @if ($errors->has('st_part_No'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->first('st_part_No') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
+                                <textarea id="ext_note" required name="ext_note"placeholder="Write here . . . !" class="form-control"></textarea>
+                                <small class="help-block form-text text-danger" id="error_ext_note"></small>
                             </div>
+
                             <input type="hidden" name="hid_quotation_sub_total" id="hid_quotation_sub_total" value="0">
                             <input type="hidden" name="order_grand_total" id="order_grand_total" value="0">
                             <input type="hidden" name="order_nego_amount" id="order_nego_amount" value="0">
@@ -494,7 +373,7 @@ datepicker,
                                                 <th>HSN Code</th>
                                                 <th >Qty</th>
                                                 <th >Instock</th>
-                                                <th >Price</th>
+                                                <th >Price [<span id="currencysymbol">INR</span>]</th>
                                                 <th >Disc %</th>
                                                 <th>Net Price</th>
                                                 <th>IGST %</th>
@@ -539,12 +418,33 @@ datepicker,
                         <a href="{{route('show_quatation')}}">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </a>
-                        <button type="submit" class="btn btn-primary add-quotation">Confirm</button>
+                        <button type="submit" class="btn btn-primary confirm">Confirm</button>
                     </div>
                     </div>
             </form>
         </div>
     </div>
+
+    
+
+    <div class="modal fade" id="" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" onClick="quotation_edit();"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Quotaion Preview</h4>
+            </div>
+            <div class="modal-body">
+                <div id="privew-quote" class="privew-quote-box"></div>          
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" >Send Quotation</button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-default" >Edit</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="is_submit_quotation" value="0">
     @if(Session::has('errors'))
         @if(!empty($errors->cutomer_add->any()))
             <script>
@@ -557,101 +457,286 @@ datepicker,
 <!-- end add record -->
 <script>
 $(document).ready(function(){
-        $.fn.datepicker.defaults.format = "mm-dd-yyyy";
-        $('#datepicker').datepicker({
-            leftArrow: '&laquo;',
-            rightArrow: '&raquo;',
-            daysOfWeekHighlighted: "7,0",
-            autoclose: true,
-            todayHighlight: true,
-            orientation: 'bottom',
-            endDate:'today',
+    $('.confirm').on('click', function(){
+        sel_prods_details.length = 0;
+        $(".prod_row_deatails").each(function(key,obj){
+            var prod_comments='';
+            if(admin_rights == '1'){
+                var prod_part_No = $(this).find('.prod_part_No').val().trim();
+            }else{
+                var prod_part_No = $(this).find('.prod_part_No').text();
+                prod_part_No = prod_part_No.replace('#', '').trim();
+            }
+            var prod_id = parseInt($(this).attr("id").replace(/[^\d]/g, ''), 10);
+            var prod_desc = $(this).find('.prod_desc').text().trim();
+            var prod_maker = $(this).find('.prod_maker').val().trim();
+            var prod_hsn = $(this).find('.prod_hsn').text().trim();
+            var prodqty = $('.prodqty_'+prod_id).val().trim();
+            var prod_unit_price     = $(this).find('.prod_unit_price').val().trim();
+            var prod_disc_price     = $(this).find('.prod_disc_price').val().trim();
+            var prod_deli_period    = $('#prod_deli_period_'+prod_id).val().trim();
+            var prod_net_price      = $(this).find('.prod_net_price').text().trim();
+            var prod_igst_rate      = $(this).find('.prod_igst_rate ').val().trim();
+            var prod_row_total      = $(this).find('.prod_row_total').text().trim();
+            // if($('#comments_'+prod_id).val() != 'undefined' &&  $('#comments_'+prod_id).val() != ''){
+            //     prod_comments          = $('#comments_'+prod_id).val().trim();
+            // }
+            var customer_id = $( "#customer_id option:selected" ).val();
+            sel_prods_details.push({
+                        'in_cust_id':           customer_id,
+                        'in_product_id':        prod_id, 
+                        'st_part_no':           prod_part_No,
+                        'st_product_desc':      prod_desc,
+                        'stn_hsn_no':           prod_hsn,
+                        'st_maker':             prod_maker,
+                        'in_pro_qty':           prodqty,
+                        'fl_pro_unitprice':     prod_unit_price,
+                        'fl_discount':          prod_disc_price,
+                        'in_pro_deli_period':   prod_deli_period,
+                        'in_igst_rate':         prod_igst_rate,
+                        'fl_net_price':         prod_net_price,
+                        'fl_row_total':         prod_row_total,
+                        'prod_comments':        "ll"
+            });
         });
-        $('#customer_id').on('change', function(){
-            // Clear shiping address
-            $('#shippingchk').prop('checked', false);
-            $('#shipping_addr').val('');
-            $('#shipping_state').val('');
-            $('#shipping_pincod').val('');
-            $('#shipping_city').val('');
-            $('#shipping_telephone').val('');
-            $('#shipping_email').val('');
-            $('#shipping_lanline').val('');
+        $("#hid_order_prod_details").val(JSON.stringify(sel_prods_details)); 
+        $("#hid_quotation_sub_total").val($(".final_subtotal").text());
+        $("#order_nego_amount").val($('#prod_grand_total').text().trim());
+        if(sel_prods_details.length > 0){ 
+            if($("#is_submit_quotation").val() == 0){ 
+                var quotation_info = {};
+                var customer_info = {};
+                quotation_info.length = 0;
+                customer_info.length = 0;
+                
+                var shipping_addr           = $("#shipping_addr").val();
+                var shipping_email          = $("#shipping_email").val();
+                var shipping_telephone      = $("#shipping_telephone").val();
+                var shipping_lanline        = $("#shipping_lanline").val();
+                var shipping_pin_code       = $("#shipping_pincod").val();
+                var shipping_state          = $('#shipping_state').val();
+                var shipping_city           = $('#shipping_city').val();
+                var enq_ref_no              = $('#enq_ref_no').val();
+                var dt_ref                  = $('#datepicker').val();
+                var fl_fleight_pack_charg   = $('input[name="frieght_pack_charges"]').val();
+                var st_tax_text             = $("#prod_tax option:selected" ).text();
+                var vat_tax                 = $('#vat_tax').text();
+                var fl_nego_amt             = $('.final_subtotal').text();
+                var bill_add_id             = $('#bill_add_id').val();
+                var preparing_by            = $('#preparing_by').val();
+                var lead_from               = $('#lead_from').val();
+                var currency  				= $( "#currency option:selected" ).text();
+                var auto_pop_landline       = $('#auto_pop_landline').val();
+                var payment_turm            = $("#payment_turm option:selected" ).text();
+                var notify_group            = $('#notify_group').val();
+                var select_owner            = $( "#select_owner option:selected" ).val();
 
-            var c_id = $('#customer_id').val();
-            var product_field = {!! json_encode($cust_details) !!};
-            
-            // Customer Details
-            if(product_field['company_name'][c_id] != 'undefined' && product_field['company_name'][c_id] != ''){
-                var company_name = product_field['company_name'][c_id];
-                $('#company_name').val(company_name);
-            }
+                 
+                var auto_pop_addr           = $("#auto_pop_addr").val();
+                var auto_pop_state          = $("#auto_pop_state").val();
+                var auto_pop_city           = $("#auto_pop_city").val();
+                var auto_pop_pincod         = $("#auto_pop_pincod").val();
+                var auto_pop_phone          = $('#auto_pop_phone').val();
+                var auto_pop_email          = $('#auto_pop_email').val();
+                var product_search          = $('#product_search').val();
+                var prod_qty                = $('#prod_qty').val();
+                var ext_note                = $('#ext_note').val();
 
-            if(product_field['c_person_name'][c_id] != 'undefined' && product_field['c_person_name'][c_id] != ''){
-                var c_person_name = product_field['c_person_name'][c_id];
-                $('#c_person_name').val(c_person_name);
-            }
+                
 
-            // Billing Address
+                quotation_info = {
+                            'st_shiping_add' 	: shipping_addr,
+                            'st_shiping_city' 	: shipping_city,
+                            'st_shiping_state'      : shipping_state,
+                            'st_shiping_pincode'    : shipping_pin_code,
+                            'st_shipping_email'     : shipping_email,
+                            'st_shipping_phone'     : shipping_telephone,
+                            'shipping_lanline'      : shipping_lanline,
+                            'st_enq_ref_number'     : enq_ref_no,
+                            'dt_ref'                : dt_ref,
+                            'fl_fleight_pack_charg' : fl_fleight_pack_charg,
+                            'st_tax_text' 			: st_tax_text,
+                            'fl_sales_tax_amt' 		: vat_tax,
+                            'bill_add_id' 			: bill_add_id,
+                            'payment_turm'			: payment_turm,
+                            'lead_from'				: lead_from,
+                            'currency'				: currency,
+                            'st_landline'			: auto_pop_landline,
+                            'fl_nego_amt' 			: fl_nego_amt,
+                            'product_search'        : product_search,
+                            'prod_qty'               : prod_qty
+                };
 
-            if(product_field['address'][c_id] != 'undefined' && product_field['address'][c_id] != ''){
-                var address = product_field['address'][c_id];
-                $('#auto_pop_addr').val(address);
-            }
-            if(product_field['state'][c_id] != 'undefined' && product_field['state'][c_id] != ''){
-                var state = product_field['state'][c_id];
-                console.log(state);
-                $('#auto_pop_state').val(state);
-            }
-            if(product_field['pincode'][c_id] != 'undefined' && product_field['pincode'][c_id] != ''){
-                var pincode = product_field['pincode'][c_id];
-                $('#auto_pop_pincod').val(pincode);
-            }
-            if(product_field['city'][c_id] != 'undefined' && product_field['city'][c_id] != ''){
-                var city = product_field['city'][c_id];
-                $('#auto_pop_city').val(city);
-            }
-            if(product_field['mobile'][c_id] != 'undefined' && product_field['mobile'][c_id] != ''){
-                var mobile = product_field['mobile'][c_id];
-                $('#auto_pop_phone').val(mobile);
-            }
-            if(product_field['email'][c_id] != 'undefined' && product_field['email'][c_id] != ''){
-                var email = product_field['email'][c_id];
-                $('#auto_pop_email').val(email);
-            }
-            if(product_field['land_line'][c_id] != 'undefined' && product_field['land_line'][c_id] != ''){
-                var land_line = product_field['land_line'][c_id];
-                $('#auto_pop_landline').val(land_line);
-            }
+                var auto_pop_phone = $("#auto_pop_phone").val();
+                var auto_pop_company = $(".auto_pop_company").val();
+                var auto_pop_cust_name = $("#auto_pop_cust_name").val();
+                var auto_pop_state = $("#auto_pop_state").val();
+                customer_info = {
+                            'st_com_name' 		: auto_pop_company,
+                            'auto_pop_cust_name'	: auto_pop_cust_name,
+                            'st_cust_mobile'	: auto_pop_phone,
+                            'auto_pop_state'	: auto_pop_state,
+                            'preparing_by' 		: preparing_by,
+                            'notify_group'      : notify_group,
+                            'select_owner'       : select_owner,
+                            'auto_pop_addr'   :        auto_pop_addr,
+                            'auto_pop_state'  :        auto_pop_state,
+                            'auto_pop_city'   :        auto_pop_city,
+                            'auto_pop_pincod' :        auto_pop_pincod,
+                            'auto_pop_phone'   :      auto_pop_phone,
+                            'auto_pop_email'   :      auto_pop_email,
+                            'auto_pop_landline'  :    auto_pop_landline,
+                            'ext_note' : ext_note
 
-            // Owner
-
-            var owner_field = {!! json_encode($owner) !!};
-            if(owner_field != null){
-                var option = '<option value=""> Select Owner</option>';
-                $.each(owner_field, function (key, field) {
-                    if(key == c_id){
-                        option = option +'<option value="'+ key +'" selected >'+ field +'</option>';
-                    }else{
-                        option = option + '<option value="'+ key +'">'+ field +'</option>';
+                };
+                var filepath = "{{route('preview_quatation')}}"
+                $.ajax({
+                    url:filepath,
+                    type:'GET',
+                    data: {'sel_prods_details' : sel_prods_details, 'customer_info' : customer_info, 'quotation_info' : quotation_info, "_token": "{{ csrf_token() }}"},
+                   
+                    success: function(response) {
+                        // var blob = new Blob([response]);
+                        // var link = document.createElement('a');
+                        // link.href = window.URL.createObjectURL(blob);
+                        // link.download = "Sample.pdf";
+                        // link.click();
+                        $("#is_submit_quotation").val('1');
+                        // $("#privew-quote").html(res.quotation_data);
+                    },error: function(error) {
+                        if(error.status == 400){
+                            var err = error.responseText;
+                            var d = JSON.parse(err);
+                            var getError = d.errors;
+                            $.each(getError, function (key, field) {
+                                $('#error_'+key).html('<b>'+field+'</b>');
+                            });
+                        }else{
+                            console.log("something else !");
+                        }
                     }
                 });
-                var sel = '<label for="vat" class=" form-control-label required" id="own_label">Owner</label><select name="owner" required class="form-control">'+option+'</select>';
-                $('div #owner').html(sel);
+                // $('#quotation-preview-model').modal('show');
+            }else{	
+                form.submit();
             }
-        });
-        var owner_field = {!! json_encode($owner) !!};
-        var option = '<option value="" > Select Owner</option>';
-        $.each(owner_field, function (key, field) {
-           option = option + '<option value="'+ key +'">'+ field +'</option>';
-        });
-        var sel = '<label for="vat" class=" form-control-label required" id="own_label">Owner</label><select name="owner" required class="form-control">'+option+'</select>';
-        $('div #owner').html(sel);
+        }else{
+            alert("Minimum one product for quotation is required.");
+            return false;
+        }
     });
+	$("#currency").on('focus', function () {
+        previous = this.value;
+    }).change(function() {
+            var pastvalue = previous;
+            previous = this.value;
+            var currencytxt = $( "#currency option:selected" ).text();
+            var currval = $( "#currency option:selected" ).val();                    
+        if (!confirm('Are you sure, you want to cahnge currency?')) {
+                $("#currencysymbol").text('');
+                $('#currency').val(pastvalue);
+            return false;
+        } else {
+            $("#currencysymbol").text(currencytxt);
+        }
+    });
+
+    $('html').click(function(e) {                    
+        if(!$(e.target).hasClass('privew-quote-box') ){
+            $("#is_submit_quotation").val("0");                
+        }
+    }); 
+
+    $.fn.datepicker.defaults.format = "mm-dd-yyyy";
+    $('#datepicker').datepicker({
+        leftArrow: '&laquo;',
+        rightArrow: '&raquo;',
+        daysOfWeekHighlighted: "7,0",
+        autoclose: true,
+        todayHighlight: true,
+        orientation: 'bottom',
+        endDate:'today',
+    });
+
+    $('#customer_id').on('change', function(){
+        // Clear shiping address
+        $('#shippingchk').prop('checked', false);
+        $('#shipping_addr').val('');
+        $('#shipping_state').val('');
+        $('#shipping_pincod').val('');
+        $('#shipping_city').val('');
+        $('#shipping_telephone').val('');
+        $('#shipping_email').val('');
+        $('#shipping_lanline').val('');
+
+        var c_id = $('#customer_id').val();
+        var product_field = {!! json_encode($cust_details) !!};
+        // Customer Details
+        if(product_field['company_name'][c_id] != 'undefined' && product_field['company_name'][c_id] != ''){
+            var company_name = product_field['company_name'][c_id];
+            $('#company_name').val(company_name);
+        }
+        if(product_field['c_person_name'][c_id] != 'undefined' && product_field['c_person_name'][c_id] != ''){
+            var c_person_name = product_field['c_person_name'][c_id];
+            $('#c_person_name').val(c_person_name);
+        }
+        // Billing Address
+        if(product_field['address'][c_id] != 'undefined' && product_field['address'][c_id] != ''){
+            var address = product_field['address'][c_id];
+            $('#auto_pop_addr').val(address);
+        }
+        if(product_field['state'][c_id] != 'undefined' && product_field['state'][c_id] != ''){
+            var state = product_field['state'][c_id];
+            console.log(state);
+            $('#auto_pop_state').val(state);
+        }
+        if(product_field['pincode'][c_id] != 'undefined' && product_field['pincode'][c_id] != ''){
+            var pincode = product_field['pincode'][c_id];
+            $('#auto_pop_pincod').val(pincode);
+        }
+        if(product_field['city'][c_id] != 'undefined' && product_field['city'][c_id] != ''){
+            var city = product_field['city'][c_id];
+            $('#auto_pop_city').val(city);
+        }
+        if(product_field['mobile'][c_id] != 'undefined' && product_field['mobile'][c_id] != ''){
+            var mobile = product_field['mobile'][c_id];
+            $('#auto_pop_phone').val(mobile);
+        }
+        if(product_field['email'][c_id] != 'undefined' && product_field['email'][c_id] != ''){
+            var email = product_field['email'][c_id];
+            $('#auto_pop_email').val(email);
+        }
+        if(product_field['land_line'][c_id] != 'undefined' && product_field['land_line'][c_id] != ''){
+            var land_line = product_field['land_line'][c_id];
+            $('#auto_pop_landline').val(land_line);
+        }
+
+        // Owner
+        var owner_field = {!! json_encode($owner) !!};
+        if(owner_field != null){
+            var option = '<option value=""> Select Owner</option>';
+            $.each(owner_field, function (key, field) {
+                if(key == c_id){
+                    option = option +'<option value="'+ key +'" selected >'+ field +'</option>';
+                }else{
+                    option = option + '<option value="'+ key +'">'+ field +'</option>';
+                }
+            });
+            var sel = '<label for="vat" class=" form-control-label required" id="own_label">Owner</label><select name="select_owner" id="select_owner" class="form-control">'+option+'</select><small class="help-block form-text text-danger" id="error_select_owner"></small>';
+            $('div #owner').html(sel);
+        }
+    });
+    var owner_field = {!! json_encode($owner) !!};
+    var option = '<option value="" > Select Owner</option>';
+    $.each(owner_field, function (key, field) {
+        option = option + '<option value="'+ key +'">'+ field +'</option>';
+    });
+    var sel = '<label for="vat" class=" form-control-label required" id="own_label">Owner</label><select name="select_owner" id="select_owner"  class="form-control">'+option+'</select><small class="help-block form-text text-danger" id="error_select_owner"></small>';
+    $('div #owner').html(sel);
 
     $('#shippingchk').on('click', function(){
         if($("#shippingchk").prop('checked') == true){
-            var address = $('#b_address').val();
+            var address = $('#auto_pop_addr').val();
             $('#shipping_addr').val(address);
 
             var state = $('#auto_pop_state').val();
@@ -664,7 +749,7 @@ $(document).ready(function(){
             $('#shipping_city').val(city);
 
             var mobile = $('#auto_pop_phone').val();
-            $('#shipping_mobile').val(mobile);
+            $('#shipping_telephone').val(mobile);
 
             var email = $('#auto_pop_email').val();
             $('#shipping_email').val(email);
@@ -681,9 +766,172 @@ $(document).ready(function(){
             $('#shipping_telephone').val('');
             $('#shipping_email').val('');
             $('#shipping_lanline').val('');
-
         }
     });
+
+    var sel_prods_details = [];
+    $('.add_prod').click(function() {
+        var	t = true;
+        t = checkfirstprod();
+        var html = '';
+        if(t == 1){
+            var arrprods = [];
+            var sel_prods = [];
+            var prod_qunt = 0;
+            var prod_id = 0; 
+            var new_product_list = {!! json_encode($new_product_list) !!};
+            var prod_id_exist = 0;
+            var str = $('#hid_selprod').val();
+            if($('#hid_selprod').val() != ''){
+                sel_prods.push( $("#hid_selprod").val());
+            }
+            prod_id = $('#order_product').val();
+            var arr = str.split(',');
+            if($.inArray(prod_id,arr) == -1){
+                sel_prods.push(prod_id);
+            }else{
+                prod_id_exist = 1;
+            } 
+            
+            $('#hid_selprod').val(sel_prods);
+            
+            // var products = '';<?php //echo json_encode($product_list); ?>//;
+            
+            var html = '';	
+            var prodqty = 0;
+            var free_prod_qty = 0;
+            var free_prod_txt = '';
+            var prod_igst_rate = 0.00;
+            var prod_part_No = '';
+            var prod_desc = '';
+            var prod_discount = 0.00;
+            var prod_maker = '';
+            var prod_price = 0.00;
+            var prod_net_price = 0.00;
+            var prod_row_total = 0.00;
+            var cat_name = '';
+            var newprodqty = 0;
+            var prod_qty_left = 0;
+            var call_sub_total = false;
+            var hsn ='HSN Code: Awaited OR Provide Soon';
+            var new_product_list = {!! json_encode($new_product_list) !!};
+            if( new_product_list[prod_id] !='undefined' && new_product_list[prod_id] !=''){
+                var products = new_product_list[prod_id];
+                var partNoHtml ='';
+                if(products.st_part_No == prod_id && prod_id_exist == 1){ 
+                    var prev_prod_qnt = $(".prodqty_"+products.pro_id).val();
+                    prodqty = parseInt(parseInt(prev_prod_qnt) + parseInt($('#prod_qty').val()));
+                    prod_igst_rate = products.str_igst_rate;
+                    prod_price = products.fl_pro_price;
+                    prod_discount = products.in_pro_disc;
+                    prod_net_price = parseFloat(prod_price - parseFloat((prod_price*prod_discount)/(100)));
+                    hsn = products.stn_hsn_no;
+                    if(prod_igst_rate != '' && prod_igst_rate != null){
+                        prod_row_total = parseFloat(prod_net_price + parseFloat((prod_net_price*prod_igst_rate)/(100)));
+                    }else{ 
+                        prod_igst_rate = 0.00;
+                        prod_row_total = parseFloat(prod_net_price*prodqty);
+                    }
+                    $(".prodqty_"+products.pro_id).val(prodqty);
+                    $(".prod_disc_price_"+products.pro_id).val(prod_discount);
+                    $(".prod_unit_price_"+products.pro_id).html(prod_price);
+                    $(".prod_igst_rate_"+products.pro_id).html(prod_igst_rate);
+                    $(".prod_netprice_"+products.pro_id).html(prod_net_price);
+                    qty_change(products.pro_id, prodqty, prod_net_price, prod_row_total);
+                    
+                }else if(products.st_part_No == prod_id && prod_id_exist == 0){    
+                    call_sub_total = true;
+                    prodqty = $('#prod_qty').val();
+                    prod_part_No = products.st_part_No;
+                    cat_name = products.st_cat_name;
+                    hsn = products.stn_hsn_no;
+                    prod_price = products.fl_pro_price;
+                    prod_desc = products.st_pro_desc;
+                    prod_igst_rate = products.str_igst_rate;
+                    prod_maker = products.st_pro_maker;
+                    prod_discount = products.in_pro_disc;
+                    
+                    prod_net_price = parseFloat(prod_price - parseFloat((prod_price*prod_discount)/(100)));
+                    var prod_row_without_igst_total = parseFloat(prod_net_price*prodqty);
+                    if(prod_igst_rate != '' && prod_igst_rate != null){
+                        prod_row_total = parseFloat(prod_row_without_igst_total + parseFloat((prod_row_without_igst_total*prod_igst_rate)/(100)));
+                    }else{
+                        prod_igst_rate = 0.00;
+                        prod_row_total = parseFloat(prod_net_price*prodqty);
+                    }
+                    prod_qty_left = parseInt(products.in_pro_qty) - parseInt(prodqty);
+                    if(admin_rights == '1'){
+                        partNoHtml = '<input type="text" style="width: 100px;" value="'+prod_part_No+'" name="prod_part_No" class="prod_part_No">';
+                        var classs = '';
+                    }else{
+                        partNoHtml = prod_part_No;
+                        var classs = 'prod_part_No';
+                    }
+                    html = '<tr id="prod_row_'+products.pro_id+'" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="'+prod_maker+'" name="prod_maker" class="prod_maker"><td class="'+classs+'">'+partNoHtml+'</td><td  style="word-break:break-all;" class="prod_desc">'+prod_desc+'</td><td  style="word-break:break-all;" class="prod_hsn">'+hsn+'</td><td style="word-break:break-all;"  class="prod_qty"><input style="width: 35px;" type="text" class="quentity_changed prodqty_'+products.pro_id+'" id="'+products.pro_id+'" value="'+prodqty+'" onchange="quentity_changed(this);"></td><td style="word-break:break-all;" >'+products.in_pro_qty+'</td><td style="word-break:break-all;" ><div class="tooltips"><input style="width: 75px;" type="text" class="prod_unit_price prod_unit_price_'+products.pro_id+'" value="'+prod_price+'" onchange="prod_price_changed(this,'+products.pro_id+');"></div></td><td style="word-break:break-all;" ><input type="text" style="width: 55px;" class="prod_disc_price prod_disc_price_'+products.pro_id+'" value="'+prod_discount+'" onchange="prod_discount_price_changed(this,'+products.pro_id+');"></td><td style="width: 75px; text-align: left;word-break:break-all;"  class="prod_net_price prod_netprice_'+products.pro_id+'">'+prod_net_price+'</td><td style="text-align: left;word-break:break-all;width: 60px;" class=" "><input style="width: 45px;" type="text" class="prod_igst_rate prod_igst_rate_'+products.pro_id+'" id="'+products.pro_id+'" value="'+prod_igst_rate+'" onchange="igsttaxrate_changed(this);"></td><td style="text-align: left;word-break:break-all;width: 75px;" class="prod_row_total prod_row_total_'+products.pro_id+'">'+prod_row_total+'</td><td class="prod_deli_period prod_deli_period_'+products.pro_id+'" style="word-break:break-all;"><input type="text" style="word-break:break-all; width:75px"  name="prod_deli_period" id="prod_deli_period_'+products.pro_id+'" value=""></td><td><a href="javascript:void(0);" onClick=delete_row('+products.pro_id+'); class="btn" style="float:left;padding:0"><span class="pull-left"> </span>  <i class="fa fa-times-circle"></i></a><a href="javascript:void(0);"  class="addCF_'+products.pro_id+' btn" style="float:left;padding:0" onClick=addCF('+products.pro_id+'); data-id='+products.pro_id+'><span class="pull-left"> </span>  <i class="fa fa-comment"></i></a></td>\n\</tr>';
+                }
+                console.log(html);
+                $( html ).insertBefore( "#tblsummary .tr-subtotal" );
+                if(call_sub_total == true){
+                    get_prod_row_sub_total();
+                }
+            }else{
+                html = '<tr id="prod_row" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="" name="" class=""><td class=""></td></tr>';
+                $( html ).insertBefore( "#tblsummary .tr-subtotal" );
+            }
+            
+        }
+    });
+
+    $(".add-quotation").click(function(){ 
+        $(".prod_row_deatails").each(function(key,obj){
+            var prod_comments='';
+            var prod_part_No = $(this).find('.prod_part_No').text();
+            prod_part_No = prod_part_No.replace('#', '').trim();
+            var prod_id = parseInt($(this).attr("id").replace(/[^\d]/g, ''), 10);
+            var prod_desc = $(this).find('.prod_desc').text().trim();
+            var prod_maker = $(this).find('.prod_maker').val().trim();
+            var prodqty            = $('.prodqty_'+prod_id).val().trim();
+            var prod_unit_price 	= $(this).find('.prod_unit_price').val().trim();
+            var prod_disc_price 	= $(this).find('.prod_disc_price').val().trim();
+            var prod_deli_period 	= $(this).find('.prod_deli_period').val().trim();
+            var prod_net_price 	= $(this).find('.prod_net_price').text().trim();
+            var prod_igst_rate 	= $(this).find('.prod_igst_rate ').val().trim();
+            var prod_row_total 	= $(this).find('.prod_row_total').text().trim();
+            var prod_hsn   	= $(this).find('.prod_hsn').text().trim();
+            // prod_comments          = $('#comments_'+prod_id).val().trim();
+            var customer_id = $( "#customer_id option:selected" ).val();
+            sel_prods_details.push({
+                        'in_cust_id': 		customer_id,
+                        'in_product_id': 	prod_id, 
+                        'st_part_no':  		prod_part_No,
+                        'st_product_desc':      prod_desc,
+                        'st_maker':  		prod_maker,
+                        'in_pro_qty':  		prodqty,
+                        'fl_pro_unitprice':     prod_unit_price,
+                        'fl_discount':  	prod_disc_price,
+                        'in_pro_deli_period':   prod_deli_period,
+                        'fl_net_price':  	prod_net_price,
+                        'in_igst_rate':         prod_igst_rate,
+                        'fl_row_total':  	prod_row_total,
+                        'stn_hsn_no':  		prod_hsn,
+                        'prod_comments':  	'',
+            });
+        });
+
+        $("#hid_order_prod_details").val(JSON.stringify(sel_prods_details));
+        $("#hid_quotation_sub_total").val($(".final_subtotal").text());
+        if(sel_prods_details.length > 0){
+            $( "#quotation_form" ).submit();
+        }else{
+            alert("Minimum one product for quotation is required.");
+        }		
+    });
+
+
+    $()
+});
+
+   
 
     // $(window).load(function(){
     //     $('#editquotation_msg_err').modal('show');
@@ -692,63 +940,10 @@ $(document).ready(function(){
     var admin_rights = '<?php //echo $this->session->userdata('admin_rights');?>';
     var sel_prods_details = [];
 
-    function get_cust_add_details(cust_id){
-        var filepath = '<?php //echo base_url();?>quotation/ajax_get_cust_address_details';
-        $.ajax({
-            url:filepath,
-            type:'POST',
-            async:false,
-            dataType: "json",
-            data: {'cust_id':cust_id.value},		
-            success: function(res) {
-                if(res.length != 0){
-                    $('#auto_pop_cust_name').val(res.st_con_person1);
-                    $('#auto_pop_addr').val(res.st_com_address);
-                    $('#auto_pop_state').val(res.st_cust_state);
-                    $('#auto_pop_city').val(res.st_cust_city);
-                    $('#auto_pop_pincod').val(res.in_pincode);
-                    $('#auto_pop_phone').val(res.st_con_person1_mobile);
-                    $('#auto_pop_email').val(res.st_con_person1_email);
-                    $('#auto_pop_landline').val(res.st_cust_mobile);
-                    $('.auto_pop_company').html(res.st_com_name);
-                    $('select[name^="select_owner"] option[value='+res.owner_id+']').attr("selected","selected");
-                }else{
-                    $('.auto_pop_cust_name').html('&nbsp;&nbsp;');
-                    $('#auto_pop_addr').val('');
-                    $('#auto_pop_state').val('');
-                    $('#auto_pop_city').val('');
-                    $('#auto_pop_pincod').val('');
-                    $('#auto_pop_phone').val('');
-                    $('#auto_pop_email').val('');
-                    $('#auto_pop_landline').val('');
-                    $('.auto_pop_company').html('&nbsp;&nbsp;');
-                    $("#shippingchk").attr("checked", false);
-                    $("#shippingchk").val(0);
-                    $("#shipping_addr").val('');
-                    $("#shipping_telephone").val('');
-                    $("#shipping_email").val('');
-                    var filepath = '<?php //echo base_url();?>quotation/ajax_get_shiping_state_and_city_dropdown';
-                    $.ajax({
-                        url:filepath,
-                        type:'POST',
-                        async:false,
-                        dataType: 'json',
-                        data: {'action': 'get_state_city_dropdown'},		
-                        success: function(res) {
-                            $("#shippingchk-state-n-city").html(res.shiping_address);
-                        }
-                    });
-                }
-            }
-        });
-    }
-
     /*To validate first product...*/
     function checkfirstprod(){
         var req = 1;
         var prod_id = $('#order_product').val();
-        /*Get product qty from database*/
-        // prod_qty = get_cust_prods_qty(prod_id);
 
         if($('#order_product').val() =='' && parseInt($('#prod_qty').val()) == ''){
             alert("Please select product name and quantity");
@@ -793,15 +988,12 @@ $(document).ready(function(){
     }
 
     function qty_change(prod_id ,prodqty, prod_net_price, prod_row_total){
-        alert(prodqty);
         if((prodqty <= 0) || ($.isNumeric(prodqty) == false)){
             alert("Pleas enter a valid quantity.");
         }else{
             $(".prod_netprice_"+prod_id).html(prod_net_price);
             $(".prod_row_total_"+prod_id).html(prod_row_total.toFixed(2));
             get_prod_row_sub_total();
-            /* Calculate all data on changing any one amount */
-            alter_all_data();
         }
     }
 
@@ -824,38 +1016,8 @@ $(document).ready(function(){
         $("#prod_row_"+prod_id).remove();
         $("#comment_row_"+prod_id).remove();	
         /* Calculate sub total amt */
-        get_prod_row_sub_total();
-        /* Calculate all data on changing any one amount */
-        alter_all_data();
-
-        
+        get_prod_row_sub_total();   
     }
-
-    function alter_all_data(){
-        /* Calculate net sub total amount */
-        get_prod_row_sub_total();
-        /* change tax value after row delete if applicable */
-        var tax_perc_val = $('select[name=prod_tax]').val().split('_');
-        var final_subtotal = $(".final_subtotal").text();
-        var frieght_pack_charges = $("input[name='frieght_pack_charges']").val();
-        if(frieght_pack_charges == ""){
-            frieght_pack_charges = 0.00;
-        }
-        var tax_on_total = parseFloat(parseFloat(final_subtotal) + parseFloat(frieght_pack_charges)).toFixed(2);
-        var total_tax_amt = parseFloat((parseFloat(tax_perc_val[1])*parseFloat(tax_on_total))/100).toFixed(2);
-        
-        if(tax_perc_val != ""){
-            $("#vat_tax").html(total_tax_amt);
-            $("#hid_tax_amt").val(total_tax_amt);
-        }else{
-            total_tax_amt = 0.00;
-            $("#hid_tax_amt").val(0.00);
-        }
-        /* Calculate total Grand amount */
-        calc_prod_grand_total(final_subtotal, total_tax_amt);
-        
-    }
-
     function get_tax_val(obj){
         var tax_value = obj.value.split('_');
         var tax_perc_val = parseFloat(tax_value[1]).toFixed(2); 
@@ -874,34 +1036,8 @@ $(document).ready(function(){
             $("#hid_tax_amt").val(0.00);
             
         }
-        alter_all_data();
     }
 
-    function get_bank_detial(obj){
-        var bank_id = obj.value;
-        if(bank_id != ''){
-            var filepath = '<?php //echo base_url();?>quotation/ajax_get_bank_details';
-            $.ajax({
-                url:filepath,
-                type:'POST',
-                async:false,
-                dataType: 'json',
-                data: {'bank_id': bank_id},		
-                success: function(res) {
-                    $(".bank-name").html(res.st_bank_name);
-                    $(".bank-branch").html("Branch : "+res.st_bank_branch);
-                    $(".bank-ifsc-code").html("IFSC Code : "+res.st_bank_IFSC_code);
-                    $(".bank-acc-no").html("A/c No. "+res.st_bank_acc_no);
-                }
-            });
-        }else{
-            $(".bank-name").html("&nbsp;");
-            $(".bank-branch").html("&nbsp;");
-            $(".bank-ifsc-code").html("&nbsp;");
-            $(".bank-acc-no").html("&nbsp;");
-            alert("Please select a bank.");
-        }
-    }
 
     function calc_prod_grand_total(subtotal_amt, tax_amt){
         var prod_grand_total = 0.00;
@@ -1056,7 +1192,7 @@ $(document).ready(function(){
                             var prod_net_price      = $(this).find('.prod_net_price').text().trim();
                             var prod_igst_rate      = $(this).find('.prod_igst_rate ').val().trim();
                             var prod_row_total      = $(this).find('.prod_row_total').text().trim();
-                            if($('#comments_'+prod_id).val()){
+                            if($('#comments_'+prod_id).val() != 'undefined'){
                                 prod_comments          = $('#comments_'+prod_id).val().trim();
                             }
                             var customer_id = $( "#customer_id option:selected" ).val();
@@ -1152,7 +1288,7 @@ $(document).ready(function(){
                                 data: {'sel_prods_details' : sel_prods_details, 'customer_info' : customer_info, 'quotation_info' : quotation_info},		
                                 success: function(res) {
                                     $("#is_submit_quotation").val('1');
-                                    $("#privew-quote").html(res.quotation_data);
+                                    $("div #privew-quote").html(res.quotation_data);
 
                                 }
                             });
@@ -1195,263 +1331,7 @@ $(document).ready(function(){
         $('.addCF_'+parameters).show();
     }
     
-$(document).ready(function(){
-	$("#currency").on('focus', function () {
-		previous = this.value;
-	}).change(function() {
-			var pastvalue = previous;
-			previous = this.value;
-			var currencytxt = $( "#currency option:selected" ).text();
-			var currval = $( "#currency option:selected" ).val();                    
-		if (!confirm('Are you sure, you want to cahnge currency?')) {
-                $("#currencysymbol").text('');
-			    $('#currency').val(pastvalue);
-			return false;
-		} else {
-            $("#currencysymbol").text(currencytxt);
-        }
-	});
 
-	$('html').click(function(e) {                    
-	   if(!$(e.target).hasClass('privew-quote-box') )
-	   {
-		   $("#is_submit_quotation").val("0");                
-	   }
-	}); 
-
-	$("#shippingchk").change(function() {
-		if(this.checked) {
-			var customer_id = $( "#customer_id option:selected" ).val();
-			if(customer_id != ""){
-				$(this).val(1);
-				var shipping_addr = $('#auto_pop_addr').val();
-				var shipping_state = $('#auto_pop_state').val();
-				var shipping_city = $('#auto_pop_city').val();
-				var shipping_pin_code = $('#auto_pop_pincod').val();
-				var shipping_telephone = $('#auto_pop_phone').val();
-				var shipping_email = $('#auto_pop_email').val();
-				
-				$("#shipping_addr").val(shipping_addr);
-				$("#shipping_telephone").val(shipping_telephone);
-				$("#shipping_email").val(shipping_email);
-				$("#shipping_pincod").val(shipping_pin_code);
-
-				$("#shippingchk-state-n-city").html('<label class="col-md-9 no-padding-left"><input type="text" value="'+shipping_state+'" class="form-control" name="shipping_state" id="shipping_state"></label><label class="col-md-3">  <strong> City : </strong></label><label class="col-md-9 no-padding-left"><input type="text" value="'+shipping_city+'" class="form-control" name="shipping_city" id="shipping_city"></label><label class="col-md-3">  <strong> Pin Code : </strong></label><label class=" col-md-9 no-padding-left"><input type="text" value="'+shipping_pin_code+'" class="form-control" name="shipping_pincod" id="shipping_pincod"></label>');
-			}else{
-				$("#shippingchk").attr("checked", false);
-				$(this).val(0);
-				alert("Please select a customer.");
-			}
-		}else{
-			$(this).val(0);
-			$("#shipping_addr").val('');
-			$("#shipping_telephone").val('');
-			$("#shipping_email").val('');
-			var filepath = '<?php //echo base_url();?>quotation/ajax_get_shiping_state_and_city_dropdown';
-			$.ajax({
-				url:filepath,
-				type:'POST',
-				async:false,
-				dataType: 'json',
-				data: {'action': 'get_state_city_dropdown'},		
-				success: function(res) {
-					$("#shippingchk-state-n-city").html(res.shiping_address);
-				}
-			});
-		}
-	});
-
-    var sel_prods_details = [];
-    $('.add_prod').click(function() {
-	var	t = true;
-	t = checkfirstprod();
-	var html = '';
-	if(t == 1){
-		var arrprods = [];
-		var sel_prods = [];
-		var prod_qunt = 0;
-		var prod_id = 0; 
-        var new_product_list = {!! json_encode($new_product_list) !!};
-		var prod_id_exist = 0;
-		var str = $('#hid_selprod').val();
-		if($('#hid_selprod').val() != ''){
-			sel_prods.push( $("#hid_selprod").val());
-		}
-		prod_id = $('#order_product').val();
-		var arr = str.split(',');
-        if($.inArray(prod_id,arr) == -1){
-			sel_prods.push(prod_id);
-		}else{
-			prod_id_exist = 1;
-        } 
-		
-		$('#hid_selprod').val(sel_prods);
-		
-		// var products = '';<?php //echo json_encode($product_list); ?>//;
-        
-		var html = '';	
-		var prodqty = 0;
-		var free_prod_qty = 0;
-		var free_prod_txt = '';
-        var prod_igst_rate = 0.00;
-		var prod_part_No = '';
-		var prod_desc = '';
-		var prod_discount = 0.00;
-		var prod_maker = '';
-		var prod_price = 0.00;
-		var prod_net_price = 0.00;
-		var prod_row_total = 0.00;
-		var cat_name = '';
-		var newprodqty = 0;
-		var prod_qty_left = 0;
-		var call_sub_total = false;
-		var hsn ='HSN Code: Awaited OR Provide Soon';
-		var new_product_list = {!! json_encode($new_product_list) !!};
-        if( new_product_list[prod_id] !='undefined' && new_product_list[prod_id] !=''){
-            var products = new_product_list[prod_id];
-            var partNoHtml ='';
-            if(products.st_part_No == prod_id && prod_id_exist == 1){ 
-                var prev_prod_qnt = $(".prodqty_"+products.pro_id).val();
-                prodqty = parseInt(parseInt(prev_prod_qnt) + parseInt($('#prod_qty').val()));
-                prod_igst_rate = products.str_igst_rate;
-                prod_price = products.fl_pro_price;
-                prod_discount = products.in_pro_disc;
-                prod_net_price = parseFloat(prod_price - parseFloat((prod_price*prod_discount)/(100)));
-                hsn = products.stn_hsn_no;
-                if(prod_igst_rate != '' && prod_igst_rate != null){
-                    prod_row_total = parseFloat(prod_net_price + parseFloat((prod_net_price*prod_igst_rate)/(100)));
-                }else{ 
-                    prod_igst_rate = 0.00;
-                    prod_row_total = parseFloat(prod_net_price*prodqty);
-                }
-                $(".prodqty_"+products.pro_id).val(prodqty);
-                $(".prod_disc_price_"+products.pro_id).val(prod_discount);
-                $(".prod_unit_price_"+products.pro_id).html(prod_price);
-                $(".prod_igst_rate_"+products.pro_id).html(prod_igst_rate);
-                $(".prod_netprice_"+products.pro_id).html(prod_net_price);
-                qty_change(products.pro_id, prodqty, prod_net_price, prod_row_total);
-                
-            }else if(products.st_part_No == prod_id && prod_id_exist == 0){    
-                call_sub_total = true;
-                prodqty = $('#prod_qty').val();
-                prod_part_No = products.st_part_No;
-                cat_name = products.st_cat_name;
-                hsn = products.stn_hsn_no;
-                prod_price = products.fl_pro_price;
-                prod_desc = products.st_pro_desc;
-                prod_igst_rate = products.str_igst_rate;
-                prod_maker = products.st_pro_maker;
-                prod_discount = products.in_pro_disc;
-                
-                prod_net_price = parseFloat(prod_price - parseFloat((prod_price*prod_discount)/(100)));
-                var prod_row_without_igst_total = parseFloat(prod_net_price*prodqty);
-                if(prod_igst_rate != '' && prod_igst_rate != null){
-                    prod_row_total = parseFloat(prod_row_without_igst_total + parseFloat((prod_row_without_igst_total*prod_igst_rate)/(100)));
-                }else{
-                    prod_igst_rate = 0.00;
-                    prod_row_total = parseFloat(prod_net_price*prodqty);
-                }
-                prod_qty_left = parseInt(products.in_pro_qty) - parseInt(prodqty);
-                if(admin_rights == '1'){
-                    partNoHtml = '<input type="text" style="width: 100px;" value="'+prod_part_No+'" name="prod_part_No" class="prod_part_No">';
-                    var classs = '';
-                }else{
-                    partNoHtml = prod_part_No;
-                    var classs = 'prod_part_No';
-                }
-                html = '<tr id="prod_row_'+products.pro_id+'" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="'+prod_maker+'" name="prod_maker" class="prod_maker"><td class="'+classs+'">'+partNoHtml+'</td><td  style="word-break:break-all;" class="prod_desc">'+prod_desc+'</td><td  style="word-break:break-all;" class="prod_hsn">'+hsn+'</td><td style="word-break:break-all;"  class="prod_qty"><input style="width: 35px;" type="text" class="quentity_changed prodqty_'+products.pro_id+'" id="'+products.pro_id+'" value="'+prodqty+'" onchange="quentity_changed(this);"></td><td style="word-break:break-all;" >'+products.in_pro_qty+'</td><td style="word-break:break-all;" ><div class="tooltips"><input style="width: 75px;" type="text" class="prod_unit_price prod_unit_price_'+products.pro_id+'" value="'+prod_price+'" onchange="prod_price_changed(this,'+products.pro_id+');"></div></td><td style="word-break:break-all;" ><input type="text" style="width: 55px;" class="prod_disc_price prod_disc_price_'+products.pro_id+'" value="'+prod_discount+'" onchange="prod_discount_price_changed(this,'+products.pro_id+');"></td><td style="width: 75px; text-align: left;word-break:break-all;"  class="prod_net_price prod_netprice_'+products.pro_id+'">'+prod_net_price+'</td><td style="text-align: left;word-break:break-all;width: 60px;" class=" "><input style="width: 45px;" type="text" class="prod_igst_rate prod_igst_rate_'+products.pro_id+'" id="'+products.pro_id+'" value="'+prod_igst_rate+'" onchange="igsttaxrate_changed(this);"></td><td style="text-align: left;word-break:break-all;width: 75px;" class="prod_row_total prod_row_total_'+products.pro_id+'">'+prod_row_total+'</td><td class="prod_deli_period prod_deli_period_'+products.pro_id+'" style="word-break:break-all;"><input type="text" style="word-break:break-all; width:75px"  name="prod_deli_period" id="prod_deli_period_'+products.pro_id+'" value=""></td><td><a href="javascript:void(0);" onClick=delete_row('+products.pro_id+'); class="btn" style="float:left;padding:0"><span class="pull-left"> </span>  <i class="fa fa-times-circle"></i></a><a href="javascript:void(0);"  class="addCF_'+products.pro_id+' btn" style="float:left;padding:0" onClick=addCF('+products.pro_id+'); data-id='+products.pro_id+'><span class="pull-left"> </span>  <i class="fa fa-comment"></i></a></td>\n\</tr>';
-            }
-            // });
-            console.log(html);
-            $( html ).insertBefore( "#tblsummary .tr-subtotal" );
-            if(call_sub_total == true){
-                get_prod_row_sub_total();
-            }
-        }else{
-            html = '<tr id="prod_row" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="" name="" class=""><td class=""></td></tr>';
-            $( html ).insertBefore( "#tblsummary .tr-subtotal" );
-        }
-		
-	}
-});
-
-function formatDate(date) {
-     var d = new Date(date),
-         month = '' + (d.getMonth() + 1),
-         day = '' + d.getDate(),
-         year = d.getFullYear();
-     if (month.length < 2) month = '0' + month;
-     if (day.length < 2) day = '0' + day;
-     return [day, month, year].join('-');
-}
-
-$(".add-quotation").click(function(){ 
-	 $(".prod_row_deatails").each(function(key,obj){
-        var prod_comments='';
-        var prod_part_No = $(this).find('.prod_part_No').text();
-        prod_part_No = prod_part_No.replace('#', '').trim();
-        var prod_id = parseInt($(this).attr("id").replace(/[^\d]/g, ''), 10);
-        var prod_desc = $(this).find('.prod_desc').text().trim();
-        var prod_maker = $(this).find('.prod_maker').val().trim();
-        var prodqty            = $('.prodqty_'+prod_id).val().trim();
-        var prod_unit_price 	= $(this).find('.prod_unit_price').val().trim();
-        var prod_disc_price 	= $(this).find('.prod_disc_price').val().trim();
-        var prod_deli_period 	= $(this).find('.prod_deli_period').val().trim();
-        var prod_net_price 	= $(this).find('.prod_net_price').text().trim();
-        var prod_igst_rate 	= $(this).find('.prod_igst_rate ').val().trim();
-        var prod_row_total 	= $(this).find('.prod_row_total').text().trim();
-        var prod_hsn   	= $(this).find('.prod_hsn').text().trim();
-        prod_comments          = $('#comments_'+prod_id).val().trim();
-		var customer_id = $( "#customer_id option:selected" ).val();
-		 sel_prods_details.push({
-					'in_cust_id': 		customer_id,
-					'in_product_id': 	prod_id, 
-					'st_part_no':  		prod_part_No,
-					'st_product_desc':      prod_desc,
-					'st_maker':  		prod_maker,
-					'in_pro_qty':  		prodqty,
-					'fl_pro_unitprice':     prod_unit_price,
-					'fl_discount':  	prod_disc_price,
-					'in_pro_deli_period':   prod_deli_period,
-					'fl_net_price':  	prod_net_price,
-                    'in_igst_rate':         prod_igst_rate,
-					'fl_row_total':  	prod_row_total,
-					'stn_hsn_no':  		prod_hsn,
-                    'prod_comments':  	prod_comments,
-		});
-	});
-
-	$("#hid_order_prod_details").val(JSON.stringify(sel_prods_details));
-	$("#hid_quotation_sub_total").val($(".final_subtotal").text());
-	if(sel_prods_details.length > 0){
-		$( "#quotation_form" ).submit();
-	}else{
-		alert("Minimum one product for quotation is required.");
-	}		
-});
-
-$("input[name='frieght_pack_charges']").blur(function(){
-		var frieght_pack_charges = $("input[name='frieght_pack_charges']").val();
-		var frieght_include_tax = '';
-		var frieght_pack_charges_include_tax = '';
-		if($.isNumeric(frieght_pack_charges) == false){
-			alert("Please enter a valid number.");
-		}else{
-			var prod_grand_total = $("#prod_grand_total").text();
-			frieght_include_tax = parseFloat((parseFloat(18)*parseFloat(frieght_pack_charges))/100).toFixed(2); //frieght_pack_charges;
-			/*Add tax 18% in frieght charges */
-			frieght_pack_charges_include_tax = parseFloat(parseFloat(frieght_include_tax) + parseFloat(frieght_pack_charges));
-			var prod_final_grand_total = parseFloat(parseFloat(prod_grand_total) + parseFloat(frieght_pack_charges_include_tax));
-			$("#frieght_pack_charges").val(frieght_pack_charges_include_tax);
-			$("#prod_grand_total").html(prod_final_grand_total);
-			$("#order_grand_total").val(prod_final_grand_total);
-			$("#order_nego_amount").val(prod_final_grand_total);
-		}
-		/* calculate Tax */
-		alter_all_data();
-});
-
-});
 
 $(function(){
     url = "{{ route('all_product') }}";
@@ -1467,7 +1347,8 @@ $(function(){
                     response(data);
                 }
             });
-        }
+        },
+        minLength:3,   
     });
     $("#product_search").blur(function(){
         var product_search = $(this).val();
@@ -1862,3 +1743,20 @@ $(function(){
     </div>
     <!-- end add records -->
 @endsection
+<div class="modal fade" id="quotation-preview-model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" aria-label="Close" onClick="quotation_edit();"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title" id="myModalLabel">Quotaion Preview</h4>
+	  </div>
+	  <div class="modal-body">
+		<div id="privew-quote" class="privew-quote-box"></div>          
+	  </div>
+	  <div class="modal-footer">
+		<button type="button" class="btn btn-default" onClick="quotation_submit();">Send Quotation</button>&nbsp;&nbsp;
+		<button type="button" class="btn btn-default" onClick="quotation_edit();">Edit</button>
+	  </div>
+	</div>
+  </div>
+</div>

@@ -8,7 +8,6 @@
     <!--<![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chromatography</title>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800,700italic' rel='stylesheet' type='text/css'>
     <style type="text/css">
     /* Basics */
 body {
@@ -63,7 +62,7 @@ div[style*="margin: 16px 0"] {
             <table class="table-outer" align="center" style="background:#ffffff; max-width:1000px; width: 100%; margin:0 auto;">
               <tr style="background:#f1f1f1;">
                 <td style="font-size:12px;color: #333333; background: #f1f1f1;padding:10px">
-                    <img src="<?php echo base_url(); ?>assets/images/logo.png" style="margin-top: 0;" >
+                    <img src="assets/images/logo.png" style="margin-top: 0;" >
                   </td>
                  <td style="font-size:12px; color: #333333;background: #f1f1f1;padding:10px;">
                     <p style="margin: 0 !important;"> <Strong>Regd Add:</Strong> 217, 2nd Floor, Champaklal Industrial Estate, Sion East, Mumbai - 400022. India </p>           
@@ -233,11 +232,11 @@ div[style*="margin: 16px 0"] {
                             <td style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $row_val['in_pro_qty']; ?></td>
 
                             <td align="left"  style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;">
-							<?php   echo $this->common_function->currencyCodes[$quotation_info['currency']]." ".number_format($row_val['fl_pro_unitprice']); ?></td>
+							<?php   " ".number_format($row_val['fl_pro_unitprice']); ?></td>
 
                             <td align="right" style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 2px;"><?php echo $row_val['fl_discount']; ?> %</td>
 
-                            <td align="left" style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $this->common_function->currencyCodes[$quotation_info['currency']]." ".number_format($row_val['fl_net_price']); ?></td>
+                            <td align="left" style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo " ".number_format($row_val['fl_net_price']); ?></td>
 							<?php if(isset($customer_info['auto_pop_state']) and $customer_info['auto_pop_state'] != 'Maharashtra'){
 
 							//$igst_amt_calculation = (($row_val['fl_net_price']*$row_val['in_pro_qty'])*($row_val['in_igst_rate']/100));
@@ -246,7 +245,7 @@ div[style*="margin: 16px 0"] {
 							$out_of_mh_gst_total +=$igst_amt_calculation;
 							?>
                              <td align="left" style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo number_format($row_val['in_igst_rate']); ?>%</td>
-                             <td align="left" style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $this->common_function->currencyCodes[$quotation_info['currency']]." ".number_format($igst_amt_calculation); ?></td>
+                             <td align="left" style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo " ".number_format($igst_amt_calculation); ?></td>
 							<?php } else if(isset($customer_info['auto_pop_state']) and $customer_info['auto_pop_state'] == 'Maharashtra') {
 								$igst_cgst_rate = $row_val['in_igst_rate'] / 2;
 								//$gst_amt_calculation = (($row_val['fl_net_price']*$row_val['in_pro_qty'])*($igst_cgst_rate/100));
@@ -255,12 +254,12 @@ div[style*="margin: 16px 0"] {
 								$mh_gst_total += $gst_amt_calculation;
 							?>
                            <td align="left" style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo number_format($igst_cgst_rate); ?>%</td>
-                           <td align="left" style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $this->common_function->currencyCodes[$quotation_info['currency']]." ".number_format($gst_amt_calculation); ?></td>
+                           <td align="left" style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo " ".number_format($gst_amt_calculation); ?></td>
 
                             <td align="left" style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo number_format($igst_cgst_rate); ?>%</td>
-                            <td align="left" style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $this->common_function->currencyCodes[$quotation_info['currency']]." ".number_format($gst_amt_calculation); ?></td>
+                            <td align="left" style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo " ".number_format($gst_amt_calculation); ?></td>
 							<?php } ?>
-                            <td align="left" style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $this->common_function->currencyCodes[$quotation_info['currency']]." ".number_format($row_val['fl_row_total']); ?></td>
+                            <td align="left" style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo " ".number_format($row_val['fl_row_total']); ?></td>
                             <td style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $row_val['in_pro_deli_period']; ?></td>
 
                             </tr>
@@ -283,7 +282,7 @@ div[style*="margin: 16px 0"] {
 
                             <td style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;">&nbsp;</td>
 
-                            <td style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo number_format($quotation_info['fl_fleight_pack_charg']/1.18); ?></td>
+                            <td style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"></td>
 
                             <td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;">-</td>
 
@@ -292,18 +291,15 @@ div[style*="margin: 16px 0"] {
 											
 							?>
                              <td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;">18 %</td>
-                             <td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo number_format(($quotation_info['fl_fleight_pack_charg']/1.18)*0.18); ?></td>
-							<?php } else if(isset($customer_info['auto_pop_state']) and $customer_info['auto_pop_state'] == 'Maharashtra') {
-								$fl_fleight_pack_charg = (($quotation_info['fl_fleight_pack_charg']/1.18)*0.09);	
-							?>
+                             <td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;">
                            <td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;">9%</td>
-                           <td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo number_format($fl_fleight_pack_charg); ?></td>
+                           <td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"></td>
 
                             <td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;">9%</td>
-                            <td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo number_format($fl_fleight_pack_charg); ?></td>
+                            <td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"></td>
 							<?php } ?>
 
-                            <td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $quotation_info['fl_fleight_pack_charg']; ?></td>
+                            <td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"></td>
                             <td style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;">&nbsp;</td>
 
                             </tr>
@@ -320,29 +316,29 @@ div[style*="margin: 16px 0"] {
 
 								<td style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;">&nbsp;</td>
 
-								<td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $this->common_function->currencyCodes[$quotation_info['currency']]." ".number_format($prod_unit_price_total); ?></td>
+								<td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo " ".number_format($prod_unit_price_total); ?></td>
 
 								<td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;">&nbsp;</td>
 
-								<td align="left" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $this->common_function->currencyCodes[$quotation_info['currency']]." ".number_format($prod_net_amt_total); ?></td>
+								<td align="left" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo " ".number_format($prod_net_amt_total); ?></td>
 
 								<td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;">&nbsp;</td>
 								
 								<?php if(isset($customer_info['auto_pop_state']) and $customer_info['auto_pop_state'] != 'Maharashtra'){ ?>
 
-								<td align="left" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $this->common_function->currencyCodes[$quotation_info['currency']]." ".number_format($out_of_mh_gst_total); ?></td>
+								<td align="left" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo " ".number_format($out_of_mh_gst_total); ?></td>
 
-									<td align="left" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $this->common_function->currencyCodes[$quotation_info['currency']]." ".number_format($quotation_info['fl_nego_amt']); ?></td>
+									<td align="left" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo " ".number_format($quotation_info['fl_nego_amt']); ?></td>
 								<?php } else { ?> 
-								<td align="left" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $this->common_function->currencyCodes[$quotation_info['currency']]." ".number_format($mh_gst_total); ?></td>
+								<td align="left" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo " ".number_format($mh_gst_total); ?></td>
 								<td align="left" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;">&nbsp;</td>
-								<td align="left" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $this->common_function->currencyCodes[$quotation_info['currency']]." ".number_format($mh_gst_total); ?></td>
+								<td align="left" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo " ".number_format($mh_gst_total); ?></td>
 								<?php }?>
 								
 
 								
 								<?php if(isset($customer_info['auto_pop_state']) and $customer_info['auto_pop_state'] == 'Maharashtra'){ ?>
-								<td align="left" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $this->common_function->currencyCodes[$quotation_info['currency']]." ".number_format($quotation_info['fl_nego_amt']); ?></td>
+								<td align="left" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo " ".number_format($quotation_info['fl_nego_amt']); ?></td>
 
 								<td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;">&nbsp;</td>
 

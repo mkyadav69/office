@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Notify;
 use App\Models\Customer;
@@ -11,7 +12,9 @@ use App\Models\Owner;
 use App\Models\QuatationAdd;
 use Carbon\Carbon;
 use DataTables;
+use Response;
 use Config;
+use PDF;
 
 class QuatationController extends Controller
 {
@@ -133,6 +136,7 @@ class QuatationController extends Controller
     public function allProduct(Request $request){
         $query = $request->get('term','');
         $products = Product::where('st_part_No','LIKE','%'.$query.'%')->orWhere('st_pro_desc','LIKE','%'.$query.'%')->get();
+
         if(!empty($products)){
             $data = collect($products)->pluck('st_part_No')->toArray();
             if(count($data)){
@@ -146,10 +150,79 @@ class QuatationController extends Controller
         }
     }
 
-    public function filterProduct(Request $request){
-        if(!empty($request->part_no)){
-            return true;
+    public function previewQuatation(Request $request){
+        $sel_prods_details = $request->sel_prods_details;
+        if(!empty($sel_prods_details)){
+            $validator = Validator::make($sel_prods_details[0], [
+                'in_cust_id' => 'required',
+                "prod_comments" => 'required',
+            ]);
         }
+        $msg1 = $validator->getMessageBag()->toArray();
+        $quotation_info = $request->quotation_info;
+        if(!empty($quotation_info)){
+            $validator1 = Validator::make($quotation_info, [
+                "st_shiping_add" => 'required',
+                "st_shiping_city" =>'required',
+                "st_shiping_state" => 'required',
+                "st_shiping_pincode" => 'required',
+                "st_shipping_email" =>'required',
+                "st_shipping_phone" => 'required',
+                "st_enq_ref_number" => 'required',
+                'shipping_lanline' => 'required',
+                "dt_ref" => 'required',
+                "st_landline" => 'required',
+                'product_search' => 'required',
+                'prod_qty' => 'required',
+            ]);
 
+        }
+        $msg2 = $validator1->getMessageBag()->toArray();
+        $customer_info = $request->customer_info;
+        if(!empty($customer_info)){
+            $validator2 = Validator::make($customer_info, [
+                "st_com_name" => 'required',
+                "auto_pop_cust_name" => 'required',
+                "st_cust_mobile" => 'required',
+                "auto_pop_state" => 'required',
+                "preparing_by" => 'required',
+                "lead_from" => 'required',
+                'notify_group' => 'required',
+                'select_owner' =>'required',
+                'auto_pop_addr' =>'required',  
+                'auto_pop_state' =>'required',  
+                'auto_pop_city'   =>'required',
+                'auto_pop_pincod' =>'required',
+                'auto_pop_phone'   =>'required',
+                'auto_pop_email'   =>'required',
+                'auto_pop_landline' =>'required',
+                'ext_note' =>'required'
+            ]);
+        }
+        $msg3 = $validator2->getMessageBag()->toArray();
+        if ($validator->fails() || $validator1->fails() || $validator2->fails()) {
+            $msg = $msg1+$msg2+$msg3;
+            return Response::json(array(
+                'success' => false,
+                'errors' => $msg
+            ), 400);
+        }
+        $result = [];
+        $billing_address  = $request->quotation_info;
+        $format = $billing_address['bill_add_id'];
+        $result['quotation_details']    = $request->sel_prods_details;
+		$result['customer_info'] 		= $request->customer_info;
+		$result['quotation_info'] 		= $request->quotation_info;
+		$result['format']				= $format;
+		$result['BillAddress']			= "adress";
+        $data['quotation_data'] = "maoj";  
+        $pdf = PDF::loadView('office/quatation/preview_quatation', $result);
+        $path = public_path('pdf/');
+        $fileName =  time().'.'. 'pdf' ;
+        $pdf->save($path . '/' . $fileName);
+        $pdf = public_path('pdf/'.$fileName);
+        return response()->download($pdf);
+
+		// $data['quotation_data'] = $this->load->view('office/quotation/view_preview_quotation',$result,TRUE);
     }
 }
