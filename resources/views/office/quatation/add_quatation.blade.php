@@ -27,7 +27,7 @@ datepicker,
             <div class="modal-header">
                 <h5 class="modal-title" id="largeModalLabel">Lead & Group</h5>
             </div>
-            <form action="" method="POST"  name="quotation_form" id="quotation_form"  role="form">
+            <form action="" name="quotation_form" id="quotation_form"  role="form">
                     <div class="modal-body">
                         <div class="row form-group">
                             <div class="form-group col-4">
@@ -419,25 +419,6 @@ datepicker,
             </form>
         </div>
     </div>
-
-    
-    <div class="modal fade" id="" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" aria-label="Close" onClick="quotation_edit();"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Quotaion Preview</h4>
-            </div>
-            <div class="modal-body">
-                <div id="privew-quote" class="privew-quote-box"></div>          
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" >Send Quotation</button>&nbsp;&nbsp;
-                <button type="button" class="btn btn-default" >Edit</button>
-            </div>
-            </div>
-        </div>
-    </div>
     <input type="hidden" id="is_submit_quotation" value="0">
     @if(Session::has('errors'))
         @if(!empty($errors->cutomer_add->any()))
@@ -524,7 +505,6 @@ $(document).ready(function(){
                 var payment_turm            = $("#payment_turm option:selected" ).text();
                 var notify_group            = $('#notify_group').val();
                 var select_owner            = $( "#select_owner option:selected" ).val();
-
                 var auto_pop_addr           = $("#auto_pop_addr").val();
                 var auto_pop_state          = $("#auto_pop_state").val();
                 var auto_pop_city           = $("#auto_pop_city").val();
@@ -583,18 +563,22 @@ $(document).ready(function(){
                 var filepath = "{{route('preview_quatation')}}"
                 $.ajax({
                     url:filepath,
+                    target: "_blank",
                     type:'GET',
+                    beforeSend: function() {
+						$("body").addClass("loading");
+					},
+					complete: function() {
+						$("body").removeClass("loading");
+					},
+					async:false,
+					dataType: 'json',
                     data: {'sel_prods_details' : sel_prods_details, 'customer_info' : customer_info, 'quotation_info' : quotation_info, "_token": "{{ csrf_token() }}"},
-                   
                     success: function(response) {
-                        // var blob = new Blob([response]);
-                        // var link = document.createElement('a');
-                        // link.href = window.URL.createObjectURL(blob);
-                        // link.download = "Sample.pdf";
-                        // link.click();
                         $("#is_submit_quotation").val('1');
-                        // $("#privew-quote").html(res.quotation_data);
+						$("#privew-quote").html(response.quotation_data);
                     },error: function(error) {
+                        console.log(error);
                         if(error.status == 400){
                             var err = error.responseText;
                             var d = JSON.parse(err);
@@ -607,7 +591,7 @@ $(document).ready(function(){
                         }
                     }
                 });
-                // $('#quotation-preview-model').modal('show');
+                $('#quotation-preview-model').modal('show');
             }else{	
                 form.submit();
             }
@@ -615,6 +599,7 @@ $(document).ready(function(){
             $('#minProduct').modal('show');
             return false;
         }
+        e.preventDefault();
     });
 	$("#currency").on('focus', function () {
         previous = this.value;
@@ -1769,21 +1754,20 @@ $(function(){
     </div>
 @endsection
 
-<!-- 
-<div class="modal fade" id="quotation-preview-model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-	<div class="modal-content">
-	  <div class="modal-header">
-		<button type="button" class="close" aria-label="Close" onClick="quotation_edit();"><span aria-hidden="true">&times;</span></button>
-		<h4 class="modal-title" id="myModalLabel">Quotaion Preview</h4>
-	  </div>
-	  <div class="modal-body">
-		<div id="privew-quote" class="privew-quote-box"></div>          
-	  </div>
-	  <div class="modal-footer">
-		<button type="button" class="btn btn-default" onClick="quotation_submit();">Send Quotation</button>&nbsp;&nbsp;
-		<button type="button" class="btn btn-default" onClick="quotation_edit();">Edit</button>
-	  </div>
-	</div>
-  </div>
-</div> -->
+
+<!-- Add  Data-->
+<div class="modal fade" id="quotation-preview-model" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="largeModalLabel">Quotation Preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="privew-quote">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Add-->

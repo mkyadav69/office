@@ -15,6 +15,7 @@ use DataTables;
 use Response;
 use Config;
 use PDF;
+use View;
 
 class QuatationController extends Controller
 {
@@ -151,6 +152,7 @@ class QuatationController extends Controller
     }
 
     public function previewQuatation(Request $request){
+        $pdf = \App::make('dompdf.wrapper');
         $sel_prods_details = $request->sel_prods_details;
         if(!empty($sel_prods_details)){
             $validator = Validator::make($sel_prods_details[0], [
@@ -214,14 +216,12 @@ class QuatationController extends Controller
 		$result['quotation_info'] 		= $request->quotation_info;
 		$result['format']				= $format;
 		$result['BillAddress']			= "adress";
-        $data['quotation_data'] = "maoj";  
-        $pdf = PDF::loadView('office/quatation/preview_quatation', $result);
-        $path = public_path('pdf/');
-        $fileName =  time().'.'. 'pdf' ;
-        $pdf->save($path . '/' . $fileName);
-        $pdf = public_path('pdf/'.$fileName);
-        return response()->download($pdf);
-
-		// $data['quotation_data'] = $this->load->view('office/quotation/view_preview_quotation',$result,TRUE);
+        $data['quotation_data'] = View::make("office.quatation.preview_quatation", $result)->render();
+        return json_encode($data);
+    }
+    public function test(){
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadView('office/quatation/preview_quatation');
+        $pdf->stream();
     }
 }

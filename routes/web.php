@@ -127,6 +127,7 @@ Route::get('preview-quatation', [QuatationController::class, 'previewQuatation']
 
 // Route::post('edit-quatation-format/{id}',  [QuatationFormatController::class, 'updateQuatationFormat'])->name('edit_quatation_format');
 // Route::post('delete-quatation-format/{id}',  [QuatationFormatController::class, 'deleteQuatationFormat'])->name('delete_quatation_format');
+Route::get('test', [QuatationController::class, 'test'])->name('test');
 
 
 # 13. Notification
