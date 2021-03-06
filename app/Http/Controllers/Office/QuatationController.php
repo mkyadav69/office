@@ -219,6 +219,10 @@ class QuatationController extends Controller
         $data['quotation_data'] = View::make("office.quatation.preview_quatation", $result)->render();
         return json_encode($data);
     }
+
+    public function storeQuatation(Request $request){
+        dd($request->all());
+    }
     public function test(){
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadView('office/quatation/preview_quatation');
