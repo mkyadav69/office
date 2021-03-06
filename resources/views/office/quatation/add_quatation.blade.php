@@ -28,7 +28,7 @@ datepicker,
             <div class="modal-header">
                 <h5 class="modal-title" id="largeModalLabel">Lead & Group</h5>
             </div>
-            <form action="{{route('store_quatation_format')}}" name="quotation_form" id="quotation_form"  role="form">
+            <form action="" name="quotation_form" id="quotation_form"  role="form">
                     <div class="modal-body">
                         <div class="row form-group">
                             <div class="form-group col-4">
@@ -414,7 +414,7 @@ datepicker,
                         <a href="{{route('show_quatation')}}">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </a>
-                        <button type="submit" class="btn btn-primary confirm">Confirm</button>
+                        <button type="submit" class="btn btn-primary">Confirm</button>
                     </div>
                 </div>
             </form>
@@ -579,7 +579,6 @@ $(document).ready(function(){
                         $("#is_submit_quotation").val('1');
 						$("#privew-quote").html(response.quotation_data);
                     },error: function(error) {
-                        console.log(error);
                         if(error.status == 400){
                             var err = error.responseText;
                             var d = JSON.parse(err);
@@ -850,6 +849,164 @@ $(document).ready(function(){
                 $( html ).insertBefore( "#tblsummary .tr-subtotal" );
             }
         }
+    });
+
+    $(".add-quotation").click(function(){
+        sel_prods_details.length = 0;
+        $(".prod_row_deatails").each(function(key,obj){
+            var prod_comments='';
+            if(admin_rights == '1'){
+                var prod_part_No = $(this).find('.prod_part_No').val().trim();
+            }else{
+                var prod_part_No = $(this).find('.prod_part_No').text();
+                prod_part_No = prod_part_No.replace('#', '').trim();
+            }
+            var prod_id = parseInt($(this).attr("id").replace(/[^\d]/g, ''), 10);
+            var prod_desc = $(this).find('.prod_desc').text().trim();
+            var prod_maker = $(this).find('.prod_maker').val().trim();
+            var prod_hsn = $(this).find('.prod_hsn').text().trim();
+            var prodqty = $('.prodqty_'+prod_id).val().trim();
+            var prod_unit_price     = $(this).find('.prod_unit_price').val().trim();
+            var prod_disc_price     = $(this).find('.prod_disc_price').val().trim();
+            var prod_deli_period    = $('#prod_deli_period_'+prod_id).val().trim();
+            var prod_net_price      = $(this).find('.prod_net_price').text().trim();
+            var prod_igst_rate      = $(this).find('.prod_igst_rate ').val().trim();
+            var prod_row_total      = $(this).find('.prod_row_total').text().trim();
+            if($('#comments_'+prod_id).val() != 'undefined' &&  $('#comments_'+prod_id).val() != '' && $('#comments_'+prod_id).val() != null){
+                prod_comments          = $('#comments_'+prod_id).val().trim();
+            }
+            var customer_id = $( "#customer_id option:selected" ).val();
+            sel_prods_details.push({
+                        'in_cust_id':           customer_id,
+                        'in_product_id':        prod_id, 
+                        'st_part_no':           prod_part_No,
+                        'st_product_desc':      prod_desc,
+                        'stn_hsn_no':           prod_hsn,
+                        'st_maker':             prod_maker,
+                        'in_pro_qty':           prodqty,
+                        'fl_pro_unitprice':     prod_unit_price,
+                        'fl_discount':          prod_disc_price,
+                        'in_pro_deli_period':   prod_deli_period,
+                        'in_igst_rate':         prod_igst_rate,
+                        'fl_net_price':         prod_net_price,
+                        'fl_row_total':         prod_row_total,
+                        'prod_comments':        prod_comments
+            });
+        });
+        $("#hid_order_prod_details").val(JSON.stringify(sel_prods_details)); 
+        $("#hid_quotation_sub_total").val($(".final_subtotal").text());
+        $("#order_nego_amount").val($('#prod_grand_total').text().trim());
+        if(sel_prods_details.length > 0){ 
+            if($("#is_submit_quotation").val() == 0){ 
+                var quotation_info = {};
+                var customer_info = {};
+                quotation_info.length = 0;
+                customer_info.length = 0;
+                var shipping_addr           = $("#shipping_addr").val();
+                var shipping_email          = $("#shipping_email").val();
+                var shipping_telephone      = $("#shipping_telephone").val();
+                var shipping_lanline        = $("#shipping_lanline").val();
+                var shipping_pin_code       = $("#shipping_pincod").val();
+                var shipping_state          = $('#shipping_state').val();
+                var shipping_city           = $('#shipping_city').val();
+                var enq_ref_no              = $('#enq_ref_no').val();
+                var dt_ref                  = $('#datepicker').val();
+                var fl_fleight_pack_charg   = $('input[name="frieght_pack_charges"]').val();
+                var st_tax_text             = $("#prod_tax option:selected" ).text();
+                var vat_tax                 = $('#vat_tax').text();
+                var fl_nego_amt             = $('.final_subtotal').text();
+                var bill_add_id             = $('#bill_add_id').val();
+                var preparing_by            = $('#preparing_by').val();
+                var lead_from               = $('#lead_from').val();
+                var currency  				= $( "#currency option:selected" ).text();
+                var auto_pop_landline       = $('#auto_pop_landline').val();
+                var payment_turm            = $("#payment_turm option:selected" ).text();
+                var notify_group            = $('#notify_group').val();
+                var select_owner            = $( "#select_owner option:selected" ).val();
+                var auto_pop_addr           = $("#auto_pop_addr").val();
+                var auto_pop_state          = $("#auto_pop_state").val();
+                var auto_pop_city           = $("#auto_pop_city").val();
+                var auto_pop_pincod         = $("#auto_pop_pincod").val();
+                var auto_pop_phone          = $('#auto_pop_phone').val();
+                var auto_pop_email          = $('#auto_pop_email').val();
+                var product_search          = $('#product_search').val();
+                var prod_qty                = $('#prod_qty').val();
+                var ext_note                = $('#ext_note').val();
+
+                quotation_info = {
+                            'st_shiping_add' 	: shipping_addr,
+                            'st_shiping_city' 	: shipping_city,
+                            'st_shiping_state'      : shipping_state,
+                            'st_shiping_pincode'    : shipping_pin_code,
+                            'st_shipping_email'     : shipping_email,
+                            'st_shipping_phone'     : shipping_telephone,
+                            'shipping_lanline'      : shipping_lanline,
+                            'st_enq_ref_number'     : enq_ref_no,
+                            'dt_ref'                : dt_ref,
+                            'fl_fleight_pack_charg' : fl_fleight_pack_charg,
+                            'st_tax_text' 			: st_tax_text,
+                            'fl_sales_tax_amt' 		: vat_tax,
+                            'bill_add_id' 			: bill_add_id,
+                            'payment_turm'			: payment_turm,
+                            'currency'				: currency,
+                            'st_landline'			: auto_pop_landline,
+                            'fl_nego_amt' 			: fl_nego_amt,
+                            'product_search'        : product_search,
+                            'prod_qty'               : prod_qty
+                };
+
+                var auto_pop_phone = $("#auto_pop_phone").val();
+                var auto_pop_company = $(".auto_pop_company").val();
+                var auto_pop_cust_name = $("#auto_pop_cust_name").val();
+                var auto_pop_state = $("#auto_pop_state").val();
+                customer_info = {
+                            'st_com_name' 		    : auto_pop_company,
+                            'auto_pop_cust_name'	: auto_pop_cust_name,
+                            'st_cust_mobile'	    : auto_pop_phone,
+                            'auto_pop_state'	    : auto_pop_state,
+                            'preparing_by' 		    : preparing_by,
+                            'notify_group'          : notify_group,
+                            'select_owner'          : select_owner,
+                            'auto_pop_addr'         : auto_pop_addr,
+                            'auto_pop_state'        : auto_pop_state,
+                            'auto_pop_city'         : auto_pop_city,
+                            'auto_pop_pincod'       : auto_pop_pincod,
+                            'auto_pop_phone'        : auto_pop_phone,
+                            'auto_pop_email'        : auto_pop_email,
+                            'auto_pop_landline'     : auto_pop_landline,
+                            'ext_note'              : ext_note,
+                            'lead_from'				: lead_from,
+
+                };
+                var filepath = "{{route('store_quatation')}}";  
+                $.ajax({
+                    url:filepath,
+                    type:'POST',
+					async:false,
+					dataType: 'json',
+                    data: {'sel_prods_details' : sel_prods_details, 'customer_info' : customer_info, 'quotation_info' : quotation_info, "_token": "{{ csrf_token() }}"},
+                    success: function(response) {
+                        $("#is_submit_quotation").val('1');
+						$("#privew-quote").html(response.quotation_data);
+                    },error: function(error) {
+                        if(error.status == 400){
+                            var err = error.responseText;
+                            var d = JSON.parse(err);
+                            var getError = d.errors;
+                            $.each(getError, function (key, field) {
+                                $('#error_'+key).html('<b>'+field+'</b>');
+                            });
+                        }else{
+                            console.log("something else !");
+                        }
+                    }
+                });
+                $('#quotation-preview-model').modal('show');
+            }
+        }else{
+            $('#minProduct').modal('show');
+            return false;
+        } 
     });
 });
 
@@ -1565,8 +1722,8 @@ $(function(){
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default" onClick="quotation_submit();">Send Quotation</button>&nbsp;&nbsp;
-            <button type="button" class="btn btn-default" onClick="quotation_edit();">Edit</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary add-quotation" data-attr="add-quotation">Confirm</button>
         </div>
     </div>
 @endsection

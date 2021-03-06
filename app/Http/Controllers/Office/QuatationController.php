@@ -221,8 +221,167 @@ class QuatationController extends Controller
     }
 
     public function storeQuatation(Request $request){
-        dd($request->all());
+        $data =	[];
+		$data['error_msg'] 		= '';	
+		$data['card_err']		= '';
+		// $data['product_list']		=	$this->quotation_model->get_product_list();
+		// $data['customer_info']		=	$this->customer_model->get_customer_by_id();
+        // $data['notify_list']        =   $this->notification_model->get_notify_users_id();
+		// $data['taxes']			=	1;
+		// $data['banks']			=	$this->quotation_model->get_banks();
+		// $data['owner']          =   $this->owner_model->owner_list();
+        
+        $admin_user_id = \Auth::user()->id;
+        $quotation_prod_details_arr = [];
+        if(!empty($request->sel_prods_details)){
+            foreach($request->sel_prods_details as $key => $val ){
+                $quotation_prod_details_arr = json_decode($val);
+            }
+        }
+        $pincode = "";
+        $addr = "";
+        if(!empty($request->quotation_info)){
+            $info = $request->quotation_info;
+            $pincode = !empty($info['st_shiping_pincode']) ? $info['st_shiping_pincode'] : '';
+            $addr = !empty($info['st_shiping_add']) ? $info['st_shiping_add'] : '';
+        }
+
+        //here
+        $in_branch_id = $this->session->userdata('branchname');
+        $branchname = '';
+        foreach($this->common_function->branch_id as $branch_k => $branch_v){
+            if($branch_k == $this->session->userdata('branchname')){
+                $branchname = $branch_v;
+            }
+        }
+      
+        $quotation_create_date = date('Y-m-d', strtotime($request->dt_ref));
+        $generate_quot_no =	$this->quotation_model->generate_quot_no($branchname, $in_branch_id,$quotation_create_date);
+        $pdfFilePath = "quotation_".time()."_".date('dmy').".pdf";
+        $quotation_info	=	[
+            'in_quot_num'				=>	$generate_quot_no,
+            'in_cust_id'				=>	trim($this->input->post('customer_id')),
+            'st_shiping_add'			=>	$addr,
+            'st_shiping_city'			=>	trim($this->input->post('shipping_city')),
+            'st_shiping_state'			=>	trim($this->input->post('shipping_state')),
+            'st_shiping_pincode'        =>	$pincode,
+            'flg_same_as_bill_add'      =>	trim($this->input->post('shippingchk')),
+            'st_shipping_phone'			=>	trim($this->input->post('shipping_telephone')),
+            'st_shipping_email'			=>	trim($this->input->post('shipping_email')),
+            'st_landline'				=>	trim($this->input->post('shipping_lanline')),
+            'st_enq_ref_number'			=>	trim($this->input->post('enq_ref_no')),
+            'st_tin_number'				=>	'27700707469',
+            'st_pay_turm'				=>	trim($this->input->post('payment_turm')),
+            'st_ext_note'				=>	trim($this->input->post('ext_note')),
+            'fl_sub_total'				=>	trim($this->input->post('hid_quotation_sub_total')),
+            'fl_sales_tax'				=>	$prod_tax_value,
+            'fl_sales_tax_amt'			=>	trim($this->input->post('hid_tax_amt')),
+            'in_sal_tax_id'				=>	$prod_tax_id,
+            'fl_fleight_pack_charg'     =>	0, 
+            'final_amount'				=>	ceil($this->input->post('hid_quotation_sub_total')), 
+            'fl_nego_amt'				=>	ceil($this->input->post('hid_quotation_sub_total')),
+            'in_deliv_priod'			=>	30,
+            'st_ref_through'			=>	"",
+            'lead_from'                 =>	trim($this->input->post('lead_from')),
+            'notify_group'              =>	trim($this->input->post('notify_group')),
+            'owner_id'                  =>	trim($this->input->post('select_owner')),
+            'in_tax_branch_id'			=>	trim($this->input->post('bill_add_id')),
+            'dt_ref'                    =>	date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('reference_date')))),
+            'in_login_id'				=>	$admin_user_id,
+            'in_branch_id'				=>	$in_branch_id,
+            'stn_pdf_name'				=>	$pdfFilePath,
+            'st_currency_applied'       =>	trim($this->input->post('currency')),
+            'dt_date_created'			=>	$quotation_create_date
+        ];
+                                
+        /* Update customer address*/
+        $update_customer_array = [
+            'st_com_address'    => 	$this->input->post('auto_pop_addr'),
+            'st_cust_city'      => 	trim($this->input->post('auto_pop_city')),
+            'st_con_person1'    =>  trim($this->input->post('auto_pop_cust_name')),
+            'in_pincode'        => 	trim($this->input->post('auto_pop_pincod')),
+            'st_cust_state'     => 	trim($this->input->post('auto_pop_state')),
+            'st_cust_mobile'    => 	trim($this->input->post('auto_pop_phone')),
+            'st_cust_email'     => 	trim($this->input->post('auto_pop_email'))
+        ];
+            
+        $this->customer_model->update_customer($this->input->post('customer_id'),$update_customer_array);
+        $totalproarray=0;
+        $inserted_quotation_id = $this->quotation_model->insert_quotation($quotation_info);
+        if($inserted_quotation_id != FALSE && $inserted_quotation_id > 0){
+            $insert_quot_reason	=	[
+                'int_qd_no'		=>	$inserted_quotation_id,
+                'stn_qtn_ord_no'	=>	$generate_quot_no,
+                'stn_amt'		=>	ceil($this->input->post('hid_quotation_sub_total')),
+                'dt_date'		=>	date('Y-m-d h:i:s'),
+                'int_cust_id'	=>	$this->input->post('customer_id'),
+                'stn_reason'		=>	'Open',
+                'int_reason_mode'	=> 	0,
+                'int_branch_id'	=>	trim($this->session->userdata('branchname')),
+                'user_id'		=>	$this->session->userdata('user_id'),
+                'notify_group'       =>      trim($this->input->post('notify_group')),
+                'dt_created'		=>	$quotation_create_date, 
+                'dt_modify'		=>	$quotation_create_date 
+            ];        
+            $this->quotation_model->insert_quot_reason($insert_quot_reason);
+            $quotation_details_arr = [
+                'in_cust_id' => trim($this->input->post('customer_id')),
+                'in_quot_id' => $inserted_quotation_id
+            ];
+            foreach($quotation_prod_details_arr as $key => $val_arr) {
+                foreach($val_arr as $val_arr_key => $val_arr_val) {
+                    $quotation_details_arr[$val_arr_key] = $val_arr_val;
+                }
+                $inserted_quotation_detail_id = $this->quotation_model->insert_quotation_deatal($quotation_details_arr);
+            }			
+            $cc_cust_emails =array();
+            $data['quotation_details'] = $this->quotation_model->get_quotation_details($inserted_quotation_id,$this->input->post('customer_id'));
+            $data['quotation_info'] = $this->quotation_model->get_quotation_info($inserted_quotation_id, $this->input->post('customer_id'));
+            $data['customer_info'] = $this->customer_model->get_customer_by_id($this->input->post('customer_id'));
+            $data['tax_text'] = $this->input->post('tax_text'); 
+            $data['preparing_by'] = trim($this->input->post('preparing_by'));
+            $data['format']	= $this->quotation_model->get_PDF_format_by_id($this->input->post('bill_add_id'));
+            $data['BillAddress'] = $this->quotation_model->get_PDF_BillAddress();
+            $emailto = $data['customer_info']['st_cust_email'];
+            
+            if(trim($this->input->post('shipping_email')) != trim($data['customer_info']['st_cust_email'])){
+                $emailto = $this->input->post('shipping_email') .",".$this->input->post('auto_pop_email');
+            }        
+            //load the view, pass the variable and do not show it but "save" the output into $html variable
+            $html= $this->load->view('email/view-quotenew',$data,true); 
+            //load mPDF library
+            $this->load->library('m_pdf');
+            //actually, you can pass mPDF parameter on this load() function
+            $pdf = $this->m_pdf->load();
+            //$pdf->AddPage();
+            $pdf->use_kwt = true;
+            $pdf->addPage('L'); //generate the Lanscap view PDF!
+            //generate the Watermark Image!
+            $pdf->SetWatermarkImage('http://office.chromatographyworld.com/assets/images/Scan.jpg');
+            $pdf->showWatermarkImage = true;
+            $pdf->WriteHTML($html);
+            $pdf->Output('quotationpdf/'.$pdfFilePath,'F');
+            $cc_cust_emails = explode("," , $data['customer_info']['st_cust_email_cc']);
+            $cc_admin_emails = explode("," , $this->session->userdata('st_cc_email'));
+            $this->email->from('speed@chromatographyworld.com', 'Quotation Attached');
+            $this->email->to($this->session->userdata('st_admin_email'));
+            $this->email->cc($cc_admin_emails);
+            $this->email->bcc($cc_admin_emails);
+            $this->email->subject('Quotation Attached ');
+            $emailbody = "Dear Sir/Madam,<br><br>";
+            $emailbody .= "We thank you for your valuable enquiry.<br><br>";
+            $emailbody .= "Please find an attached Quotation in response to your enquiry. <br><br>";
+            $emailbody .= "While we assure you of our best services, we look forward to your  valuable  order.<br><br>";
+            $emailbody .= "Thank You.<br><br>";
+            $this->email->message($emailbody);
+            $this->email->attach("quotationpdf/".$pdfFilePath);
+            $this->email->send();
+            $this->session->set_flashdata('editquotation_msg_succ', 'Quotation added successfully.');
+            redirect(base_url('quotation/view_quotation'));
+            $this->session->set_flashdata('editquotation_msg_err', 'Something went wrong while adding quotation, please try again.');
+        }			
     }
+
     public function test(){
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadView('office/quatation/preview_quatation');
