@@ -959,6 +959,7 @@ $(document).ready(function(){
                 var auto_pop_company = $(".auto_pop_company").val();
                 var auto_pop_cust_name = $("#auto_pop_cust_name").val();
                 var auto_pop_state = $("#auto_pop_state").val();
+                var customer_id = $( "#customer_id option:selected" ).val();
                 customer_info = {
                             'st_com_name' 		    : auto_pop_company,
                             'auto_pop_cust_name'	: auto_pop_cust_name,
@@ -976,6 +977,7 @@ $(document).ready(function(){
                             'auto_pop_landline'     : auto_pop_landline,
                             'ext_note'              : ext_note,
                             'lead_from'				: lead_from,
+                            'customer_id'           : customer_id
 
                 };
                 var filepath = "{{route('store_quatation')}}";  
@@ -989,16 +991,7 @@ $(document).ready(function(){
                         $("#is_submit_quotation").val('1');
 						$("#privew-quote").html(response.quotation_data);
                     },error: function(error) {
-                        if(error.status == 400){
-                            var err = error.responseText;
-                            var d = JSON.parse(err);
-                            var getError = d.errors;
-                            $.each(getError, function (key, field) {
-                                $('#error_'+key).html('<b>'+field+'</b>');
-                            });
-                        }else{
-                            console.log("something else !");
-                        }
+                        alert("in error");
                     }
                 });
                 $('#quotation-preview-model').modal('show');
@@ -1710,7 +1703,7 @@ $(function(){
 
 <!-- Quatation Preview-->
 @section('quotation-preview-model')
-    <div class="modal-content" style="width:1100px">
+    <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="largeModalLabel">Quotation Preview</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">

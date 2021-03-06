@@ -221,6 +221,7 @@ class QuatationController extends Controller
     }
 
     public function storeQuatation(Request $request){
+        dd($request->all());
         $data =	[];
 		$data['error_msg'] 		= '';	
 		$data['card_err']		= '';
@@ -241,11 +242,15 @@ class QuatationController extends Controller
         $pincode = "";
         $addr = "";
         if(!empty($request->quotation_info)){
-            $info = $request->quotation_info;
-            $pincode = !empty($info['st_shiping_pincode']) ? $info['st_shiping_pincode'] : '';
-            $addr = !empty($info['st_shiping_add']) ? $info['st_shiping_add'] : '';
+            $qt_info = $request->quotation_info;
+            $pincode = !empty($qt_info['st_shiping_pincode']) ? $qt_info['st_shiping_pincode'] : '';
+            $addr = !empty($qt_info['st_shiping_add']) ? $qt_info['st_shiping_add'] : '';
         }
 
+
+        if(!empty($request->customer_info)){
+            $cust_info = $request->customer_info;
+        }
         //here
         $in_branch_id = $this->session->userdata('branchname');
         $branchname = '';
@@ -256,11 +261,16 @@ class QuatationController extends Controller
         }
       
         $quotation_create_date = date('Y-m-d', strtotime($request->dt_ref));
-        $generate_quot_no =	$this->quotation_model->generate_quot_no($branchname, $in_branch_id,$quotation_create_date);
+        $generate_quot_no =	$this->quotation_model->generate_quot_no('Mum', 1, $quotation_create_date);
         $pdfFilePath = "quotation_".time()."_".date('dmy').".pdf";
+        $sel_prods_details = $request->sel_prods_details;
+        if(!empty($sel_prods_details)){
+            $sel_product = $sel_prods_details;
+        }
+        
         $quotation_info	=	[
             'in_quot_num'				=>	$generate_quot_no,
-            'in_cust_id'				=>	trim($this->input->post('customer_id')),
+            'in_cust_id'				=>	trim(!empty($cust_info['customer_id']) ? $cust_info['customer_id'] : ''),
             'st_shiping_add'			=>	$addr,
             'st_shiping_city'			=>	trim($this->input->post('shipping_city')),
             'st_shiping_state'			=>	trim($this->input->post('shipping_state')),
@@ -347,20 +357,17 @@ class QuatationController extends Controller
             if(trim($this->input->post('shipping_email')) != trim($data['customer_info']['st_cust_email'])){
                 $emailto = $this->input->post('shipping_email') .",".$this->input->post('auto_pop_email');
             }        
-            //load the view, pass the variable and do not show it but "save" the output into $html variable
+
             $html= $this->load->view('email/view-quotenew',$data,true); 
-            //load mPDF library
             $this->load->library('m_pdf');
-            //actually, you can pass mPDF parameter on this load() function
             $pdf = $this->m_pdf->load();
-            //$pdf->AddPage();
             $pdf->use_kwt = true;
-            $pdf->addPage('L'); //generate the Lanscap view PDF!
-            //generate the Watermark Image!
+            $pdf->addPage('L');
             $pdf->SetWatermarkImage('http://office.chromatographyworld.com/assets/images/Scan.jpg');
             $pdf->showWatermarkImage = true;
             $pdf->WriteHTML($html);
             $pdf->Output('quotationpdf/'.$pdfFilePath,'F');
+
             $cc_cust_emails = explode("," , $data['customer_info']['st_cust_email_cc']);
             $cc_admin_emails = explode("," , $this->session->userdata('st_cc_email'));
             $this->email->from('speed@chromatographyworld.com', 'Quotation Attached');
