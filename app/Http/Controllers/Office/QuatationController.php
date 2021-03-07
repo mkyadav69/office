@@ -9,6 +9,7 @@ use App\Models\Notify;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Owner;
+use App\Models\Quatation;
 use App\Models\QuatationAdd;
 use Carbon\Carbon;
 use DataTables;
@@ -25,178 +26,118 @@ class QuatationController extends Controller
     }
 
     public function get_quotation_details($quotation_id = '', $in_cust_id = '', $in_product_id =''){
-		$result = [];
-		$this->db->select('*');
-		$this->db->from('quotation_details');
-		$this->db->where('in_quot_id', $quotation_id);
-		$this->db->where('in_cust_id', $in_cust_id);
+        $result = \DB::table('quotation_details')->where(['in_quot_id'=>$quotation_id, 'in_cust_id'=>$in_cust_id]);
 		if($in_product_id != ''){
-			$this->db->where('in_product_id', $in_product_id);
+			$result->where('in_product_id', $in_product_id);
 		}
-		$this->db->where('flg_is_deleted', 0);
-		$query = $this->db->get();
-		if($query->num_rows() > 0){
-			$result = $query->result_array();
-		}
-		return $result;
+		$result->where('flg_is_deleted', 0);
+		$query = $result->get();
+        return $query;
 	}
 
     public function get_quotation_info($quotation_id = '', $in_cust_id = '', $quotation_unoque_id = ''){
-		$result = array();
-		$this->db->select('*');
-		$this->db->from('tbl_quotation');
-		if($quotation_id != ""){
-			$this->db->where('in_quot_id', $quotation_id);
-		}
-		if($in_cust_id != ""){
-			$this->db->where('in_cust_id', $in_cust_id);
-		}
-
-		if($quotation_unoque_id != ""){
-			$this->db->where('in_quot_num', $quotation_unoque_id);
-		}
-
-		$this->db->where('is_deleted', 0);
-		$query = $this->db->get();
-		if($query->num_rows() > 0){
-			$result = $query->row_array();
-		}
-		return $result;
+		$result = \DB::table('tbl_quotation');
+        $c = QuatationAdd::where(['in_quot_id'=>$quotation_id, 'in_cust_id'=>$in_cust_id])->first();
+        if(!empty($c)){
+            $c = $c->toArray();
+            return $c;
+        }
+        return false;
 	}
 
     public function get_customer_by_id($id = null){
-		$in_branch = $this->session->userdata('in_branch');
-		$this->db->select('c.*');
-		$this->db->where('c.in_deleted',0);
-		if($id != null && $id != ''){ 
-			$this->db->where('c.in_cust_id',$id);
-		}
-		if($in_branch != null && $in_branch != '' && $in_branch != 1 ){
-			$this->db->where('c.in_branch',$in_branch);
-		}
-		$this->db->group_by('c.st_com_name');
-		$this->db->order_by('c.st_com_name','ASC');
-		$query = $this->db->get('tbl_customer as c');
-		if($query->num_rows() > 0){
-			if($id != null && $id != '')
-			    return $query->row_array();
-			else
-			    return $query->result_array();
-
-		}
-		return false;
+		$in_branch = 1; //$this->session->userdata('in_branch');
+        $c = Customer::where(['in_cust_id'=>$id, 'in_branch'=>$in_branch])->first();
+        if(!empty($c)){
+            $c = $c->toArray();
+            return $c;
+        }
+        return false;
 	}
 
     public function get_product_list(){
-		$this->db->select('p.pro_id, p.st_part_No , p.st_pro_desc, p.in_pro_disc, p.fl_pro_price, p.in_cat_id, p.in_pro_qty, p.st_pro_maker');/*, c.st_cat_name*/
-		$this->db->from('tbl_product p');
-		$this->db->where('p.is_deleted',0);
-		$this->db->order_by('p.st_part_No','ASC');
-		$query = $this->db->get();
-		if($query->num_rows() > 0){
-			return $query->result_array();
-		}
-		return false;
+        $product = Product::select('pro_id', 'st_part_No', 'st_pro_desc', 'in_pro_disc', 'fl_pro_price', 'in_cat_id', 'in_pro_qty', 'st_pro_maker')->where('is_deleted',0)->orderBy('st_part_No','ASC')->get();
+        if(!empty($product)){
+            $product  = $product->toArray();
+            return $product;
+        }
+        return false;
 	}
 
     public function get_notify_users_id($id=null) {
-		$this->db->select('*');
-		$this->db->where('is_deleted',0);
+        $notify_users = Notify::where('is_deleted', 0);
         if($id != null && $id != ''){ 
-            $this->db->where('id',$id);
+            $notify_users->where('id',$id);
         } else{
-            $this->db->where('branch_id',$this->session->userdata('branchname')); 
+            $notify_users->where('branch_id',12); 
+            // $notify_users->where('branch_id',$this->session->userdata('branchname')); 
+            return $notify_users = $notify_users->get()->toArray();
         }
-		$query = $this->db->get('notify_users');
-		if($query->num_rows() > 0) {
-            if($id != null && $id != '')
-                return $query->row_array();
-            else
-                return $query->result_array();
-		}
 		return false;
 	}
 
     public function get_PDF_BillAddress(){
-		$this->db->select('stn_branch_add');
-		$this->db->where('is_deleted',0);
-		$this->db->where('int_branch_id',$this->session->userdata('branchname'));
-		$query = $this->db->get('tbl_quot_format');
-		if($query->num_rows() > 0) {	
-			return $query->row('stn_branch_add');
-		}
+        $result = Quatation::select('stn_branch_add')->where(['is_deleted'=>0, 'int_branch_id'=>1 /* get from session*/ ])->first();
+		$query = $result;
+        if(!empty($query)){
+            return $query;
+        }
 		return false;
 	}
 
     public function get_PDF_format_by_id($id){
-		$this->db->select('*');
-		$this->db->where('is_deleted',0);
-		$this->db->where('int_branch_id',$id);
-		$query = $this->db->get('tbl_quot_format');
-		if($query->num_rows() > 0){
-			return $query->row_array();
+        $result = \DB::table('tbl_quot_format')->where(['is_deleted'=>0, 'int_branch_id'=>$id /* get from session*/ ])->get();
+		if(!empty($result)){
+			return $result;
 		}
 		return false;
 	}
 
     public function owner_list(){ 
-		$this->db->select('*');		
-		$this->db->where('is_deleted',0);
-		$this->db->order_by('owner_name','ASC');
-		$query = $this->db->get('tbl_custowner');
-		$data	=	array();
-		if($query->num_rows() > 0) {
-            foreach($query->result_array() as $row) {
-                    $data[]= array('id'=>$row['id'], 'owner_name'=>$row['owner_name'] );
-            }
-		}
-		return $data;
+        $owner = Owner::where('is_deleted', 0)->orderBy('owner_name', 'ASC')->get()->toArray();
+		if(!empty($owner)){
+            return $owner;
+        }
+		return false;
 	}
 
     public function get_banks($bank_id = ''){
-		$result = array();
-		$this->db->select('*');
-		$this->db->from('tbl_bank');
+        $result = \DB::table('tbl_bank');
 		if($bank_id != '')
-		    $this->db->where('in_bank_id', $bank_id);
-		$query = $this->db->get();
-		if($query->num_rows() > 0){	
+		    $result->where('in_bank_id', $bank_id);
+		$query = $result->get();
+		if(!empty($query)){	
 			if($bank_id != '')
-			    $result = $query->row_array();
+			    $result = $query->toArray();
 			else
-			    $result = $query->result_array();
+			    $result = $query;
 		}
 		return $result;
 	}
 
-    public function insert_quotation_deatal($insert_array)
-	{
-		$this->db->insert('quotation_details',$insert_array);
+    public function insert_quotation_deatal($insert_array){
+		return \DB::table('quotation_details')->insert($insert_array);
 	}
 
     public function insert_quot_reason($insert_quot_reason){ 
-		if($this->db->insert('tbl_pending',$insert_quot_reason))
-		{
-			return $this->db->insert_id();
-		}
+        $res = \DB::table('tbl_pending')->insertGetId($insert_quot_reason);
+        if(!empty($res)){
+            return $res ;
+        }
 		return false;
 	}
+
     public function generate_quot_no($branchname, $in_branch_id,$quotation_create_date, $generate_No_for = ""){
-		$initial3latters = substr($branchname, 0, 3);
-		$this->db->select('in_quot_id');
-		$this->db->from('tbl_quotation');
-		$this->db->where('in_branch_id', $in_branch_id);
-		$this->db->where('is_deleted', 0);
-		$this->db->where('dt_date_created >=', date('Y-m-d 00:00:00',strtotime(str_replace('/', '-', $quotation_create_date))));
-		$this->db->where('dt_date_created <=', date('Y-m-d 23:59:59',strtotime(str_replace('/', '-', $quotation_create_date))));
-		$query = $this->db->get();
+        $initial3latters = substr($branchname, 0, 3);
+        $quote_no = QuatationAdd::where(['in_branch_id'=>$in_branch_id , 'is_deleted'=>0, 'dt_date_created'=>date('Y-m-d 00:00:00',strtotime($quotation_create_date)), 'dt_date_created'=>date('Y-m-d 23:59:59',strtotime($quotation_create_date))])->get();
 		$flg_type = '';
 		if($generate_No_for != ""){
 			$flg_type = "order-";
 		}
-		$date = date('Ymd', strtotime(str_replace('/', '-', $quotation_create_date)));
-		if($query->num_rows() > 0){	
-			$number = $query->num_rows()+1;
+     
+		$date = date('Ymd', strtotime($quotation_create_date));
+		if(!empty($quote_no)){	
+			$number = count($quote_no)+1;
 			$unique_quote_no = $initial3latters."/".$date."/".$flg_type.$number;
 		}else{
 			$unique_quote_no = $initial3latters."/".$date."/".$flg_type."1";
@@ -208,6 +149,7 @@ class QuatationController extends Controller
         $notify = Notify::get();
         return view('office.quatation.show_quatation', compact('notify'));
     }
+
     public function addQuatation(){
         $notify = Notify::get();
         $company = Customer::get();
@@ -401,38 +343,27 @@ class QuatationController extends Controller
     }
 
     public function storeQuatation(Request $request){
-
         # Get Static Data
         $data =	[];
 		$data['error_msg'] 		    =   '';	
 		$data['card_err']		    =   '';
-		$data['product_list']		=	$this->get_product_list();
-		$data['customer_info']		=	$this->get_customer_by_id();
-        $data['notify_list']        =   $this->get_notify_users_id();
 		$data['taxes']			    =	1;
-		$data['banks']			    =	$this->get_banks();
-		$data['owner']              =   $this->owner_list();
+		$data['banks']			    =	null;
         
         # Get Quotation Data
         $admin_user_id = \Auth::user()->id;
-        $quotation_prod_details_arr = [];
-        if(!empty($request->sel_prods_details)){
-            foreach($request->sel_prods_details as $key => $val ){
-                $quotation_prod_details_arr = json_decode($val);
-            }
-        }
-        $pincode = "";
-        $addr = "";
+        $quotation_prod_details_arr = $request->sel_prods_details;
         if(!empty($request->quotation_info)){
             $qt_info = $request->quotation_info;
         }
         if(!empty($request->customer_info)){
             $cust_info = $request->customer_info;
         }
+        $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $in_branch_id = 1; //session branch id;
-        $branchname = 'Mum'; //session branch name;
+        $branchname = substr(str_shuffle(str_repeat($pool, 5)), 0, 3); //session branch name;
         $quotation_create_date = date('Y-m-d', strtotime($request->dt_ref));
-        $generate_quot_no =	$this->generate_quot_no('Mum', 1, $quotation_create_date);
+        $generate_quot_no =	$this->generate_quot_no($branchname, $in_branch_id, $quotation_create_date);
         $pdfFilePath = "quotation_".time()."_".date('dmy').".pdf";
         $quotation_info	=	[
             'in_quot_num'				=>	$generate_quot_no,
@@ -460,7 +391,7 @@ class QuatationController extends Controller
             'lead_from'                 =>	trim(!empty($cust_info['lead_from']) ? $cust_info['lead_from'] : ''),
             'notify_group'              =>	trim(!empty($cust_info['notify_group']) ? $cust_info['notify_group'] : ''),
             'owner_id'                  =>	trim(!empty($cust_info['select_owner']) ? $cust_info['select_owner'] : ''),
-            'in_tax_branch_id'			=>	trim(!empty($qt_info['bill_add_id']) ? $qt_info['bill_add_id'] : ''),
+            'in_tax_branch_id'			=>	1, //trim(!empty($qt_info['bill_add_id']) ? $qt_info['bill_add_id'] : ''),
             'dt_ref'                    =>	$quotation_create_date,
             'in_login_id'				=>	$admin_user_id,
             'in_branch_id'				=>	$in_branch_id,
@@ -471,15 +402,14 @@ class QuatationController extends Controller
                                 
         # Update customer 
         $update_customer_array = [
-            'st_com_address'    => 	trim(!empty($qt_info['auto_pop_addr']) ? $qt_info['auto_pop_addr'] : ''),
-            'st_cust_city'      => 	trim(!empty($qt_info['auto_pop_city']) ? $qt_info['auto_pop_city'] : ''),
-            'st_con_person1'    =>  trim(!empty($qt_info['auto_pop_cust_name']) ? $qt_info['auto_pop_cust_name'] : ''),
-            'in_pincode'        => 	trim(!empty($qt_info['auto_pop_pincod']) ? $qt_info['auto_pop_pincod'] : ''),
-            'st_cust_state'     => 	trim(!empty($qt_info['auto_pop_state']) ? $qt_info['auto_pop_state'] : ''),
-            'st_cust_mobile'    => 	trim(!empty($qt_info['st_cust_mobile']) ? $qt_info['st_cust_mobile'] : ''),
-            'st_cust_email'     => 	trim(!empty($qt_info['auto_pop_email']) ? $qt_info['auto_pop_email'] : ''),
+            'st_com_address'    => 	trim(!empty($cust_info['auto_pop_addr']) ? $cust_info['auto_pop_addr'] : ''),
+            'st_cust_city'      => 	trim(!empty($cust_info['auto_pop_city']) ? $cust_info['auto_pop_city'] : ''),
+            'st_con_person1'    =>  trim(!empty($cust_info['auto_pop_cust_name']) ? $cust_info['auto_pop_cust_name'] : ''),
+            'in_pincode'        => 	trim(!empty($cust_info['auto_pop_pincod']) ? $cust_info['auto_pop_pincod'] : ''),
+            'st_cust_state'     => 	trim(!empty($cust_info['auto_pop_state']) ? $cust_info['auto_pop_state'] : ''),
+            'st_cust_mobile'    => 	trim(!empty($cust_info['st_cust_mobile']) ? $cust_info['st_cust_mobile'] : ''),
+            'st_cust_email'     => 	trim(!empty($cust_info['auto_pop_email']) ? $cust_info['auto_pop_email'] : ''),
         ];
-        
         $Customer  = Customer::where('in_cust_id', $cust_info['customer_id'])->update($update_customer_array);
         $inserted_quotation_id = QuatationAdd::insertGetId($quotation_info); 
         $totalproarray = 0;
@@ -489,18 +419,18 @@ class QuatationController extends Controller
             $insert_quot_reason	=	[
                 'int_qd_no'		=>	$inserted_quotation_id,
                 'stn_qtn_ord_no'=>	$generate_quot_no,
-                'stn_amt'		=>	ceil($this->input->post('hid_quotation_sub_total')),
+                'stn_amt'		=>	ceil(trim(!empty($qt_info['fl_nego_amt']) ? $qt_info['fl_nego_amt'] : '')),
                 'dt_date'		=>	date('Y-m-d h:i:s'),
                 'int_cust_id'	=>	$cust_info['customer_id'],
                 'stn_reason'	=>	'Open',
                 'int_reason_mode'	=> 	0,
-                'int_branch_id'	=>	'Mumbai', // get branch name from session,
+                'int_branch_id'	=>	1, // get branch name from session,
                 'user_id'		=>	\Auth::user()->id,
                 'notify_group'  =>  trim(!empty($cust_info['notify_group']) ? $cust_info['notify_group'] : ''),
                 'dt_created'	=>	$quotation_create_date, 
                 'dt_modify'		=>	$quotation_create_date 
             ];        
-            $this->insert_quot_reason($insert_quot_reason);
+            // $this->insert_quot_reason($insert_quot_reason);
             $quotation_details_arr = [
                 'in_cust_id' => trim($cust_info['customer_id']),
                 'in_quot_id' => $inserted_quotation_id
@@ -511,11 +441,10 @@ class QuatationController extends Controller
                 }
                 $inserted_quotation_detail_id = $this->insert_quotation_deatal($quotation_details_arr);
             }
-
-            $data['quotation_details'] = $this->get_quotation_details($inserted_quotation_id,$cust_info['customer_id']);
+            $data['quotation_details'] = $this->get_quotation_details($inserted_quotation_id, $cust_info['customer_id']);
             $data['quotation_info'] = $this->get_quotation_info($inserted_quotation_id, $cust_info['customer_id']);
             $data['customer_info'] = $this->get_customer_by_id($cust_info['customer_id']);
-            $data['tax_text'] = $this->input->post('tax_text'); 
+            $data['tax_text'] = 0; 
             $data['preparing_by'] = trim($cust_info['preparing_by']);
             $data['format']	= $this->get_PDF_format_by_id($qt_info['bill_add_id']);
             $data['BillAddress'] = $this->get_PDF_BillAddress();
@@ -527,16 +456,13 @@ class QuatationController extends Controller
                 mkdir($path,0777);
             }
             $path = public_path($path.'/');
-            $fileName =  'quotation'.time().'.'. 'pdf' ;
-            $html = View::make('email.view_quotenew', $data)->render();
-            $pdf = \App::make('dompdf.wrapper');
-            $pdf->setWatermarkImage('http://office.chromatographyworld.com/assets/images/Scan.jpg');
-            $pdf->showWatermarkImage = true;
-            $pdf->use_kwt = true;
-            $pdf->WriteHTML($html);
+            $fileName = "quotation_".time()."_".date('dmy').".pdf";
+            // $pdf->setWatermarkImage('http://office.chromatographyworld.com/assets/images/Scan.jpg');
+            // $pdf->showWatermarkImage = true;
+            // $pdf->use_kwt = true;
+            $pdf = PDF::loadView('email.view_quotenew', $data);
             $pdf->save($path . '/' . $fileName);
             $pdf = public_path($path.'/'.$fileName);
-
             # Send Mail
             // $cc_cust_emails = [];
             // $cc_cust_emails = explode("," , $data['customer_info']['st_cust_email_cc']);

@@ -652,7 +652,7 @@ $(document).ready(function(){
         }
         if(product_field['c_person_name'][c_id] != 'undefined' && product_field['c_person_name'][c_id] != ''){
             var c_person_name = product_field['c_person_name'][c_id];
-            $('#c_person_name').val(c_person_name);
+            $('#auto_pop_cust_name').val(c_person_name);
         }
         // Billing Address
         if(product_field['address'][c_id] != 'undefined' && product_field['address'][c_id] != ''){
@@ -886,7 +886,7 @@ $(document).ready(function(){
                         'in_pro_qty':           prodqty,
                         'fl_pro_unitprice':     prod_unit_price,
                         'fl_discount':          prod_disc_price,
-                        'in_pro_deli_period':   prod_deli_period,
+                        'in_pro_deli_period':   30,
                         'in_igst_rate':         prod_igst_rate,
                         'fl_net_price':         prod_net_price,
                         'fl_row_total':         prod_row_total,
@@ -1180,7 +1180,6 @@ $(document).ready(function(){
     }
 
     function quotation_submit(){
-        alert("ppp");
         $("#tax_text").val($( "#prod_tax option:selected" ).text());
         $("#quotation_form").submit();
     }
