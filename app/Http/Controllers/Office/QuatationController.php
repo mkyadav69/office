@@ -308,9 +308,9 @@ class QuatationController extends Controller
         ];
         
         $Customer  = Customer::where('in_cust_id', $cust_info['customer_id'])->update($update_customer_array);
-        
+        $inserted_quotation_id = QuatationAdd::insertGetId($quotation_info); 
         $totalproarray=0;
-        $inserted_quotation_id = $this->quotation_model->insert_quotation($quotation_info);
+        
         if($inserted_quotation_id != FALSE && $inserted_quotation_id > 0){
             $insert_quot_reason	=	[
                 'int_qd_no'		=>	$inserted_quotation_id,
