@@ -243,22 +243,14 @@ class QuatationController extends Controller
         $addr = "";
         if(!empty($request->quotation_info)){
             $qt_info = $request->quotation_info;
-            $pincode = !empty($qt_info['st_shiping_pincode']) ? $qt_info['st_shiping_pincode'] : '';
-            $addr = !empty($qt_info['st_shiping_add']) ? $qt_info['st_shiping_add'] : '';
         }
 
 
         if(!empty($request->customer_info)){
             $cust_info = $request->customer_info;
         }
-        //here
-        $in_branch_id = $this->session->userdata('branchname');
-        $branchname = '';
-        foreach($this->common_function->branch_id as $branch_k => $branch_v){
-            if($branch_k == $this->session->userdata('branchname')){
-                $branchname = $branch_v;
-            }
-        }
+        // $in_branch_id = session branch id;
+        // $branchname = session branch name;
       
         $quotation_create_date = date('Y-m-d', strtotime($request->dt_ref));
         $generate_quot_no =	$this->quotation_model->generate_quot_no('Mum', 1, $quotation_create_date);
@@ -271,51 +263,52 @@ class QuatationController extends Controller
         $quotation_info	=	[
             'in_quot_num'				=>	$generate_quot_no,
             'in_cust_id'				=>	trim(!empty($cust_info['customer_id']) ? $cust_info['customer_id'] : ''),
-            'st_shiping_add'			=>	$addr,
-            'st_shiping_city'			=>	trim($this->input->post('shipping_city')),
-            'st_shiping_state'			=>	trim($this->input->post('shipping_state')),
-            'st_shiping_pincode'        =>	$pincode,
-            'flg_same_as_bill_add'      =>	trim($this->input->post('shippingchk')),
-            'st_shipping_phone'			=>	trim($this->input->post('shipping_telephone')),
-            'st_shipping_email'			=>	trim($this->input->post('shipping_email')),
-            'st_landline'				=>	trim($this->input->post('shipping_lanline')),
-            'st_enq_ref_number'			=>	trim($this->input->post('enq_ref_no')),
+            'st_shiping_add'			=>	!empty($qt_info['st_shiping_add']) ? $qt_info['st_shiping_add'] : '',
+            'st_shiping_city'			=>	trim(!empty($qt_info['st_shiping_city']) ? $qt_info['st_shiping_city'] : ''),
+            'st_shiping_state'			=>	trim(!empty($qt_info['st_shiping_state']) ? $qt_info['st_shiping_state'] : ''),
+            'st_shiping_pincode'        =>	!empty($qt_info['st_shiping_pincode']) ? $qt_info['st_shiping_pincode'] : '',
+            'flg_same_as_bill_add'      =>	trim(!empty($qt_info['st_shiping_pincode']) ? $qt_info['st_shiping_pincode'] : ''),
+            'st_shipping_phone'			=>	trim(!empty($qt_info['st_shipping_phone']) ? $qt_info['st_shipping_phone'] : ''), 
+            'st_shipping_email'			=>	trim(!empty($qt_info['st_shipping_email']) ? $qt_info['st_shipping_email'] : ''),
+            'st_landline'				=>	trim(!empty($qt_info['shipping_lanline']) ? $qt_info['shipping_lanline'] : ''),
+            'st_enq_ref_number'			=>	trim(!empty($qt_info['st_enq_ref_number']) ? $qt_info['st_enq_ref_number'] : ''),
             'st_tin_number'				=>	'27700707469',
-            'st_pay_turm'				=>	trim($this->input->post('payment_turm')),
-            'st_ext_note'				=>	trim($this->input->post('ext_note')),
-            'fl_sub_total'				=>	trim($this->input->post('hid_quotation_sub_total')),
-            'fl_sales_tax'				=>	$prod_tax_value,
-            'fl_sales_tax_amt'			=>	trim($this->input->post('hid_tax_amt')),
-            'in_sal_tax_id'				=>	$prod_tax_id,
+            'st_pay_turm'				=>	trim(!empty($qt_info['payment_turm']) ? $qt_info['payment_turm'] : ''),
+            'st_ext_note'				=>	trim(!empty($cust_info['ext_note']) ? $cust_info['ext_note'] : ''),
+            'fl_sub_total'				=>	34,
+            'fl_sales_tax'				=>	"gfhfh",
+            'fl_sales_tax_amt'			=>	889,
+            'in_sal_tax_id'				=>	"dsf",
             'fl_fleight_pack_charg'     =>	0, 
-            'final_amount'				=>	ceil($this->input->post('hid_quotation_sub_total')), 
-            'fl_nego_amt'				=>	ceil($this->input->post('hid_quotation_sub_total')),
+            'final_amount'				=>	4434, 
+            'fl_nego_amt'				=>	454,
             'in_deliv_priod'			=>	30,
             'st_ref_through'			=>	"",
-            'lead_from'                 =>	trim($this->input->post('lead_from')),
-            'notify_group'              =>	trim($this->input->post('notify_group')),
-            'owner_id'                  =>	trim($this->input->post('select_owner')),
-            'in_tax_branch_id'			=>	trim($this->input->post('bill_add_id')),
-            'dt_ref'                    =>	date('Y-m-d', strtotime(str_replace('/', '-', $this->input->post('reference_date')))),
+            'lead_from'                 =>	trim(!empty($cust_info['lead_from']) ? $cust_info['lead_from'] : ''),
+            'notify_group'              =>	trim(!empty($cust_info['notify_group']) ? $cust_info['notify_group'] : ''),
+            'owner_id'                  =>	trim(!empty($cust_info['select_owner']) ? $cust_info['select_owner'] : ''),
+            'in_tax_branch_id'			=>	trim(!empty($qt_info['bill_add_id']) ? $qt_info['bill_add_id'] : ''),
+            'dt_ref'                    =>	$quotation_create_date,
             'in_login_id'				=>	$admin_user_id,
             'in_branch_id'				=>	$in_branch_id,
             'stn_pdf_name'				=>	$pdfFilePath,
-            'st_currency_applied'       =>	trim($this->input->post('currency')),
+            'st_currency_applied'       =>	trim(!empty($qt_info['currency']) ? $qt_info['currency'] : ''),
             'dt_date_created'			=>	$quotation_create_date
         ];
                                 
         /* Update customer address*/
         $update_customer_array = [
-            'st_com_address'    => 	$this->input->post('auto_pop_addr'),
-            'st_cust_city'      => 	trim($this->input->post('auto_pop_city')),
-            'st_con_person1'    =>  trim($this->input->post('auto_pop_cust_name')),
-            'in_pincode'        => 	trim($this->input->post('auto_pop_pincod')),
-            'st_cust_state'     => 	trim($this->input->post('auto_pop_state')),
-            'st_cust_mobile'    => 	trim($this->input->post('auto_pop_phone')),
-            'st_cust_email'     => 	trim($this->input->post('auto_pop_email'))
+            'st_com_address'    => 	trim(!empty($qt_info['auto_pop_addr']) ? $qt_info['auto_pop_addr'] : ''),
+            'st_cust_city'      => 	trim(!empty($qt_info['auto_pop_city']) ? $qt_info['auto_pop_city'] : ''),
+            'st_con_person1'    =>  trim(!empty($qt_info['auto_pop_cust_name']) ? $qt_info['auto_pop_cust_name'] : ''),
+            'in_pincode'        => 	trim(!empty($qt_info['auto_pop_pincod']) ? $qt_info['auto_pop_pincod'] : ''),
+            'st_cust_state'     => 	trim(!empty($qt_info['auto_pop_state']) ? $qt_info['auto_pop_state'] : ''),
+            'st_cust_mobile'    => 	trim(!empty($qt_info['st_cust_mobile']) ? $qt_info['st_cust_mobile'] : ''),
+            'st_cust_email'     => 	trim(!empty($qt_info['auto_pop_email']) ? $qt_info['auto_pop_email'] : ''),
         ];
-            
-        $this->customer_model->update_customer($this->input->post('customer_id'),$update_customer_array);
+        
+        $Customer  = Customer::where('in_cust_id', $cust_info['customer_id'])->update($update_customer_array);
+        
         $totalproarray=0;
         $inserted_quotation_id = $this->quotation_model->insert_quotation($quotation_info);
         if($inserted_quotation_id != FALSE && $inserted_quotation_id > 0){
