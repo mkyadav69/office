@@ -248,6 +248,27 @@ datepicker,
                                                 <label for="email-input" class="form-control-label required">State</label>
                                             </div>
                                             <div class="col-12 col-md-9">
+                                                @if(!empty($indian_all_states))
+                                                    <select id="all_shipping_state" required name="all_shipping_state" class="form-control">
+                                                        <option value="">Select State</option>
+                                                        @foreach($indian_all_states as $rk=>$rv)
+                                                            @if (old('indian_all_states') == $rk)
+                                                                <option value="{{$rk}}" selected>{{ $rv }}</option>
+                                                            @else
+                                                                <option value="{{ $rk }}">{{ $rv }}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                @endif
+                                                @if ($errors->cutomer_add->has('all_shipping_state'))
+                                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                                        <span class="badge badge-pill badge-danger">Error</span>
+                                                        {{ $errors->cutomer_add->first('all_shipping_state') }}
+                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                @endif
                                                 <input type="text" id="shipping_state" required name="shipping_state" placeholder="State" class="form-control">
                                                 <small class="help-block form-text text-danger" id="error_st_shiping_state"></small>
                                             </div>
@@ -458,6 +479,7 @@ datepicker,
 <!-- end add record -->
 <script>
 $(document).ready(function(){
+    $('#shipping_state').hide();
     $('#quotation_form').submit(function(e){
         sel_prods_details.length = 0;
         $(".prod_row_deatails").each(function(key,obj){
@@ -734,6 +756,8 @@ $(document).ready(function(){
     $('div #owner').html(sel);
 
     $('#shippingchk').on('click', function(){
+        $('#shipping_state').show();
+        $('#all_shipping_state').hide();
         if($("#shippingchk").prop('checked') == true){
             var address = $('#auto_pop_addr').val();
             $('#shipping_addr').val(address);
@@ -757,6 +781,8 @@ $(document).ready(function(){
             $('#shipping_lanline').val(land_line);
         }else{
             // Clear shiping address
+            $('#shipping_state').hide();
+            $('#all_shipping_state').show();
             $('#shippingchk').prop('checked', false);
             $('#shipping_addr').val('');
             $('#shipping_state').val('');
