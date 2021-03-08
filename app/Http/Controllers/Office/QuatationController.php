@@ -120,7 +120,7 @@ class QuatationController extends Controller
 	}
 
     public function insert_quot_reason($insert_quot_reason){ 
-        $res = \DB::table('tbl_pending')->insertGetId($insert_quot_reason);
+        $res = \DB::table('tbl_pending')->insert($insert_quot_reason);
         if(!empty($res)){
             return $res ;
         }
@@ -235,8 +235,8 @@ class QuatationController extends Controller
             $owner = '';
         }
         return Datatables::of($quatation)
-           ->editColumn('dt_created', function ($quatation){
-                $date = $quatation['dt_created'];
+           ->editColumn('dt_date_created', function ($quatation){
+                $date = $quatation['dt_date_created'];
                 if(!empty($date)){
                     return date('d-m-Y', strtotime($date));
                 }
@@ -362,7 +362,7 @@ class QuatationController extends Controller
         $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $in_branch_id = 1; //session branch id;
         $branchname = substr(str_shuffle(str_repeat($pool, 5)), 0, 3); //session branch name;
-        $quotation_create_date = date('Y-m-d', strtotime($request->dt_ref));
+        $quotation_create_date = date('Y-m-d', strtotime($qt_info['dt_ref']));
         $generate_quot_no =	$this->generate_quot_no($branchname, $in_branch_id, $quotation_create_date);
         $pdfFilePath = "quotation_".time()."_".date('dmy').".pdf";
         $quotation_info	=	[
@@ -397,7 +397,7 @@ class QuatationController extends Controller
             'in_branch_id'				=>	$in_branch_id,
             'stn_pdf_name'				=>	$pdfFilePath,
             'st_currency_applied'       =>	trim(!empty($qt_info['currency']) ? $qt_info['currency'] : ''),
-            'dt_date_created'			=>	$quotation_create_date
+            'dt_date_created'			=>	Carbon::now(),
         ];
                                 
         # Update customer 

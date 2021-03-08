@@ -132,7 +132,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="quotation-preview-model" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+        <div class="modal fade right" id="quotation-preview-model" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 @yield('quotation-preview-model')
             </div>

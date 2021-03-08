@@ -7,6 +7,31 @@
     color: red;
     padding-left: 5px;
 }
+.table-earning thead th {
+    background: #333;
+    font-size: 16px;
+    color: #fff;
+    vertical-align: middle;
+    font-weight: 400;
+    text-transform: capitalize;
+    line-height: 1;
+    padding-left: 5px;
+    padding-right: 5px;
+    white-space: nowrap;
+}
+.table-earning tbody td {
+    color: #808080;
+    padding: 0px 0px;
+    white-space: nowrap;
+}
+.row_sub_total{
+    padding: 4px
+}
+.modal.fade:not(.in).right .modal-dialog {
+    -webkit-transform: translate3d(25%, 0, 0);
+    transform: translate3d(25%, 0, 0);
+}
+
 datepicker,
 .table-condensed {
   width: 450px;
@@ -125,7 +150,7 @@ datepicker,
                                        
                                         <div class="row form-group">
                                             <div class="col col-md-3">
-                                                <label for="text-input" class=" form-control-label">Address</label>
+                                                <label for="text-input" class=" form-control-label required">Address</label>
                                             </div>
                                             <div class="col-12 col-md-9">
                                                 <textarea type="text" id="auto_pop_addr" required name="auto_pop_addr" placeholder="Address" class="form-control auto_pop_addr"></textarea>
@@ -360,7 +385,7 @@ datepicker,
                             <input type="hidden" name="hid_appliedCurrency" id="hid_appliedCurrency" value="rupees">
                             <input type="hidden" id="is_submit_quotation" value="0">
                             <div class="col-lg-12">
-                                <div class="table-responsive table--no-card m-b-15">
+                              
                                     <table id="tblsummary" class="table table-borderless table-striped table-earning">
                                         <thead>
                                             <tr>
@@ -380,14 +405,14 @@ datepicker,
                                         </thead>
                                         <tbody>
                                             <tr class="odd gradeX classOdd tr-subtotal">
-                                                <td colspan="9" ><strong class="pull-right pull-right">Sub Total</strong></td>
+                                                <td colspan="9" ><strong class="pull-right pull-right">Sub Total  &ensp;</strong> </td>
                                                 <td id="row_sub_total" style="text-align: left;"><strong class="final_subtotal">0.00</strong></td>
                                                 <td>&nbsp;</td>
                                                 <td>&nbsp;</td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>
+                               
                             </div>
                         </div>
                     </div>
@@ -606,7 +631,7 @@ $(document).ready(function(){
             previous = this.value;
             var currencytxt = $( "#currency option:selected" ).text();
             var currval = $( "#currency option:selected" ).val();                    
-        if (!confirm('Are you sure, you want to cahnge currency?')) {
+        if (!confirm($('#quotation-preview-model').modal('show'))) {
                 $("#currencysymbol").text('');
                 $('#currency').val(pastvalue);
             return false;
@@ -696,7 +721,7 @@ $(document).ready(function(){
                     option = option + '<option value="'+ key +'">'+ field +'</option>';
                 }
             });
-            var sel = '<label for="vat" class=" form-control-label required" id="own_label">Owner</label><select name="select_owner" id="select_owner" class="form-control">'+option+'</select><small class="help-block form-text text-danger" id="error_select_owner"></small>';
+            var sel = '<label for="vat" class=" form-control-label required" id="own_label">Owner</label><select name="select_owner" id="select_owner" class="form-control" required>'+option+'</select><small class="help-block form-text text-danger" id="error_select_owner"></small>';
             $('div #owner').html(sel);
         }
     });
@@ -705,7 +730,7 @@ $(document).ready(function(){
     $.each(owner_field, function (key, field) {
         option = option + '<option value="'+ key +'">'+ field +'</option>';
     });
-    var sel = '<label for="vat" class=" form-control-label required" id="own_label">Owner</label><select name="select_owner" id="select_owner"  class="form-control">'+option+'</select><small class="help-block form-text text-danger" id="error_select_owner"></small>';
+    var sel = '<label for="vat" class=" form-control-label required" id="own_label">Owner</label><select name="select_owner" required id="select_owner"  class="form-control">'+option+'</select><small class="help-block form-text text-danger" id="error_select_owner"></small>';
     $('div #owner').html(sel);
 
     $('#shippingchk').on('click', function(){
@@ -837,7 +862,7 @@ $(document).ready(function(){
                         partNoHtml = prod_part_No;
                         var classs = 'prod_part_No';
                     }
-                    html = '<tr id="prod_row_'+products.pro_id+'" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="'+prod_maker+'" name="prod_maker" class="prod_maker"><td class="'+classs+'">'+partNoHtml+'</td><td  style="word-break:break-all;" class="prod_desc">'+prod_desc+'</td><td  style="word-break:break-all;" class="prod_hsn">'+hsn+'</td><td style="word-break:break-all;"  class="prod_qty"><input style="width: 35px;" type="text" class="quentity_changed prodqty_'+products.pro_id+'" id="'+products.pro_id+'" value="'+prodqty+'" onchange="quentity_changed(this);"></td><td style="word-break:break-all;" >'+products.in_pro_qty+'</td><td style="word-break:break-all;" ><div class="tooltips"><input style="width: 75px;" type="text" class="prod_unit_price prod_unit_price_'+products.pro_id+'" value="'+prod_price+'" onchange="prod_price_changed(this,'+products.pro_id+');"></div></td><td style="word-break:break-all;" ><input type="text" style="width: 55px;" class="prod_disc_price prod_disc_price_'+products.pro_id+'" value="'+prod_discount+'" onchange="prod_discount_price_changed(this,'+products.pro_id+');"></td><td style="width: 75px; text-align: left;word-break:break-all;"  class="prod_net_price prod_netprice_'+products.pro_id+'">'+prod_net_price+'</td><td style="text-align: left;word-break:break-all;width: 60px;" class=" "><input style="width: 45px;" type="text" class="prod_igst_rate prod_igst_rate_'+products.pro_id+'" id="'+products.pro_id+'" value="'+prod_igst_rate+'" onchange="igsttaxrate_changed(this);"></td><td style="text-align: left;word-break:break-all;width: 75px;" class="prod_row_total prod_row_total_'+products.pro_id+'">'+prod_row_total+'</td><td class="prod_deli_period prod_deli_period_'+products.pro_id+'" style="word-break:break-all;"><input type="text" style="word-break:break-all; width:75px"  name="prod_deli_period" id="prod_deli_period_'+products.pro_id+'" value=""></td><td><a href="javascript:void(0);" onClick=delete_row('+products.pro_id+'); class="btn" style="float:left;padding:0"><span class="pull-left"> </span>  <i class="fa fa-times-circle"></i></a><a href="javascript:void(0);"  class="addCF_'+products.pro_id+' btn" style="float:left;padding:0" onClick=addCF('+products.pro_id+'); data-id='+products.pro_id+'><span class="pull-left"> </span>  <i class="fa fa-comment"></i></a></td>\n\</tr>';
+                    html = '<tr id="prod_row_'+products.pro_id+'" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="'+prod_maker+'" name="prod_maker" class="prod_maker"><td class="'+classs+'">'+partNoHtml+'</td><td  style="word-break:break-all;" class="prod_desc">'+prod_desc+'</td><td  style="word-break:break-all;" class="prod_hsn">'+hsn+'</td><td style="word-break:break-all;"  class="prod_qty"><input style="width: 35px; box-shadow: 2px 5px #888888;" placeholder="Qty" type="text" class="quentity_changed prodqty_'+products.pro_id+'" id="'+products.pro_id+'" value="'+prodqty+'" onchange="quentity_changed(this);"></td><td style="word-break:break-all;" >'+products.in_pro_qty+'</td><td style="word-break:break-all;" ><div class="tooltips"><input style="width: 75px; box-shadow: 2px 5px #888888;" type="text" placeholder="Price" class="prod_unit_price prod_unit_price_'+products.pro_id+'" value="'+prod_price+'" onchange="prod_price_changed(this,'+products.pro_id+');"></div></td><td style="word-break:break-all;" ><input type="text" style="width: 55px; box-shadow: 2px 5px #888888;" placeholder="Disc %" class="prod_disc_price prod_disc_price_'+products.pro_id+'" value="'+prod_discount+'" onchange="prod_discount_price_changed(this,'+products.pro_id+');"></td><td style="width: 75px; text-align: left;word-break:break-all;"  class="prod_net_price prod_netprice_'+products.pro_id+'">'+prod_net_price+'</td><td style="text-align: left;word-break:break-all;width: 60px;" class=" "><input style="width: 45px; box-shadow: 2px 5px #888888;" type="text" placeholder="IGST" class="prod_igst_rate prod_igst_rate_'+products.pro_id+'" id="'+products.pro_id+'" value="'+prod_igst_rate+'" onchange="igsttaxrate_changed(this);"></td><td style="text-align: left;word-break:break-all;width: 75px;" class="prod_row_total prod_row_total_'+products.pro_id+'">'+prod_row_total+' &ensp;</td><td class="prod_deli_period prod_deli_period_'+products.pro_id+'" style="word-break:break-all;"><textarea type="text" style="word-break:break-all; width:75px; box-shadow: 2px 5px #888888; background:#FFFFE3;" placeholder="Write . . . !" name="prod_deli_period" id="prod_deli_period_'+products.pro_id+'" value=""></textarea></td><td><div class="row"><div class="form-group col-2"><a href="javascript:void(0);" title="Add Comments" class="addCF_'+products.pro_id+' btn" style="float:left;padding:0" onClick=addCF('+products.pro_id+'); data-id='+products.pro_id+'><span class="pull-left"> </span>  <i class="fa fa-comment"></i></a></div><div class="form-group col-2"><a href="javascript:void(0);" title="Delete Product" onClick=delete_row('+products.pro_id+'); class="btn" style="float:left;padding:0"><span class="pull-left"> </span>  <i class="fa fa-trash text-danger"></i></a></div></td></div>\n\</tr>';
                 }
                 console.log(html);
                 $( html ).insertBefore( "#tblsummary .tr-subtotal" );
@@ -1060,7 +1085,7 @@ $(document).ready(function(){
 
     function qty_change(prod_id ,prodqty, prod_net_price, prod_row_total){
         if((prodqty <= 0) || ($.isNumeric(prodqty) == false)){
-            alert("Pleas enter a valid quantity.");
+            $('#validQuantity').modal('show');
         }else{
             $(".prod_netprice_"+prod_id).html(prod_net_price);
             $(".prod_row_total_"+prod_id).html(prod_row_total.toFixed(2));
@@ -1190,7 +1215,7 @@ $(document).ready(function(){
     }
 
     function addCF(parameters){
-        var  htmlcommentd = '<tr id="comment_row_'+parameters+'" valign="top"><td colspan="11"><textarea id="comments_'+parameters+'"  class="comments_'+parameters+' form-control" style="background:#FFFFE3;" name="ext_note" id="ext_note" placeholder="Please add any extra comments if any."></textarea></td><td><a href="javascript:void(0);"  onClick=remCF('+parameters+'); class="remCF_'+parameters+'"  data-id='+parameters+'><i class="fa fa-trash-o"></i></a></td></tr>';
+        var  htmlcommentd = '<tr id="comment_row_'+parameters+'" valign="top"><td colspan="11"><textarea id="comments_'+parameters+'"  class="comments_'+parameters+' form-control" style="background:#FFFFE3;" name="ext_note" id="ext_note" placeholder="Please add any extra comments if any."></textarea></td><td><a href="javascript:void(0);"  title="Close comment" onClick=remCF('+parameters+'); class="remCF_'+parameters+'"  data-id='+parameters+'><i class="fa fa-trash text-danger"></i></a></td></tr>';
                 $( htmlcommentd ).insertAfter( "#tblsummary #prod_row_"+parameters );
                 $('.addCF_'+parameters).hide();
                 
