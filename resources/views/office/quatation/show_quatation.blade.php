@@ -81,11 +81,14 @@
                     { data: 'final_amount', className: "text td-limit", title : 'Total'},
                     { data: 'lead_from', className: "text td-limit", title : 'Lead From'},
                     { data: 'in_branch_id', className: "select td-limit", title : 'Branch'},
-
-                    
                     { data: 'dt_date_created', className: "td-limit", title : 'Created At'},
                     { data: 'lead_from', className: "td-limit", title : 'Status'},
-                    { data: 'lead_from', className: "td-limit", title : 'Download'},
+                    {
+                        'data': null,
+                        'render': function (data, type, row) {
+                            return '<a href="'+window.location.origin+'/pdf_'+new Date().getFullYear()+'/'+row.stn_pdf_name+'" target="_blank"><div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Download"><i class="zmdi zmdi-download text-success"></i></button></div></a>'
+                        }, title: 'Download'
+                    },
                     { data: 'lead_from', className: "td-limit", title : 'Reason'},
                     {
                         'data': null,

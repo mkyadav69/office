@@ -470,7 +470,6 @@ class QuatationController extends Controller
             $pdf = PDF::loadView('email.view_quotenew', $data)->setPaper('a4', 'landscape');
             $pdf->save($path.$fileName);
             $pdf = public_path($path.$fileName);
-            dd("here");
             # Send Mail
             // $cc_cust_emails = [];
             // $cc_cust_emails = explode("," , $data['customer_info']['st_cust_email_cc']);
