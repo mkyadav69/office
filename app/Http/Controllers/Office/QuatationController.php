@@ -467,7 +467,7 @@ class QuatationController extends Controller
             }
             $path = public_path($path.'/');
             $fileName = "quotation_".time()."_".date('dmy').".pdf";
-            $pdf = PDF::loadView('email.view_quotenew', $data);
+            $pdf = PDF::loadView('email.view_quotenew', $data)->setPaper('a4', 'landscape');
             $pdf->save($path.$fileName);
             $pdf = public_path($path.$fileName);
             # Send Mail
