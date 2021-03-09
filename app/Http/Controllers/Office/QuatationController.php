@@ -341,6 +341,10 @@ class QuatationController extends Controller
 		$result['quotation_info'] 		= $request->quotation_info;
 		$result['format']				= $format;
 		$result['BillAddress']			= "adress";
+        $cur = Config::get('constant.currency');
+        $qt_info = $request->quotation_info;
+        $c_format = $qt_info['currency'];
+        $result['currency']  = $cur[$c_format];
         $data['quotation_data'] = View::make("office.quatation.preview_quatation", $result)->render();
         return json_encode($data);
     }
@@ -451,7 +455,10 @@ class QuatationController extends Controller
             $data['preparing_by'] = trim($cust_info['preparing_by']);
             $data['format']	= $this->get_PDF_format_by_id($qt_info['bill_add_id']);
             $data['BillAddress'] = $this->get_PDF_BillAddress();
-   
+            $cur = Config::get('constant.currency');
+            $qt_info = $request->quotation_info;
+            $c_format = $qt_info['currency'];
+            $data['currency']  = $cur[$c_format];
             # Generate PDF
             $year = date("Y");    
             $path = 'pdf_'.$year;
@@ -460,12 +467,9 @@ class QuatationController extends Controller
             }
             $path = public_path($path.'/');
             $fileName = "quotation_".time()."_".date('dmy').".pdf";
-            // $pdf->setWatermarkImage('http://office.chromatographyworld.com/assets/images/Scan.jpg');
-            // $pdf->showWatermarkImage = true;
-            // $pdf->use_kwt = true;
             $pdf = PDF::loadView('email.view_quotenew', $data);
-            $pdf->save($path . '/' . $fileName);
-            $pdf = public_path($path.'/'.$fileName);
+            $pdf->save($path.$fileName);
+            $pdf = public_path($path.$fileName);
             # Send Mail
             // $cc_cust_emails = [];
             // $cc_cust_emails = explode("," , $data['customer_info']['st_cust_email_cc']);
@@ -491,7 +495,7 @@ class QuatationController extends Controller
 
     public function test(){
         $pdf = \App::make('dompdf.wrapper');
-        $pdf->loadView('office/quatation/preview_quatation');
+        $pdf->loadView('office/quatation/test');
         $pdf->stream();
     }
 }

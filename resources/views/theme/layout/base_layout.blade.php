@@ -57,7 +57,7 @@
         <aside class="menu-sidebar d-none d-block">
             <div class="logo">
                 <a href="#">
-                    <img src="images/icon/cromo.png" alt="Cool Admin" />
+                    <img src="{{asset('images/icon/cromo.png')}}" alt="Cool Admin" />
                 </a>
             </div>
             @include('theme.layout.sidebar')
@@ -132,11 +132,19 @@
             </div>
         </div>
 
-        <div class="modal fade right" id="quotation-preview-model" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <div class="modal fade" id="quotation-preview-model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog quote-preview">
                 @yield('quotation-preview-model')
             </div>
         </div>
+
+        <div class="modal fade" id="quoteAdded" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                @yield('quoteAdded')
+            </div>
+        </div>
+
+        
 
         
     <!-- Vendor JS       -->

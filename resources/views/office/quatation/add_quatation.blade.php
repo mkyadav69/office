@@ -31,7 +31,48 @@
     -webkit-transform: translate3d(25%, 0, 0);
     transform: translate3d(25%, 0, 0);
 }
+.tooltips {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
 
+.tooltips .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  transition: opacity 0.3s;
+}
+
+.tooltips .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltips:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.quote-preview {
+    max-width: 1065px;
+    margin: 1.75rem auto;
+}
 datepicker,
 .table-condensed {
   width: 450px;
@@ -249,7 +290,7 @@ datepicker,
                                             </div>
                                             <div class="col-12 col-md-9">
                                                 @if(!empty($indian_all_states))
-                                                    <select id="all_shipping_state" required name="all_shipping_state" class="form-control">
+                                                    <select id="shipping_state" required name="shipping_state" class="form-control">
                                                         <option value="">Select State</option>
                                                         @foreach($indian_all_states as $rk=>$rv)
                                                             @if (old('indian_all_states') == $rk)
@@ -260,16 +301,6 @@ datepicker,
                                                         @endforeach
                                                     </select>
                                                 @endif
-                                                @if ($errors->cutomer_add->has('all_shipping_state'))
-                                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                                        <span class="badge badge-pill badge-danger">Error</span>
-                                                        {{ $errors->cutomer_add->first('all_shipping_state') }}
-                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                @endif
-                                                <input type="text" id="shipping_state" required name="shipping_state" placeholder="State" class="form-control">
                                                 <small class="help-block form-text text-danger" id="error_st_shiping_state"></small>
                                             </div>
                                         </div>
@@ -479,7 +510,6 @@ datepicker,
 <!-- end add record -->
 <script>
 $(document).ready(function(){
-    $('#shipping_state').hide();
     $('#quotation_form').submit(function(e){
         sel_prods_details.length = 0;
         $(".prod_row_deatails").each(function(key,obj){
@@ -653,7 +683,7 @@ $(document).ready(function(){
             previous = this.value;
             var currencytxt = $( "#currency option:selected" ).text();
             var currval = $( "#currency option:selected" ).val();                    
-        if (!confirm($('#quotation-preview-model').modal('show'))) {
+        if (!confirm('Are sure to change the currency ?')) {
                 $("#currencysymbol").text('');
                 $('#currency').val(pastvalue);
             return false;
@@ -756,8 +786,6 @@ $(document).ready(function(){
     $('div #owner').html(sel);
 
     $('#shippingchk').on('click', function(){
-        $('#shipping_state').show();
-        $('#all_shipping_state').hide();
         if($("#shippingchk").prop('checked') == true){
             var address = $('#auto_pop_addr').val();
             $('#shipping_addr').val(address);
@@ -781,8 +809,6 @@ $(document).ready(function(){
             $('#shipping_lanline').val(land_line);
         }else{
             // Clear shiping address
-            $('#shipping_state').hide();
-            $('#all_shipping_state').show();
             $('#shippingchk').prop('checked', false);
             $('#shipping_addr').val('');
             $('#shipping_state').val('');
@@ -947,6 +973,7 @@ $(document).ready(function(){
         $("#hid_order_prod_details").val(JSON.stringify(sel_prods_details)); 
         $("#hid_quotation_sub_total").val($(".final_subtotal").text());
         $("#order_nego_amount").val($('#prod_grand_total').text().trim());
+        $("#is_submit_quotation").val(0);
         if(sel_prods_details.length > 0){ 
             if($("#is_submit_quotation").val() == 0){ 
                 var quotation_info = {};
@@ -1031,7 +1058,8 @@ $(document).ready(function(){
                             'customer_id'           : customer_id
 
                 };
-                var filepath = "{{route('store_quatation')}}";  
+                var filepath = "{{route('store_quatation')}}";
+                var home_page = "{{route('show_quatation')}}"; 
                 $.ajax({
                     url:filepath,
                     type:'POST',
@@ -1039,13 +1067,18 @@ $(document).ready(function(){
 					dataType: 'json',
                     data: {'sel_prods_details' : sel_prods_details, 'customer_info' : customer_info, 'quotation_info' : quotation_info, "_token": "{{ csrf_token() }}"},
                     success: function(response) {
-                        $("#is_submit_quotation").val('1');
-						$("#privew-quote").html(response.quotation_data);
+                        if(response.code == 200){
+                            $('div .success-response').html(response.success);
+                            $('#quotation-preview-model').modal('hide');
+                            $('#quoteAdded').modal('show');
+                        } 
+                        setTimeout(function(){ window.location = home_page; }, 4000);
                     },error: function(error) {
                         alert("in error");
                     }
                 });
-                $('#quotation-preview-model').modal('show');
+            }else{
+                console.log("in else");
             }
         }else{
             $('#minProduct').modal('show');
@@ -1750,24 +1783,41 @@ $(function(){
     </div>
 @endsection
 
-
-<!-- Quatation Preview-->
-@section('quotation-preview-model')
+@section('quoteAdded')
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="largeModalLabel">Quotation Preview</h5>
+            <h5 class="modal-title" id="largeModalLabel">Success</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
-            <div class="card"  id="privew-quote">
-            </div>
+            <p class="text-success">Quotation Added Successfully. </p>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary add-quotation" data-attr="add-quotation">Confirm</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
     </div>
+@endsection
+
+
+
+<!-- Quatation Preview-->
+@section('quotation-preview-model')
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="largeModalLabel">Quotation Preview</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div id="privew-quote" class="privew-quote-box"></div>          
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Edit</button>
+        <button type="button" class="btn btn-primary add-quotation">Send Quotation</button>&nbsp;&nbsp;
+    </div>
+</div>
 @endsection
 <!-- End Quatation Preview-->
