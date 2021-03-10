@@ -614,7 +614,6 @@ $(document).ready(function(){
                             'product_search'        : product_search,
                             'prod_qty'               : prod_qty
                 };
-
                 var auto_pop_phone = $("#auto_pop_phone").val();
                 var auto_pop_company = $(".auto_pop_company").val();
                 var auto_pop_cust_name = $("#auto_pop_cust_name").val();
@@ -643,12 +642,6 @@ $(document).ready(function(){
                     url:filepath,
                     target: "_blank",
                     type:'GET',
-                    beforeSend: function() {
-						$("body").addClass("loading");
-					},
-					complete: function() {
-						$("body").removeClass("loading");
-					},
 					async:false,
 					dataType: 'json',
                     data: {'sel_prods_details' : sel_prods_details, 'customer_info' : customer_info, 'quotation_info' : quotation_info, "_token": "{{ csrf_token() }}"},
@@ -1010,7 +1003,6 @@ $(document).ready(function(){
                 var product_search          = $('#product_search').val();
                 var prod_qty                = $('#prod_qty').val();
                 var ext_note                = $('#ext_note').val();
-
                 quotation_info = {
                             'st_shiping_add' 	: shipping_addr,
                             'st_shiping_city' 	: shipping_city,
@@ -1056,7 +1048,6 @@ $(document).ready(function(){
                             'ext_note'              : ext_note,
                             'lead_from'				: lead_from,
                             'customer_id'           : customer_id
-
                 };
                 var filepath = "{{route('store_quatation')}}";
                 var home_page = "{{route('show_quatation')}}"; 
@@ -1072,9 +1063,9 @@ $(document).ready(function(){
                             $('#quotation-preview-model').modal('hide');
                             $('#quoteAdded').modal('show');
                         } 
-                        setTimeout(function(){ window.location = home_page; }, 4000);
+                        setTimeout(function(){ window.location = home_page; }, 2000);
                     },error: function(error) {
-                        alert("in error");
+                       console.log(error);
                     }
                 });
             }else{

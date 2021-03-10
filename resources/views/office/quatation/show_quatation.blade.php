@@ -93,7 +93,7 @@
                     {
                         'data': null,
                         'render': function (data, type, row) {
-                            return '<div class="table-data-feature"><button row-id="' + row.id + '" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button><button row-id="' + row.id + '" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>'
+                            return '<div class="table-data-feature"><button row_in_quot_id="' + row.in_quot_id + '" row_cust_id="' + row.in_cust_id + '" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button><button row-id="' + row.id + '" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>'
                         }, title: 'Actions'
                     }
                 ],  
@@ -133,8 +133,8 @@
                 $tr = $tr.prev('.parent');
             }
             var data = table.row($tr).data();
-            var url = '{{ route("edit_product", ":id") }}';
-            url = url.replace(':id', data['pro_id']);
+            var url = '{{ route("edit_quatation", ":id") }}';
+            url = url.replace(':id', data['in_quot_id']);
             window.location.replace(url);
         });
 
