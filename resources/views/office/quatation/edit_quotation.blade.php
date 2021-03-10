@@ -1,5 +1,5 @@
 @extends('theme.layout.base_layout')
-@section('title', 'Add Quotations')
+@section('title', 'Update Quotations')
 @section('content')
 <style>
 .required:after {
@@ -99,12 +99,12 @@ datepicker,
                         <div class="row form-group">
                             <div class="form-group col-4">
                                 <label for="company" class="form-control-label required">Quatation Prepared By </label>
-                                <input type="text" name="preparing_by" required id="preparing_by" placeholder="Quatation Prepared By" class="form-control">
+                                <input type="text" name="preparing_by" required id="preparing_by" placeholder="Quatation Prepared By" value="{{ old('preparing_by', $data['quotation_info']['prepare_by']) }}" class="form-control">
                                 <b><small class="help-block form-text text-danger" id="error_preparing_by"></small></b>
                             </div>
                             <div class="form-group col-4">
                                 <label for="lead_from" class=" form-control-label required">Lead From</label>
-                                <input type="text" name="lead_from" required id="lead_from" placeholder="Lead From" class="form-control">
+                                <input type="text" name="lead_from" required id="lead_from" placeholder="Lead From" value="{{ old('lead_from', $data['quotation_info']['lead_from']) }}" class="form-control">
                                 <small class="help-block form-text text-danger" id="error_lead_from"></small>
                             </div>
                             <input type="hidden" name="_token"  id="token" value="{{ csrf_token() }}">
@@ -114,7 +114,7 @@ datepicker,
                                     <option value="">Select Notify Group</option>
                                     @if(!empty($notify))
                                         @foreach($notify as $id=>$name)
-                                            <option value="{{$id}}">{{$name}}</option>
+                                            <option value="{{$id}}" {{ old('notify_group' , $id) == $data['quotation_info']['notify_group'] ? "selected" : "" }}>{{$name}}</option>
                                         @endforeach
                                     @else
                                         <p>Notification are not available.</p>
@@ -135,7 +135,7 @@ datepicker,
                                     <option value="">Select Company</option>
                                     @if(!empty($company))
                                         @foreach($company as $id=>$name)
-                                            <option value="{{$id}}">{{$name}}</option>
+                                            <option value="{{$id}}" {{ old('customer_id' , $id) == $data['customer_info']['in_cust_id'] ? "selected" : "" }} >{{$name}}</option>
                                         @endforeach
                                     @else
                                         <p>Company are not available.</p>
@@ -145,13 +145,13 @@ datepicker,
                             </div>
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Enq Ref. No. </label>
-                                    <input type="text" id="enq_ref_no" required  name="enq_ref_no" placeholder="Enq Ref. No." class="form-control">
+                                    <input type="text" id="enq_ref_no" required  name="enq_ref_no" placeholder="Enq Ref. No." value="{{ old('enq_ref_no', $data['quotation_info']['st_enq_ref_number']) }}" class="form-control">
                                     <small class="help-block form-text text-danger" id="error_st_enq_ref_number"></small>
                             </div>
 
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Ref. Date </label>
-                                <input type="text" name="reference_date" required id="datepicker" class="form-control" placeholder="DD-MM-YYY" />
+                                <input type="text" name="reference_date" required id="datepicker" class="form-control" value="{{ old('reference_date', date('d-m-Y', strtotime($data['quotation_info']['dt_ref']))) }}" placeholder="DD-MM-YYY" />
                                 <small class="help-block form-text text-danger" id="error_dt_ref"></small>
                             </div>
 
@@ -163,17 +163,18 @@ datepicker,
                         <div class="row form-group">
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Company Name </label>
-                                    <input type="text" id="company_name" required name="company_name" placeholder="Company Name" class="form-control auto_pop_company">
+                                    <input type="text" id="company_name" required name="company_name" placeholder="Company Name" value="{{ old('company_name', $data['customer_info']['st_com_name']) }}" class="form-control auto_pop_company">
                                     <small class="help-block form-text text-danger" id="error_st_com_name"></small>
                             </div>
 
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Contact Person</label>
-                                    <input type="text" id="auto_pop_cust_name" required name="auto_pop_cust_name" placeholder="Contact Person" class="form-control auto_pop_cust_name">
+                                    <input type="text" id="auto_pop_cust_name" required name="auto_pop_cust_name" placeholder="Contact Person" value="{{ old('auto_pop_cust_name', $data['customer_info']['st_con_person1']) }}" class="form-control auto_pop_cust_name">
                                     <small class="help-block form-text text-danger" id="error_auto_pop_cust_name"></small>
                             </div>
 
                             <div class="form-group col-3" id="owner">
+
                             </div>
                         </div>
                     </div>
@@ -194,7 +195,7 @@ datepicker,
                                                 <label for="text-input" class=" form-control-label required">Address</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <textarea type="text" id="auto_pop_addr" required name="auto_pop_addr" placeholder="Address" class="form-control auto_pop_addr"></textarea>
+                                                <textarea type="text" id="auto_pop_addr" required name="auto_pop_addr" placeholder="Address" class="form-control auto_pop_addr">{{ old('auto_pop_addr', $data['customer_info']['st_com_address']) }}</textarea>
                                                 <small class="help-block form-text text-danger" id="error_auto_pop_addr"></small>
                                             </div>
                                         </div>
@@ -203,7 +204,7 @@ datepicker,
                                                 <label for="email-input" class="form-control-label required">State</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="auto_pop_state" required name="auto_pop_state" placeholder="State" class="form-control auto_pop_state">
+                                                <input type="text" id="auto_pop_state" required name="auto_pop_state" placeholder="State" value="{{ old('auto_pop_state', $data['customer_info']['st_cust_state']) }}" class="form-control auto_pop_state">
                                                 <small class="help-block form-text text-danger" id="error_auto_pop_state"></small>
                                             </div>
                                         </div>
@@ -213,7 +214,7 @@ datepicker,
                                                 <label for="email-input" class=" form-control-label required">City</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="auto_pop_city" required name="auto_pop_city" placeholder="City" class="form-control auto_pop_city">
+                                                <input type="text" id="auto_pop_city" required name="auto_pop_city" placeholder="City" value="{{ old('auto_pop_city', $data['customer_info']['st_cust_city']) }}" class="form-control auto_pop_city">
                                                 <small class="help-block form-text text-danger" id="error_auto_pop_city"></small>
                                             </div>
                                         </div>
@@ -223,7 +224,7 @@ datepicker,
                                                 <label for="email-input" class=" form-control-label required">Pin Code</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="auto_pop_pincod" required name="auto_pop_pincod" placeholder="Pin Code" class="form-control auto_pop_pincod">
+                                                <input type="text" id="auto_pop_pincod" required name="auto_pop_pincod" placeholder="Pin Code" value="{{ old('auto_pop_pincod', $data['customer_info']['in_pincode']) }}" class="form-control auto_pop_pincod">
                                                 <small class="help-block form-text text-danger" id="error_auto_pop_pincod"></small>
                                             </div>
                                         </div>
@@ -233,7 +234,7 @@ datepicker,
                                                 <label for="email-input" class="form-control-label required">Mobile No.</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="auto_pop_phone" required name="auto_pop_phone" placeholder="Mobile No." class="form-control auto_pop_phone">
+                                                <input type="text" id="auto_pop_phone" required name="auto_pop_phone" placeholder="Mobile No." value="{{ old('auto_pop_phone', $data['customer_info']['st_cust_mobile']) }}" class="form-control auto_pop_phone">
                                                 <small class="help-block form-text text-danger" id="error_auto_pop_phone"></small>
                                             </div>
                                         </div>
@@ -244,7 +245,7 @@ datepicker,
                                                 <label for="email-input" class="form-control-label required">Email</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="email" id="auto_pop_email" required name="auto_pop_email" placeholder="Email" class="form-control auto_pop_email">
+                                                <input type="email" id="auto_pop_email" required name="auto_pop_email" placeholder="Email" value="{{ old('auto_pop_email', $data['customer_info']['st_cust_email']) }}" class="form-control auto_pop_email">
                                                 <small class="help-block form-text text-danger" id="error_auto_pop_email"></small>
                                             </div>
                                         </div>
@@ -254,7 +255,7 @@ datepicker,
                                                 <label for="email-input" class=" form-control-label required">Land-Line No.</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="auto_pop_landline" required name="auto_pop_landline" placeholder="Land-Line No." class="form-control auto_pop_landline">
+                                                <input type="text" id="auto_pop_landline" required name="auto_pop_landline" value="{{ old('auto_pop_landline', $data['customer_info']['st_cust_mobile']) }}" placeholder="Land-Line No." class="form-control auto_pop_landline">
                                                 <small class="help-block form-text text-danger" id="error_auto_pop_landline"></small>
                                             </div>
                                         </div>
@@ -280,7 +281,7 @@ datepicker,
                                                 <label for="text-input" class=" form-control-label required">Address</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <textarea type="text" id="shipping_addr" required name="shipping_addr" placeholder="Address" class="form-control auto_pop_ship_addr"></textarea>
+                                                <textarea type="text" id="shipping_addr" required name="shipping_addr" placeholder="Address" class="form-control auto_pop_ship_addr">{{ old('shipping_addr', $data['quotation_info']['st_shiping_add']) }}</textarea>
                                                 <small class="help-block form-text text-danger" id="error_st_shiping_add"></small>
                                             </div>
                                         </div>
@@ -293,7 +294,7 @@ datepicker,
                                                     <select id="shipping_state" required name="shipping_state" class="form-control">
                                                         <option value="">Select State</option>
                                                         @foreach($indian_all_states as $rk=>$rv)
-                                                            @if (old('shipping_state') == $rk)
+                                                            @if (old('shipping_state', $data['quotation_info']['st_shiping_state']) == $rv)
                                                                 <option value="{{$rk}}" selected>{{ $rv }}</option>
                                                             @else
                                                                 <option value="{{ $rk }}">{{ $rv }}</option>
@@ -310,7 +311,7 @@ datepicker,
                                                 <label for="email-input" class=" form-control-label required">City</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="shipping_city" required name="shipping_city" placeholder="City" class="form-control">
+                                                <input type="text" id="shipping_city" required name="shipping_city" placeholder="City" value="{{ old('shipping_city', $data['quotation_info']['st_shiping_city']) }}" class="form-control">
                                                 <small class="help-block form-text text-danger" id="error_st_shiping_city"></small>
                                             </div>
                                         </div>
@@ -320,7 +321,7 @@ datepicker,
                                                 <label for="email-input" class=" form-control-label required">Pin Code</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="shipping_pincod" required name="shipping_pincod" placeholder="Pin Code" class="form-control">
+                                                <input type="text" id="shipping_pincod" required name="shipping_pincod" placeholder="Pin Code" value="{{ old('shipping_pincod', $data['quotation_info']['st_shiping_pincode']) }}" class="form-control">
                                                 <small class="help-block form-text text-danger" id="error_st_shiping_pincode"></small>
                                             </div>
                                         </div>
@@ -330,7 +331,7 @@ datepicker,
                                                 <label for="email-input" class="form-control-label required">Mobile No.</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="shipping_telephone" required name="shipping_telephone" placeholder="Mobile No." class="form-control">
+                                                <input type="text" id="shipping_telephone" required name="shipping_telephone" value="{{ old('shipping_telephone', $data['quotation_info']['st_shipping_phone']) }}" placeholder="Mobile No." class="form-control">
                                                 <small class="help-block form-text text-danger" id="error_st_shipping_phone"></small>
                                             </div>
                                         </div>
@@ -341,7 +342,7 @@ datepicker,
                                                 <label for="email-input" class="form-control-label required">Email</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="email" id="shipping_email" required name="shipping_email" placeholder="Email" class="form-control">
+                                                <input type="email" id="shipping_email" required name="shipping_email" placeholder="Email" value="{{ old('shipping_email', $data['quotation_info']['st_shipping_email']) }}" class="form-control">
                                                 <small class="help-block form-text text-danger" id="error_st_shipping_email"></small>
                                             </div>
                                         </div>
@@ -351,7 +352,7 @@ datepicker,
                                                 <label for="email-input" class=" form-control-label required">Land-Line No.</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="shipping_lanline" required name="shipping_lanline" placeholder="Land-Line No." class="form-control">
+                                                <input type="text" id="shipping_lanline" required name="shipping_lanline" value="{{ old('shipping_lanline', $data['quotation_info']['st_landline']) }}" placeholder="Land-Line No." class="form-control">
                                                 <small class="help-block form-text text-danger" id="error_shipping_lanline"></small>
                                             </div>
                                         </div>
@@ -423,10 +424,10 @@ datepicker,
 
                             <div class="form-group col-6">
                                 <label for="company" class="form-control-label required">Extra Comments, If Any </label>
-                                <textarea id="ext_note" required name="ext_note"placeholder="Write here . . . !" class="form-control"></textarea>
+                                <textarea id="ext_note" required name="ext_note"placeholder="Write here . . . !" class="form-control">{{ old('ext_note', $data['quotation_info']['st_ext_note']) }}</textarea>
                                 <small class="help-block form-text text-danger" id="error_ext_note"></small>
                             </div>
-
+                            
                             <input type="hidden" name="hid_quotation_sub_total" id="hid_quotation_sub_total" value="0">
                             <input type="hidden" name="order_grand_total" id="order_grand_total" value="0">
                             <input type="hidden" name="order_nego_amount" id="order_nego_amount" value="0">
@@ -510,6 +511,18 @@ datepicker,
 <!-- end add record -->
 <script>
 $(document).ready(function(){
+    $('#shippingchk').prop('checked', true);
+    var product_field = {!! json_encode($data['quotation_details']) !!};
+    console.log(product_field);
+    if (product_field != null && product_field != ''){
+        $.each(product_field, function (key, products) {
+            html = '<tr id="prod_row_'+products.in_product_id+'" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="'+products.st_maker+'" name="prod_maker" class="prod_maker"><td class="prod_part_No">'+products.st_part_no+'</td><td  style="word-break:break-all;" class="prod_desc">'+products.st_product_desc+'</td><td  style="word-break:break-all;" class="prod_hsn">'+products.stn_hsn_no+'</td><td style="word-break:break-all;"  class="prod_qty"><input style="width: 35px; box-shadow: 2px 5px #888888;" placeholder="Qty" type="text" class="quentity_changed prodqty_'+products.in_product_id+'" id="'+products.in_product_id+'" value="'+products.in_pro_qty+'" onchange="quentity_changed(this);"></td><td style="word-break:break-all;" >'+products.in_pro_qty+'</td><td style="word-break:break-all;" ><div class="tooltips"><input style="width: 75px; box-shadow: 2px 5px #888888;" type="text" placeholder="Price" class="prod_unit_price prod_unit_price_'+products.in_product_id+'" value="'+products.fl_pro_unitprice+'" onchange="prod_price_changed(this,'+products.in_product_id+');"></div></td><td style="word-break:break-all;" ><input type="text" style="width: 55px; box-shadow: 2px 5px #888888;" placeholder="Disc %" class="prod_disc_price prod_disc_price_'+products.in_product_id+'" value="'+products.fl_discount+'" onchange="prod_discount_price_changed(this,'+products.in_product_id+');"></td><td style="width: 75px; text-align: left;word-break:break-all;"  class="prod_net_price prod_netprice_'+products.in_product_id+'">'+products.fl_net_price+'</td><td style="text-align: left;word-break:break-all;width: 60px;" class=" "><input style="width: 45px; box-shadow: 2px 5px #888888;" type="text" placeholder="IGST" class="prod_igst_rate prod_igst_rate_'+products.in_product_id+'" id="'+products.in_product_id+'" value="'+products.in_igst_rate+'" onchange="igsttaxrate_changed(this);"></td><td style="text-align: left;word-break:break-all;width: 75px;" class="prod_row_total prod_row_total_'+products.pro_id+'">'+products.fl_row_total+' &ensp;</td><td class="prod_deli_period prod_deli_period_'+products.in_product_id+'" style="word-break:break-all;"><textarea type="text" style="word-break:break-all; width:75px; box-shadow: 2px 5px #888888; background:#FFFFE3;" placeholder="Write . . . !" name="prod_deli_period" id="prod_deli_period_'+products.in_product_id+'" value=""></textarea></td><td><div class="row"><div class="form-group col-2"><a href="javascript:void(0);" title="Add Comments" class="addCF_'+products.in_product_id+' btn" style="float:left;padding:0" onClick=addCF('+products.in_product_id+'); data-id='+products.in_product_id+'><span class="pull-left"> </span>  <i class="fa fa-comment"></i></a></div><div class="form-group col-2"><a href="javascript:void(0);" title="Delete Product" onClick=delete_row('+products.in_product_id+'); class="btn" style="float:left;padding:0"><span class="pull-left"> </span>  <i class="fa fa-trash text-danger"></i></a></div></td></div>\n\</tr>';
+        });
+        $( html ).insertBefore( "#tblsummary .tr-subtotal" );
+    }
+    
+
+
     $('#quotation_form').submit(function(e){
         sel_prods_details.length = 0;
         $(".prod_row_deatails").each(function(key,obj){
@@ -772,8 +785,13 @@ $(document).ready(function(){
     });
     var owner_field = {!! json_encode($owner) !!};
     var option = '<option value="" > Select Owner</option>';
+    var existing_owner = {!! json_encode($data['customer_info']['owner_id']) !!}; 
     $.each(owner_field, function (key, field) {
-        option = option + '<option value="'+ key +'">'+ field +'</option>';
+        if(key == existing_owner){
+            option = option + '<option value="'+ key +'" selected>'+ field +'</option>';
+        }else{
+            option = option + '<option value="'+ key +'">'+ field +'</option>';
+        }
     });
     var sel = '<label for="vat" class=" form-control-label required" id="own_label">Owner</label><select name="select_owner" required id="select_owner"  class="form-control">'+option+'</select><small class="help-block form-text text-danger" id="error_select_owner"></small>';
     $('div #owner').html(sel);
@@ -1049,7 +1067,7 @@ $(document).ready(function(){
                             'lead_from'				: lead_from,
                             'customer_id'           : customer_id
                 };
-                var filepath = "{{route('store_quatation')}}";
+                var filepath = "{{route('store_update_quatation')}}";
                 var home_page = "{{route('show_quatation')}}"; 
                 $.ajax({
                     url:filepath,

@@ -1,5 +1,5 @@
 @extends('theme.layout.base_layout')
-@section('title', 'Quatations')
+@section('title', 'Quotations')
 @section('content')
 <style>
 .required:after {
@@ -24,11 +24,11 @@
         </div>
     @endif
     <div class="col-md-12">
-        <h3 class="title-5 m-b-35">Manage Quatation</h3>
+        <h3 class="title-5 m-b-35">Manage Quotation</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
                 <a href="{{route('add_quatation')}}">
-                    <button type="button" class="au-btn-filter mb-1" data-dismiss="modal"><i class="zmdi zmdi-plus"></i> Add Quatation</button>
+                    <button type="button" class="au-btn-filter mb-1" data-dismiss="modal"><i class="zmdi zmdi-plus"></i> Add Quotation</button>
                 </a>
             </div>
         </div>

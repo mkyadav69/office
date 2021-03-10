@@ -14,15 +14,15 @@
                 </ul>
             </li>
 
-            <li class="{{ request()->is('show-quatation') ? 'active' : (request()->is('add-quatation') ? 'active' : '') }} has-sub">
+            <li class="{{ request()->is('show-quatation') ? 'active' : (request()->is('add-quatation') ? 'active' : (request()->is('edit-quatation/*') ? 'active' : '')) }} has-sub">
                 <a class="js-arrow" href="#">
-                    <i class="fas fa-book"></i>Quatations</a>
+                    <i class="fas fa-book"></i>Quotations</a>
                 <ul class="list-unstyled navbar__sub-list js-sub-list">
                     <li>
-                        <a href="{{route('show_quatation')}}">Manage Quatations</a>
+                        <a href="{{route('show_quatation')}}">Manage Quotations</a>
                     </li>
                     <li>
-                        <a href="{{route('add_quatation')}}">Add Quatation</a>
+                        <a href="{{route('add_quatation')}}">Add Quotation</a>
                     </li>
                 </ul>
 

@@ -1,5 +1,5 @@
 @extends('theme.layout.base_layout')
-@section('title', 'Quatation Format')
+@section('title', 'Quotation Format')
 @section('content')
 <style>
 .required:after {
