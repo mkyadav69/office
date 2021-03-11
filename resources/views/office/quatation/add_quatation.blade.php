@@ -440,7 +440,7 @@ datepicker,
                             <input type="hidden" name="bill_add_id" id="bill_add_id" value="<?php //echo //$this->uri->segment(3);?>"/>
                             <input type="hidden" name="hid_appliedCurrency" id="hid_appliedCurrency" value="rupees">
                             <input type="hidden" id="is_submit_quotation" value="0">
-                            <div class="col-lg-12">
+                            <div class="table-responsive table--no-card m-b-30">
                               
                                     <table id="tblsummary" class="table table-borderless table-striped table-earning">
                                         <thead>

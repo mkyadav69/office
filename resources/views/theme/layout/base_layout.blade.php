@@ -138,9 +138,9 @@
             </div>
         </div>
 
-        <div class="modal fade" id="quoteAdded" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="quoteUpdate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-                @yield('quoteAdded')
+                @yield('quoteUpdate')
             </div>
         </div>
 

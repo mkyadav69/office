@@ -288,7 +288,7 @@ class QuatationController extends Controller
         $msg1 = $validator->getMessageBag()->toArray();
         $quotation_info = $request->quotation_info;
         if(!empty($quotation_info)){
-            $validator1 = Validator::make($quotation_info, [
+            $val = [
                 "st_shiping_add" => 'required',
                 "st_shiping_city" =>'required',
                 "st_shiping_state" => 'required',
@@ -301,7 +301,11 @@ class QuatationController extends Controller
                 "st_landline" => 'required',
                 'product_search' => 'required',
                 'prod_qty' => 'required',
-            ]);
+            ];
+            if(isset($quotation_info['in_quot_id']) && !empty($quotation_info['in_quot_id'])){
+                unset($val['product_search']);
+            }
+            $validator1 = Validator::make($quotation_info, $val);
 
         }
         $msg2 = $validator1->getMessageBag()->toArray();
@@ -499,9 +503,9 @@ class QuatationController extends Controller
         $in_cust_id_new = $in_cust_id;
         $in_cust_id = $in_cust_id['in_cust_id'];
         $in_quot_num = $in_cust_id_new['in_quot_num'];
+        $in_cust_id = $in_cust_id_new['in_cust_id'];
 		$data = [];
         $data['in_quot_id'] 		= 	$in_quot_id;
-        $data['in_cust_id'] 		= 	$in_cust_id;
 		$data['quotation_info']	    =	$this->get_quotation_by_id($in_quot_id);
 		$data['product_list']		=	$this->get_product_list();
 		$data['quotation_details'] 	= 	$this->get_quotation_details($in_quot_id, $in_cust_id);
@@ -509,6 +513,7 @@ class QuatationController extends Controller
         $data['owner']              =   $this->owner_list();
         $data['in_quot_id']         =   $in_quot_id;
         $data['in_quot_num']         =   $in_quot_num;
+        $data['in_cust_id']         =   $in_cust_id;
         $indian_all_states = Config::get('constant.indian_all_states');
         $notify = Notify::get();
         $company = Customer::get();
@@ -637,7 +642,7 @@ class QuatationController extends Controller
             ];
             $update_quote_format = \DB::table('tbl_pending')->where('stn_qtn_ord_no', $qt_info['in_quot_num'])->update($update_quot_reason);            
             $data['quotation_details'] 	= $this->get_quotation_details($qt_info['in_quot_id'],$cust_info['customer_id']);
-            $data['quotation_info'] 	= $this->get_quotation_info($qt_info['in_quot_id'], $cust_info['customer_id']);
+            $data['quotation_info'] 	= $this->get_quotation_info($qt_info['in_quot_id'], $qt_info['in_cust_id']);
             $data['customer_info'] 		= $this->get_customer_by_id($cust_info['customer_id']);
             $data['preparing_by'] 		= trim($cust_info['preparing_by']);
             $data['format']				= $this->get_PDF_format_by_id($qt_info['bill_add_id']);

@@ -79,6 +79,12 @@ datepicker,
   height:250px;
 }
 
+.td-limit {
+    max-width: 300px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
 </style>
 <!-- add records -->
     <div class="col col-md-12">
@@ -102,6 +108,7 @@ datepicker,
                         <input type="hidden" name="in_quot_id" id="in_quot_id" value="{{$data['in_quot_id']}}"/>
                         <input type="hidden" name="flg_same_as_bill_add" id="flg_same_as_bill_add" value=""/>
                         <input type="hidden" name="in_quot_num" id="in_quot_num" value="{{$data['in_quot_num']}}"/>
+                        <input type="hidden" name="in_cust_id" id="in_cust_id" value="{{$data['in_cust_id']}}"/>
                         <div class="row form-group">
                             <div class="form-group col-4">
                                 <label for="company" class="form-control-label required">Quatation Prepared By </label>
@@ -520,14 +527,17 @@ $(document).ready(function(){
     var flg_same_as_bill_add  = {!! json_encode(!empty($data['quotation_info']['flg_same_as_bill_add']) ? $data['quotation_info']['flg_same_as_bill_add'] : '') !!};
     if(flg_same_as_bill_add == 1){
         $('#shippingchk').prop('checked', true);
+        $('#flg_same_as_bill_add').val(1);
     }else{
         $('#shippingchk').prop('checked', false);
+        $('#flg_same_as_bill_add').val(0);
     }
     var product_field = {!! json_encode($data['quotation_details']) !!};
     console.log(product_field);
     if (product_field != null && product_field != ''){
+        var html = '';
         $.each(product_field, function (key, products) {
-            html = '<tr id="prod_row_'+products.in_product_id+'" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="'+products.st_maker+'" name="prod_maker" class="prod_maker"><td class="prod_part_No">'+products.st_part_no+'</td><td  style="word-break:break-all;" class="prod_desc">'+products.st_product_desc+'</td><td  style="word-break:break-all;" class="prod_hsn">'+products.stn_hsn_no+'</td><td style="word-break:break-all;"  class="prod_qty"><input style="width: 35px; box-shadow: 2px 5px #888888;" placeholder="Qty" type="text" class="quentity_changed prodqty_'+products.in_product_id+'" id="'+products.in_product_id+'" value="'+products.in_pro_qty+'" onchange="quentity_changed(this);"></td><td style="word-break:break-all;" >'+products.in_pro_qty+'</td><td style="word-break:break-all;" ><div class="tooltips"><input style="width: 75px; box-shadow: 2px 5px #888888;" type="text" placeholder="Price" class="prod_unit_price prod_unit_price_'+products.in_product_id+'" value="'+products.fl_pro_unitprice+'" onchange="prod_price_changed(this,'+products.in_product_id+');"></div></td><td style="word-break:break-all;" ><input type="text" style="width: 55px; box-shadow: 2px 5px #888888;" placeholder="Disc %" class="prod_disc_price prod_disc_price_'+products.in_product_id+'" value="'+products.fl_discount+'" onchange="prod_discount_price_changed(this,'+products.in_product_id+');"></td><td style="width: 75px; text-align: left;word-break:break-all;"  class="prod_net_price prod_netprice_'+products.in_product_id+'">'+products.fl_net_price+'</td><td style="text-align: left;word-break:break-all;width: 60px;" class=" "><input style="width: 45px; box-shadow: 2px 5px #888888;" type="text" placeholder="IGST" class="prod_igst_rate prod_igst_rate_'+products.in_product_id+'" id="'+products.in_product_id+'" value="'+products.in_igst_rate+'" onchange="igsttaxrate_changed(this);"></td><td style="text-align: left;word-break:break-all;width: 75px;" class="prod_row_total prod_row_total_'+products.pro_id+'">'+products.fl_row_total+' &ensp;</td><td class="prod_deli_period prod_deli_period_'+products.in_product_id+'" style="word-break:break-all;"><textarea type="text" style="word-break:break-all; width:75px; box-shadow: 2px 5px #888888; background:#FFFFE3;" placeholder="Write . . . !" name="prod_deli_period" id="prod_deli_period_'+products.in_product_id+'" value=""></textarea></td><td><div class="row"><div class="form-group col-2"><a href="javascript:void(0);" title="Add Comments" class="addCF_'+products.in_product_id+' btn" style="float:left;padding:0" onClick=addCF('+products.in_product_id+'); data-id='+products.in_product_id+'><span class="pull-left"> </span>  <i class="fa fa-comment"></i></a></div><div class="form-group col-2"><a href="javascript:void(0);" title="Delete Product" onClick=delete_row('+products.in_product_id+'); class="btn" style="float:left;padding:0"><span class="pull-left"> </span>  <i class="fa fa-trash text-danger"></i></a></div></td></div>\n\</tr>';
+            html = html+'<tr id="prod_row_'+products.in_product_id+'" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="'+products.st_maker+'" name="prod_maker" class="prod_maker"><td class="prod_part_No">'+products.st_part_no+'</td><td  style="word-break:break-all;" class="prod_desc td-limit">'+products.st_product_desc+'</td><td  style="word-break:break-all;" class="prod_hsn">'+products.stn_hsn_no+'</td><td style="word-break:break-all;"  class="prod_qty"><input style="width: 35px; box-shadow: 2px 5px #888888;" placeholder="Qty" type="text" class="quentity_changed prodqty_'+products.in_product_id+'" id="'+products.in_product_id+'" value="'+products.in_pro_qty+'" onchange="quentity_changed(this);"></td><td style="word-break:break-all;" >'+products.in_pro_qty+'</td><td style="word-break:break-all;" ><div class="tooltips"><input style="width: 75px; box-shadow: 2px 5px #888888;" type="text" placeholder="Price" class="prod_unit_price prod_unit_price_'+products.in_product_id+'" value="'+products.fl_pro_unitprice+'" onchange="prod_price_changed(this,'+products.in_product_id+');"></div></td><td style="word-break:break-all;" ><input type="text" style="width: 55px; box-shadow: 2px 5px #888888;" placeholder="Disc %" class="prod_disc_price prod_disc_price_'+products.in_product_id+'" value="'+products.fl_discount+'" onchange="prod_discount_price_changed(this,'+products.in_product_id+');"></td><td style="width: 75px; text-align: left;word-break:break-all;"  class="prod_net_price prod_netprice_'+products.in_product_id+'">'+products.fl_net_price+'</td><td style="text-align: left;word-break:break-all;width: 60px;" class=" "><input style="width: 45px; box-shadow: 2px 5px #888888;" type="text" placeholder="IGST" class="prod_igst_rate prod_igst_rate_'+products.in_product_id+'" id="'+products.in_product_id+'" value="'+products.in_igst_rate+'" onchange="igsttaxrate_changed(this);"></td><td style="text-align: left;word-break:break-all;width: 75px;" class="prod_row_total prod_row_total_'+products.pro_id+'">'+products.fl_row_total+' &ensp;</td><td class="prod_deli_period prod_deli_period_'+products.in_product_id+'" style="word-break:break-all;"><textarea type="text" style="word-break:break-all; width:75px; box-shadow: 2px 5px #888888; background:#FFFFE3;" placeholder="Write . . . !" name="prod_deli_period" id="prod_deli_period_'+products.in_product_id+'" value=""></textarea></td><td><div class="row"><div class="form-group col-2"><a href="javascript:void(0);" title="Add Comments" class="addCF_'+products.in_product_id+' btn" style="float:left;padding:0" onClick=addCF('+products.in_product_id+'); data-id='+products.in_product_id+'><span class="pull-left"> </span>  <i class="fa fa-comment"></i></a></div><div class="form-group col-2"><a href="javascript:void(0);" title="Delete Product" onClick=delete_row('+products.in_product_id+'); class="btn" style="float:left;padding:0"><span class="pull-left"> </span>  <i class="fa fa-trash text-danger"></i></a></div></td></div>\n\</tr>';
         });
         $( html ).insertBefore( "#tblsummary .tr-subtotal" );
     }
@@ -558,20 +568,20 @@ $(document).ready(function(){
             }
             var customer_id = $( "#customer_id option:selected" ).val();
             sel_prods_details.push({
-                        'in_cust_id':           customer_id,
-                        'in_product_id':        prod_id, 
-                        'st_part_no':           prod_part_No,
-                        'st_product_desc':      prod_desc,
-                        'stn_hsn_no':           prod_hsn,
-                        'st_maker':             prod_maker,
-                        'in_pro_qty':           prodqty,
-                        'fl_pro_unitprice':     prod_unit_price,
-                        'fl_discount':          prod_disc_price,
-                        'in_pro_deli_period':   prod_deli_period,
-                        'in_igst_rate':         prod_igst_rate,
-                        'fl_net_price':         prod_net_price,
-                        'fl_row_total':         prod_row_total,
-                        'prod_comments':        prod_comments
+                'in_cust_id':           customer_id,
+                'in_product_id':        prod_id, 
+                'st_part_no':           prod_part_No,
+                'st_product_desc':      prod_desc,
+                'stn_hsn_no':           prod_hsn,
+                'st_maker':             prod_maker,
+                'in_pro_qty':           prodqty,
+                'fl_pro_unitprice':     prod_unit_price,
+                'fl_discount':          prod_disc_price,
+                'in_pro_deli_period':   prod_deli_period,
+                'in_igst_rate':         prod_igst_rate,
+                'fl_net_price':         prod_net_price,
+                'fl_row_total':         prod_row_total,
+                'prod_comments':        prod_comments
             });
         });
         $("#hid_order_prod_details").val(JSON.stringify(sel_prods_details)); 
@@ -583,7 +593,6 @@ $(document).ready(function(){
                 var customer_info = {};
                 quotation_info.length = 0;
                 customer_info.length = 0;
-                
                 var shipping_addr           = $("#shipping_addr").val();
                 var shipping_email          = $("#shipping_email").val();
                 var shipping_telephone      = $("#shipping_telephone").val();
@@ -614,27 +623,31 @@ $(document).ready(function(){
                 var product_search          = $('#product_search').val();
                 var prod_qty                = $('#prod_qty').val();
                 var ext_note                = $('#ext_note').val();
-
+                var in_quot_id              = $('#in_quot_id').val();
+                var flg_same_as_bill_add    = $('#flg_same_as_bill_add').val();
+               
                 quotation_info = {
-                            'st_shiping_add' 	: shipping_addr,
-                            'st_shiping_city' 	: shipping_city,
-                            'st_shiping_state'      : shipping_state,
-                            'st_shiping_pincode'    : shipping_pin_code,
-                            'st_shipping_email'     : shipping_email,
-                            'st_shipping_phone'     : shipping_telephone,
-                            'shipping_lanline'      : shipping_lanline,
-                            'st_enq_ref_number'     : enq_ref_no,
-                            'dt_ref'                : dt_ref,
-                            'fl_fleight_pack_charg' : fl_fleight_pack_charg,
-                            'st_tax_text' 			: st_tax_text,
-                            'fl_sales_tax_amt' 		: vat_tax,
-                            'bill_add_id' 			: bill_add_id,
-                            'payment_turm'			: payment_turm,
-                            'currency'				: currency,
-                            'st_landline'			: auto_pop_landline,
-                            'fl_nego_amt' 			: fl_nego_amt,
-                            'product_search'        : product_search,
-                            'prod_qty'               : prod_qty
+                    'in_quot_id'    : in_quot_id,
+                    'st_shiping_add' 	    : shipping_addr,
+                    'st_shiping_city' 	    : shipping_city,
+                    'st_shiping_state'      : shipping_state,
+                    'st_shiping_pincode'    : shipping_pin_code,
+                    'st_shipping_email'     : shipping_email,
+                    'st_shipping_phone'     : shipping_telephone,
+                    'shipping_lanline'      : shipping_lanline,
+                    'st_enq_ref_number'     : enq_ref_no,
+                    'dt_ref'                : dt_ref,
+                    'fl_fleight_pack_charg' : fl_fleight_pack_charg,
+                    'st_tax_text' 			: st_tax_text,
+                    'fl_sales_tax_amt' 		: vat_tax,
+                    'bill_add_id' 			: bill_add_id,
+                    'payment_turm'			: payment_turm,
+                    'currency'				: currency,
+                    'st_landline'			: auto_pop_landline,
+                    'fl_nego_amt' 			: fl_nego_amt,
+                    'product_search'        : product_search,
+                    'prod_qty'              : prod_qty,
+                    'flg_same_as_bill_add'  : flg_same_as_bill_add
                 };
                 var auto_pop_phone = $("#auto_pop_phone").val();
                 var auto_pop_company = $(".auto_pop_company").val();
@@ -935,7 +948,7 @@ $(document).ready(function(){
                         partNoHtml = prod_part_No;
                         var classs = 'prod_part_No';
                     }
-                    html = '<tr id="prod_row_'+products.pro_id+'" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="'+prod_maker+'" name="prod_maker" class="prod_maker"><td class="'+classs+'">'+partNoHtml+'</td><td  style="word-break:break-all;" class="prod_desc">'+prod_desc+'</td><td  style="word-break:break-all;" class="prod_hsn">'+hsn+'</td><td style="word-break:break-all;"  class="prod_qty"><input style="width: 35px; box-shadow: 2px 5px #888888;" placeholder="Qty" type="text" class="quentity_changed prodqty_'+products.pro_id+'" id="'+products.pro_id+'" value="'+prodqty+'" onchange="quentity_changed(this);"></td><td style="word-break:break-all;" >'+products.in_pro_qty+'</td><td style="word-break:break-all;" ><div class="tooltips"><input style="width: 75px; box-shadow: 2px 5px #888888;" type="text" placeholder="Price" class="prod_unit_price prod_unit_price_'+products.pro_id+'" value="'+prod_price+'" onchange="prod_price_changed(this,'+products.pro_id+');"></div></td><td style="word-break:break-all;" ><input type="text" style="width: 55px; box-shadow: 2px 5px #888888;" placeholder="Disc %" class="prod_disc_price prod_disc_price_'+products.pro_id+'" value="'+prod_discount+'" onchange="prod_discount_price_changed(this,'+products.pro_id+');"></td><td style="width: 75px; text-align: left;word-break:break-all;"  class="prod_net_price prod_netprice_'+products.pro_id+'">'+prod_net_price+'</td><td style="text-align: left;word-break:break-all;width: 60px;" class=" "><input style="width: 45px; box-shadow: 2px 5px #888888;" type="text" placeholder="IGST" class="prod_igst_rate prod_igst_rate_'+products.pro_id+'" id="'+products.pro_id+'" value="'+prod_igst_rate+'" onchange="igsttaxrate_changed(this);"></td><td style="text-align: left;word-break:break-all;width: 75px;" class="prod_row_total prod_row_total_'+products.pro_id+'">'+prod_row_total+' &ensp;</td><td class="prod_deli_period prod_deli_period_'+products.pro_id+'" style="word-break:break-all;"><textarea type="text" style="word-break:break-all; width:75px; box-shadow: 2px 5px #888888; background:#FFFFE3;" placeholder="Write . . . !" name="prod_deli_period" id="prod_deli_period_'+products.pro_id+'" value=""></textarea></td><td><div class="row"><div class="form-group col-2"><a href="javascript:void(0);" title="Add Comments" class="addCF_'+products.pro_id+' btn" style="float:left;padding:0" onClick=addCF('+products.pro_id+'); data-id='+products.pro_id+'><span class="pull-left"> </span>  <i class="fa fa-comment"></i></a></div><div class="form-group col-2"><a href="javascript:void(0);" title="Delete Product" onClick=delete_row('+products.pro_id+'); class="btn" style="float:left;padding:0"><span class="pull-left"> </span>  <i class="fa fa-trash text-danger"></i></a></div></td></div>\n\</tr>';
+                    html = '<tr id="prod_row_'+products.pro_id+'" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="'+prod_maker+'" name="prod_maker" class="prod_maker"><td class="'+classs+'">'+partNoHtml+'</td><td  style="word-break:break-all;" class="prod_desc td-limit">'+prod_desc+'</td><td  style="word-break:break-all;" class="prod_hsn">'+hsn+'</td><td style="word-break:break-all;"  class="prod_qty"><input style="width: 35px; box-shadow: 2px 5px #888888;" placeholder="Qty" type="text" class="quentity_changed prodqty_'+products.pro_id+'" id="'+products.pro_id+'" value="'+prodqty+'" onchange="quentity_changed(this);"></td><td style="word-break:break-all;" >'+products.in_pro_qty+'</td><td style="word-break:break-all;" ><div class="tooltips"><input style="width: 75px; box-shadow: 2px 5px #888888;" type="text" placeholder="Price" class="prod_unit_price prod_unit_price_'+products.pro_id+'" value="'+prod_price+'" onchange="prod_price_changed(this,'+products.pro_id+');"></div></td><td style="word-break:break-all;" ><input type="text" style="width: 55px; box-shadow: 2px 5px #888888;" placeholder="Disc %" class="prod_disc_price prod_disc_price_'+products.pro_id+'" value="'+prod_discount+'" onchange="prod_discount_price_changed(this,'+products.pro_id+');"></td><td style="width: 75px; text-align: left;word-break:break-all;"  class="prod_net_price prod_netprice_'+products.pro_id+'">'+prod_net_price+'</td><td style="text-align: left;word-break:break-all;width: 60px;" class=" "><input style="width: 45px; box-shadow: 2px 5px #888888;" type="text" placeholder="IGST" class="prod_igst_rate prod_igst_rate_'+products.pro_id+'" id="'+products.pro_id+'" value="'+prod_igst_rate+'" onchange="igsttaxrate_changed(this);"></td><td style="text-align: left;word-break:break-all;width: 75px;" class="prod_row_total prod_row_total_'+products.pro_id+'">'+prod_row_total+' &ensp;</td><td class="prod_deli_period prod_deli_period_'+products.pro_id+'" style="word-break:break-all;"><textarea type="text" style="word-break:break-all; width:75px; box-shadow: 2px 5px #888888; background:#FFFFE3;" placeholder="Write . . . !" name="prod_deli_period" id="prod_deli_period_'+products.pro_id+'" value=""></textarea></td><td><div class="row"><div class="form-group col-2"><a href="javascript:void(0);" title="Add Comments" class="addCF_'+products.pro_id+' btn" style="float:left;padding:0" onClick=addCF('+products.pro_id+'); data-id='+products.pro_id+'><span class="pull-left"> </span>  <i class="fa fa-comment"></i></a></div><div class="form-group col-2"><a href="javascript:void(0);" title="Delete Product" onClick=delete_row('+products.pro_id+'); class="btn" style="float:left;padding:0"><span class="pull-left"> </span>  <i class="fa fa-trash text-danger"></i></a></div></td></div>\n\</tr>';
                 }
                 console.log(html);
                 $( html ).insertBefore( "#tblsummary .tr-subtotal" );
@@ -1034,30 +1047,32 @@ $(document).ready(function(){
                 var in_quot_id              = $('#in_quot_id').val();
                 var flg_same_as_bill_add    = $('#flg_same_as_bill_add').val();
                 var in_quot_num             = $('#in_quot_num').val();
+                var in_cust_id              = $('#in_cust_id').val();
 
                 quotation_info = {
-                            'in_quot_id'            : in_quot_id,
-                            'in_quot_num'           : in_quot_num,
-                            'st_shiping_add' 	    : shipping_addr,
-                            'flg_same_as_bill_add'  : flg_same_as_bill_add,
-                            'st_shiping_city' 	    : shipping_city,
-                            'st_shiping_state'      : shipping_state,
-                            'st_shiping_pincode'    : shipping_pin_code,
-                            'st_shipping_email'     : shipping_email,
-                            'st_shipping_phone'     : shipping_telephone,
-                            'shipping_lanline'      : shipping_lanline,
-                            'st_enq_ref_number'     : enq_ref_no,
-                            'dt_ref'                : dt_ref,
-                            'fl_fleight_pack_charg' : fl_fleight_pack_charg,
-                            'st_tax_text' 			: st_tax_text,
-                            'fl_sales_tax_amt' 		: vat_tax,
-                            'bill_add_id' 			: bill_add_id,
-                            'payment_turm'			: payment_turm,
-                            'currency'				: currency,
-                            'st_landline'			: auto_pop_landline,
-                            'fl_nego_amt' 			: fl_nego_amt,
-                            'product_search'        : product_search,
-                            'prod_qty'               : prod_qty
+                    'in_quot_id'            : in_quot_id,
+                    'in_quot_num'           : in_quot_num,
+                    'in_cust_id'            : in_cust_id,
+                    'st_shiping_add' 	    : shipping_addr,
+                    'flg_same_as_bill_add'  : flg_same_as_bill_add,
+                    'st_shiping_city' 	    : shipping_city,
+                    'st_shiping_state'      : shipping_state,
+                    'st_shiping_pincode'    : shipping_pin_code,
+                    'st_shipping_email'     : shipping_email,
+                    'st_shipping_phone'     : shipping_telephone,
+                    'shipping_lanline'      : shipping_lanline,
+                    'st_enq_ref_number'     : enq_ref_no,
+                    'dt_ref'                : dt_ref,
+                    'fl_fleight_pack_charg' : fl_fleight_pack_charg,
+                    'st_tax_text' 			: st_tax_text,
+                    'fl_sales_tax_amt' 		: vat_tax,
+                    'bill_add_id' 			: bill_add_id,
+                    'payment_turm'			: payment_turm,
+                    'currency'				: currency,
+                    'st_landline'			: auto_pop_landline,
+                    'fl_nego_amt' 			: fl_nego_amt,
+                    'product_search'        : product_search,
+                    'prod_qty'               : prod_qty
                 };
 
                 var auto_pop_phone = $("#auto_pop_phone").val();

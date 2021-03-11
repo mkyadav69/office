@@ -265,7 +265,7 @@ div[style*="margin: 16px 0"] {
 							$igst_amt_calculation = $row_val->fl_net_price*$row_val->in_igst_rate/100;
 							$out_of_mh_gst_total +=$igst_amt_calculation;
 							?>
-                             <td  style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $row_val['in_igst_rate']; ?>%</td>
+                             <td  style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $row_val->in_igst_rate; ?>%</td>
                              <td  style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><?php echo $currency." ".$igst_amt_calculation; ?></td>
 							<?php } else if(isset($customer_info['st_cust_state']) and $customer_info['st_cust_state'] == 'Maharashtra') {
 								$igst_cgst_rate = $row_val->in_igst_rate / 2;
