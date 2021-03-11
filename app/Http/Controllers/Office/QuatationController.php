@@ -374,7 +374,7 @@ class QuatationController extends Controller
             'st_shiping_city'			=>	trim(!empty($qt_info['st_shiping_city']) ? $qt_info['st_shiping_city'] : ''),
             'st_shiping_state'			=>	trim(!empty($qt_info['st_shiping_state']) ? $qt_info['st_shiping_state'] : ''),
             'st_shiping_pincode'        =>	!empty($qt_info['st_shiping_pincode']) ? $qt_info['st_shiping_pincode'] : '',
-            'flg_same_as_bill_add'      =>	trim(!empty($qt_info['st_shiping_pincode']) ? $qt_info['st_shiping_pincode'] : ''),
+            'flg_same_as_bill_add'      =>	trim(!empty($qt_info['flg_same_as_bill_add']) ? $qt_info['flg_same_as_bill_add'] : ''),
             'st_shipping_phone'			=>	trim(!empty($qt_info['st_shipping_phone']) ? $qt_info['st_shipping_phone'] : ''), 
             'st_shipping_email'			=>	trim(!empty($qt_info['st_shipping_email']) ? $qt_info['st_shipping_email'] : ''),
             'st_landline'				=>	trim(!empty($qt_info['shipping_lanline']) ? $qt_info['shipping_lanline'] : ''),
@@ -451,6 +451,7 @@ class QuatationController extends Controller
             $data['preparing_by'] = trim($cust_info['preparing_by']);
             $data['format']	= $this->get_PDF_format_by_id($qt_info['bill_add_id']);
             $data['BillAddress'] = $this->get_PDF_BillAddress();
+            
             $cur = Config::get('constant.currency');
             $qt_info = $request->quotation_info;
             $c_format = $qt_info['currency'];
@@ -495,7 +496,9 @@ class QuatationController extends Controller
             ]);
 		}
         $in_cust_id = QuatationAdd::where('in_quot_id', $in_quot_id)->first()->toArray();
+        $in_cust_id_new = $in_cust_id;
         $in_cust_id = $in_cust_id['in_cust_id'];
+        $in_quot_num = $in_cust_id_new['in_quot_num'];
 		$data = [];
         $data['in_quot_id'] 		= 	$in_quot_id;
         $data['in_cust_id'] 		= 	$in_cust_id;
@@ -503,8 +506,9 @@ class QuatationController extends Controller
 		$data['product_list']		=	$this->get_product_list();
 		$data['quotation_details'] 	= 	$this->get_quotation_details($in_quot_id, $in_cust_id);
 		$data['customer_info'] 		= 	$this->get_customer_by_id($in_cust_id);
-		$data['banks_info']			=	$this->get_banks();
         $data['owner']              =   $this->owner_list();
+        $data['in_quot_id']         =   $in_quot_id;
+        $data['in_quot_num']         =   $in_quot_num;
         $indian_all_states = Config::get('constant.indian_all_states');
         $notify = Notify::get();
         $company = Customer::get();
@@ -587,39 +591,26 @@ class QuatationController extends Controller
         $quotation_create_date = date('Y-m-d', strtotime($qt_info['dt_ref']));
         $generate_quot_no =	$this->generate_quot_no($branchname, $in_branch_id, $quotation_create_date);
         $pdfFilePath = "quotation_".time()."_".date('dmy').".pdf";
-        $quotation_info	=	[
-            'in_quot_num'				=>	$generate_quot_no,
-            'in_cust_id'				=>	trim(!empty($cust_info['customer_id']) ? $cust_info['customer_id'] : ''),
+        $update_quotation_info	=	[
             'st_shiping_add'			=>	!empty($qt_info['st_shiping_add']) ? $qt_info['st_shiping_add'] : '',
             'st_shiping_city'			=>	trim(!empty($qt_info['st_shiping_city']) ? $qt_info['st_shiping_city'] : ''),
             'st_shiping_state'			=>	trim(!empty($qt_info['st_shiping_state']) ? $qt_info['st_shiping_state'] : ''),
             'st_shiping_pincode'        =>	!empty($qt_info['st_shiping_pincode']) ? $qt_info['st_shiping_pincode'] : '',
-            'flg_same_as_bill_add'      =>	trim(!empty($qt_info['st_shiping_pincode']) ? $qt_info['st_shiping_pincode'] : ''),
+            'flg_same_as_bill_add'      =>	trim(!empty($qt_info['flg_same_as_bill_add']) ? $qt_info['flg_same_as_bill_add'] : ''),
             'st_shipping_phone'			=>	trim(!empty($qt_info['st_shipping_phone']) ? $qt_info['st_shipping_phone'] : ''), 
             'st_shipping_email'			=>	trim(!empty($qt_info['st_shipping_email']) ? $qt_info['st_shipping_email'] : ''),
-            'st_landline'				=>	trim(!empty($qt_info['shipping_lanline']) ? $qt_info['shipping_lanline'] : ''),
             'st_enq_ref_number'			=>	trim(!empty($qt_info['st_enq_ref_number']) ? $qt_info['st_enq_ref_number'] : ''),
-            'st_tin_number'				=>	'27700707469',
-            'st_pay_turm'				=>	trim(!empty($qt_info['payment_turm']) ? $qt_info['payment_turm'] : ''),
-            'st_ext_note'				=>	trim(!empty($cust_info['ext_note']) ? $cust_info['ext_note'] : ''),
-            'fl_sub_total'				=>  trim(!empty($qt_info['fl_nego_amt']) ? $qt_info['fl_nego_amt'] : ''),
-            'fl_sales_tax'				=>	0,
-            'fl_sales_tax_amt'			=>	0,
-            'in_sal_tax_id'				=>	0,
-            'final_amount'				=>	trim(!empty($qt_info['fl_nego_amt']) ? $qt_info['fl_nego_amt'] : ''),
-            'fl_nego_amt'				=>	trim(!empty($qt_info['fl_nego_amt']) ? $qt_info['fl_nego_amt'] : ''),
-            'in_deliv_priod'			=>	30,
             'st_ref_through'			=>	$qt_info['st_enq_ref_number'],
-            'preparing_by'              =>  trim(!empty($cust_info['preparing_by']) ? $cust_info['preparing_by'] : ''),
+            'stn_pdf_name'				=>	$pdfFilePath,
             'lead_from'                 =>	trim(!empty($cust_info['lead_from']) ? $cust_info['lead_from'] : ''),
             'notify_group'              =>	trim(!empty($cust_info['notify_group']) ? $cust_info['notify_group'] : ''),
             'owner_id'                  =>	trim(!empty($cust_info['select_owner']) ? $cust_info['select_owner'] : ''),
-            'in_tax_branch_id'			=>	1, //trim(!empty($qt_info['bill_add_id']) ? $qt_info['bill_add_id'] : ''),
-            'dt_ref'                    =>	$quotation_create_date,
-            'in_login_id'				=>	$admin_user_id,
-            'in_branch_id'				=>	$in_branch_id,
-            'stn_pdf_name'				=>	$pdfFilePath,
             'st_currency_applied'       =>	trim(!empty($qt_info['currency']) ? $qt_info['currency'] : ''),
+            'dt_ref'                    =>	$quotation_create_date,
+            'st_tin_number'				=>	'27700707469',
+            'st_pay_turm'				=>	trim(!empty($qt_info['payment_turm']) ? $qt_info['payment_turm'] : ''),
+            'st_landline'				=>	trim(!empty($qt_info['shipping_lanline']) ? $qt_info['shipping_lanline'] : ''),
+            'st_ext_note'				=>	trim(!empty($cust_info['ext_note']) ? $cust_info['ext_note'] : ''),
             'dt_date_modified'			=>	Carbon::now(),
         ];
                                 
@@ -633,87 +624,60 @@ class QuatationController extends Controller
             'st_cust_mobile'    => 	trim(!empty($cust_info['st_cust_mobile']) ? $cust_info['st_cust_mobile'] : ''),
             'st_cust_email'     => 	trim(!empty($cust_info['auto_pop_email']) ? $cust_info['auto_pop_email'] : ''),
         ];
+
         $upadte_customer  = Customer::where('in_cust_id', $cust_info['customer_id'])->update($update_customer_array);
         $totalproarray = 0;
-        
         # Update Reason
-        if($this->quotation_model->update_quotation($in_quot_id,$update_quotation_info)) {
+        if($this->update_quotation($qt_info['in_quot_id'], $update_quotation_info)) {
             $update_quot_reason	= [
                 'int_branch_id'	=>	1, // get branch name from session,
                 'user_id'		=>	\Auth::user()->id,
                 'notify_group'  =>  trim(!empty($cust_info['notify_group']) ? $cust_info['notify_group'] : ''),
                 'dt_modify'		=>	Carbon::now(),
             ];
-            $update_reason = \DB::table('tbl_quot_format')->where('stn_qtn_ord_no', $data['quotation_info']['in_quot_num'])->update($update_quot_reason);
-            $this->quotation_model->update_quot_reason($data['quotation_info']['in_quot_num'],$update_quot_reason);
-            
-            
-    $data['quotation_details'] 	= $this->quotation_model->get_quotation_details($in_quot_id,$in_cust_id);
-    $data['quotation_info'] 	= $this->quotation_model->get_quotation_info($in_quot_id, $in_cust_id);
-    $data['customer_info'] 		= $this->customer_model->get_customer_by_id($in_cust_id);
-    $data['taxes_by_id']		= $this->quotation_model->get_taxes_by_id($data['quotation_info']['in_sal_tax_id']);
-    $data['preparing_by'] 		= trim($this->input->post('quot_pre_by'));
-    $data['tax_text']			= $this->input->post('tax_text');
-    $data['format']				= $this->quotation_model->get_PDF_format_by_id($data['quotation_info']['in_tax_branch_id']);
-    $data['BillAddress']		= $this->quotation_model->get_PDF_BillAddress();
-    $emailto                    = $data['customer_info']['st_cust_email'];
-                                        
-    if(trim($this->input->post('shipping_email')) != trim($data['customer_info']['st_cust_email'])){
-        $emailto = $this->input->post('shipping_email') .",".$this->input->post('auto_pop_email');
-    }
-    
-    //this data will be passed on to the view
-    //$data['the_content']='mPDF and CodeIgniter are cool!';
-
-    //load the view, pass the variable and do not show it but "save" the output into $html variable
-    $html= $this->load->view('email/view-quotenew',$data,true); 
-    
-    //this the the PDF filename that user will get to download
-    
-    //print_r($html);exit;
-    //load mPDF library
-    $this->load->library('m_pdf');
-    
-    //actually, you can pass mPDF parameter on this load() function
-    $pdf = $this->m_pdf->load();
-    $pdf->SetWatermarkImage('http://office.chromatographyworld.com/assets/images/Scan.jpg');
-    $pdf->showWatermarkImage = true;
-    $pdf->use_kwt = true;
-    $pdf->addPage('L'); //generate the Lanscap view PDF!
-    //generate the PDF!
-    $pdf->WriteHTML($html);
-    //offer it to user via browser download! (The PDF won't be saved on your server HDD)
-    // $pdf->Output($pdfFilePath, "D");
-    $pdf->Output('quotationpdf/'.$pdfFilePath,'F');
-    
-    // $this->mpdf->Output($_SERVER['DOCUMENT_ROOT']."quotationpdf/".$pdfFilePath,'F');
-                                        
-    $cc_cust_emails = explode("," , $data['customer_info']['st_cust_email_cc']);
-    $cc_admin_emails = explode("," , $this->session->userdata('st_cc_email'));
-    $this->email->from('speed@chromatographyworld.com', 'Quotation Attached');
-    //$this->email->to($emailto);
-    $this->email->to($this->session->userdata('st_admin_email'));
-    //$this->email->cc($cc_cust_emails);
-    $this->email->cc($cc_admin_emails);
-    // $this->email->bcc($cc_admin_emails);
-    //$this->email->bcc($cc_admin_emails);
-    $this->email->subject('Quotation Attached ');
-    // $emailbody = $this->load->view('email/view-quote',$data,true);
-    $emailbody = "Dear Sir/Madam,<br><br>";
-    $emailbody .= "We thank you for your valuable enquiry.<br><br>";
-    $emailbody .= "Please find an attached Quotation in response to your enquiry. <br><br>";
-    $emailbody .= "While we assure you of our best services, we look forward to your  valuable  order.<br><br>";
-    $emailbody .= "Thank You.<br><br>";
-    $this->email->message($emailbody);
-    $this->email->attach("quotationpdf/".$pdfFilePath);
-    $this->email->send();
-
-$this->session->set_flashdata('editquotation_msg_succ', 'Quotation has been updated successfully.');
-} else {
-$this->session->set_flashdata('editquotation_msg_err', 'Something went wrong while updating quotation information, please try again.');
-}
-        			
-        
+            $update_quote_format = \DB::table('tbl_pending')->where('stn_qtn_ord_no', $qt_info['in_quot_num'])->update($update_quot_reason);            
+            $data['quotation_details'] 	= $this->get_quotation_details($qt_info['in_quot_id'],$cust_info['customer_id']);
+            $data['quotation_info'] 	= $this->get_quotation_info($qt_info['in_quot_id'], $cust_info['customer_id']);
+            $data['customer_info'] 		= $this->get_customer_by_id($cust_info['customer_id']);
+            $data['preparing_by'] 		= trim($cust_info['preparing_by']);
+            $data['format']				= $this->get_PDF_format_by_id($qt_info['bill_add_id']);
+            $data['BillAddress']		= $this->get_PDF_BillAddress();
+            $emailto                    = $data['customer_info']['st_cust_email'];                      
+            if(trim($qt_info['st_shipping_email']) != trim($cust_info['auto_pop_email'])){
+                $emailto = $qt_info['st_shipping_email'] .",".$cust_info['auto_pop_email'];
+            }
+            $cur = Config::get('constant.currency');
+            $qt_info = $request->quotation_info;
+            $c_format = $qt_info['currency'];
+            $data['currency']  = $cur[$c_format];
+            # Generate PDF
+            $year = date("Y");    
+            $path = 'pdf_'.$year;
+            if(file_exists($path)==false){
+                mkdir($path,0777);
+            }
+            $path = public_path($path.'/');
+            $pdf = PDF::loadView('email.view_quotenew', $data)->setPaper('a4', 'landscape');
+            $pdf->save($path.$pdfFilePath);
+            $pdf = public_path($path.$pdfFilePath);
+            // $cc_cust_emails = explode("," , $data['customer_info']['st_cust_email_cc']);
+            // $cc_admin_emails = explode("," , $this->session->userdata('st_cc_email'));
+            // $this->email->from('speed@chromatographyworld.com', 'Quotation Attached');
+            // $this->email->to($this->session->userdata('st_admin_email'));
+            // $this->email->cc($cc_admin_emails);
+            // $this->email->subject('Quotation Attached ');
+            // $emailbody = "Dear Sir/Madam,<br><br>";
+            // $emailbody .= "We thank you for your valuable enquiry.<br><br>";
+            // $emailbody .= "Please find an attached Quotation in response to your enquiry. <br><br>";
+            // $emailbody .= "While we assure you of our best services, we look forward to your  valuable  order.<br><br>";
+            // $emailbody .= "Thank You.<br><br>";
+            // $this->email->message($emailbody);
+            // $this->email->attach("quotationpdf/".$pdfFilePath);
+            // $this->email->send();
+            return response()->json(['code'=>200, 'success' => 'Quotation updated successfully.']);
+        } else {
+            return response()->json(['code'=>400, 'error' => 'Something went wrong while adding quotation, please try again.']);
+        }
     }
 
     public function test(){

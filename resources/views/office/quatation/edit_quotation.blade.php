@@ -92,19 +92,25 @@ datepicker,
         @endif
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title" id="largeModalLabel">Update Quotations</h5>
+            </div>
+            <div class="modal-header">
                 <h5 class="modal-title" id="largeModalLabel">Lead & Group</h5>
             </div>
             <form action="" name="quotation_form" id="quotation_form"  role="form">
                     <div class="modal-body">
+                        <input type="hidden" name="in_quot_id" id="in_quot_id" value="{{$data['in_quot_id']}}"/>
+                        <input type="hidden" name="flg_same_as_bill_add" id="flg_same_as_bill_add" value=""/>
+                        <input type="hidden" name="in_quot_num" id="in_quot_num" value="{{$data['in_quot_num']}}"/>
                         <div class="row form-group">
                             <div class="form-group col-4">
                                 <label for="company" class="form-control-label required">Quatation Prepared By </label>
-                                <input type="text" name="preparing_by" required id="preparing_by" placeholder="Quatation Prepared By" value="{{ old('preparing_by', $data['quotation_info']['prepare_by']) }}" class="form-control">
+                                <input type="text" name="preparing_by" required id="preparing_by" placeholder="Quatation Prepared By" value="{{ old('preparing_by', !empty($data['quotation_info']['preparing_by']) ? $data['quotation_info']['preparing_by'] : '') }}" class="form-control">
                                 <b><small class="help-block form-text text-danger" id="error_preparing_by"></small></b>
                             </div>
                             <div class="form-group col-4">
                                 <label for="lead_from" class=" form-control-label required">Lead From</label>
-                                <input type="text" name="lead_from" required id="lead_from" placeholder="Lead From" value="{{ old('lead_from', $data['quotation_info']['lead_from']) }}" class="form-control">
+                                <input type="text" name="lead_from" required id="lead_from" placeholder="Lead From" value="{{ old('lead_from', !empty($data['quotation_info']['lead_from']) ? $data['quotation_info']['lead_from'] : '') }}" class="form-control">
                                 <small class="help-block form-text text-danger" id="error_lead_from"></small>
                             </div>
                             <input type="hidden" name="_token"  id="token" value="{{ csrf_token() }}">
@@ -114,7 +120,7 @@ datepicker,
                                     <option value="">Select Notify Group</option>
                                     @if(!empty($notify))
                                         @foreach($notify as $id=>$name)
-                                            <option value="{{$id}}" {{ old('notify_group' , $id) == $data['quotation_info']['notify_group'] ? "selected" : "" }}>{{$name}}</option>
+                                            <option value="{{$id}}" {{ old('notify_group' , $id) == (!empty($data['quotation_info']['notify_group']) ? $data['quotation_info']['notify_group'] : '' ) ? "selected" : "" }}>{{$name}}</option>
                                         @endforeach
                                     @else
                                         <p>Notification are not available.</p>
@@ -135,7 +141,7 @@ datepicker,
                                     <option value="">Select Company</option>
                                     @if(!empty($company))
                                         @foreach($company as $id=>$name)
-                                            <option value="{{$id}}" {{ old('customer_id' , $id) == $data['customer_info']['in_cust_id'] ? "selected" : "" }} >{{$name}}</option>
+                                            <option value="{{$id}}" {{ old('customer_id' , $id) == (!empty($data['customer_info']['in_cust_id']) ? $data['customer_info']['in_cust_id'] : '' ) ? "selected" : "" }} >{{$name}}</option>
                                         @endforeach
                                     @else
                                         <p>Company are not available.</p>
@@ -145,7 +151,7 @@ datepicker,
                             </div>
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Enq Ref. No. </label>
-                                    <input type="text" id="enq_ref_no" required  name="enq_ref_no" placeholder="Enq Ref. No." value="{{ old('enq_ref_no', $data['quotation_info']['st_enq_ref_number']) }}" class="form-control">
+                                    <input type="text" id="enq_ref_no" required  name="enq_ref_no" placeholder="Enq Ref. No." value="{{ old('enq_ref_no', !empty($data['quotation_info']['st_enq_ref_number']) ? $data['quotation_info']['st_enq_ref_number'] : '') }}" class="form-control">
                                     <small class="help-block form-text text-danger" id="error_st_enq_ref_number"></small>
                             </div>
 
@@ -163,13 +169,13 @@ datepicker,
                         <div class="row form-group">
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Company Name </label>
-                                    <input type="text" id="company_name" required name="company_name" placeholder="Company Name" value="{{ old('company_name', $data['customer_info']['st_com_name']) }}" class="form-control auto_pop_company">
+                                    <input type="text" id="company_name" required name="company_name" placeholder="Company Name" value="{{ old('company_name', !empty($data['customer_info']['st_com_name']) ? $data['customer_info']['st_com_name'] : '') }}" class="form-control auto_pop_company">
                                     <small class="help-block form-text text-danger" id="error_st_com_name"></small>
                             </div>
 
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Contact Person</label>
-                                    <input type="text" id="auto_pop_cust_name" required name="auto_pop_cust_name" placeholder="Contact Person" value="{{ old('auto_pop_cust_name', $data['customer_info']['st_con_person1']) }}" class="form-control auto_pop_cust_name">
+                                    <input type="text" id="auto_pop_cust_name" required name="auto_pop_cust_name" placeholder="Contact Person" value="{{ old('auto_pop_cust_name', !empty($data['customer_info']['st_con_person1']) ? $data['customer_info']['st_con_person1'] : '') }}" class="form-control auto_pop_cust_name">
                                     <small class="help-block form-text text-danger" id="error_auto_pop_cust_name"></small>
                             </div>
 
@@ -195,7 +201,7 @@ datepicker,
                                                 <label for="text-input" class=" form-control-label required">Address</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <textarea type="text" id="auto_pop_addr" required name="auto_pop_addr" placeholder="Address" class="form-control auto_pop_addr">{{ old('auto_pop_addr', $data['customer_info']['st_com_address']) }}</textarea>
+                                                <textarea type="text" id="auto_pop_addr" required name="auto_pop_addr" placeholder="Address" class="form-control auto_pop_addr">{{ old('auto_pop_addr', !empty($data['customer_info']['st_com_address']) ? $data['customer_info']['st_com_address'] : '' ) }}</textarea>
                                                 <small class="help-block form-text text-danger" id="error_auto_pop_addr"></small>
                                             </div>
                                         </div>
@@ -204,7 +210,7 @@ datepicker,
                                                 <label for="email-input" class="form-control-label required">State</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="auto_pop_state" required name="auto_pop_state" placeholder="State" value="{{ old('auto_pop_state', $data['customer_info']['st_cust_state']) }}" class="form-control auto_pop_state">
+                                                <input type="text" id="auto_pop_state" required name="auto_pop_state" placeholder="State" value="{{ old('auto_pop_state', !empty($data['customer_info']['st_cust_state']) ? $data['customer_info']['st_cust_state'] : '') }}" class="form-control auto_pop_state">
                                                 <small class="help-block form-text text-danger" id="error_auto_pop_state"></small>
                                             </div>
                                         </div>
@@ -214,7 +220,7 @@ datepicker,
                                                 <label for="email-input" class=" form-control-label required">City</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="auto_pop_city" required name="auto_pop_city" placeholder="City" value="{{ old('auto_pop_city', $data['customer_info']['st_cust_city']) }}" class="form-control auto_pop_city">
+                                                <input type="text" id="auto_pop_city" required name="auto_pop_city" placeholder="City" value="{{ old('auto_pop_city', !empty($data['customer_info']['st_cust_city']) ? $data['customer_info']['st_cust_city'] : '') }}" class="form-control auto_pop_city">
                                                 <small class="help-block form-text text-danger" id="error_auto_pop_city"></small>
                                             </div>
                                         </div>
@@ -224,7 +230,7 @@ datepicker,
                                                 <label for="email-input" class=" form-control-label required">Pin Code</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="auto_pop_pincod" required name="auto_pop_pincod" placeholder="Pin Code" value="{{ old('auto_pop_pincod', $data['customer_info']['in_pincode']) }}" class="form-control auto_pop_pincod">
+                                                <input type="text" id="auto_pop_pincod" required name="auto_pop_pincod" placeholder="Pin Code" value="{{ old('auto_pop_pincod', !empty($data['customer_info']['in_pincode']) ? $data['customer_info']['in_pincode'] : '') }}" class="form-control auto_pop_pincod">
                                                 <small class="help-block form-text text-danger" id="error_auto_pop_pincod"></small>
                                             </div>
                                         </div>
@@ -234,7 +240,7 @@ datepicker,
                                                 <label for="email-input" class="form-control-label required">Mobile No.</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="auto_pop_phone" required name="auto_pop_phone" placeholder="Mobile No." value="{{ old('auto_pop_phone', $data['customer_info']['st_cust_mobile']) }}" class="form-control auto_pop_phone">
+                                                <input type="text" id="auto_pop_phone" required name="auto_pop_phone" placeholder="Mobile No." value="{{ old('auto_pop_phone', !empty($data['customer_info']['st_cust_mobile']) ? $data['customer_info']['st_cust_mobile'] : '') }}" class="form-control auto_pop_phone">
                                                 <small class="help-block form-text text-danger" id="error_auto_pop_phone"></small>
                                             </div>
                                         </div>
@@ -245,7 +251,7 @@ datepicker,
                                                 <label for="email-input" class="form-control-label required">Email</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="email" id="auto_pop_email" required name="auto_pop_email" placeholder="Email" value="{{ old('auto_pop_email', $data['customer_info']['st_cust_email']) }}" class="form-control auto_pop_email">
+                                                <input type="email" id="auto_pop_email" required name="auto_pop_email" placeholder="Email" value="{{ old('auto_pop_email', !empty($data['customer_info']['st_cust_email']) ? $data['customer_info']['st_cust_email'] : '' ) }}" class="form-control auto_pop_email">
                                                 <small class="help-block form-text text-danger" id="error_auto_pop_email"></small>
                                             </div>
                                         </div>
@@ -255,7 +261,7 @@ datepicker,
                                                 <label for="email-input" class=" form-control-label required">Land-Line No.</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="auto_pop_landline" required name="auto_pop_landline" value="{{ old('auto_pop_landline', $data['customer_info']['st_cust_mobile']) }}" placeholder="Land-Line No." class="form-control auto_pop_landline">
+                                                <input type="text" id="auto_pop_landline" required name="auto_pop_landline" value="{{ old('auto_pop_landline', !empty($data['customer_info']['st_cust_mobile']) ? $data['customer_info']['st_cust_mobile'] : '') }}" placeholder="Land-Line No." class="form-control auto_pop_landline">
                                                 <small class="help-block form-text text-danger" id="error_auto_pop_landline"></small>
                                             </div>
                                         </div>
@@ -281,7 +287,7 @@ datepicker,
                                                 <label for="text-input" class=" form-control-label required">Address</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <textarea type="text" id="shipping_addr" required name="shipping_addr" placeholder="Address" class="form-control auto_pop_ship_addr">{{ old('shipping_addr', $data['quotation_info']['st_shiping_add']) }}</textarea>
+                                                <textarea type="text" id="shipping_addr" required name="shipping_addr" placeholder="Address" class="form-control auto_pop_ship_addr">{{ old('shipping_addr', !empty($data['quotation_info']['st_shiping_add']) ? $data['quotation_info']['st_shiping_add'] : '') }}</textarea>
                                                 <small class="help-block form-text text-danger" id="error_st_shiping_add"></small>
                                             </div>
                                         </div>
@@ -311,7 +317,7 @@ datepicker,
                                                 <label for="email-input" class=" form-control-label required">City</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="shipping_city" required name="shipping_city" placeholder="City" value="{{ old('shipping_city', $data['quotation_info']['st_shiping_city']) }}" class="form-control">
+                                                <input type="text" id="shipping_city" required name="shipping_city" placeholder="City" value="{{ old('shipping_city', !empty($data['quotation_info']['st_shiping_city']) ? $data['quotation_info']['st_shiping_city'] : '') }}" class="form-control">
                                                 <small class="help-block form-text text-danger" id="error_st_shiping_city"></small>
                                             </div>
                                         </div>
@@ -321,7 +327,7 @@ datepicker,
                                                 <label for="email-input" class=" form-control-label required">Pin Code</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="shipping_pincod" required name="shipping_pincod" placeholder="Pin Code" value="{{ old('shipping_pincod', $data['quotation_info']['st_shiping_pincode']) }}" class="form-control">
+                                                <input type="text" id="shipping_pincod" required name="shipping_pincod" placeholder="Pin Code" value="{{ old('shipping_pincod', !empty($data['quotation_info']['st_shiping_pincode']) ? $data['quotation_info']['st_shiping_pincode'] : '') }}" class="form-control">
                                                 <small class="help-block form-text text-danger" id="error_st_shiping_pincode"></small>
                                             </div>
                                         </div>
@@ -331,7 +337,7 @@ datepicker,
                                                 <label for="email-input" class="form-control-label required">Mobile No.</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="shipping_telephone" required name="shipping_telephone" value="{{ old('shipping_telephone', $data['quotation_info']['st_shipping_phone']) }}" placeholder="Mobile No." class="form-control">
+                                                <input type="text" id="shipping_telephone" required name="shipping_telephone" value="{{ old('shipping_telephone', !empty($data['quotation_info']['st_shipping_phone']) ? $data['quotation_info']['st_shipping_phone'] : '') }}" placeholder="Mobile No." class="form-control">
                                                 <small class="help-block form-text text-danger" id="error_st_shipping_phone"></small>
                                             </div>
                                         </div>
@@ -342,7 +348,7 @@ datepicker,
                                                 <label for="email-input" class="form-control-label required">Email</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="email" id="shipping_email" required name="shipping_email" placeholder="Email" value="{{ old('shipping_email', $data['quotation_info']['st_shipping_email']) }}" class="form-control">
+                                                <input type="email" id="shipping_email" required name="shipping_email" placeholder="Email" value="{{ old('shipping_email', !empty($data['quotation_info']['st_shipping_email']) ? $data['quotation_info']['st_shipping_email'] : '') }}" class="form-control">
                                                 <small class="help-block form-text text-danger" id="error_st_shipping_email"></small>
                                             </div>
                                         </div>
@@ -352,7 +358,7 @@ datepicker,
                                                 <label for="email-input" class=" form-control-label required">Land-Line No.</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="shipping_lanline" required name="shipping_lanline" value="{{ old('shipping_lanline', $data['quotation_info']['st_landline']) }}" placeholder="Land-Line No." class="form-control">
+                                                <input type="text" id="shipping_lanline" required name="shipping_lanline" value="{{ old('shipping_lanline', !empty($data['quotation_info']['st_landline']) ? $data['quotation_info']['st_landline'] : '') }}" placeholder="Land-Line No." class="form-control">
                                                 <small class="help-block form-text text-danger" id="error_shipping_lanline"></small>
                                             </div>
                                         </div>
@@ -368,7 +374,7 @@ datepicker,
                         <div class="row form-group">
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Search Product</label>
-                                <input type="text" id="product_search" required name="product_search"placeholder="Type part no. / Description name" class="form-control">
+                                <input type="text" id="product_search" name="product_search"placeholder="Type part no. / Description name" class="form-control">
                                 <small class="help-block form-text text-danger" id="error_product_search"></small>
                                 <input type="hidden" id="order_product" value="">
                             </div>
@@ -511,7 +517,12 @@ datepicker,
 <!-- end add record -->
 <script>
 $(document).ready(function(){
-    $('#shippingchk').prop('checked', true);
+    var flg_same_as_bill_add  = {!! json_encode(!empty($data['quotation_info']['flg_same_as_bill_add']) ? $data['quotation_info']['flg_same_as_bill_add'] : '') !!};
+    if(flg_same_as_bill_add == 1){
+        $('#shippingchk').prop('checked', true);
+    }else{
+        $('#shippingchk').prop('checked', false);
+    }
     var product_field = {!! json_encode($data['quotation_details']) !!};
     console.log(product_field);
     if (product_field != null && product_field != ''){
@@ -521,8 +532,6 @@ $(document).ready(function(){
         $( html ).insertBefore( "#tblsummary .tr-subtotal" );
     }
     
-
-
     $('#quotation_form').submit(function(e){
         sel_prods_details.length = 0;
         $(".prod_row_deatails").each(function(key,obj){
@@ -716,7 +725,7 @@ $(document).ready(function(){
     });
 
     $('#customer_id').on('change', function(){
-        // Clear shiping address
+        $('#flg_same_as_bill_add').val(0);
         $('#shippingchk').prop('checked', false);
         $('#shipping_addr').val('');
         $('#shipping_state').val('');
@@ -785,7 +794,7 @@ $(document).ready(function(){
     });
     var owner_field = {!! json_encode($owner) !!};
     var option = '<option value="" > Select Owner</option>';
-    var existing_owner = {!! json_encode($data['customer_info']['owner_id']) !!}; 
+    var existing_owner = {!! json_encode(!empty($data['customer_info']['owner_id']) ? $data['customer_info']['owner_id'] : '') !!}; 
     $.each(owner_field, function (key, field) {
         if(key == existing_owner){
             option = option + '<option value="'+ key +'" selected>'+ field +'</option>';
@@ -800,7 +809,7 @@ $(document).ready(function(){
         if($("#shippingchk").prop('checked') == true){
             var address = $('#auto_pop_addr').val();
             $('#shipping_addr').val(address);
-
+            $('#flg_same_as_bill_add').val(1);
             var state = $('#auto_pop_state').val();
             $('#shipping_state').val(state);
 
@@ -821,6 +830,7 @@ $(document).ready(function(){
         }else{
             // Clear shiping address
             $('#shippingchk').prop('checked', false);
+            $('#flg_same_as_bill_add').val(0);
             $('#shipping_addr').val('');
             $('#shipping_state').val('');
             $('#shipping_pincod').val('');
@@ -1021,9 +1031,16 @@ $(document).ready(function(){
                 var product_search          = $('#product_search').val();
                 var prod_qty                = $('#prod_qty').val();
                 var ext_note                = $('#ext_note').val();
+                var in_quot_id              = $('#in_quot_id').val();
+                var flg_same_as_bill_add    = $('#flg_same_as_bill_add').val();
+                var in_quot_num             = $('#in_quot_num').val();
+
                 quotation_info = {
-                            'st_shiping_add' 	: shipping_addr,
-                            'st_shiping_city' 	: shipping_city,
+                            'in_quot_id'            : in_quot_id,
+                            'in_quot_num'           : in_quot_num,
+                            'st_shiping_add' 	    : shipping_addr,
+                            'flg_same_as_bill_add'  : flg_same_as_bill_add,
+                            'st_shiping_city' 	    : shipping_city,
                             'st_shiping_state'      : shipping_state,
                             'st_shiping_pincode'    : shipping_pin_code,
                             'st_shipping_email'     : shipping_email,
@@ -1079,7 +1096,7 @@ $(document).ready(function(){
                         if(response.code == 200){
                             $('div .success-response').html(response.success);
                             $('#quotation-preview-model').modal('hide');
-                            $('#quoteAdded').modal('show');
+                            $('#quoteUpdate').modal('show');
                         } 
                         setTimeout(function(){ window.location = home_page; }, 2000);
                     },error: function(error) {
@@ -1792,16 +1809,16 @@ $(function(){
     </div>
 @endsection
 
-@section('quoteAdded')
+@section('quoteUpdate')
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="largeModalLabel">Success</h5>
+            <h5 class="modal-title" id="largeModalLabel">Updates</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
-            <p class="text-success">Quotation Added Successfully. </p>
+            <p class="text-success">Quotation updated Successfully. </p>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -1825,7 +1842,7 @@ $(function(){
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Edit</button>
-        <button type="button" class="btn btn-primary add-quotation">Send Quotation</button>&nbsp;&nbsp;
+        <button type="button" class="btn btn-primary add-quotation">Update Quotation</button>&nbsp;&nbsp;
     </div>
 </div>
 @endsection

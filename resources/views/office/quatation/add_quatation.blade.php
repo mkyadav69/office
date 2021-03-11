@@ -92,6 +92,9 @@ datepicker,
         @endif
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title" id="largeModalLabel">Add Quotations</h5>
+            </div>
+            <div class="modal-header">
                 <h5 class="modal-title" id="largeModalLabel">Lead & Group</h5>
             </div>
             <form action="" name="quotation_form" id="quotation_form"  role="form">
@@ -99,6 +102,7 @@ datepicker,
                         <div class="row form-group">
                             <div class="form-group col-4">
                                 <label for="company" class="form-control-label required">Quatation Prepared By </label>
+                                <input type="hidden" name="flg_same_as_bill_add" id="flg_same_as_bill_add" value=""/>
                                 <input type="text" name="preparing_by" required id="preparing_by" placeholder="Quatation Prepared By" class="form-control">
                                 <b><small class="help-block form-text text-danger" id="error_preparing_by"></small></b>
                             </div>
@@ -561,7 +565,6 @@ $(document).ready(function(){
                 var customer_info = {};
                 quotation_info.length = 0;
                 customer_info.length = 0;
-                
                 var shipping_addr           = $("#shipping_addr").val();
                 var shipping_email          = $("#shipping_email").val();
                 var shipping_telephone      = $("#shipping_telephone").val();
@@ -592,12 +595,14 @@ $(document).ready(function(){
                 var product_search          = $('#product_search').val();
                 var prod_qty                = $('#prod_qty').val();
                 var ext_note                = $('#ext_note').val();
+                var flg_same_as_bill_add    = $('#flg_same_as_bill_add').val();
 
                 quotation_info = {
                             'st_shiping_add' 	: shipping_addr,
                             'st_shiping_city' 	: shipping_city,
                             'st_shiping_state'      : shipping_state,
                             'st_shiping_pincode'    : shipping_pin_code,
+                            'flg_same_as_bill_add'  : flg_same_as_bill_add,
                             'st_shipping_email'     : shipping_email,
                             'st_shipping_phone'     : shipping_telephone,
                             'shipping_lanline'      : shipping_lanline,
@@ -613,6 +618,7 @@ $(document).ready(function(){
                             'fl_nego_amt' 			: fl_nego_amt,
                             'product_search'        : product_search,
                             'prod_qty'               : prod_qty
+                            
                 };
                 var auto_pop_phone = $("#auto_pop_phone").val();
                 var auto_pop_company = $(".auto_pop_company").val();
@@ -627,7 +633,6 @@ $(document).ready(function(){
                             'notify_group'          : notify_group,
                             'select_owner'          : select_owner,
                             'auto_pop_addr'         : auto_pop_addr,
-                            'auto_pop_state'        : auto_pop_state,
                             'auto_pop_city'         : auto_pop_city,
                             'auto_pop_pincod'       : auto_pop_pincod,
                             'auto_pop_phone'        : auto_pop_phone,
@@ -705,6 +710,7 @@ $(document).ready(function(){
     $('#customer_id').on('change', function(){
         // Clear shiping address
         $('#shippingchk').prop('checked', false);
+        $('#flg_same_as_bill_add').val(0);
         $('#shipping_addr').val('');
         $('#shipping_state').val('');
         $('#shipping_pincod').val('');
@@ -782,7 +788,7 @@ $(document).ready(function(){
         if($("#shippingchk").prop('checked') == true){
             var address = $('#auto_pop_addr').val();
             $('#shipping_addr').val(address);
-
+            $('#flg_same_as_bill_add').val(1);
             var state = $('#auto_pop_state').val();
             $('#shipping_state').val(state);
 
@@ -803,6 +809,7 @@ $(document).ready(function(){
         }else{
             // Clear shiping address
             $('#shippingchk').prop('checked', false);
+            $('#flg_same_as_bill_add').val(0);
             $('#shipping_addr').val('');
             $('#shipping_state').val('');
             $('#shipping_pincod').val('');
@@ -1003,6 +1010,7 @@ $(document).ready(function(){
                 var product_search          = $('#product_search').val();
                 var prod_qty                = $('#prod_qty').val();
                 var ext_note                = $('#ext_note').val();
+                var flg_same_as_bill_add    = $('#flg_same_as_bill_add').val();
                 quotation_info = {
                             'st_shiping_add' 	: shipping_addr,
                             'st_shiping_city' 	: shipping_city,
@@ -1011,6 +1019,7 @@ $(document).ready(function(){
                             'st_shipping_email'     : shipping_email,
                             'st_shipping_phone'     : shipping_telephone,
                             'shipping_lanline'      : shipping_lanline,
+                            'flg_same_as_bill_add'  : flg_same_as_bill_add,
                             'st_enq_ref_number'     : enq_ref_no,
                             'dt_ref'                : dt_ref,
                             'fl_fleight_pack_charg' : fl_fleight_pack_charg,
