@@ -36,6 +36,9 @@
   display: inline-block;
   border-bottom: 1px dotted black;
 }
+.section__content--p30{
+    padding: 0px 0px;
+}
 
 .tooltips .tooltiptext {
   visibility: hidden;

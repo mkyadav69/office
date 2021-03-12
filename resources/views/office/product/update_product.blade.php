@@ -7,6 +7,9 @@
     color: red;
     padding-left: 5px;
 }
+.section__content--p30{
+    padding: 0px 0px;
+}
 </style>
 <!-- add records -->
     <div class="col col-md-12">

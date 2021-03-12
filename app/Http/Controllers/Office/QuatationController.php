@@ -631,6 +631,7 @@ class QuatationController extends Controller
         ];
 
         $upadte_customer  = Customer::where('in_cust_id', $cust_info['customer_id'])->update($update_customer_array);
+        dd($upadte_customer);
         $totalproarray = 0;
         # Update Reason
         if($this->update_quotation($qt_info['in_quot_id'], $update_quotation_info)) {

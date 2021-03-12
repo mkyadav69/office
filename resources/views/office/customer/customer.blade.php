@@ -8,7 +8,7 @@
     padding-left: 5px;
 }
 .td-limit {
-    max-width: 200px;
+    max-width: 150px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;

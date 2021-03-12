@@ -13,6 +13,9 @@
     white-space: nowrap;
     overflow: hidden;
 }
+.section__content--p30{
+    padding: 0px 0px;
+}
 </style>
 <div class="row">
     @if (session()->has('message'))
