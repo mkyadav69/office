@@ -811,7 +811,7 @@ $(document).ready(function(){
     });
     var owner_field = {!! json_encode($owner) !!};
     var option = '<option value="" > Select Owner</option>';
-    var existing_owner = {!! json_encode(!empty($data['customer_info']['owner_id']) ? $data['customer_info']['owner_id'] : '') !!}; 
+    var existing_owner = {!! json_encode(!empty($data['owner_id']) ? $data['owner_id'] : '') !!}; 
     $.each(owner_field, function (key, field) {
         if(key == existing_owner){
             option = option + '<option value="'+ key +'" selected>'+ field +'</option>';
@@ -1051,12 +1051,13 @@ $(document).ready(function(){
                 var in_quot_id              = $('#in_quot_id').val();
                 var flg_same_as_bill_add    = $('#flg_same_as_bill_add').val();
                 var in_quot_num             = $('#in_quot_num').val();
-                var in_cust_id              = $('#in_cust_id').val();
+                var existing_cust_id        = $('#in_cust_id').val();
+                var customer_id             = $( "#customer_id option:selected" ).val();
 
                 quotation_info = {
                     'in_quot_id'            : in_quot_id,
                     'in_quot_num'           : in_quot_num,
-                    'in_cust_id'            : in_cust_id,
+                    'existing_cust_id'      : existing_cust_id,
                     'st_shiping_add' 	    : shipping_addr,
                     'flg_same_as_bill_add'  : flg_same_as_bill_add,
                     'st_shiping_city' 	    : shipping_city,
@@ -1131,8 +1132,6 @@ $(document).ready(function(){
         } 
     });
 });
-
-   
 
     // $(window).load(function(){
     //     $('#editquotation_msg_err').modal('show');

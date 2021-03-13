@@ -68,10 +68,17 @@
                 processing: true,
                 orderCellsTop: true,
                 fixedHeader: true,
+                dom: 'Bfrtip',
                 sort : true,
                 scrollX: true,
                 bDestroy: true,
                 destroy: true,
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5'
+                ],
                 autoWidth: false,
                 sort : true,
                 cache: true,
@@ -98,8 +105,8 @@
                 ],
                 "columns":[
                     { data: 'cust_pin_no', className: "text td_ellipsis", title : 'GST No'},
-                    { data: 'st_com_name', className: "text td_ellipsis", title : 'Company Name'},
-                    { data: 'st_cust_city', className: "select td_ellipsis", title : 'View Branch Wise'},
+                    { data: 'st_com_name', className: "text td_ellipsis td-limit", title : 'Company Name'},
+                    { data: 'st_cust_city', className: "select td_ellipsis td-limit", title : 'View Branch Wise'},
                     { data: 'st_cust_state', className: "text td_ellipsis", title : 'State'},
                     { data: 'st_regions', className: "select td_ellipsis",title : 'View Regions Wise'},
                     { data: 'dt_created', title : 'Created At'},

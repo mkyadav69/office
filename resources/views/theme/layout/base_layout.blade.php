@@ -48,6 +48,11 @@
     <script src="{{asset('vendor/bootstrap-4.1/popper.min.js')}}"></script>
     <script src="{{asset('vendor/bootstrap-4.1/bootstrap.min.js')}}"></script>
 
+
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+
+
 </head>
 
 <body class="animsition">

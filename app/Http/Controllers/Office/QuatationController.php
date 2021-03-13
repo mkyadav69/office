@@ -36,7 +36,6 @@ class QuatationController extends Controller
 	}
 
     public function get_quotation_info($quotation_id = '', $in_cust_id = '', $quotation_unoque_id = ''){
-		$result = \DB::table('tbl_quotation');
         $c = QuatationAdd::where(['in_quot_id'=>$quotation_id, 'in_cust_id'=>$in_cust_id])->first();
         if(!empty($c)){
             $c = $c->toArray();
@@ -223,7 +222,7 @@ class QuatationController extends Controller
     }
 
     public function getQuatation(){
-        $quatation = QuatationAdd::get();
+        $quatation = QuatationAdd::take(5)->get();
         $customer  = Customer::get();
         $owner  = Owner::get();
         $branch = Config::get('constant.branch_wise');
@@ -442,6 +441,7 @@ class QuatationController extends Controller
                 'in_cust_id' => trim($cust_info['customer_id']),
                 'in_quot_id' => $inserted_quotation_id
             ];
+
             foreach($quotation_prod_details_arr as $key => $val_arr) {
                 foreach($val_arr as $val_arr_key => $val_arr_val) {
                     $quotation_details_arr[$val_arr_key] = $val_arr_val;
@@ -499,22 +499,22 @@ class QuatationController extends Controller
                 'message' => 'Invalide Quatation id.',
             ]);
 		}
-        $in_cust_id = QuatationAdd::where('in_quot_id', $in_quot_id)->first()->toArray();
-        $in_cust_id_new = $in_cust_id;
-        $in_cust_id = $in_cust_id['in_cust_id'];
+        $existing_quote = QuatationAdd::where('in_quot_id', $in_quot_id)->first()->toArray();
+        $in_cust_id_new = $existing_quote;
+        $in_cust_id = $in_cust_id_new['in_cust_id'];
         $in_quot_num = $in_cust_id_new['in_quot_num'];
         $in_cust_id = $in_cust_id_new['in_cust_id'];
 		$data = [];
-        $data['in_quot_id'] 		= 	$in_quot_id;
 		$data['quotation_info']	    =	$this->get_quotation_by_id($in_quot_id);
 		$data['product_list']		=	$this->get_product_list();
 		$data['quotation_details'] 	= 	$this->get_quotation_details($in_quot_id, $in_cust_id);
 		$data['customer_info'] 		= 	$this->get_customer_by_id($in_cust_id);
         $data['owner']              =   $this->owner_list();
         $data['in_quot_id']         =   $in_quot_id;
-        $data['in_quot_num']         =   $in_quot_num;
+        $data['in_quot_num']        =   $in_quot_num;
         $data['in_cust_id']         =   $in_cust_id;
-        $indian_all_states = Config::get('constant.indian_all_states');
+        $data['owner_id']           =   $existing_quote['owner_id'];
+        $indian_all_states          =   Config::get('constant.indian_all_states');
         $notify = Notify::get();
         $company = Customer::get();
         $product = Product::all('pro_id', 'st_part_No', 'str_igst_rate', 'fl_pro_price', 'in_pro_disc', 'st_pro_desc', 'stn_hsn_no', 'in_pro_qty', 'dt_price_update');
@@ -576,7 +576,7 @@ class QuatationController extends Controller
         }else{
             $customer = ''; 
         }
-        
+
         return view('office.quatation.edit_quotation', compact('data', 'notify', 'company', 'currency', 'payment_term', 'owner', 'cust_details', 'new_product_list','indian_all_states'));
     }
 
@@ -597,6 +597,7 @@ class QuatationController extends Controller
         $generate_quot_no =	$this->generate_quot_no($branchname, $in_branch_id, $quotation_create_date);
         $pdfFilePath = "quotation_".time()."_".date('dmy').".pdf";
         $update_quotation_info	=	[
+            'in_cust_id'                =>  $cust_info['customer_id'],
             'st_shiping_add'			=>	!empty($qt_info['st_shiping_add']) ? $qt_info['st_shiping_add'] : '',
             'st_shiping_city'			=>	trim(!empty($qt_info['st_shiping_city']) ? $qt_info['st_shiping_city'] : ''),
             'st_shiping_state'			=>	trim(!empty($qt_info['st_shiping_state']) ? $qt_info['st_shiping_state'] : ''),
@@ -607,6 +608,7 @@ class QuatationController extends Controller
             'st_enq_ref_number'			=>	trim(!empty($qt_info['st_enq_ref_number']) ? $qt_info['st_enq_ref_number'] : ''),
             'st_ref_through'			=>	$qt_info['st_enq_ref_number'],
             'stn_pdf_name'				=>	$pdfFilePath,
+            'preparing_by'              =>  $cust_info['preparing_by'],
             'lead_from'                 =>	trim(!empty($cust_info['lead_from']) ? $cust_info['lead_from'] : ''),
             'notify_group'              =>	trim(!empty($cust_info['notify_group']) ? $cust_info['notify_group'] : ''),
             'owner_id'                  =>	trim(!empty($cust_info['select_owner']) ? $cust_info['select_owner'] : ''),
@@ -629,21 +631,35 @@ class QuatationController extends Controller
             'st_cust_mobile'    => 	trim(!empty($cust_info['st_cust_mobile']) ? $cust_info['st_cust_mobile'] : ''),
             'st_cust_email'     => 	trim(!empty($cust_info['auto_pop_email']) ? $cust_info['auto_pop_email'] : ''),
         ];
-
-        $upadte_customer  = Customer::where('in_cust_id', $cust_info['customer_id'])->update($update_customer_array);
-        dd($upadte_customer);
+        $cust_id  ='';
+        if($cust_info['customer_id'] == $qt_info['existing_cust_id']){
+            $upadte_customer  = Customer::where('in_cust_id', $qt_info['existing_cust_id'])->update($update_customer_array);
+            $cust_id = $qt_info['existing_cust_id'];
+        }
+        $cust_id = $cust_info['customer_id'];
         $totalproarray = 0;
         # Update Reason
+        $quotation_details_arr = [
+            'in_cust_id' => trim($cust_id),
+            'in_quot_id' => $qt_info['in_quot_id']
+        ];
         if($this->update_quotation($qt_info['in_quot_id'], $update_quotation_info)) {
+            $existing_data = \DB::table('quotation_details')->where('in_quot_id', $qt_info['in_quot_id'])->delete();
+            foreach($quotation_prod_details_arr as $key => $val_arr) {
+                foreach($val_arr as $val_arr_key => $val_arr_val) {
+                    $quotation_details_arr[$val_arr_key] = $val_arr_val;
+                }
+                $inserted_quotation_detail_id = $this->insert_quotation_deatal($quotation_details_arr);
+            }
             $update_quot_reason	= [
                 'int_branch_id'	=>	1, // get branch name from session,
                 'user_id'		=>	\Auth::user()->id,
                 'notify_group'  =>  trim(!empty($cust_info['notify_group']) ? $cust_info['notify_group'] : ''),
                 'dt_modify'		=>	Carbon::now(),
             ];
-            $update_quote_format = \DB::table('tbl_pending')->where('stn_qtn_ord_no', $qt_info['in_quot_num'])->update($update_quot_reason);            
-            $data['quotation_details'] 	= $this->get_quotation_details($qt_info['in_quot_id'],$cust_info['customer_id']);
-            $data['quotation_info'] 	= $this->get_quotation_info($qt_info['in_quot_id'], $qt_info['in_cust_id']);
+            $update_quote_format = \DB::table('tbl_pending')->where('stn_qtn_ord_no', $qt_info['in_quot_num'])->update($update_quot_reason);     
+            $data['quotation_details'] 	= $this->get_quotation_details($qt_info['in_quot_id'], $qt_info['existing_cust_id']);
+            $data['quotation_info'] 	= $this->get_quotation_info($qt_info['in_quot_id'],  $cust_info['customer_id']);
             $data['customer_info'] 		= $this->get_customer_by_id($cust_info['customer_id']);
             $data['preparing_by'] 		= trim($cust_info['preparing_by']);
             $data['format']				= $this->get_PDF_format_by_id($qt_info['bill_add_id']);
