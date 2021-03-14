@@ -12,17 +12,19 @@ class CreateTblYoutubeTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tbl_youtube', function(Blueprint $table)
-		{
-			$table->integer('id', true);
-			$table->string('str_title', 200)->nullable();
-			$table->text('str_link', 65535)->nullable();
-			$table->integer('branch_id')->nullable();
-			$table->integer('user_id')->nullable();
-			$table->dateTime('dt_created')->nullable();
-			$table->dateTime('dt_modify')->nullable();
-			$table->integer('is_deleted')->nullable()->default(0);
-		});
+		if (!Schema::hasTable('tbl_youtube')) {
+			Schema::create('tbl_youtube', function(Blueprint $table)
+			{
+				$table->integer('id', true);
+				$table->string('str_title', 200)->nullable();
+				$table->text('str_link', 65535)->nullable();
+				$table->integer('branch_id')->nullable();
+				$table->integer('user_id')->nullable();
+				$table->dateTime('dt_created')->nullable();
+				$table->dateTime('dt_modify')->nullable();
+				$table->integer('is_deleted')->nullable()->default(0);
+			});
+		}
 	}
 
 

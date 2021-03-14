@@ -11,15 +11,17 @@ class CreateCiSessionsTable extends Migration {
 	 * @return void
 	 */
 	public function up()
-	{
-		Schema::create('ci_sessions', function(Blueprint $table)
-		{
-			$table->string('session_id', 40)->default('0')->primary();
-			$table->string('ip_address', 45)->default('0');
-			$table->string('user_agent', 120);
-			$table->integer('last_activity')->unsigned()->default(0)->index('last_activity_idx');
-			$table->text('user_data', 65535);
-		});
+	{	
+		if (!Schema::hasTable('ci_sessions')) {
+			Schema::create('ci_sessions', function(Blueprint $table)
+			{
+				$table->string('session_id', 40)->default('0')->primary();
+				$table->string('ip_address', 45)->default('0');
+				$table->string('user_agent', 120);
+				$table->integer('last_activity')->unsigned()->default(0)->index('last_activity_idx');
+				$table->text('user_data', 65535);
+			});
+		}
 	}
 
 

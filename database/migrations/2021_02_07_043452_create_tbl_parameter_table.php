@@ -12,16 +12,18 @@ class CreateTblParameterTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tbl_parameter', function(Blueprint $table)
-		{
-			$table->integer('id', true);
-			$table->string('p_name', 250);
-			$table->string('column_name', 250);
-			$table->dateTime('dt_created');
-			$table->string('branch_id', 250)->nullable();
-			$table->integer('user_id')->nullable();
-			$table->integer('is_deleted')->default(0);
-		});
+		if (!Schema::hasTable('tbl_parameter')) {
+			Schema::create('tbl_parameter', function(Blueprint $table)
+			{
+				$table->integer('id', true);
+				$table->string('p_name', 250);
+				$table->string('column_name', 250);
+				$table->dateTime('dt_created');
+				$table->string('branch_id', 250)->nullable();
+				$table->integer('user_id')->nullable();
+				$table->integer('is_deleted')->default(0);
+			});
+		}
 	}
 
 

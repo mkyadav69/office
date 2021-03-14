@@ -12,14 +12,16 @@ class CreateCountryTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('country', function(Blueprint $table)
-		{
-			$table->integer('id', true);
-			$table->string('sortname', 3);
-			$table->string('country_name', 150);
-			$table->boolean('status');
-			$table->boolean('is_deleted');
-		});
+		if (!Schema::hasTable('country')) {
+			Schema::create('country', function(Blueprint $table)
+			{
+				$table->integer('id', true);
+				$table->string('sortname', 3);
+				$table->string('country_name', 150);
+				$table->boolean('status');
+				$table->boolean('is_deleted');
+			});
+		}
 	}
 
 

@@ -12,14 +12,16 @@ class CreateTblAdminLogTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tbl_admin_log', function(Blueprint $table)
-		{
-			$table->integer('log_id', true);
-			$table->integer('adminlog_id')->nullable();
-			$table->string('st_ipaddress', 100)->nullable();
-			$table->dateTime('dt_loggedin')->nullable();
-			$table->dateTime('dt_logout')->nullable();
-		});
+		if (!Schema::hasTable('tbl_admin_log')) {
+			Schema::create('tbl_admin_log', function(Blueprint $table)
+			{
+				$table->integer('log_id', true);
+				$table->integer('adminlog_id')->nullable();
+				$table->string('st_ipaddress', 100)->nullable();
+				$table->dateTime('dt_loggedin')->nullable();
+				$table->dateTime('dt_logout')->nullable();
+			});
+		}
 	}
 
 

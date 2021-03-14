@@ -12,17 +12,19 @@ class CreateTblApplicationpdfTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tbl_applicationpdf', function(Blueprint $table)
-		{
-			$table->integer('id', true);
-			$table->string('str_title', 250)->nullable();
-			$table->string('str_pdf', 250)->nullable();
-			$table->integer('branch_id')->nullable();
-			$table->integer('user_id')->nullable();
-			$table->dateTime('dt_created')->nullable();
-			$table->dateTime('dt_modify')->nullable();
-			$table->integer('is_deleted')->nullable()->default(0);
-		});
+		if (!Schema::hasTable('tbl_applicationpdf')) {
+			Schema::create('tbl_applicationpdf', function(Blueprint $table)
+			{
+				$table->integer('id', true);
+				$table->string('str_title', 250)->nullable();
+				$table->string('str_pdf', 250)->nullable();
+				$table->integer('branch_id')->nullable();
+				$table->integer('user_id')->nullable();
+				$table->dateTime('dt_created')->nullable();
+				$table->dateTime('dt_modify')->nullable();
+				$table->integer('is_deleted')->nullable()->default(0);
+			});
+		}
 	}
 
 

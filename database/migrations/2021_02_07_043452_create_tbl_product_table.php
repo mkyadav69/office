@@ -12,8 +12,7 @@ class CreateTblProductTable extends Migration {
 	 */
 	public function up()
 	{
-		if(!Schema::hasTable('users')){
-
+		if(!Schema::hasTable('tbl_product')){
 			Schema::create('tbl_product', function(Blueprint $table)
 			{
 				$table->integer('pro_id', true);

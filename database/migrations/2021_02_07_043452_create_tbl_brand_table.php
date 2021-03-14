@@ -12,14 +12,16 @@ class CreateTblBrandTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tbl_brand', function(Blueprint $table)
-		{
-			$table->integer('id', true);
-			$table->string('brand_name', 250)->nullable();
-			$table->dateTime('dt_created')->nullable();
-			$table->dateTime('dt_modify')->nullable();
-			$table->integer('is_deleted')->nullable()->default(0);
-		});
+		if (!Schema::hasTable('tbl_brand')) {
+			Schema::create('tbl_brand', function(Blueprint $table)
+			{
+				$table->integer('id', true);
+				$table->string('brand_name', 250)->nullable();
+				$table->dateTime('dt_created')->nullable();
+				$table->dateTime('dt_modify')->nullable();
+				$table->integer('is_deleted')->nullable()->default(0);
+			});
+		}
 	}
 
 

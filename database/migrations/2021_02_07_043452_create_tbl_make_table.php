@@ -12,19 +12,21 @@ class CreateTblMakeTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tbl_make', function(Blueprint $table)
-		{
-			$table->integer('in_make_id', true);
-			$table->string('stn_make');
-			$table->string('make_type')->nullable();
-			$table->boolean('is_authorized');
-			$table->string('dt_created')->nullable();
-			$table->string('dt_modify')->nullable();
-			$table->boolean('status');
-			$table->integer('is_deleted')->nullable();
-			$table->string('str_img_src', 512)->nullable();
-			$table->string('small_logo_image', 512);
-		});
+		if (!Schema::hasTable('tbl_make')) {
+			Schema::create('tbl_make', function(Blueprint $table)
+			{
+				$table->integer('in_make_id', true);
+				$table->string('stn_make');
+				$table->string('make_type')->nullable();
+				$table->boolean('is_authorized');
+				$table->string('dt_created')->nullable();
+				$table->string('dt_modify')->nullable();
+				$table->boolean('status');
+				$table->integer('is_deleted')->nullable();
+				$table->string('str_img_src', 512)->nullable();
+				$table->string('small_logo_image', 512);
+			});
+		}
 	}
 
 

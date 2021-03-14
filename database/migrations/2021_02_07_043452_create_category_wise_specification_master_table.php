@@ -12,13 +12,15 @@ class CreateCategoryWiseSpecificationMasterTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('category_wise_specification_master', function(Blueprint $table)
-		{
-			$table->integer('id', true);
-			$table->string('selected_category_id', 512);
-			$table->text('specification_id', 65535);
-			$table->boolean('status');
-		});
+		if (!Schema::hasTable('category_wise_specification_master')) {
+			Schema::create('category_wise_specification_master', function(Blueprint $table)
+			{
+				$table->integer('id', true);
+				$table->string('selected_category_id', 512);
+				$table->text('specification_id', 65535);
+				$table->boolean('status');
+			});
+		}
 	}
 
 

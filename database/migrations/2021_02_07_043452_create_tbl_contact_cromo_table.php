@@ -12,16 +12,18 @@ class CreateTblContactCromoTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tbl_contact_cromo', function(Blueprint $table)
-		{
-			$table->integer('id', true);
-			$table->string('st_name', 250)->nullable();
-			$table->text('st_company', 65535)->nullable();
-			$table->string('st_email', 200)->nullable();
-			$table->integer('int_phone')->nullable();
-			$table->text('st_msg', 65535)->nullable();
-			$table->dateTime('dt_created')->nullable();
-		});
+		if (!Schema::hasTable('tbl_contact_cromo')) {
+			Schema::create('tbl_contact_cromo', function(Blueprint $table)
+			{
+				$table->integer('id', true);
+				$table->string('st_name', 250)->nullable();
+				$table->text('st_company', 65535)->nullable();
+				$table->string('st_email', 200)->nullable();
+				$table->integer('int_phone')->nullable();
+				$table->text('st_msg', 65535)->nullable();
+				$table->dateTime('dt_created')->nullable();
+			});
+		}
 	}
 
 

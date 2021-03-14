@@ -12,14 +12,16 @@ class CreateCitiesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('cities', function(Blueprint $table)
-		{
-			$table->integer('id', true);
-			$table->string('city_name', 30);
-			$table->integer('state_id');
-			$table->boolean('status')->default(1);
-			$table->boolean('is_deleted')->default(0);
-		});
+		if (!Schema::hasTable('cities')) {
+			Schema::create('cities', function(Blueprint $table)
+			{
+				$table->integer('id', true);
+				$table->string('city_name', 30);
+				$table->integer('state_id');
+				$table->boolean('status')->default(1);
+				$table->boolean('is_deleted')->default(0);
+			});
+		}
 	}
 
 

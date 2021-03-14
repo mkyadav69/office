@@ -12,13 +12,16 @@ class CreateProductSpecificationTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('product_specification', function(Blueprint $table)
-		{
-			$table->integer('id', true);
-			$table->integer('product_id');
-			$table->integer('specification_id');
-			$table->text('specification_value', 65535)->nullable();
-		});
+
+		if (!Schema::hasTable('product_specification')) {
+			Schema::create('product_specification', function(Blueprint $table)
+			{
+				$table->integer('id', true);
+				$table->integer('product_id');
+				$table->integer('specification_id');
+				$table->text('specification_value', 65535)->nullable();
+			});
+		}
 	}
 
 

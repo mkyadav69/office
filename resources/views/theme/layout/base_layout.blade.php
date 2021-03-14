@@ -54,6 +54,14 @@
 
 
 </head>
+<style>
+.navbar-sidebar .navbar__list li a {
+    display: block;
+    color: #555;
+    font-size: 16px;
+    padding: 8px 0;
+}
+</style>
 
 <body class="animsition">
     <div class="page-wrapper">

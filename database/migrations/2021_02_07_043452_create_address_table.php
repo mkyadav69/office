@@ -12,17 +12,19 @@ class CreateAddressTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('address', function(Blueprint $table)
-		{
-			$table->integer('id', true);
-			$table->string('place', 256);
-			$table->string('address', 256);
-			$table->string('phone', 256);
-			$table->string('email', 256);
-			$table->string('map', 1024);
-			$table->boolean('status');
-			$table->boolean('is_deleted')->default(0);
-		});
+		if (!Schema::hasTable('address')) {
+			Schema::create('address', function(Blueprint $table)
+			{
+				$table->integer('id', true);
+				$table->string('place', 256);
+				$table->string('address', 256);
+				$table->string('phone', 256);
+				$table->string('email', 256);
+				$table->string('map', 1024);
+				$table->boolean('status');
+				$table->boolean('is_deleted')->default(0);
+			});
+		}
 	}
 
 

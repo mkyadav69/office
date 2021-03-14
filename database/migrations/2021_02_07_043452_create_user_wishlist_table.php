@@ -12,13 +12,15 @@ class CreateUserWishlistTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('user_wishlist', function(Blueprint $table)
-		{
-			$table->integer('id', true);
-			$table->integer('user_id');
-			$table->integer('product_id');
-			$table->dateTime('date_time');
-		});
+		if (!Schema::hasTable('user_wishlist')) {
+			Schema::create('user_wishlist', function(Blueprint $table)
+			{
+				$table->integer('id', true);
+				$table->integer('user_id');
+				$table->integer('product_id');
+				$table->dateTime('date_time');
+			});
+		}
 	}
 
 

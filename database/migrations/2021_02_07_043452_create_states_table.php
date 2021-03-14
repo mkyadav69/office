@@ -12,14 +12,16 @@ class CreateStatesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('states', function(Blueprint $table)
-		{
-			$table->integer('id', true);
-			$table->string('state_name', 30);
-			$table->integer('country_id')->default(1);
-			$table->boolean('status')->default(1);
-			$table->boolean('is_deleted')->default(0);
-		});
+		if (!Schema::hasTable('states')) {
+			Schema::create('states', function(Blueprint $table)
+			{
+				$table->integer('id', true);
+				$table->string('state_name', 30);
+				$table->integer('country_id')->default(1);
+				$table->boolean('status')->default(1);
+				$table->boolean('is_deleted')->default(0);
+			});
+		}
 	}
 
 

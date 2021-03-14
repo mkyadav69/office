@@ -12,15 +12,17 @@ class CreateTblCustownerTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tbl_custowner', function(Blueprint $table)
-		{
-			$table->integer('id', true);
-			$table->string('owner_name', 200);
-			$table->text('owner_desc', 65535)->nullable();
-			$table->dateTime('dt_created')->nullable();
-			$table->dateTime('dt_modify')->nullable();
-			$table->integer('is_deleted')->nullable()->default(0);
-		});
+		if (!Schema::hasTable('tbl_custowner')) {
+			Schema::create('tbl_custowner', function(Blueprint $table)
+			{
+				$table->integer('id', true);
+				$table->string('owner_name', 200);
+				$table->text('owner_desc', 65535)->nullable();
+				$table->dateTime('dt_created')->nullable();
+				$table->dateTime('dt_modify')->nullable();
+				$table->integer('is_deleted')->nullable()->default(0);
+			});
+		}
 	}
 
 

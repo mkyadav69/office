@@ -3,7 +3,7 @@
         <ul class="list-unstyled navbar__list">
             <li class="{{ request()->is('show-customer') ? 'active' :( request()->is('show-owner') ? 'active' : '' )}} has-sub">
                 <a class="js-arrow" href="#">
-                    <i class="fas fa-users"></i>Customers & Owner</a>
+                    <i class="fas fa-users"></i>Customer & Owner</a>
                 <ul class="list-unstyled navbar__sub-list js-sub-list">
                     <li>
                         <a href="{{route('show_customer')}}">Manage Customers</a>
@@ -72,7 +72,7 @@
             
             <li class="{{ request()->is('show-parameter') ? 'active' : '' }} has-sub">
                 <a class="js-arrow" href="#">
-                    <i class="fas fa-glass"></i>Products Parameter</a>
+                    <i class="fas fa-glass"></i>Parameter</a>
                 <ul class="list-unstyled navbar__sub-list js-sub-list">
                     <li>
                         <a href="{{ route('show_parameter')}}">Manage Parameter</a>
@@ -161,6 +161,29 @@
                 <ul class="list-unstyled navbar__sub-list js-sub-list">
                     <li>
                         <a href="{{route('show_courier')}}">Manage Courier</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="{{ request()->is('show-courier') ? 'active' : '' }} has-sub">
+                <a class="js-arrow" href="#">
+                    <i class="fas  fa-user"></i>Users</a>
+                <ul class="list-unstyled navbar__sub-list js-sub-list">
+                    <li>
+                        <a href="{{route('show_courier')}}">Manage User</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="{{ request()->is('show-courier') ? 'active' : '' }} has-sub">
+                <a class="js-arrow" href="#">
+                    <i class="fas  fa-user"></i>Roles & Permissions</a>
+                <ul class="list-unstyled navbar__sub-list js-sub-list">
+                    <li>
+                        <a href="{{route('show_courier')}}">Manage Roles</a>
+                    </li>
+                    <li>
+                        <a href="{{route('show_courier')}}">Manage Permissions</a>
                     </li>
                 </ul>
             </li>
