@@ -87,8 +87,8 @@
                 processing: '<i class="fa fa-spinner fa-spin fa-4x fa-fw" style="font-size:60px;"></i>'
             },
             lengthMenu: [
-                [5, 15, 20, -1],
-                [5, 15, 20, "All"]
+                [10, 20, 30, -1],
+                [10, 20, 30, "All"]
             ],
             "columns":[
                 { data: 'category', title : 'Category', className: "text td-limit"},

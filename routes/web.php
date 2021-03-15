@@ -17,17 +17,24 @@ use App\Http\Controllers\Office\CategoryController;
 use App\Http\Controllers\Office\ProductController;
 use App\Http\Controllers\Office\NotifyController;
 
+# 1. User
+Route::get('show-user', [AuthController::class, 'showUser'])->name('show_user');
+Route::get('get-user', [AuthController::class, 'getUser'])->name('get_user');
+Route::post('store-user', [AuthController::class, 'storeUser'])->name('store_user');
+Route::post('edit-user/{id}',  [AuthController::class, 'updateUser'])->name('edit_user');
+
+Route::get('login', [AuthController::class, 'viewLogin'])->name('login');
+Route::post('user-login', [AuthController::class, 'getLogin'])->name('get_login');
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::post('delete-customer/{id}',  [CustomerController::class, 'deleteCustomer'])->name('delete_customer');
+
 
 # Register
 Route::get('register', [RegisterController::class, 'viewRegister'])->name('register');
 Route::Post('register', [RegisterController::class, 'storeRegister'])->name('store.register');
 
-# Auth Controller
-Route::get('login', [AuthController::class, 'viewLogin'])->name('login');
-Route::post('user-login', [AuthController::class, 'getLogin'])->name('get_login');
 
-# Log Out
-Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 # Dashboard
 Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');

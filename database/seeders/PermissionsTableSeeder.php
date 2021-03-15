@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
+use Config;
 
 class PermissionsTableSeeder extends Seeder
 {
@@ -16,23 +17,23 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
-        $all  = Permission::get();
-        $permission = [];
-        $new_permsn = [];
-        $persm_custom  = [];
         $db_permission = Permission::all()->pluck('name')->toArray();
-        dd($db_permission);
-        $tables  = \Config::get('modules.permission');
-        $all_master_data_749 = \App\Helpers\ModuleConfig::getAllMasterData();
-        $master  = $all_master_data_749+$tables;
-        foreach ($master as $key => $value) {
-           if(isset($value['permission']) && !empty($value['permission'])){
-                $new_permsn[$key] = $value['permission'];
-           }
+        $feature_list = Config('constant.feature_list');
+        $permission = [];
+        $path = app_path() . "/Models";
+        $model_list = [];
+        $results = scandir($path);
+        if(!empty($results)){
+            foreach ($results as $result) {
+                if ($result === '.' or $result === '..') continue;
+                $filename = strtolower($result);
+                $model_list[] = substr($filename,0,-4);
+            }
         }
-        if(!empty($new_permsn)){
-            foreach ($new_permsn as $idfn=>$v) {
-                foreach($v as $pr){
+      
+        if(!empty($model_list)){
+            foreach ($model_list as $idfn) {
+                foreach($feature_list as $pr){
                     $x = [];
                     $x['display_name'] = ucfirst(str_replace('_',' ' , $pr)).' '.ucfirst(str_replace('_',' ' , $idfn));
                     $x['name'] = $pr.'_'.$idfn;

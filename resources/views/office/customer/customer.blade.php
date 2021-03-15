@@ -68,18 +68,10 @@
                 processing: true,
                 orderCellsTop: true,
                 fixedHeader: true,
-                dom: 'Bfrtip',
                 sort : true,
                 scrollX: true,
                 bDestroy: true,
                 destroy: true,
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5'
-                ],
-                autoWidth: false,
                 sort : true,
                 cache: true,
                 scrollX: true,
@@ -100,8 +92,8 @@
                     processing: '<i class="fa fa-spinner fa-spin fa-4x fa-fw" style="font-size:60px;"></i>'
                 },
                 lengthMenu: [
-                    [5, 15, 20, -1],
-                    [5, 15, 20, "All"]
+                    [10, 20, 30, -1],
+                    [10, 20, 30, "All"]
                 ],
                 "columns":[
                     { data: 'cust_pin_no', className: "text td_ellipsis", title : 'GST No'},

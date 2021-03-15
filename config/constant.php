@@ -2,6 +2,16 @@
 
 return [
 
+    'feature_list' => [
+        'view',
+        'add',
+        'update',
+        'delete',
+        'import',
+        'export',
+        'branch',
+    ],
+
     'branch_wise'=>[
         '1'=>'Mumbai',
         '2'=>'Ahmedabad',									

@@ -34,7 +34,7 @@
     </div>
 
     <div class="table-responsive table--no-card m-b-30">
-        <table id="brand" class="table table-borderless table-striped table-earning" style="width:100%">
+        <table id="brand" class="table table-borderless table--no-card m-b-30 table-striped table-earning" style="width:100%">
         </table>
     </div>
 </div>
@@ -58,8 +58,7 @@
 <script>
     $(document).ready(function(){
         table = $('#brand').DataTable({
-                processing: true,
-                orderCellsTop: true,
+            orderCellsTop: true,
                 fixedHeader: true,
                 sort : true,
                 scrollX: true,
@@ -85,8 +84,8 @@
                     processing: '<i class="fa fa-spinner fa-spin fa-4x fa-fw" style="font-size:60px;"></i>'
                 },
                 lengthMenu: [
-                    [5, 15, 20, -1],
-                    [5, 15, 20, "All"]
+                    [10, 20, 30, -1],
+                    [10, 20, 30, "All"]
                 ],
                 "columns":[
                     { data: 'brand_name', title : 'Brand Name', className: "text"},

@@ -1,5 +1,5 @@
 @extends('theme.layout.base_layout')
-@section('title', 'Category')
+@section('title', 'Users')
 @section('content')
 <style>
 .required:after {
@@ -19,27 +19,24 @@
         </div>
     @endif
     <div class="col-md-12">
-        <h3 class="title-5 m-b-35">Manage Category</h3>
+        <h3 class="title-5 m-b-35">Manage Users</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
                 <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#addModal">
-                    <i class="zmdi zmdi-plus"></i> Add Category
-                </button>
-                <input type="file" class="au-btn-filter">
-                <button class="au-btn-filter">
-                    <i class="zmdi zmdi-upload"></i> Import
+                    <i class="zmdi zmdi-plus"></i> Add User
                 </button>
             </div>
         </div>
-    </div>
+    </div> 
 
     <div class="table-responsive table--no-card m-b-30">
-        <table id="category" class="table table-borderless table-striped table-earning" style="width:100%">
+        <table id="users" class="table table-borderless table-striped table-earning" style="width:100%">
         </table>
     </div>
+    
 </div>
 @if(Session::has('errors'))
-    @if(!empty($errors->category_add->any()))
+    @if(!empty($errors->user_add->any()))
         <script>
             $(document).ready(function(){
                 $('#addModal').modal({show: true});
@@ -49,7 +46,7 @@
 @endif  
 
 @if(Session::has('errors'))
-    @if($errors->category_update->any()))
+    @if($errors->user_update->any()))
         <script>
             $('#editModal').modal('show');  
         </script>
@@ -57,20 +54,21 @@
 @endif
 <script>
     $(document).ready(function(){
-        table = $('#category').DataTable({
+        table = $('#users').DataTable({
                 processing: true,
                 orderCellsTop: true,
                 fixedHeader: true,
                 sort : true,
                 scrollX: true,
                 bDestroy: true,
+                responsive:true,
                 destroy: true,
                 sort : true,
                 cache: true,
                 scrollX: true,
                 responsive: true,
                 ajax: {
-                    url:'{{ route("get_category") }}',
+                    url:'{{ route("get_user") }}',
                 },
                 pageLength: 10,
                 columnDefs: [{ 
@@ -85,14 +83,16 @@
                     processing: '<i class="fa fa-spinner fa-spin fa-4x fa-fw" style="font-size:60px;"></i>'
                 },
                 lengthMenu: [
-                    [10, 20, 30, -1],
-                    [10, 20, 30, "All"]
+                    [5, 10, 20, -1],
+                    [5, 10, 20, "All"]
                 ],
                 "columns":[
-                    { data: 'st_cat_name', title : 'Category Name', className: "text"},
-                    { data: 'st_cat_disc', title : 'Description', className: "text"},
-                    // { data: 'str_img_src', title : 'Category Image'},
-                    { data: 'dt_created', title : 'Created At'},
+                    { data: 'first_name', title : 'First Name', className: "text"},
+                    { data: 'last_name', title : 'Last Name', className: "text"},
+                    { data: 'user_name', title : 'User Name', className: "text"},
+                    { data: 'email', title : 'Email Id', className: "text"},
+                    { data: 'branch_id', title : 'Branch', className: "text"},
+                    { data: 'dt_created', title : 'Created At', className: "text"},
                     {
                         'data': null,
                         'render': function (data, type, row) {
@@ -128,7 +128,7 @@
                             });
                         }
                     });
-                }                            
+                }                                                 
         });
 
         table.on('click', '.edit', function(){
@@ -137,34 +137,19 @@
                 $tr = $tr.prev('.parent');
             }
             var data = table.row($tr).data();
-            console.log(data);
-
-            $('div #category_name').val(data['st_cat_name']);
-            $('div #category_desc').val(data['st_cat_disc']);
-            var field = data['st_product_fields'];
-            var product_field = {!! json_encode($param) !!};
-            if(field != null){
-                var select_array = field.split(',');
-                var option = '';
-                $.each(product_field, function (key, field) {
-                    var check_exist_filed = select_array.includes(field);
-                    if(check_exist_filed == true){
-                        option = option +'<option value="'+ field +'" selected >'+ field +'</option>';
-                    }else{
-                        option = option + '<option value="'+ field +'">'+ field +'</option>';
-                    }
-                });
-                var sel = '<select name="product_param[]" multiple="" required class="form-control">'+option+'</select>';
-                $('div #product_fields').html(sel);
+            $('div #first_name').val(data['first_name']);
+            $('div #last_name').val(data['last_name']);
+            $('div #username').val(data['user_name']);
+            $('div #email').val(data['email']);
+            $('div #cc_email').val(data['cc_email']);
+            if(data['branch_id'] != '' && data['branch_id'] != null){
+                var branch_wise = {!! json_encode($name_branch) !!};
+                var branch = branch_wise[data['branch_id']];
             }else{
-                $.each(product_field, function (key, field) {
-                   option = option + '<option value="'+ field +'">'+ field +'</option>';
-                });
-                var sel = '<select name="product_param[]" multiple="" required class="form-control">'+option+'</select>';
-                $('div #product_fields').html(sel);
+                var branch = '';
             }
-        
-            $('#editForm').attr('action', '/edit-category/'+data['cat_id']);
+            $('div #branch').val(branch);
+            $('#editForm').attr('action', '/edit-user/'+data['id']);
             $('#editModal').modal('show');  
         });
 
@@ -174,7 +159,7 @@
                 $tr = $tr.prev('.parent');
             }
             var data = table.row($tr).data();
-            $('#deleteForm').attr('action', '/delete-category/'+data['cat_id']);
+            $('#deleteForm').attr('action', '/delete-parameter/'+data['id']);
             $('#deleteModal').modal('show');  
         });
     });
@@ -182,46 +167,28 @@
 @endsection
 
 @section('addModal')
-<!-- add  record -->
+<!-- Add  Data-->
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="largeModalLabel">Add Category</h5>
+            <h5 class="modal-title" id="addModal">Add User</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
             <div class="card">
-                <form action="{{route('store_category')}}" method="post">
+                <form action="{{route('store_user')}}" method="post">
                     @csrf
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Category Name</label>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <input type="text" name="category_name" required value="{{old('category_name')}}" placeholder="Enter category name" class="form-control">
-                            @if ($errors->category_add->has('category_name'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->category_add->first('category_name') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Description</label>
+                            <label for="file-input" class=" form-control-label required">First Name</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <textarea placeholder="write description  . . . " name="category_desc"  required class="form-control">{{old('category_desc')}}</textarea>
-                            @if ($errors->category_add->has('category_desc'))
+                            <input type="text" placeholder="Fisrt Name" required name="first_name" value="{{old('first_name')}}" class="form-control">
+                            @if ($errors->user_add->has('first_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->category_add->first('category_desc') }}
+                                    {{ $errors->user_add->first('first_name') }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -232,14 +199,14 @@
 
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Principal Image</label>
+                            <label for="file-input" class=" form-control-label required">Last Name</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="file" name="principal_image" required class="form-control-file">
-                            @if ($errors->category_add->has('principal_image'))
+                            <input type="text" placeholder="Last Name" required name="last_name" value="{{old('last_name')}}" class="form-control">
+                            @if ($errors->user_add->has('last_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->category_add->first('principal_image') }}
+                                    {{ $errors->user_add->first('last_name') }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -250,20 +217,14 @@
 
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="multiple-select" class=" form-control-label">Product Fields Type</label>
+                            <label for="file-input" class=" form-control-label required">Username</label>
                         </div>
-                        <div class="col col-md-9">
-                            <select name="product_param[]" multiple="" required class="form-control">
-                            @if(!empty($param))
-                                @foreach($param as  $p)
-                                    <option value="{{$p}}" {{ (old('product_param') == null ? '' : (in_array($p ,old('product_param')) ? "selected":"")) }} >{{$p}}</option>
-                                @endforeach
-                            @endif
-                            </select>
-                            @if ($errors->category_add->has('product_param'))
+                        <div class="col-12 col-md-9">
+                            <input type="text" placeholder="Username" required name="username" value="{{old('username')}}" class="form-control">
+                            @if ($errors->user_add->has('username'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->category_add->first('product_param') }}
+                                    {{ $errors->user_add->first('username') }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -272,6 +233,85 @@
                         </div>
                     </div>
 
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Password</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="password" placeholder="Password" required name="password" value="{{old('password')}}" class="form-control">
+                            @if ($errors->user_add->has('password'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->user_add->first('password') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Email</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="email" placeholder="Email" required name="email" value="{{old('email')}}" class="form-control">
+                            @if ($errors->user_add->has('email'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->user_add->first('email') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">CC Email</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <textarea type="email" placeholder="CC Email . . . " required name="cc_email" value="{{old('cc_email')}}" class="form-control"></textarea>
+                            @if ($errors->user_add->has('cc_email'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->user_add->first('cc_email') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Select Branch</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            @if(!empty($branch_wise))
+                                <select name="branch" class="form-control" required>
+                                    <option value="">Select Branch</option>
+                                    @foreach($branch_wise as $kb=>$vb)
+                                        <option  value="{{$kb}}"  {{ ($kb == old('branch',$vb))?'selected':'' }} >{{$vb}}</option>
+                                    @endforeach
+                                </select>
+                            @endif
+                            @if ($errors->user_add->has('branch'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->user_add->first('branch') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+            
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">Confirm</button>
@@ -280,50 +320,32 @@
             </div>
         </div>
     </div>
-<!-- end add-->
+<!-- End Add-->
 @endsection
 
 @section('editModal')
-<!-- edit  record -->
-    <div class="modal-content">
+<!-- Update  Data-->
+<div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="largeModalLabel">Update Category</h5>
+            <h5 class="modal-title" id="editModal">Update User</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
             <div class="card">
-                <form  method="post" id="editForm">
+                <form method="post" id="editForm">
                     @csrf
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Category Name</label>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <input type="text" id="category_name" required name="update_category_name" value="{{old('update_category_name')}}" placeholder="Enter category name" class="form-control">
-                            @if ($errors->category_update->has('update_category_name'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->category_update->first('update_category_name') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Description</label>
+                            <label for="file-input" class=" form-control-label required">First Name</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <textarea id="category_desc" placeholder="write description  . . . " required name="update_category_desc"  class="form-control"> {{old('update_category_desc')}}</textarea>
-                            @if ($errors->category_update->has('update_category_desc'))
+                            <input type="text" placeholder="Fisrt Name" required id="first_name" name="update_first_name" value="{{old('update_first_name')}}" class="form-control">
+                            @if ($errors->user_update->has('update_first_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->category_update->first('update_category_desc') }}
+                                    {{ $errors->user_update->first('update_first_name') }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -334,14 +356,14 @@
 
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Principal Image</label>
+                            <label for="file-input" class=" form-control-label required">Last Name</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="file" id="principal_image" required name="update_principal_image" class="form-control-file">
-                            @if ($errors->category_update->has('update_principal_image'))
+                            <input type="text" placeholder="Last Name" required id="last_name" name="update_last_name" value="{{old('update_last_name')}}" class="form-control">
+                            @if ($errors->user_update->has('update_last_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->category_update->first('update_principal_image') }}
+                                    {{ $errors->user_update->first('update_last_name') }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -352,22 +374,83 @@
 
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="multiple-select" class=" form-control-label">Product Fields Type</label>
+                            <label for="file-input" class=" form-control-label required">Username</label>
                         </div>
-                        <div class="col col-md-9" id="product_fields">
-                        </div>
-                            @if ($errors->category_update->has('product_param'))
+                        <div class="col-12 col-md-9">
+                            <input type="text" placeholder="Username" required id="username" name="update_username" value="{{old('update_username')}}" class="form-control">
+                            @if ($errors->user_add->has('update_username'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->category_update->first('product_param') }}
+                                    {{ $errors->user_add->first('update_username') }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                             @endif
+                        </div>
                     </div>
 
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Email</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="email" placeholder="Email" required id="email" name="update_email" value="{{old('update_email')}}" class="form-control">
+                            @if ($errors->user_add->has('update_email'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->user_add->first('update_email') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
 
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">CC Email</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <textarea type="email" placeholder="CC Email . . . " required id="cc_email" name="update_cc_email" value="{{old('cc_email')}}" class="form-control"></textarea>
+                            @if ($errors->user_add->has('update_cc_email'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->user_add->first('update_cc_email') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Select Branch</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            @if(!empty($branch_wise))
+                                <select id="branch" name="update_branch" class="form-control" required>
+                                    <option value="">Select Branch</option>
+                                    @foreach($branch_wise as $kb=>$vb)
+                                        <option  value="{{$kb}}"  {{ ($kb == old('update_branch',$vb))?'selected':'' }} >{{$vb}}</option>
+                                    @endforeach
+                                </select>
+                            @endif
+                            @if ($errors->user_add->has('update_branch'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->user_add->first('update_branch') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+            
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">Confirm</button>
@@ -375,9 +458,8 @@
                 </form>
             </div>
         </div>
-        
     </div>
-<!-- end modal large -->
+<!-- End Add-->
 @endsection
 
 @section('deleteModal')
@@ -400,5 +482,5 @@
             </div>
         </form>
     </div>
-<!-- end delete -->
+<!-- end modal large -->
 @endsection
