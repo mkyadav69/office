@@ -13,6 +13,7 @@ class User extends Authenticatable
     use LaravelEntrustUserTrait; 
     use HasFactory, Notifiable;
     public $timestamps = false;
+    protected $table = 'users';
     /**
      * The attributes that are mass assignable.
      *

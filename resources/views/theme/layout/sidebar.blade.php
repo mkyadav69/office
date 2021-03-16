@@ -175,15 +175,12 @@
                 </ul>
             </li>
 
-            <li class="{{ request()->is('show-courier') ? 'active' : '' }} has-sub">
+            <li class="{{ request()->is('show-role') ? 'active' : '' }} has-sub">
                 <a class="js-arrow" href="#">
                     <i class="fas  fa-user "></i>Roles & Permissions</a>
                 <ul class="list-unstyled navbar__sub-list js-sub-list">
                     <li>
-                        <a href="{{route('show_courier')}}">Manage Roles</a>
-                    </li>
-                    <li>
-                        <a href="{{route('show_courier')}}">Manage Permissions</a>
+                        <a href="{{route('show_role')}}">Manage Roles</a>
                     </li>
                 </ul>
             </li>

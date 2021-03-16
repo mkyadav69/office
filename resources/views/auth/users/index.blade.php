@@ -159,7 +159,7 @@
                 $tr = $tr.prev('.parent');
             }
             var data = table.row($tr).data();
-            $('#deleteForm').attr('action', '/delete-parameter/'+data['id']);
+            $('#deleteForm').attr('action', '/delete-user/'+data['id']);
             $('#deleteModal').modal('show');  
         });
     });

@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Permission;
+use App\Models\Role;
 use Carbon\Carbon;
 use Config;
 use DataTables;
@@ -19,13 +21,13 @@ class AuthController extends Controller
 
     public function getLogin(Request $request){
         $this->validate($request,[
-            'email' => 'required|string|email',
+            'email' => 'required',
             "password"    => 'required',
         ]);
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('dashboard')->with('message', 'User register successfully, Please login !');
+            return redirect()->route('dashboard')->with('message', 'Login done successfully.');
         }
         return back()->withErrors([
             'message' => 'The provided credentials do not match our records.',
@@ -123,6 +125,102 @@ class AuthController extends Controller
             return back()->with([
                 'message' => 'User updated successfully !',
             ]);
+        }
+    }
+    
+    public function deleteUser(Request $request, $id){
+        $records = User::where('id', $id)->delete();
+        if($records == '1'){
+            $message =  'Records deleted successfully !';
+        }else{
+            $message ='Fail to delete record !';
+        }
+        return back()->with([
+            'message' =>$message
+        ]);
+    }
+
+    public function showRole(){
+        $roles = Role::with('permissions')->get();
+        $permissions = Permission::All();
+        return view('auth.role_permission.index',compact('roles','permissions'));
+    }
+
+    public function addRole(){
+        $module_name = [];
+        $permission = Permission::get()->toArray();
+        if(!empty($permission)){
+            foreach($permission as $per){
+                $name = $per['identifier'];
+               if(!isset($module_name['Modules'][$name])){
+                    $module_name['Modules'][$name] = [];
+               }else{
+                    $feature = explode("_", $per['name'],-1)[0];
+                    $module_name['Modules'][$name][$feature] = $per;
+                    $module_name['Operations'][$feature] = $feature;
+                    $module_name['order'][$feature] = $feature;
+               }
+            }
+        }
+        return view('auth.role_permission.create', compact('module_name'));
+    }
+
+    public function storeRole(Request $request){
+        $this->validate($request,[
+            'name' => 'required|unique:roles',
+            'display_name' => 'required|unique:roles|min:3',
+            "description"    => "required",
+            "permission"    => "required|array",
+        ]);
+
+        $per_id = [];
+        $new_per_list = [];
+        $existing_permsn = [];
+        $permissions = Permission::get()->toArray();
+        $per_arr_list = []; 
+        if(!empty($permissions)){
+            foreach ($permissions as $key => $value) {
+                if(!isset($per_arr_list[$value['identifier']])){
+                    $per_arr_list[$value['identifier']] = [];
+                }  
+                $per_arr_list[$value['identifier']][] = $value['name']; 
+            }
+        }
+        $new_per = $request->permission;
+        foreach ($new_per as $identifr => $value) {
+            if(isset($per_arr_list[$identifr]) && !empty($per_arr_list[$identifr])){
+                $new_per_list[$identifr] = array_diff($value, $per_arr_list[$identifr]);
+                $existing_permsn[$identifr] = array_intersect($value,$per_arr_list[$identifr]);
+            }else{
+                $new_per_list[$identifr] = $value;
+            }
+        }
+        if(!empty($new_per_list)){
+            foreach ($new_per_list as $identifier => $value) {
+                foreach ($value as $name) {
+                    $pr_id = Permission::insertGetId(['name'=>$name, 'identifier'=>$identifier]);
+                    $per_id[]  = $pr_id;
+                }
+            }
+        }
+        if(!empty($existing_permsn)){
+            foreach ($existing_permsn as $identifier => $value) {
+                foreach ($value as $name) {
+                    $pr_id = Permission::where('name',$name)->where('identifier',$identifier)->first()->id;
+                    $per_id[]  = $pr_id;
+                }
+            }
+        }
+        $role = Role::create([
+            'name'          => $request->name,
+            'display_name'  => $request->display_name,
+            'description'   => $request->description,
+            ]);
+        if($role){
+            $role->permissions()->sync($per_id);
+            return redirect()->route('list.role')->with('success','Role added successfuly !');
+        }else{
+            return redirect()->back()->withErrors(['error', 'Fail to add new role !']);
         }
     }
 }

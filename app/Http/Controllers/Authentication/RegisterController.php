@@ -24,10 +24,10 @@ class RegisterController extends Controller
             ]);
 
             $getInstertedId = User::insertGetId([
-                'name'=> $request->username,
+                'first_name'=> $request->username,
                 'email'=> $request->email,
                 'password'=> bcrypt($request->password),
-                'created_at'=> Carbon::now(),
+                'dt_created'=> Carbon::now(),
             ]);
             if(!empty($getInstertedId)){
                 return redirect()->route('login')->with('message', 'User register successfully, Please login !');

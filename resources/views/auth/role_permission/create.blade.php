@@ -1,159 +1,144 @@
-@extends('admin/layouts/default')
-
-{{-- Page title --}}
-@section('title')
-Add New Role
-@parent
-@stop
-
-{{-- page level styles --}}
-@section('header_styles')
-<!--page level css -->
-<link rel="stylesheet" href="{{ asset('assets/vendors/wizard/jquery-steps/css/wizard.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/vendors/wizard/jquery-steps/css/jquery.steps.css') }}">
-<link href="{{ asset('assets/vendors/jasny-bootstrap/css/jasny-bootstrap.css') }}" rel="stylesheet" />
- <link rel="stylesheet" href="{{ asset('assets/drop/mulselect/dist/css/bootstrap-multiselect.css') }}">
-@stop
-
-
-{{-- Page content --}}
+@extends('theme.layout.base_layout')
+@section('title', 'Add Role')
 @section('content')
 <style>
-.floatingHeader {
-  position: fixed;
-  top: 0;
-  visibility: hidden;
+.required:after {
+    content: '*';
+    color: red;
+    padding-left: 5px;
 }
-
-table td, table th {
-    padding: 10px 5px !important;
-    min-width: 214px !important;
-    max-width: 200px;
-    border-collapse: collapse;
+.section__content--p30{
+    padding: 0px 0px;
+}
+.col-md-8{
+    max-width: 81.667%;
 }
 </style>
-
-<section class="content">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="portlet box default">
-                <div class="portlet-title">
-                    <h3 class="panel-title"> <i class="livicon" data-name="edit" data-size="16" data-c="#fff" data-hc="#fff" data-loop="true"></i>
-                        Add New Role
-                    </h3>
-                    <span class="pull-right clickable">
-                        <i class="glyphicon glyphicon-chevron-up"></i>
-                    </span>
-                </div>
-                <div class="portlet-body">
-                    <!--main content-->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <!-- BEGIN FORM WIZARD WITH VALIDATION -->
-                            <form class="form-wizard form-horizontal" action="{{ route('save.role') }}" method="POST" id="wizard" enctype="multipart/form-data">
-                                <!-- CSRF Token -->
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-
-                                <!-- first tab -->
-                               
-                                <section>
-                                
-                                    <div class="form-group">
-                                        <label for="first_name" class="col-sm-1 control-label">Name <span class="text-danger">*</span></label>
-                                        <div class="col-sm-5">
-                                            <input id="name" name="name" type="text" placeholder="Name" class="form-control required" value="{{{ Request::old('name') }}}" />
-                                            @if ($errors->has('name'))
-		                                        <span class="text-danger">{{ $errors->first('name') }}</span>
-                                            @endif
-                                        
-                                        </div>
-                                    </div>
-                                
-                                    <div class="form-group">
-                                    <label for="last_name" class="col-sm-1 control-label">Display Name<span class="text-danger">*</span></label>
-                                        <div class="col-sm-5">
-                                            <input id="display_name" name="display_name" type="text" placeholder="Display Name" class="form-control required" value="{{{ Request::old('display_name') }}}" />
-                                            @if ($errors->has('display_name'))
-		                                        <span class="text-danger">{{ $errors->first('display_name') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="email" class="col-sm-1 control-label">Description <span class="text-danger">*</span></label>
-                                        <div class="col-sm-5">
-                                            <textarea class="form-control form-control-sm" placeholder="Write description ...." id="desc"   name="description" rows="4">{{ Request::old('description') }}</textarea>
-                                            @if ($errors->has('description'))
-		                                        <span class="text-danger">{{ $errors->first('description') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="last_name" class="col-sm-1 control-label">Add Permissions<span class="text-danger">*</span></label>
-                                        <div class="col-sm-12">
-                                        @if ($errors->has('permission'))
-		                                        <span class="text-danger">{{ $errors->first('permission') }}</span>
-                                            @endif
-                                            <table class="table table-striped table-bordered table-hover dataTable no-footer cell-border row-border compact sticky-header tableheader-processed sticky-table div2 persist-area" style="width:100px" id="order_table" role="grid" >
-                                                <thead>
-                                                <tr class="capitalize persist-header">
-                                                        <th style="text-align:left; width:100%"><strong>Master</strong></th>
-                                                        <th style="text-align:left;color:green; width:100%">View</th>
-                                                        <th style="text-align:left;color:blue; width:100%">Edit</th>
-                                                        <th style="text-align:left;color:red; width:100%">Delete</th>
-                                                        <th style="text-align:left;color:purple; width:100%">Add/Upload</th>
-                                                        <th style="text-align:left;color:brown; width:100%">Download</th>
-                                                    </tr>
-                                                <thead>
-                                                <tbody>
-                                                @if(!empty($per_arr))
-                                                        @foreach( $per_arr as $modl_name=>$permsn)
-                                                            <tr>
-                                                                <td><strong>{{ ucfirst(str_replace('_',' ' , $modl_name))  }}</strong></td>
-                                                               
-                                                                @foreach($order as $key=>$per)
-                                                                   
-                                                                    <td>
-                                                                    @if (!empty($permsn[$key]))
-                                                                        <input type="checkbox" name="permission[{{ $modl_name }}][]" value="{{ $permsn[$key] }}" {{ (is_array(old('permission')) and in_array($permsn[$key], old('permission.'.$modl_name, []))) ? ' checked' : '' }}/>
-                                                                    @else
-                                                                        <input type="checkbox" disabled name="" value="" style="text-align:center; vertical-align: middle;">
-                                                                    @endif
-                                                                    </td>
-                                                                @endforeach
-                                                               
-                                                            </tr>
-                                                        @endforeach
-                                                    @endif
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                   
-                                    <div class="form-group">
-                                      <label class="col-sm-1 control-label" for="submit"></label>
-                                      <div class="col-sm-5" >
-                                        <button id="submit"style="width:120px"  class="btn btn-primary">Submit</button>
-                                      </div>
-                                    </div>
-                                    <p>(<span class="text-danger">*</span>) Mandatory</p>
-                                </section>                               
-
-                            
-                            </form>
-                            <!-- END FORM WIZARD WITH VALIDATION --> 
-                        </div>
+<div class="col col-md-8">
+    @if (session()->has('message'))
+        <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+            {{ session('message') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Add Role</h5>
+        </div>
+        <div class="modal-body">
+        
+            <form action="{{route('store_role')}}" method="post">
+                @csrf
+                <div class="row form-group">
+                    <div class="col col-md-2">
+                        <label for="file-input" class=" form-control-label required">Name</label>
                     </div>
-                    <!--main content end--> 
+                    <div class="col-12 col-md-10">
+                        <input type="text" placeholder="Name" required name="name" value="{{old('name')}}" class="form-control">
+                        @if ($errors->has('name'))
+                            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                <span class="badge badge-pill badge-danger">Error</span>
+                                {{ $errors->first('name') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+                    </div>
                 </div>
-            </div>
+                <div class="row form-group">
+                    <div class="col col-md-2">
+                        <label for="file-input" class=" form-control-label required">Display Name</label>
+                    </div>
+                    <div class="col-12 col-md-10">
+                        <input type="text" placeholder="Display Name" required name="display_name" value="{{old('display_name')}}" class="form-control">
+                        @if ($errors->has('display_name'))
+                            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                <span class="badge badge-pill badge-danger">Error</span>
+                                {{ $errors->first('display_name') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-2">
+                        <label for="file-input" class=" form-control-label required">Description</label>
+                    </div>
+                    <div class="col-12 col-md-10">
+                        <textarea type="text" placeholder="Description . . ." required name="description" value=""class="form-control">{{old('description')}}</textarea>
+                        @if ($errors->has('description'))
+                            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                <span class="badge badge-pill badge-danger">Error</span>
+                                {{ $errors->first('description') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-2">
+                        <label for="file-input" class=" form-control-label required">Permissions</label>
+                    </div>
+                   
+                    <div class="col col-md-10">
+                        <table id="customer" class="table table-borderless table--no-card m-b-30 table-striped table-earning sticky-header" style="width:100%"><thead>
+                                @if(!empty($module_name['Operations']))
+                                    <thead>
+                                        <tr class="capitalize persist-header">
+                                            <th style="text-align:left; width:100%"><strong>Modules</strong></th> 
+                                            @foreach($module_name['Operations'] as $op)
+                                                <th style="text-align:left; width:100%"><strong>{{ $op }}</strong></th> 
+                                            @endforeach
+                                        </tr>
+                                    <thead>
+                                @endif
+                                <tbody>
+                                    @if(!empty($module_name['Modules']))
+                                        @foreach($module_name['Modules'] as $modl_name=>$permsn)
+                                            <tr>
+                                                <td style="text-align:left; width:100%"><strong>{{ ucfirst(str_replace('_',' ' , $modl_name))  }}</strong></td>
+                                                @foreach($module_name['order'] as $key=>$per)
+                                                    <td style="text-align:left; width:100%">
+                                                    @if (!empty($permsn[$key]))
+                                                        <input type="checkbox" name="permission[{{ $modl_name }}][]" value="{{ $permsn[$key]['name'] }}" {{ (is_array(old('permission')) and in_array($permsn[$key], old('permission.'.$modl_name, []))) ? ' checked' : '' }}/>
+                                                    @else
+                                                        <input type="checkbox" disabled name="" value=""style="text-align:center; vertical-align: middle;">
+                                                    @endif
+                                                    </td>
+                                                @endforeach
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                        </table>
+                        @if ($errors->has('permission'))
+                            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                <span class="badge badge-pill badge-danger">Error</span>
+                                {{ $errors->first('permission') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="{{route('show_product')}}">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </a>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </div>
+            </form>
         </div>
     </div>
-    <!--row end-->
-</section>
-@stop
-
-@section('footer_scripts')
+</div>
 <script src="{{ asset('assets/drop/mulselect/dist/js/bootstrap-multiselect.js') }}"></script>
 <script>
     $(document).ready(function() {
@@ -212,4 +197,4 @@ $(function() {
     .trigger("scroll");
 });
 </script>
-@stop
+@endsection

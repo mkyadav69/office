@@ -22,12 +22,22 @@ Route::get('show-user', [AuthController::class, 'showUser'])->name('show_user');
 Route::get('get-user', [AuthController::class, 'getUser'])->name('get_user');
 Route::post('store-user', [AuthController::class, 'storeUser'])->name('store_user');
 Route::post('edit-user/{id}',  [AuthController::class, 'updateUser'])->name('edit_user');
+Route::post('delete-user/{id}',  [AuthController::class, 'deleteUser'])->name('delete_user');
 
+
+# 2. Role & Permission
+Route::get('show-role', [AuthController::class, 'showRole'])->name('show_role');
+Route::get('add-role', [AuthController::class, 'addRole'])->name('add_role');
+Route::post('store-role', [AuthController::class, 'storeRole'])->name('store_role');
+
+Route::get('get-user', [AuthController::class, 'getUser'])->name('get_user');
+Route::post('edit-user/{id}',  [AuthController::class, 'updateUser'])->name('edit_user');
+Route::post('delete-user/{id}',  [AuthController::class, 'deleteUser'])->name('delete_user');
+
+# 3. Authentications & Login
 Route::get('login', [AuthController::class, 'viewLogin'])->name('login');
 Route::post('user-login', [AuthController::class, 'getLogin'])->name('get_login');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-
-Route::post('delete-customer/{id}',  [CustomerController::class, 'deleteCustomer'])->name('delete_customer');
 
 
 # Register
@@ -36,10 +46,11 @@ Route::Post('register', [RegisterController::class, 'storeRegister'])->name('sto
 
 
 
-# Dashboard
+# 4. Dashboard
 Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
 
-# office 
+
+# **************** Office route & functions **************
 
 # 1. Customer
 Route::get('show-customer', [CustomerController::class, 'showCustomer'])->name('show_customer');
@@ -135,8 +146,6 @@ Route::get('edit-quatation/{id}',  [QuatationController::class, 'updateQuatation
 Route::post('store-update-quatation', [QuatationController::class, 'storeUpdateQuatation'])->name('store_update_quatation');
 
 // Route::post('delete-quatation-format/{id}',  [QuatationFormatController::class, 'deleteQuatationFormat'])->name('delete_quatation_format');
-Route::get('test', [QuatationController::class, 'test'])->name('test');
-
 
 # 13. Notification
 Route::get('show-notify', [NotifyController::class, 'showNotify'])->name('show_notify');
