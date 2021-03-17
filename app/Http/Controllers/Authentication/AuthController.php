@@ -223,4 +223,67 @@ class AuthController extends Controller
             return redirect()->back()->withErrors(['error', 'Fail to add new role !']);
         }
     }
+
+    public function updateRole(Request $request , $id){
+        dd("lklk");
+        $this->validate($request,[
+            'name' => "required|unique:roles,name,{$id}",
+            'display_name' => "required|unique:roles,display_name,{$id}",
+            "description"    => "required",
+            "permission"    => "required|array",
+        ]);
+
+        $per_id = [];
+        $new_per_list = [];
+        $existing_permsn = [];
+        $permissions = Permission::get()->toArray();
+        $per_arr_list = []; 
+        if(!empty($permissions)){
+            foreach ($permissions as $key => $value) {
+                if(!isset($per_arr_list[$value['identifier']])){
+                    $per_arr_list[$value['identifier']] = [];
+                }  
+                $per_arr_list[$value['identifier']][] = $value['name']; 
+            }
+        }
+        $new_per = $request->permission;
+        foreach ($new_per as $identifr => $value) {
+            if(isset($per_arr_list[$identifr]) && !empty($per_arr_list[$identifr])){
+                $new_per_list[$identifr] = array_diff($value, $per_arr_list[$identifr]);
+                $existing_permsn[$identifr] = array_intersect($value,$per_arr_list[$identifr]);
+            }else{
+                $new_per_list[$identifr] = $value;
+            }
+        }
+        if(!empty($new_per_list)){
+            foreach ($new_per_list as $identifier => $value) {
+                foreach ($value as $name) {
+                    $pr_id = Permission::insertGetId(['name'=>$name, 'identifier'=>$identifier]);
+                    $per_id[]  = $pr_id;
+                }
+            }
+        }
+        if(!empty($existing_permsn)){
+            foreach ($existing_permsn as $identifier => $value) {
+                foreach ($value as $name) {
+                    $pr_id = Permission::where('name',$name)->where('identifier',$identifier)->first()->id;
+                    $per_id[]  = $pr_id;
+                }
+            }
+        }
+        if(!empty($id)){
+            $roles = Role::with('permissions')->get();
+            $permissions = Permission::All();
+            $update_role = Role::where('id',$id)->first();
+            $update_role->name = $request->name;
+            $update_role->display_name = $request->display_name;
+            $update_role->description = $request->description;
+            $update_role->permissions()->sync($per_id);
+            $update_role->save();
+            if(!empty($update_role)){
+                return redirect()->route('list.role')->with('success','Role updated successfully !');
+            }
+        }
+        return redirect()->back()->with('error','Cant find the role !');
+    }
 }

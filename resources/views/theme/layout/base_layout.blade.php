@@ -61,6 +61,11 @@
     font-size: 16px;
     padding: 8px 0;
 }
+.navbar-sidebar {
+    padding-left: -1px;
+    padding-top: 27px;
+    padding-bottom: 0;
+}
 </style>
 
 <body class="animsition">

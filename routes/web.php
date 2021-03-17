@@ -24,27 +24,21 @@ Route::post('store-user', [AuthController::class, 'storeUser'])->name('store_use
 Route::post('edit-user/{id}',  [AuthController::class, 'updateUser'])->name('edit_user');
 Route::post('delete-user/{id}',  [AuthController::class, 'deleteUser'])->name('delete_user');
 
-
 # 2. Role & Permission
 Route::get('show-role', [AuthController::class, 'showRole'])->name('show_role');
 Route::get('add-role', [AuthController::class, 'addRole'])->name('add_role');
 Route::post('store-role', [AuthController::class, 'storeRole'])->name('store_role');
-
-Route::get('get-user', [AuthController::class, 'getUser'])->name('get_user');
-Route::post('edit-user/{id}',  [AuthController::class, 'updateUser'])->name('edit_user');
-Route::post('delete-user/{id}',  [AuthController::class, 'deleteUser'])->name('delete_user');
+Route::get('edit-role/{id}',  [AuthController::class, 'updateRole'])->name('edit_role');
+Route::get('delete-role/{id}',  [AuthController::class, 'deleteRole'])->name('delete_role');
 
 # 3. Authentications & Login
 Route::get('login', [AuthController::class, 'viewLogin'])->name('login');
 Route::post('user-login', [AuthController::class, 'getLogin'])->name('get_login');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
-
 # Register
 Route::get('register', [RegisterController::class, 'viewRegister'])->name('register');
 Route::Post('register', [RegisterController::class, 'storeRegister'])->name('store.register');
-
-
 
 # 4. Dashboard
 Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');

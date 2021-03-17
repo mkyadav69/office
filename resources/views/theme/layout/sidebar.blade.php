@@ -167,7 +167,7 @@
 
             <li class="{{ request()->is('show-user') ? 'active' : '' }} has-sub">
                 <a class="js-arrow" href="#">
-                    <i class="fas  fa-user "></i>Users</a>
+                    <i class="fas  fa-users"></i>Users</a>
                 <ul class="list-unstyled navbar__sub-list js-sub-list">
                     <li>
                         <a href="{{route('show_user')}}">Manage User</a>

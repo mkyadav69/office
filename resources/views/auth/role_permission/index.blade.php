@@ -13,6 +13,7 @@
     white-space: nowrap;
     overflow: hidden;
 }
+
 </style>
 <div class="row">
     @if (session()->has('message'))
@@ -73,25 +74,25 @@
                             
                             @php
                                 $arr = [];
-                                if(\Auth::user()->can('edit_role')){
-                                    $edit = route('edit.role', ['edit' => $role->id ]);
-                                    $arr[] = "<a class='btn edit edit-role' title='Edit Role' href=$edit><i class='fa fa-pencil text-primary' aria-hidden='true' ></i>
-                                    </a>";
+                                if(\Auth::user()->can('update_role')){
+                                    $edit = route('edit_role', ['id' => $role->id ]);
+                                    $arr[] = "<a class='item edit' data-toggle='tooltip' data-placement='top' title='Edit Role' href=$edit><i class='zmdi zmdi-edit text-primary'></i></a>";
                                 }
                                 if(\Auth::user()->can('delete_role')){
-                                    $delete = route('remove.role', ['delete' => $role->id]);
-                                    $arr[] ="<a class='btn trush delete-role' title='Delete Role' href=$delete ><i class='fa fa-trash text-danger' aria-hidden='true' ></i></i>
-                                    </a>";
+                                    $delete = route('delete_role', ['id' => $role->id]);
+                                    $arr[] ="<a class='item delete' data-toggle='tooltip' data-placement='top' title='Delete Role' href=$delete><i class='zmdi zmdi-delete text-danger'></i></a>";
                                 }
-                                if(!\Auth::user()->can(['edit_role','delete_role'])){ 
+                                if(!\Auth::user()->can(['update_role','delete_role'])){ 
                                     $arr[] = "<a class='btn' title='View Only'><i class='fa fa-eye text-primary' aria-hidden='true' ></i></i></a>";
                                 }
                                 
                             @endphp
 
-                            @if(\Auth::user()->can(['edit_role', 'delete_role']))
+                            @if(\Auth::user()->can(['update_role', 'delete_role']))
                                 <td>
-                                    {!! implode(' ', $arr) !!}
+                                    <div class="table-data-feature">
+                                        {!! implode(' ', $arr) !!}
+                                    </div>
                                 </td>
                             @else
                                 <td>

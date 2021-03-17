@@ -103,7 +103,7 @@
                                     @if(!empty($module_name['Modules']))
                                         @foreach($module_name['Modules'] as $modl_name=>$permsn)
                                             <tr>
-                                                <td style="text-align:left; width:100%"><strong>{{ ucfirst(str_replace('_',' ' , $modl_name))  }}</strong></td>
+                                                <td style="text-align:left; background: #333; color: #fff; width:100%"><strong>{{ ucfirst(str_replace('_',' ' , $modl_name))  }}</strong></td>
                                                 @foreach($module_name['order'] as $key=>$per)
                                                     <td style="text-align:left; width:100%">
                                                     @if (!empty($permsn[$key]))
@@ -130,7 +130,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a href="{{route('show_product')}}">
+                    <a href="{{route('show_role')}}">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </a>
                     <button type="submit" class="btn btn-primary">Confirm</button>
