@@ -29,6 +29,7 @@ Route::get('show-role', [AuthController::class, 'showRole'])->name('show_role');
 Route::get('add-role', [AuthController::class, 'addRole'])->name('add_role');
 Route::post('store-role', [AuthController::class, 'storeRole'])->name('store_role');
 Route::get('edit-role/{id}',  [AuthController::class, 'updateRole'])->name('edit_role');
+Route::post('store-role-update', [AuthController::class, 'storeUpdateRole'])->name('store_update_role');
 Route::get('delete-role/{id}',  [AuthController::class, 'deleteRole'])->name('delete_role');
 
 # 3. Authentications & Login

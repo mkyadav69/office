@@ -3,15 +3,15 @@
 return [
 
     'feature_list' => [
-        'view',
-        'add',
-        'update',
-        'delete',
-        'import',
-        'export',
-        'branch',
+        'view'=>'view',
+        'add'=>'add',
+        'update'=>'update',
+        'delete'=>'delete',
+        'import'=>'import',
+        'export'=>'export',
+        'branch'=>'branch',
     ],
-
+    
     'branch_wise'=>[
         '1'=>'Mumbai',
         '2'=>'Ahmedabad',									

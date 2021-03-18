@@ -225,7 +225,89 @@ class AuthController extends Controller
     }
 
     public function updateRole(Request $request , $id){
-        dd("lklk");
+        $feature_list = Config('constant.feature_list');
+        $order = [
+            'view'=>'view',
+            'edit'=>'edit',
+            'delete'=>'delete',
+            'upload'=>'upload',
+            'download'=>'download',
+        ];
+        // $tables  = \Config::get('modules.permission');
+        // $all_master_data_749 = \App\Helpers\ModuleConfig::getAllMasterData();
+        // $master  = $all_master_data_749+$tables;
+        $path = app_path() . "/Models";
+        $model_list = [];
+        $results = scandir($path);
+        if(!empty($results)){
+            foreach ($results as $result) {
+                if ($result === '.' or $result === '..') continue;
+                $filename = strtolower($result);
+                $model_list[] = substr($filename,0,-4);
+            }
+        }
+        $persm_custom = [];
+        $new_permsn = [];
+        $per_data = [];
+        if(!empty($model_list)){
+            foreach ($model_list as $idfn) {
+                foreach($feature_list as $pr){
+                    $x = [];
+                    $x['display_name'] = ucfirst(str_replace('_',' ' , $pr)).' '.ucfirst(str_replace('_',' ' , $idfn));
+                    $x['name'] = $pr.'_'.$idfn;
+                    $x['description'] = "Permission to ".ucfirst(str_replace('_',' ' , $pr)).' '.ucfirst(str_replace('_',' ' , $idfn));
+                    $x['identifier'] = $idfn;
+                    $permission[]  = $x;
+                }
+            }
+        }
+        // foreach ($model_list as $key => $value) {
+        //     if(isset($value['permission']) && !empty($value['permission'])){
+        //          $new_permsn[$key] = $value['permission'];
+        //     }
+        //  }
+         if(!empty($new_permsn)){
+             foreach ($new_permsn as $idfn=>$v) {
+                 foreach($v as $pr){
+                    if(!isset($per_data[$idfn])){
+                        $per_data[$idfn] = [];
+                    }
+                    $per_data[$idfn][$pr] = $pr.'_'.$idfn;
+                 }
+             }
+         }
+         dd($per_data);
+        $permissions = Permission::All();
+        $permissions  = $permissions->toArray();
+        $per_arr_list = [];
+        $user_role_list = []; 
+        if(!empty($permissions)){
+            foreach ($permissions as $key => $value) {
+                if(!isset($per_arr_list[$value['identifier']])){
+                    $per_arr_list[$value['identifier']] = [];
+                }  
+                $per_arr_list[$value['identifier']][$value['id']] = $value['name']; 
+            }
+        }
+        $edit_role = Role::with('perms')->where('id',$request->id)->first();
+        $user_role = $edit_role->perms->toArray();
+        if(!empty($user_role)){
+            foreach ($user_role as $key => $value) {
+                $per = explode('_', $value['name']);
+                if(!isset($user_role_list[$value['identifier']])){
+                    $user_role_list[$value['identifier']] = [];
+                }  
+                $user_role_list[$value['identifier']][$per[0]] = $value['name']; 
+            }
+        }
+        $roles = Role::with('perms')->get();
+        if(!empty($edit_role)){
+            return View::make('admin.users.role_permission.edit_role',compact('edit_role','permissions',  'per_arr_list', 'user_role_list' ,'tables', 'per_data', 'order'));
+        }
+        return redirect()->back()->with('error','Cant find the role !');
+    }
+
+    public function storeUpdateRole(){
         $this->validate($request,[
             'name' => "required|unique:roles,name,{$id}",
             'display_name' => "required|unique:roles,display_name,{$id}",
@@ -281,7 +363,7 @@ class AuthController extends Controller
             $update_role->permissions()->sync($per_id);
             $update_role->save();
             if(!empty($update_role)){
-                return redirect()->route('list.role')->with('success','Role updated successfully !');
+                return redirect()->route('show_role')->with('success','Role updated successfully !');
             }
         }
         return redirect()->back()->with('error','Cant find the role !');
