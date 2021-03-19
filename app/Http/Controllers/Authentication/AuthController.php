@@ -218,7 +218,7 @@ class AuthController extends Controller
             ]);
         if($role){
             $role->permissions()->sync($per_id);
-            return redirect()->route('list.role')->with('success','Role added successfuly !');
+            return redirect()->route('show_role')->with('success','Role added successfuly !');
         }else{
             return redirect()->back()->withErrors(['error', 'Fail to add new role !']);
         }
