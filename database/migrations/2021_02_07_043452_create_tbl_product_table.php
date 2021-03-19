@@ -18,8 +18,8 @@ class CreateTblProductTable extends Migration {
 				$table->integer('pro_id', true);
 				$table->string('st_part_No', 250)->nullable()->index('st_part_No');
 				$table->string('product_seo_url', 512);
-				$table->text('st_pro_desc', 65535)->nullable()->index('st_pro_desc');
-				$table->text('extra_desc', 65535)->nullable();
+				$table->text('st_pro_desc')->nullable()->index('st_pro_desc');
+				$table->text('extra_desc')->nullable();
 				$table->float('fl_pro_price', 12)->nullable()->default(0.00);
 				$table->dateTime('dt_price_update')->nullable();
 				$table->dateTime('dt_qty_update')->nullable();
