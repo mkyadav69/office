@@ -17,7 +17,7 @@ class UsersTableSeeder extends Seeder
     {
         $db_admins = User::all()->pluck('email')->toArray();
         $super_admin = Role::where('name', 'super-admin')->first();
-        if(!in_array('suadmin@office.com', $db_admins)) {
+        if(!in_array('admin@office.com', $db_admins)) {
             /*Super User*/
             $super_admin = User::create([                  
                 'id' => 1,
