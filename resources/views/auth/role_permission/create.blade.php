@@ -11,8 +11,9 @@
     padding: 0px 0px;
 }
 .col-md-8{
-    max-width: 81.667%;
+    max-width: 89.667%;
 }
+
 </style>
 <div class="col col-md-8">
     @if (session()->has('message'))
@@ -88,17 +89,18 @@
                     </div>
                    
                     <div class="col col-md-10">
-                        <table id="customer" class="table table-borderless table--no-card m-b-30 table-striped table-earning sticky-header" style="width:100%"><thead>
-                                @if(!empty($module_name['Operations']))
-                                    <thead>
-                                        <tr class="capitalize persist-header">
-                                            <th style="text-align:left; width:100%"><strong>Modules</strong></th> 
-                                            @foreach($module_name['Operations'] as $op)
-                                                <th style="text-align:left; width:100%"><strong>{{ $op }}</strong></th> 
-                                            @endforeach
-                                        </tr>
-                                    <thead>
-                                @endif
+                        <table id="customer" class="table table-borderless table--no-card m-b-30 table-striped table-earning sticky-header" style="width:100%">
+                                <thead>
+                                    @if(!empty($module_name['Operations']))
+                                        <thead>
+                                            <tr class="capitalize persist-header">
+                                                <th style="text-align:left; width:100%"><strong>Modules</strong></th> 
+                                                @foreach($module_name['Operations'] as $op)
+                                                    <th style="text-align:left; width:100%"><strong>{{ $op }}</strong></th> 
+                                                @endforeach
+                                            </tr>
+                                    @endif
+                                <thead>
                                 <tbody>
                                     @if(!empty($module_name['Modules']))
                                         @foreach($module_name['Modules'] as $modl_name=>$permsn)

@@ -1,180 +1,178 @@
-@extends('admin/layouts/default')
-
-{{-- Page title --}}
-@section('title')
-Edit Role
-@parent
-@stop
-
-{{-- page level styles --}}
-@section('header_styles')
-<!--page level css -->
-<link rel="stylesheet" href="{{ asset('assets/vendors/wizard/jquery-steps/css/wizard.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/vendors/wizard/jquery-steps/css/jquery.steps.css') }}">
-<link href="{{ asset('assets/vendors/jasny-bootstrap/css/jasny-bootstrap.css') }}" rel="stylesheet" />
- <link rel="stylesheet" href="{{ asset('assets/drop/mulselect/dist/css/bootstrap-multiselect.css') }}">
-@stop
-{{-- Page content --}}
+@extends('theme.layout.base_layout')
+@section('title', 'Update Role')
 @section('content')
 <style>
-.floatingHeader {
-  position: fixed;
-  top: 0;
-  visibility: hidden;
+.required:after {
+    content: '*';
+    color: red;
+    padding-left: 5px;
 }
-table td, table th {
-    padding: 10px 5px !important;
-    min-width: 214px !important;
-    max-width: 200px;
-    border-collapse: collapse;
+.section__content--p30{
+    padding: 0px 0px;
 }
+.col-md-8{
+    max-width: 89.667%;
+}
+
 </style>
-
-<section class="content">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="portlet box default">
-                <div class="portlet-title">
-                    <h2 class="panel-title"> <i class="livicon" data-name="edit" data-size="18" data-loop="true" data-c="#fff" data-hc="white"></i>
-                        Edit Role
-                    </h2>
-                    <span class="pull-right clickable">
-                        <i class="glyphicon glyphicon-chevron-up"></i>
-                    </span>
-                </div>
-                <div class="portlet-body">
-
-                    <!--main content-->
-                    <div class="row">
-
-                        <div class="col-md-12">
-
-                            <!-- BEGIN FORM WIZARD WITH VALIDATION -->
-                            <form class="form-wizard form-horizontal" action="{{ route('update.role',$edit_role->id) }}" method="POST" id="wizard" enctype="multipart/form-data">
-                                <!-- CSRF Token -->
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-
-                                <!-- first tab -->
-                               
-                                <section>
-                                @if (!empty($edit_role))
-                                    <div class="form-group">
-                                        <label for="first_name" class="col-sm-1 control-label">Name <span class="text-danger">*</span></label>
-                                        <div class="col-sm-5">
-                                            <input id="name" name="name" type="text" readonly placeholder="Name" class="form-control required" value="{{{ Request::old('name',$edit_role->name) }}}" />
-                                            @if ($errors->has('name'))
-		                                        <span class="text-danger">{{ $errors->first('name') }}</span>
-                                            @endif
-                                        
-                                        </div>
-                                    </div>
-                                
-                                    <div class="form-group">
-                                        <label for="last_name" class="col-sm-1 control-label">Display Name<span class="text-danger">*</span></label>
-                                        <div class="col-sm-5">
-                                            <input id="display_name" name="display_name" type="text" readonly placeholder="Display Name" class="form-control required" value="{{{ Request::old('display_name',$edit_role->display_name) }}}" />
-                                            @if ($errors->has('display_name'))
-		                                        <span class="text-danger">{{ $errors->first('display_name') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-            
-                                    <div class="form-group">
-                                        <label for="email" class="col-sm-1 control-label">Description<span class="text-danger">*</span></label>
-                                        <div class="col-sm-5">
-                                            <textarea class="form-control form-control-sm" placeholder="Write description ...." id="desc" name="description" rows="4">{{ $edit_role->description  }}</textarea>
-                                            @if ($errors->has('description'))
-		                                        <span class="text-danger">{{ $errors->first('description') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="last_name" class="col-sm-1 control-label">Update Permissions<span class="text-danger">*</span></label>
-                                        <div class="col-sm-12">
-                                            @if ($errors->has('permission'))
-		                                        <span class="text-danger">{{ $errors->first('permission') }}</span>
-                                            @endif
-                                            <table class="table table-striped table-bordered table-hover dataTable no-footer cell-border row-border compact sticky-header tableheader-processed sticky-table div2 persist-area"  style="width:100px" id="order_table" role="grid" >
-                                                <thead>
-                                                <tr class="capitalize persist-header">
-                                                        <th style="text-align:left;width:100%"><strong>Master</strong></th>
-                                                        <th style="text-align:left;color:green;">View</th>
-                                                        <th style="text-align:left;color:blue;">Edit</th>
-                                                        <th style="text-align:left;color:red;">Delete</th>
-                                                        <th style="text-align:left;color:purple;">Add/Upload</th>
-                                                        <th style="text-align:left;color:brown;">Download</th>
-                                                    </tr>
-                                                <thead>
-                                                <tbody>
-                                                
-                                                    @if(!empty($per_data))
-                                                        @foreach($per_data as $identifier=>$permi_data)
-                                                            <tr>
-                                                                @if($identifier == 'regx_tag_option_groups')
-                                                                    <td><strong>UMO Tags</strong></td>
-                                                                @elseif($identifier == 'made_in_usa')
-                                                                    <td><strong>US Allowed Suppliers</strong></td>
-                                                                @else
-                                                                    <td><strong>{{ ucfirst(str_replace('_',' ' , $identifier))  }}</strong></td>
-                                                                @endif
-
-                                                                @foreach($order as $key)
-                                                                    <td>
-                                                                        @isset($permi_data[$key])
-                                                                            @isset($user_role_list[$identifier])
-                                                                                @if(in_array($permi_data[$key] , $user_role_list[$identifier]))
-                                                                                <input type="checkbox" checked name="permission[{{ $identifier }}][]" value="{{ $permi_data[$key] }}" style="text-align:center; vertical-align: middle;">
-                                                                                @else
-                                                                                    <input type="checkbox" name="permission[{{ $identifier }}][]" value="{{ $permi_data[$key] }}" {{ (is_array(old('permission')) and in_array($permi_data[$key], old('permission.'.$identifier, []))) ? ' checked' : '' }} style="text-align:center; vertical-align: middle;">
-                                                                                @endif
-                                                                            @else
-                                                                                <input type="checkbox" name="permission[{{ $identifier }}][]" value="{{ $permi_data[$key] }}" {{ (is_array(old('permission')) and in_array($permi_data[$key], old('permission.'.$identifier, []))) ? ' checked' : '' }} style="text-align:center; vertical-align: middle;">
-                                                                            @endisset
-                                                                        @else
-                                                                            <input type="checkbox" disabled name="" value="" style="text-align:center; vertical-align: middle;">  
-                                                                        @endisset
-                                                                        
-                                                                    </td>
-                                                                @endforeach
-                                                            </tr>
-                                                           
-                                                        @endforeach
-                                                    @endif
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                      <label class="col-sm-1 control-label" for="submit"></label>
-                                      <div class="col-sm-5">
-                                      <button id="submit" class="btn btn-primary" style="width:115px">Submit</button>
-                                      </div>
-                                    </div>
-                                    <p>(<span class="text-danger">*</span>) Mandatory</p>
-                                @endif
-                                </section>                               
-
-                            
-                            </form>
-                            <!-- END FORM WIZARD WITH VALIDATION --> 
-                        </div>
+<div class="col col-md-8">
+    @if (session()->has('message'))
+        <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+            {{ session('message') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Update Role</h5>
+        </div>
+        <div class="modal-body">
+       
+            <form action="{{route('store_update_role')}}" method="post">
+                @csrf
+                <input type="hidden" name='id' value="{{$edit_role->id}}">
+                <div class="row form-group">
+                    <div class="col col-md-2">
+                        <label for="file-input" class=" form-control-label required">Name</label>
                     </div>
-                    <!--main content end--> 
+                    <div class="col-12 col-md-10">
+                        <input type="text" placeholder="Name" name="name" disabled value="{{{ Request::old('name',$edit_role->name) }}}" class="form-control">
+                        <input type="hidden" placeholder="Name" name="name" value="{{{ Request::old('name',$edit_role->name) }}}" class="form-control">
+                        @if ($errors->has('name'))
+                            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                <span class="badge badge-pill badge-danger">Error</span>
+                                {{ $errors->first('name') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+                    </div>
                 </div>
-            </div>
+                <div class="row form-group">
+                    <div class="col col-md-2">
+                        <label for="file-input" class=" form-control-label required">Display Name</label>
+                    </div>
+                    <div class="col-12 col-md-10">
+                        <input type="text" placeholder="Display Name" name="display_name" value="{{{ Request::old('display_name',$edit_role->display_name) }}}" class="form-control">
+                        @if ($errors->has('display_name'))
+                            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                <span class="badge badge-pill badge-danger">Error</span>
+                                {{ $errors->first('display_name') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-2">
+                        <label for="file-input" class=" form-control-label required">Description</label>
+                    </div>
+                    <div class="col-12 col-md-10">
+                        <textarea type="text" placeholder="Description . . ." name="description" value=""class="form-control">{{ $edit_role->description  }}</textarea>
+                        @if ($errors->has('description'))
+                            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                <span class="badge badge-pill badge-danger">Error</span>
+                                {{ $errors->first('description') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-2">
+                        <label for="file-input" class=" form-control-label required">Update Permissions</label>
+                    </div>
+                   
+                    <div class="col col-md-10">
+                        <table id="customer" class="table table-borderless table--no-card m-b-30 table-striped table-earning sticky-header" style="width:100%">
+                            <thead>
+                                @if(!empty($order))
+                                    <tr class="capitalize persist-header">
+                                        <th style="text-align:left; width:100%"><strong>Modules</strong></th> 
+                                        @foreach($order as $op)
+                                            <th style="text-align:left; width:100%"><strong>{{ $op }}</strong></th> 
+                                        @endforeach
+                                    </tr>
+                                @endif
+                            <thead>
+                            <tbody>
+                                @if(!empty($per_data))
+                                    @foreach($per_data as $identifier=>$permi_data)
+                                        <tr>
+                                            <td style="text-align:left; background: #333; color: #fff; width:100%"><strong>{{ ucfirst($identifier)  }}</strong></td>
+                                            @foreach($order as $key)
+                                                <td>
+                                                    @isset($permi_data[$key])
+                                                        @isset($user_role_list[$identifier])
+                                                            @if(in_array($permi_data[$key] , $user_role_list[$identifier]))
+                                                                <input type="checkbox" checked name="permission[{{ $identifier }}][]" value="{{ $permi_data[$key] }}" style="text-align:center; vertical-align: middle;">
+                                                            @else
+                                                                <input type="checkbox" name="permission[{{ $identifier }}][]" value="{{ $permi_data[$key] }}" {{ (is_array(old('permission')) and in_array($permi_data[$key], old('permission.'.$identifier, []))) ? ' checked' : '' }} style="text-align:center; vertical-align: middle;">
+                                                            @endif
+                                                        @else
+                                                            <input type="checkbox" name="permission[{{ $identifier }}][]" value="{{ $permi_data[$key] }}" {{ (is_array(old('permission')) and in_array($permi_data[$key], old('permission.'.$identifier, []))) ? ' checked' : '' }} style="text-align:center; vertical-align: middle;">
+                                                        @endisset
+                                                    @else
+                                                        <input type="checkbox" disabled name="" value="" style="text-align:center; vertical-align: middle;">  
+                                                    @endisset
+                                                    
+                                                </td>
+                                            @endforeach
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                        @if ($errors->has('permission'))
+                            <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                <span class="badge badge-pill badge-danger">Error</span>
+                                {{ $errors->first('permission') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="{{route('show_role')}}">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </a>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </div>
+            </form>
         </div>
     </div>
-    <!--row end-->
-</section>
-@stop
-
-@section('footer_scripts')
+</div>
 <script src="{{ asset('assets/drop/mulselect/dist/js/bootstrap-multiselect.js') }}"></script>
 <script>
     $(document).ready(function() {
         $('#permission').multiselect();
     });
 </script>
+
+<script>
+ $(window).on('scroll', function(){
+  var pos = $('#mCSB_1_scrollbar_horizontal').position();
+  var offset = $('#mCSB_1').offset();
+  var scroll = $(window).scrollTop();
+  
+  if(typeof offset !== "undefined" && offset.hasOwnProperty('top') && offset.top < scroll){
+      $("#mCSB_1_scrollbar_horizontal").css({top: (scroll - offset.top)+35, left: pos.left, position:'absolute'});
+  }
+  else if(typeof pos !== "undefined" && pos.hasOwnProperty('left')){
+      $("#mCSB_1_scrollbar_horizontal").css({top: 0, left: pos.left, position:'absolute'});
+  }
+  });
+</script>
+
 <script>
 function UpdateTableHeaders() {
   $(".persist-area").each(function() {
@@ -211,4 +209,4 @@ $(function() {
     .trigger("scroll");
 });
 </script>
-@stop
+@endsection

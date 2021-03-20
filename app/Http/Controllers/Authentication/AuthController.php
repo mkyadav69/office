@@ -151,10 +151,13 @@ class AuthController extends Controller
         $permission = Permission::get()->toArray();
         if(!empty($permission)){
             foreach($permission as $per){
+                $feature = explode("_", $per['name'],-1)[0];
                 $name = $per['identifier'];
                if(!isset($module_name['Modules'][$name])){
-                    $module_name['Modules'][$name] = [];
-               }else{
+                    $module_name['order'][$feature] = $feature;
+                    $module_name['Operations'][$feature] = $feature;
+                    $module_name['Modules'][$name][$feature] = $per;
+                }else{
                     $feature = explode("_", $per['name'],-1)[0];
                     $module_name['Modules'][$name][$feature] = $per;
                     $module_name['Operations'][$feature] = $feature;
@@ -218,24 +221,14 @@ class AuthController extends Controller
             ]);
         if($role){
             $role->permissions()->sync($per_id);
-            return redirect()->route('show_role')->with('success','Role added successfuly !');
+            return redirect()->route('show_role')->with('message','Role added successfuly !');
         }else{
-            return redirect()->back()->withErrors(['error', 'Fail to add new role !']);
+            return redirect()->back()->withErrors(['message', 'Fail to add new role !']);
         }
     }
 
     public function updateRole(Request $request , $id){
-        $feature_list = Config('constant.feature_list');
-        $order = [
-            'view'=>'view',
-            'edit'=>'edit',
-            'delete'=>'delete',
-            'upload'=>'upload',
-            'download'=>'download',
-        ];
-        // $tables  = \Config::get('modules.permission');
-        // $all_master_data_749 = \App\Helpers\ModuleConfig::getAllMasterData();
-        // $master  = $all_master_data_749+$tables;
+        $order = Config('constant.feature_list');
         $path = app_path() . "/Models";
         $model_list = [];
         $results = scandir($path);
@@ -251,32 +244,25 @@ class AuthController extends Controller
         $per_data = [];
         if(!empty($model_list)){
             foreach ($model_list as $idfn) {
-                foreach($feature_list as $pr){
+                foreach($order as $pr){
                     $x = [];
                     $x['display_name'] = ucfirst(str_replace('_',' ' , $pr)).' '.ucfirst(str_replace('_',' ' , $idfn));
                     $x['name'] = $pr.'_'.$idfn;
                     $x['description'] = "Permission to ".ucfirst(str_replace('_',' ' , $pr)).' '.ucfirst(str_replace('_',' ' , $idfn));
                     $x['identifier'] = $idfn;
-                    $permission[]  = $x;
+                    $new_permsn[]  = $x;
                 }
             }
         }
-        // foreach ($model_list as $key => $value) {
-        //     if(isset($value['permission']) && !empty($value['permission'])){
-        //          $new_permsn[$key] = $value['permission'];
-        //     }
-        //  }
-         if(!empty($new_permsn)){
-             foreach ($new_permsn as $idfn=>$v) {
-                 foreach($v as $pr){
-                    if(!isset($per_data[$idfn])){
-                        $per_data[$idfn] = [];
-                    }
-                    $per_data[$idfn][$pr] = $pr.'_'.$idfn;
-                 }
-             }
-         }
-         dd($per_data);
+        if(!empty($new_permsn)){
+            foreach ($new_permsn as $v) {                
+                if(!isset($per_data[$v['identifier']])){
+                    $per_data[$v['identifier']] = [];
+                }
+                $k = explode('_',  $v['name'])[0];
+                $per_data[$v['identifier']][$k] = $v['name'];
+            }
+        }
         $permissions = Permission::All();
         $permissions  = $permissions->toArray();
         $per_arr_list = [];
@@ -289,8 +275,8 @@ class AuthController extends Controller
                 $per_arr_list[$value['identifier']][$value['id']] = $value['name']; 
             }
         }
-        $edit_role = Role::with('perms')->where('id',$request->id)->first();
-        $user_role = $edit_role->perms->toArray();
+        $edit_role = Role::with('permissions')->where('id',$request->id)->first();
+        $user_role = $edit_role->permissions->toArray();
         if(!empty($user_role)){
             foreach ($user_role as $key => $value) {
                 $per = explode('_', $value['name']);
@@ -300,21 +286,24 @@ class AuthController extends Controller
                 $user_role_list[$value['identifier']][$per[0]] = $value['name']; 
             }
         }
-        $roles = Role::with('perms')->get();
+        $roles = Role::with('permissions')->get();
         if(!empty($edit_role)){
-            return View::make('admin.users.role_permission.edit_role',compact('edit_role','permissions',  'per_arr_list', 'user_role_list' ,'tables', 'per_data', 'order'));
+            return view('auth.role_permission.update_role' ,compact('edit_role','permissions',  'per_arr_list', 'user_role_list' , 'per_data', 'order'));
         }
-        return redirect()->back()->with('error','Cant find the role !');
+        return redirect()->back()->with('message','Cant find the role !');
     }
 
-    public function storeUpdateRole(){
+    public function storeUpdateRole(Request $request){
+        $id = $request->id;
+        if(empty($id)){
+            return redirect()->back()->with('error','Cant find the role id !');
+        }
         $this->validate($request,[
             'name' => "required|unique:roles,name,{$id}",
             'display_name' => "required|unique:roles,display_name,{$id}",
             "description"    => "required",
             "permission"    => "required|array",
         ]);
-
         $per_id = [];
         $new_per_list = [];
         $existing_permsn = [];
@@ -363,9 +352,21 @@ class AuthController extends Controller
             $update_role->permissions()->sync($per_id);
             $update_role->save();
             if(!empty($update_role)){
-                return redirect()->route('show_role')->with('success','Role updated successfully !');
+                return redirect()->route('show_role')->with('message','Role updated successfully !');
             }
         }
-        return redirect()->back()->with('error','Cant find the role !');
+        return redirect()->back()->with('message','Cant find the role !');
+    }
+
+    public function deleteRole(Request $request, $id){
+        $role = Role::where('id',$id)->first();
+        if($request->id == 1){
+            return redirect()->route('users')->with('message','Can not remove lead/super admin role !');
+        }
+        if(!empty($role)){
+            $role->delete();
+            return redirect()->route('show_role')->with('message','Role deleted successfully !');
+        }
+        return redirect()->back()->withErrors(['error', 'Fail to delete role !']);
     }
 }

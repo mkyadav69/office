@@ -1,19 +1,20 @@
 <div class="menu-sidebar__content js-scrollbar1">
     <nav class="navbar-sidebar">
         <ul class="list-unstyled navbar__list">
-            <li class="{{ request()->is('show-customer') ? 'active' :( request()->is('show-owner') ? 'active' : '' )}} has-sub">
-                <a class="js-arrow" href="#">
-                    <i class="fas fa-users "></i>Customer & Owner</a>
-                <ul class="list-unstyled navbar__sub-list js-sub-list">
-                    <li>
-                        <a href="{{route('show_customer')}}">Manage Customers</a>
-                    </li>
-                    <li>
-                        <a href="{{route('show_owner')}}">Manage Owners</a>
-                    </li>
-                </ul>
-            </li>
-
+            @permission('view_customer')
+                <li class="{{ request()->is('show-customer') ? 'active' :( request()->is('show-owner') ? 'active' : '' )}} has-sub">
+                    <a class="js-arrow" href="#">
+                        <i class="fas fa-users "></i>Customer & Owner</a>
+                    <ul class="list-unstyled navbar__sub-list js-sub-list">
+                        <li>
+                            <a href="{{route('show_customer')}}">Manage Customers</a>
+                        </li>
+                        <li>
+                            <a href="{{route('show_owner')}}">Manage Owners</a>
+                        </li>
+                    </ul>
+                </li>
+            @endpermission
             <li class="{{ request()->is('show-quatation') ? 'active' : (request()->is('add-quatation') ? 'active' : (request()->is('edit-quatation/*') ? 'active' : '')) }} has-sub">
                 <a class="js-arrow" href="#">
                     <i class="fas fa-book "></i>Quotations</a>
