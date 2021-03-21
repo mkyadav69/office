@@ -75,35 +75,35 @@
             @permission('view_principal')
                 <li class="{{ request()->is('show-principals') ? 'active' : '' }} has-sub">
                     <a  href="{{route('show_principals')}}">
-                    <i class="fas fa-tags"></i>Principals</a>
+                    <i class="fas  fa-tablet"></i>Principals</a>
                 </li>
             @endpermission
 
             @permission('view_quatation')
                 <li class="{{ request()->is('show-quatation-format') ? 'active' : '' }} has-sub">
                     <a  href="{{route('show_quatation_format')}}">
-                    <i class="fas fa-tags"></i>Quatations Format</a>
+                    <i class="fas fa-list-alt"></i>Quatations Format</a>
                 </li>
             @endpermission
         
             @permission('view_courier')
                 <li class="{{ request()->is('show-courier') ? 'active' : '' }} has-sub">
                     <a  href="{{route('show_courier')}}">
-                    <i class="fas fa-tags"></i>Couriers</a>
+                    <i class="fas fa-envelope"></i>Couriers</a>
                 </li>
             @endpermission
 
             @permission('view_user')
                 <li class="{{ request()->is('show-user') ? 'active' : '' }} has-sub">
                     <a  href="{{route('show_user')}}">
-                    <i class="fas fa-tags"></i>Users</a>
+                    <i class="fas fa-users"></i>Users</a>
                 </li>
             @endpermission
 
             @permission('view_role')
                 <li class="{{ request()->is('show-role') ? 'active' : '' }} has-sub">
                     <a  href="{{route('show_role')}}">
-                    <i class="fas fa-tags"></i>Roles & Permissions</a>
+                    <i class="fas fa-user"></i>Roles & Permissions</a>
                 </li>
             @endpermission
         </ul>
