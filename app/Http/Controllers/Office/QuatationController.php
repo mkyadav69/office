@@ -373,9 +373,10 @@ class QuatationController extends Controller
 		$result['format']				= $format;
 		$result['BillAddress']			= "adress";
         $cur = Config::get('constant.currency');
+        $currencyCodes = Config::get('constant.currencyCodes');
         $qt_info = $request->quotation_info;
         $c_format = $qt_info['currency'];
-        $result['currency']  = $cur[$c_format];
+        $result['currency']  = $currencyCodes[$cur[$c_format]];
         $data['quotation_data'] = View::make("office.quatation.preview_quatation", $result)->render();
         return json_encode($data);
     }
@@ -484,9 +485,10 @@ class QuatationController extends Controller
             $data['BillAddress'] = $this->get_PDF_BillAddress();
             
             $cur = Config::get('constant.currency');
+            $currencyCodes = Config::get('constant.currencyCodes');
             $qt_info = $request->quotation_info;
             $c_format = $qt_info['currency'];
-            $data['currency']  = $cur[$c_format];
+            $data['currency']  = $currencyCodes[$cur[$c_format]];
             # Generate PDF
             $year = date("Y");    
             $path = 'pdf_'.$year;

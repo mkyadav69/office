@@ -51,6 +51,41 @@ return [
         '90 Days from Date of Shipment'=>'90 Days from Date of Shipment',
     ],
 
+    'currencyCodes' =>[
+        "BRL" => "R$" , // OR add ₢ Brazilian Real
+        "BDT" => "৳", //Bangladeshi Taka
+        "CAD" => "C$" , //Canadian Dollar
+        "CHF" => "Fr" , //Swiss Franc
+        "CRC" => "₡", //Costa Rican Colon
+        "CZK" => "Kč" , //Czech Koruna
+        "DKK" => "kr" , //Danish Krone
+        "EUR" => "€" , //Euro
+        "GBP" => "£" , //Pound Sterling
+        "HKD" => "$" , //Hong Kong Dollar
+        "HUF" => "Ft" , //Hungarian Forint
+        "ILS" => "₪" , //Israeli New Sheqel
+        "INR" => "₹", //Indian Rupee
+        "ILS" => "₪",	//Israeli New Shekel
+        "JPY" => "¥" , //also use ¥ Japanese Yen
+        "KZT" => "₸", //Kazakhstan Tenge
+        "KRW" => "₩",	//Korean Won
+        "KHR" => "៛", //Cambodia Kampuchean Riel	
+        "MYR" => "RM" , //Malaysian Ringgit 
+        "MXN" => "$" , //Mexican Peso
+        "NOK" => "kr" , //Norwegian Krone
+        "NGN" => "₦",	//Nigerian Naira
+        "NZD" => "$" , //New Zealand Dollar
+        "PHP" => "₱" , //Philippine Peso
+        "PKR" => "₨" , //Pakistani Rupees
+        "PLN" => "zł" ,//Polish Zloty
+        "SEK" => "kr" , //Swedish Krona 
+        "TWD" => "$" , //Taiwan New Dollar 
+        "THB" => "฿" , //Thai Baht
+        "TRY" => "₺", //Turkish Lira
+        "USD" => "$" , //U.S. Dollar
+        "VND" => "₫"	//Vietnamese Dong
+    ],
+      
     'indian_all_states' => [
         'Andhra Pradesh' => 'Andhra Pradesh',
         'Arunachal Pradesh' => 'Arunachal Pradesh',

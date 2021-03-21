@@ -1,184 +1,109 @@
 <div class="menu-sidebar__content js-scrollbar1">
     <nav class="navbar-sidebar">
         <ul class="list-unstyled navbar__list">
-                <li class="{{ request()->is('show-customer') ? 'active' :( request()->is('show-owner') ? 'active' : '' )}} has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas fa-users "></i>Customer & Owner</a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        @permission('view_customer')
-                            <li>
-                                <a href="{{route('show_customer')}}">Manage Customers</a>
-                            </li>
-                        @endpermission
-                        @permission('view_owner')
-                            <li>
-                                <a href="{{route('show_owner')}}">Manage Owners</a>
-                            </li>
-                        @endpermission
-                    </ul>
+            @permission('view_customer')
+                <li class="{{ request()->is('show-customer') ? 'active' : '' }} has-sub">
+                    <a class="js-arrow" href="{{route('show_customer')}}">
+                        <i class="fas fa-users "></i>Customers</a>
                 </li>
-                
+            @endpermission
+
+            @permission('view_owner')
+                <li class="{{ request()->is('show-owner') ? 'active' :( request()->is('show-owner') ? 'active' : '' )}} has-sub">
+                    <a class="js-arrow" href="{{route('show_owner')}}">
+                        <i class="fas fa-users "></i>Owners</a>
+                </li>
+            @endpermission
+
+            @permission('view_quatationadd')
                 <li class="{{ request()->is('show-quatation') ? 'active' : (request()->is('add-quatation') ? 'active' : (request()->is('edit-quatation/*') ? 'active' : '')) }} has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas fa-book "></i>Quotations</a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        @permission('view_quatationadd')
-                            <li>
-                                <a href="{{route('show_quatation')}}">Manage Quotations</a>
-                            </li>
-                        @endpermission
-                        @permission('add_quatationadd')
-                            <li>
-                                <a href="{{route('add_quatation')}}">Add Quotation</a>
-                            </li>
-                        @endpermission
-                    </ul>
+                    <a class="js-arrow" href="{{route('show_quatation')}}">
+                    <i class="fas fa-book "></i>Quotations</a>
                 </li>
+            @endpermission
             
-                
             @permission('view_reason')
                 <li class="{{ request()->is('show-reason') ? 'active' : '' }} has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas  fa-tags "></i>Reasons</a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="{{route('show_reason')}}">Manage Reason</a>
-                        </li>
-                    </ul>
+                    <a class="js-arrow" href="{{route('show_reason')}}">
+                    <i class="fas fa-tags"></i>Reasons</a>
                 </li>
             @endpermission
 
-            @permission('view_product') 
+            @permission('view_product')
                 <li class="{{ request()->is('show-product') ? 'active' :( request()->is('add-product') ? 'active' : '') }} has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas fa-briefcase "></i>Products</a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="{{ route('show_product')}}">Manage Product</a>
-                        </li>
-                    </ul>
-                </li>
-            @endpermission
-            
-            @permission('view_parameter') 
-                <li class="{{ request()->is('show-parameter') ? 'active' : '' }} has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas fa-glass "></i>Parameters</a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="{{ route('show_parameter')}}">Manage Parameter</a>
-                        </li>
-                    </ul>
+                    <a class="js-arrow" href="{{ route('show_product')}}">
+                    <i class="fas fa-briefcase"></i>Products</a>
                 </li>
             @endpermission
 
-            @permission('view_usp') 
+            @permission('view_parameter')
+                <li class="{{ request()->is('show-parameter') ? 'active' : '' }} has-sub">
+                    <a class="js-arrow" href="{{ route('show_parameter')}}">
+                    <i class="fas fa-glass "></i>Products</a>
+                </li>
+            @endpermission
+
+
+            @permission('view_usp')
                 <li class="{{ request()->is('show-usp') ? 'active' : '' }} has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas fa-tasks "></i>Usp List</a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="{{ route('show_usp')}}">Manage Usp List</a>
-                        </li>
-                    </ul>
+                    <a class="js-arrow" href="{{ route('show_parameter')}}">
+                    <i class="fas fa-tasks "></i>USP</a>
                 </li>
             @endpermission
-            
-            @permission('view_brand') 
+
+            @permission('view_brand')
                 <li class="{{ request()->is('show-brand') ? 'active' : '' }} has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas fa-square "></i>Brands</a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="{{route('show_brand')}}">Manage Brands</a>
-                        </li>
-                    </ul>
+                    <a class="js-arrow" href="{{route('show_brand')}}">
+                    <i class="fas fa-square "></i>Brands</a>
                 </li>
             @endpermission
-            
-            
-            @permission('view_category') 
+
+            @permission('view_category')
                 <li class="{{ request()->is('show-category') ? 'active' : '' }} has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas   fa-shopping-cart "></i>Categories</a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="{{route('show_category')}}">Manage Category</a>
-                        </li>
-                    </ul>
+                <a href="{{route('show_category')}}">
+                    <i class="fas   fa-shopping-cart "></i>Categories</a>
                 </li>
-            @endpermission 
+            @endpermission
 
             @permission('view_notify')
                 <li class="{{ request()->is('show-notify') ? 'active' : '' }} has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas fa-tags "></i>Notifications</a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="{{route('show_notify')}}">Manage Notification</a>
-                        </li>
-                    </ul>
+                    <a  href="{{route('show_notify')}}">
+                    <i class="fas fa-tags"></i>Notifications</a>
                 </li>
-            @endpermission 
+            @endpermission
 
             @permission('view_principal')
                 <li class="{{ request()->is('show-principals') ? 'active' : '' }} has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas fa-tablet "></i>Principals</a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="{{route('show_principals')}}">Manage Principals</a>
-                        </li>
-                    </ul>
+                    <a  href="{{route('show_principals')}}">
+                    <i class="fas fa-tags"></i>Principals</a>
                 </li>
-            @endpermission 
+            @endpermission
 
             @permission('view_quatation')
                 <li class="{{ request()->is('show-quatation-format') ? 'active' : '' }} has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas fa-list-alt "></i>Quatations Format</a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="{{route('show_quatation_format')}}">Manage Quatation Format</a>
-                        </li>
-                    </ul>
+                    <a  href="{{route('show_quatation_format')}}">
+                    <i class="fas fa-tags"></i>Quatations Format</a>
                 </li>
-            @endpermission 
-
-          
+            @endpermission
+        
             @permission('view_courier')
                 <li class="{{ request()->is('show-courier') ? 'active' : '' }} has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas  fa-envelope "></i>Couriers</a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="{{route('show_courier')}}">Manage Courier</a>
-                        </li>
-                    </ul>
+                    <a  href="{{route('show_courier')}}">
+                    <i class="fas fa-tags"></i>Couriers</a>
                 </li>
             @endpermission
 
             @permission('view_user')
                 <li class="{{ request()->is('show-user') ? 'active' : '' }} has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas  fa-users"></i>Users</a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="{{route('show_user')}}">Manage User</a>
-                        </li>
-                    </ul>
+                    <a  href="{{route('show_user')}}">
+                    <i class="fas fa-tags"></i>Users</a>
                 </li>
             @endpermission
 
             @permission('view_role')
                 <li class="{{ request()->is('show-role') ? 'active' : '' }} has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas  fa-user "></i>Roles & Permissions</a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="{{route('show_role')}}">Manage Roles</a>
-                        </li>
-                    </ul>
+                    <a  href="{{route('show_role')}}">
+                    <i class="fas fa-tags"></i>Roles & Permissions</a>
                 </li>
             @endpermission
         </ul>
