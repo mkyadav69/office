@@ -31,11 +31,13 @@
                     <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#addModal">
                         <i class="zmdi zmdi-plus"></i> Add Customer
                     </button>
+               
+                    <input type="file" class="au-btn-filter">
+                    <button class="au-btn-filter">
+                        <i class="zmdi zmdi-upload"></i> Import
+                    </button>
                 @endpermission
-                <input type="file" class="au-btn-filter">
-                <button class="au-btn-filter">
-                    <i class="zmdi zmdi-upload"></i> Import
-                </button>
+
             </div>
         </div>
     </div>

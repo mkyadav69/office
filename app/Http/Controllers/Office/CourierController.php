@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Office;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Courier;
 use Carbon\Carbon;
@@ -53,16 +54,42 @@ class CourierController extends Controller
     }
 
     public function getCourier(Request $request){
-        $courier = Courier::get();
+        $courier = Datatables::of(Courier::query());
+        if(Auth::user()->hasPermission('update_courier')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
+        }
+        
+        if(Auth::user()->hasPermission('delete_courier')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>';
+        }
 
-        return Datatables::of($courier)
-            ->editColumn('dt_created', function ($courier) {
-                $date = $courier['dt_created'];
-                if(!empty($date)){
-                    return date('d-m-Y', strtotime($date));
+        if(Auth::user()->hasPermission(['update_courier', 'delete_courier'])){
+            $courier->addColumn('actions', function ($courier) use($action_btn){
+                return '<div class="table-data-feature">'.implode('', $action_btn).'</div>';
+               
+            })->setRowAttr([
+                'data-id' => function($courier) {
+                    return $courier->system_id;
                 }
-            
+            ])->rawColumns(['actions' => 'actions']);
+        }else{
+            $courier->addColumn('actions', function ($courier){
+                return '<div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View Only"><i class="fa fa-eye text-primary"></i></button></div>';
+               
+            })->setRowAttr([
+                'data-id' => function($courier) {
+                    return $courier->system_id;
+                }
+            ])->rawColumns(['actions' => 'actions']);
+        }
+        $courier->editColumn('dt_created', function ($courier) {
+            $date = $courier['dt_created'];
+            if(!empty($date)){
+                return date('d-m-Y', strtotime($date));
+            }
         })->make(true);
+
+        return $courier->make(true);
     }
 
     public function updateCourier(Request $request, $id){

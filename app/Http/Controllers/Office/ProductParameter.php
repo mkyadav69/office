@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Office;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Parameter;
 use Carbon\Carbon;
@@ -43,14 +44,42 @@ class ProductParameter extends Controller
     }
 
     public function getParameter(Request $request){
-        $param = Parameter::get();
-        return Datatables::of($param)
-           ->editColumn('dt_created', function ($param) {
-                $date = $param['dt_created'];
-                if(!empty($date)){
-                    return date('d-m-Y', strtotime($date));
+        $parameter = Datatables::of(Parameter::query());
+        if(Auth::user()->hasPermission('update_parameter')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
+        }
+        
+        if(Auth::user()->hasPermission('delete_parameter')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>';
+        }
+
+        if(Auth::user()->hasPermission(['update_parameter', 'delete_parameter'])){
+            $parameter->addColumn('actions', function ($parameter) use($action_btn){
+                return '<div class="table-data-feature">'.implode('', $action_btn).'</div>';
+               
+            })->setRowAttr([
+                'data-id' => function($parameter) {
+                    return $parameter->system_id;
                 }
-           })->make(true);
+            ])->rawColumns(['actions' => 'actions']);
+        }else{
+            $parameter->addColumn('actions', function ($parameter){
+                return '<div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View Only"><i class="fa fa-eye text-primary"></i></button></div>';
+               
+            })->setRowAttr([
+                'data-id' => function($parameter) {
+                    return $parameter->system_id;
+                }
+            ])->rawColumns(['actions' => 'actions']);
+        }
+        $parameter->editColumn('dt_created', function ($parameter) {
+            $date = $parameter['dt_created'];
+            if(!empty($date)){
+                return date('d-m-Y', strtotime($date));
+            }
+        })->make(true);
+
+        return $parameter->make(true);
     }
 
     public function updateParameter(Request $request, $id){

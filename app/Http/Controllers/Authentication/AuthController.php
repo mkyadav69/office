@@ -49,22 +49,49 @@ class AuthController extends Controller
 
     public function getUser(Request $request){
         $branch_wise = Config('constant.branch_wise');
-        $users = User::get();
-        return Datatables::of($users)
-            ->editColumn('dt_created', function ($users) {
-                $date = $users['dt_created'];
-                if(!empty($date)){
-                    return date('d-m-Y', strtotime($date));
+        $users = Datatables::of(User::query());
+        if(Auth::user()->hasPermission('update_user')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
+        }
+        
+        if(Auth::user()->hasPermission('delete_user')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>';
+        }
+
+        if(Auth::user()->hasPermission(['update_user', 'delete_user'])){
+            $users->addColumn('actions', function ($users) use($action_btn){
+                return '<div class="table-data-feature">'.implode('', $action_btn).'</div>';
+               
+            })->setRowAttr([
+                'data-id' => function($users) {
+                    return $users->system_id;
                 }
-            })
-            ->editColumn('branch_id', function ($users) use($branch_wise) {
-                $id = $users['branch_id'];
-                if(!empty($id)){
-                    if(isset($branch_wise[$id])){
-                        return $branch_wise[$id];
-                    }
+            ])->rawColumns(['actions' => 'actions']);
+        }else{
+            $users->addColumn('actions', function ($users){
+                return '<div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View Only"><i class="fa fa-eye text-primary"></i></button></div>';
+               
+            })->setRowAttr([
+                'data-id' => function($users) {
+                    return $users->system_id;
                 }
-            })->make(true);
+            ])->rawColumns(['actions' => 'actions']);
+        }
+        $users->editColumn('dt_created', function ($users) {
+            $date = $users['dt_created'];
+            if(!empty($date)){
+                return date('d-m-Y', strtotime($date));
+            }
+        })->editColumn('branch_id', function ($users) use($branch_wise) {
+            $id = $users['branch_id'];
+            if(!empty($id)){
+                if(isset($branch_wise[$id])){
+                    return $branch_wise[$id];
+                }
+            }
+        })->make(true);
+
+        return $users->make(true);
     }
 
     public function storeUser(Request $request){

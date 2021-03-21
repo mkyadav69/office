@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Office;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Usp;
 use Carbon\Carbon;
@@ -50,14 +51,43 @@ class UspController extends Controller
     }
 
     public function getUsp(Request $request){
-        $usp = Usp::get();
-        return Datatables::of($usp)
-           ->editColumn('dt_created', function ($usp) {
-                $date = $usp['dt_created'];
-                if(!empty($date)){
-                    return date('d-m-Y', strtotime($date));
+       
+        $usp = Datatables::of(Usp::query());
+        if(Auth::user()->hasPermission('update_usp')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
+        }
+        
+        if(Auth::user()->hasPermission('delete_usp')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>';
+        }
+
+        if(Auth::user()->hasPermission(['update_usp', 'delete_usp'])){
+            $usp->addColumn('actions', function ($usp) use($action_btn){
+                return '<div class="table-data-feature">'.implode('', $action_btn).'</div>';
+               
+            })->setRowAttr([
+                'data-id' => function($usp) {
+                    return $usp->system_id;
                 }
-           })->make(true);
+            ])->rawColumns(['actions' => 'actions']);
+        }else{
+            $usp->addColumn('actions', function ($usp){
+                return '<div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View Only"><i class="fa fa-eye text-primary"></i></button></div>';
+               
+            })->setRowAttr([
+                'data-id' => function($usp) {
+                    return $usp->system_id;
+                }
+            ])->rawColumns(['actions' => 'actions']);
+        }
+        $usp->editColumn('dt_created', function ($usp) {
+            $date = $usp['dt_created'];
+            if(!empty($date)){
+                return date('d-m-Y', strtotime($date));
+            }
+        })->make(true);
+
+        return $usp->make(true);
     }
 
     public function updateUsp(Request $request, $id){

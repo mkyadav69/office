@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Office;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Principal;
 use Carbon\Carbon;
@@ -57,14 +58,42 @@ class PrincipalController extends Controller
     }
 
     public function getPrincipal(Request $request){
-        $principal = Principal::get();
-        return Datatables::of($principal)
-           ->editColumn('dt_created', function ($principal) {
-                $date = $principal['dt_created'];
-                if(!empty($date)){
-                    return date('d-m-Y', strtotime($date));
+        $principal = Datatables::of(Principal::query());
+        if(Auth::user()->hasPermission('update_principal')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
+        }
+        
+        if(Auth::user()->hasPermission('delete_principal')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>';
+        }
+
+        if(Auth::user()->hasPermission(['update_principal', 'delete_principal'])){
+            $principal->addColumn('actions', function ($principal) use($action_btn){
+                return '<div class="table-data-feature">'.implode('', $action_btn).'</div>';
+               
+            })->setRowAttr([
+                'data-id' => function($principal) {
+                    return $principal->system_id;
                 }
-           })->make(true);
+            ])->rawColumns(['actions' => 'actions']);
+        }else{
+            $principal->addColumn('actions', function ($principal){
+                return '<div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View Only"><i class="fa fa-eye text-primary"></i></button></div>';
+               
+            })->setRowAttr([
+                'data-id' => function($principal) {
+                    return $principal->system_id;
+                }
+            ])->rawColumns(['actions' => 'actions']);
+        }
+        $principal->editColumn('dt_created', function ($principal) {
+            $date = $principal['dt_created'];
+            if(!empty($date)){
+                return date('d-m-Y', strtotime($date));
+            }
+        })->make(true);
+
+        return $principal->make(true);
     }
 
     public function updatePrincipals(Request $request, $id){

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Office;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Quatation;
 use Carbon\Carbon;
@@ -66,24 +67,51 @@ class QuatationFormatController extends Controller
     }
 
     public function getQuatationFormat(Request $request){
-        $quatation = Quatation::get();
         $branch_wise = Config::get('constant.branch_wise');
-        return Datatables::of($quatation)
-           ->editColumn('int_branch_id', function ($quatation) use($branch_wise) {
-                $id = $quatation['int_branch_id'];
-                if(!empty($id)){
-                    if(isset($branch_wise[$id])){
-                        return $branch_wise[$id];
-                    }
+        $quatation_format = Datatables::of(Quatation::query());
+        if(Auth::user()->hasPermission('update_quatation')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
+        }
+        
+        if(Auth::user()->hasPermission('delete_quatation')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>';
+        }
+
+        if(Auth::user()->hasPermission(['update_quatation', 'delete_quatation'])){
+            $quatation_format->addColumn('actions', function ($quatation_format) use($action_btn){
+                return '<div class="table-data-feature">'.implode('', $action_btn).'</div>';
+               
+            })->setRowAttr([
+                'data-id' => function($quatation_format) {
+                    return $quatation_format->system_id;
                 }
-           })->editColumn('dt_created', function ($reason) {
-                $date = $reason['dt_created'];
-                if(!empty($date)){
-                    return date('d-m-Y', strtotime($date));
+            ])->rawColumns(['actions' => 'actions']);
+        }else{
+            $quatation_format->addColumn('actions', function ($quatation_format){
+                return '<div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View Only"><i class="fa fa-eye text-primary"></i></button></div>';
+               
+            })->setRowAttr([
+                'data-id' => function($quatation_format) {
+                    return $quatation_format->system_id;
                 }
-            
+            ])->rawColumns(['actions' => 'actions']);
+        }
+        $quatation_format->editColumn('int_branch_id', function ($quatation_format) use($branch_wise) {
+            $id = $quatation_format['int_branch_id'];
+            if(!empty($id)){
+                if(isset($branch_wise[$id])){
+                    return $branch_wise[$id];
+                }
+            }
+        })->editColumn('dt_created', function ($quatation_format) {
+            $date = $quatation_format['dt_created'];
+            if(!empty($date)){
+                return date('d-m-Y', strtotime($date));
+            }
+        
         })->make(true);
-        return Datatables::of(Quatation::query())->make(true);
+
+        return $quatation_format->make(true);
     }
 
     public function updateQuatationFormat(Request $request, $id){
