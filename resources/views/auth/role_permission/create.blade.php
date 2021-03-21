@@ -10,8 +10,10 @@
 .section__content--p30{
     padding: 0px 0px;
 }
-.col-md-8{
+.col-md-8 {
     max-width: 89.667%;
+    margin-top: -24px;
+    margin-left: -28px;
 }
 
 </style>
@@ -82,6 +84,8 @@
                             </div>
                         @endif
                     </div>
+                </div>
+                <div class="row form-group">
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-2">

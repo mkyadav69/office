@@ -63,8 +63,27 @@
 }
 .navbar-sidebar {
     padding-left: -1px;
-    padding-top: 27px;
+    padding-top: 9px;
     padding-bottom: 0;
+}
+.col-md-12 {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 131%;
+    padding-left: 1px;
+    margin-top: -28px;
+}
+.m-b-30 {
+    margin-bottom: 30px;
+    margin-top: -16px;
+}
+.m-b-35 {
+    margin-bottom: 16px;
+}
+img {
+    max-width: 145%;
+    height: auto;
+    margin-left: -33px;
 }
 </style>
 

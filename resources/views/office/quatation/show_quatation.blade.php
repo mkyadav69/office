@@ -27,9 +27,11 @@
         <h3 class="title-5 m-b-35">Manage Quotation</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
+            @permission('add_quatationadd')
                 <a href="{{route('add_quatation')}}">
                     <button type="button" class="au-btn-filter mb-1" data-dismiss="modal"><i class="zmdi zmdi-plus"></i> Add Quotation</button>
                 </a>
+            @endpermission
             </div>
         </div>
     </div>

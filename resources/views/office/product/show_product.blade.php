@@ -13,6 +13,7 @@
     white-space: nowrap;
     overflow: hidden;
 }
+
 </style>
 <div class="row">
     @if (session()->has('message'))
@@ -27,17 +28,19 @@
         <h3 class="title-5 m-b-35">Manage Product</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
-                <a href="{{route('add_product')}}">
-                    <button type="button" class="au-btn-filter mb-1" data-dismiss="modal"><i class="zmdi zmdi-plus"></i> Add Product</button>
-                </a>
-                <input type="file" class="au-btn-filter">
-                <button class="au-btn-filter">
-                    <i class="zmdi zmdi-upload"></i> Product Qty
-                </button>
-                <input type="file" class="au-btn-filter">
-                <button class="au-btn-filter">
-                    <i class="zmdi zmdi-upload"></i> Product Price
-                </button>
+                @permission('add_product')
+                    <a href="{{route('add_product')}}">
+                        <button type="button" class="au-btn-filter mb-1" data-dismiss="modal"><i class="zmdi zmdi-plus"></i> Add Product</button>
+                    </a>
+                    <input type="file" class="au-btn-filter">
+                    <button class="au-btn-filter">
+                        <i class="zmdi zmdi-upload"></i> Product Qty
+                    </button>
+                    <input type="file" class="au-btn-filter">
+                    <button class="au-btn-filter">
+                        <i class="zmdi zmdi-upload"></i> Product Price
+                    </button>
+                @endpermission
             </div>
         </div>
     </div>

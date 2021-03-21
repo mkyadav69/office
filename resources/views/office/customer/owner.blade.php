@@ -27,9 +27,11 @@
         <h3 class="title-5 m-b-35">Manage Owners</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
+            @permission('add_owner')
                 <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#addModal">
                     <i class="zmdi zmdi-plus"></i> Add Owner
                 </button>
+            @endpermission
             </div>
         </div>
     </div> 

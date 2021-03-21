@@ -30,9 +30,11 @@
         <h3 class="title-5 m-b-35">Manage Reasons</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
-                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#addModal">
-                    <i class="zmdi zmdi-plus"></i> Add Reason
-                </button>
+                @permission('add_reason')
+                    <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#addModal">
+                        <i class="zmdi zmdi-plus"></i> Add Reason
+                    </button>
+                @endpermission
             </div>
         </div>
     </div> 

@@ -22,13 +22,15 @@
         <h3 class="title-5 m-b-35">Manage Principals</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
-                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#addModal">
-                    <i class="zmdi zmdi-plus"></i> Add Principal
-                </button>
-                <input type="file" class="au-btn-filter">
-                <button class="au-btn-filter">
-                    <i class="zmdi zmdi-upload"></i> Import
-                </button>
+                @permission('add_principal')
+                    <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#addModal">
+                        <i class="zmdi zmdi-plus"></i> Add Principal
+                    </button>
+                    <input type="file" class="au-btn-filter">
+                    <button class="au-btn-filter">
+                        <i class="zmdi zmdi-upload"></i> Import
+                    </button>
+                @endpermission
             </div>
         </div>
     </div>

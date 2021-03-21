@@ -28,9 +28,11 @@
         <h3 class="title-5 m-b-35">Manage Role & Permissions</h3>
         <div class="table-data__tool">
             <div class="table-data__tool-right">
-                <a href="{{route('add_role')}}">
-                    <button type="button" class="au-btn-filter mb-1" data-dismiss="modal"><i class="zmdi zmdi-plus"></i> Add Role</button>
-                </a>
+                @permission('add_role')
+                    <a href="{{route('add_role')}}">
+                        <button type="button" class="au-btn-filter mb-1" data-dismiss="modal"><i class="zmdi zmdi-plus"></i> Add Role</button>
+                    </a>
+                @endpermission
             </div>
         </div>
     </div> 
