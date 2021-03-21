@@ -101,14 +101,42 @@ class CustomerController extends Controller
     }
 
     public function getCustomer(Request $request){
-        $customer = Customer::get();
-        return Datatables::of($customer)
-           ->editColumn('dt_created', function ($customer) {
-                $date = $customer['dt_created'];
-                if(!empty($date)){
-                    return date('d-m-Y', strtotime($date));
+        $customer = Datatables::of(Customer::query());
+        if(Auth::user()->hasPermission('update_customer')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
+        }
+        
+        if(Auth::user()->hasPermission('delete_customer')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>';
+        }
+
+        if(Auth::user()->hasPermission(['update_customer', 'delete_customer'])){
+            $customer->addColumn('actions', function ($customer) use($action_btn){
+                return '<div class="table-data-feature">'.implode('', $action_btn).'</div>';
+               
+            })->setRowAttr([
+                'data-id' => function($customer) {
+                    return $customer->system_id;
                 }
-           })->make(true);
+            ])->rawColumns(['actions' => 'actions']);
+        }else{
+            $customer->addColumn('actions', function ($customer){
+                return '<div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View Only"><i class="fa fa-eye text-primary"></i></button></div>';
+               
+            })->setRowAttr([
+                'data-id' => function($customer) {
+                    return $customer->system_id;
+                }
+            ])->rawColumns(['actions' => 'actions']);
+        }
+        $customer->editColumn('dt_created', function ($customer) {
+            $date = $customer['dt_created'];
+            if(!empty($date)){
+                return date('d-m-Y', strtotime($date));
+            }
+        })->make(true);
+
+        return $customer->make(true);
     }
 
     public function updateCustomer(Request $request, $id){
@@ -217,14 +245,42 @@ class CustomerController extends Controller
     }
 
     public function getOwner(Request $request){
-        $customer = Owner::get();
-        return Datatables::of($customer)
-           ->editColumn('dt_created', function ($customer) {
-                $date = $customer['dt_created'];
-                if(!empty($date)){
-                    return date('d-m-Y', strtotime($date));
+        $owner = Datatables::of(Owner::query());
+        if(Auth::user()->hasPermission('update_owner')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
+        }
+        
+        if(Auth::user()->hasPermission('delete_owner')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>';
+        }
+
+        if(Auth::user()->hasPermission(['update_owner', 'delete_owner'])){
+            $owner->addColumn('actions', function ($owner) use($action_btn){
+                return '<div class="table-data-feature">'.implode('', $action_btn).'</div>';
+               
+            })->setRowAttr([
+                'data-id' => function($owner) {
+                    return $owner->system_id;
                 }
-           })->make(true);
+            ])->rawColumns(['actions' => 'actions']);
+        }else{
+            $owner->addColumn('actions', function ($owner){
+                return '<div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View Only"><i class="fa fa-eye text-primary"></i></button></div>';
+               
+            })->setRowAttr([
+                'data-id' => function($owner) {
+                    return $owner->system_id;
+                }
+            ])->rawColumns(['actions' => 'actions']);
+        }
+        $owner->editColumn('dt_created', function ($owner) {
+            $date = $owner['dt_created'];
+            if(!empty($date)){
+                return date('d-m-Y', strtotime($date));
+            }
+        })->make(true);
+
+        return $owner->make(true);
     }
 
     public function updateOwner(Request $request, $id){

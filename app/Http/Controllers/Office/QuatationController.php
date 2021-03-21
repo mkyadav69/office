@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Notify;
 use App\Models\Customer;
@@ -222,7 +223,6 @@ class QuatationController extends Controller
     }
 
     public function getQuatation(){
-        $quatation = QuatationAdd::take(5)->get();
         $customer  = Customer::get();
         $owner  = Owner::get();
         $branch = Config::get('constant.branch_wise');
@@ -237,26 +237,53 @@ class QuatationController extends Controller
         }else{
             $owner = '';
         }
-        return Datatables::of($quatation)
-           ->editColumn('dt_date_created', function ($quatation){
-                $date = $quatation['dt_date_created'];
-                if(!empty($date)){
-                    return date('d-m-Y', strtotime($date));
-                }
-           })->editColumn('in_cust_id', function ($quatation) use($customer){
-            if(isset($customer[$quatation['in_cust_id']])){
-                return $customer[$quatation['in_cust_id']];
-            }
-        })->editColumn('owner_id', function ($quatation) use($owner){
-            if(isset($owner[$quatation['owner_id']])){
-                return $owner[$quatation['owner_id']];
-            }
-        })->editColumn('in_branch_id', function ($quatation) use($branch){
-            if(isset($branch[$quatation['in_branch_id']])){
-                return $branch[$quatation['in_branch_id']];
-            }
+        $quatation_add = Datatables::of(QuatationAdd::query());
+        if(Auth::user()->hasPermission('update_quatationadd')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
+        }
         
+        if(Auth::user()->hasPermission('delete_quatationadd')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>';
+        }
+
+        if(Auth::user()->hasPermission(['update_quatationadd', 'delete_quatationadd'])){
+            $quatation_add->addColumn('actions', function ($quatation_add) use($action_btn){
+                return '<div class="table-data-feature">'.implode('', $action_btn).'</div>';
+               
+            })->setRowAttr([
+                'data-id' => function($quatation_add) {
+                    return $quatation_add->system_id;
+                }
+            ])->rawColumns(['actions' => 'actions']);
+        }else{
+            $quatation_add->addColumn('actions', function ($quatation_add){
+                return '<div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View Only"><i class="fa fa-eye text-primary"></i></button></div>';
+            })->setRowAttr([
+                'data-id' => function($quatation_add) {
+                    return $quatation_add->system_id;
+                }
+            ])->rawColumns(['actions' => 'actions']);
+        }
+        $quatation_add->editColumn('dt_date_created', function ($quatation_add) {
+            $date = $quatation_add['dt_date_created'];
+            if(!empty($date)){
+                return date('d-m-Y', strtotime($date));
+            }
+        })->editColumn('in_cust_id', function ($quatation_add) use($customer){
+            if(isset($customer[$quatation_add['in_cust_id']])){
+                return $customer[$quatation_add['in_cust_id']];
+            }
+        })->editColumn('owner_id', function ($quatation_add) use($owner){
+            if(isset($owner[$quatation_add['owner_id']])){
+                return $owner[$quatation_add['owner_id']];
+            }
+        })->editColumn('in_branch_id', function ($quatation_add) use($branch){
+            if(isset($branch[$quatation_add['in_branch_id']])){
+                return $branch[$quatation_add['in_branch_id']];
+            }
         })->make(true);
+
+        return $quatation_add->make(true);
     }
 
     public function allProduct(Request $request){

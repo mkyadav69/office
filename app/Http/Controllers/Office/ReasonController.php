@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Reason;
 use Carbon\Carbon;
@@ -44,25 +45,52 @@ class ReasonController extends Controller
     }
 
     public function getReason(Request $request){
-        $reason = Reason::get();
+        $reason = Datatables::of(Reason::query());
+        if(Auth::user()->hasPermission('update_reason')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
+        }
+        
+        if(Auth::user()->hasPermission('delete_reason')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>';
+        }
 
-        return Datatables::of($reason)
-           ->editColumn('stn_reason_type', function ($reason) {
-                $data = $reason['stn_reason_type'];
-                $msg = null;
-                if($data == 1){
-                    $msg = 'Pending Order';
-                }else{
-                    $msg = 'Pending Shipment';
+        if(Auth::user()->hasPermission(['update_reason', 'delete_reason'])){
+            $reason->addColumn('actions', function ($reason) use($action_btn){
+                return '<div class="table-data-feature">'.implode('', $action_btn).'</div>';
+               
+            })->setRowAttr([
+                'data-id' => function($reason) {
+                    return $reason->system_id;
                 }
-                return $msg;
-           })->editColumn('dt_created', function ($reason) {
-                $date = $reason['dt_created'];
-                if(!empty($date)){
-                    return date('d-m-Y', strtotime($date));
+            ])->rawColumns(['actions' => 'actions']);
+        }else{
+            $reason->addColumn('actions', function ($reason){
+                return '<div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View Only"><i class="fa fa-eye text-primary"></i></button></div>';
+               
+            })->setRowAttr([
+                'data-id' => function($reason) {
+                    return $reason->system_id;
                 }
-            
-        })->make(true);
+            ])->rawColumns(['actions' => 'actions']);
+        }
+        $reason ->editColumn('stn_reason_type', function ($reason) {
+            $data = $reason['stn_reason_type'];
+            $msg = null;
+            if($data == 1){
+                $msg = 'Pending Order';
+            }else{
+                $msg = 'Pending Shipment';
+            }
+            return $msg;
+       })->editColumn('dt_created', function ($reason) {
+            $date = $reason['dt_created'];
+            if(!empty($date)){
+                return date('d-m-Y', strtotime($date));
+            }
+        
+    })->make(true);
+
+        return $reason->make(true);
     }
 
     public function updateReason(Request $request, $id){

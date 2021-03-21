@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Principal;
 use App\Models\Product;
@@ -105,14 +106,42 @@ class ProductController extends Controller
     }
 
     public function getProduct(Request $request){
-        $product = Product::get();
-        return Datatables::of($product)
-           ->editColumn('dt_created', function ($product) {
-                $date = $product['dt_created'];
-                if(!empty($date)){
-                    return date('d-m-Y', strtotime($date));
+        $product = Datatables::of(Product::query());
+        if(Auth::user()->hasPermission('update_product')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
+        }
+        
+        if(Auth::user()->hasPermission('delete_product')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>';
+        }
+
+        if(Auth::user()->hasPermission(['update_product', 'delete_product'])){
+            $product->addColumn('actions', function ($product) use($action_btn){
+                return '<div class="table-data-feature">'.implode('', $action_btn).'</div>';
+               
+            })->setRowAttr([
+                'data-id' => function($product) {
+                    return $product->system_id;
                 }
-           })->make(true);
+            ])->rawColumns(['actions' => 'actions']);
+        }else{
+            $product->addColumn('actions', function ($product){
+                return '<div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View Only"><i class="fa fa-eye text-primary"></i></button></div>';
+               
+            })->setRowAttr([
+                'data-id' => function($product) {
+                    return $product->system_id;
+                }
+            ])->rawColumns(['actions' => 'actions']);
+        }
+        $product->editColumn('dt_created', function ($product) {
+            $date = $product['dt_created'];
+            if(!empty($date)){
+                return date('d-m-Y', strtotime($date));
+            }
+        })->make(true);
+
+        return $product->make(true);
     }
 
     public function updateProduct(Request $request , $id){

@@ -100,12 +100,7 @@
                     { data: 'stn_reasons', title : 'Reason Name', className: "text td-limit"},
                     { data: 'stn_reason_type', title : 'Reason Mode', className: "text td-limit"},
                     { data: 'dt_created', title : 'Created Date'},
-                    {
-                        'data': null,
-                        'render': function (data, type, row) {
-                            return '<div class="row form-group"><div class="table-data-feature"><button row-id="' + row.id + '" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button> <button row-id="' + row.id + '" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div></div>'
-                        }, title: 'Actions'
-                    }
+                    { data: 'actions', title : 'Actions', className: "text td-limit"},
                 ],
                 initComplete: function () {
                     this.api().columns().every(function () {

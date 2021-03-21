@@ -93,14 +93,8 @@
                 "columns":[
                     { data: 'st_cat_name', title : 'Category Name', className: "text"},
                     { data: 'st_cat_disc', title : 'Description', className: "text"},
-                    // { data: 'str_img_src', title : 'Category Image'},
                     { data: 'dt_created', title : 'Created At'},
-                    {
-                        'data': null,
-                        'render': function (data, type, row) {
-                            return '<div class="table-data-feature"><button row-id="' + row.id + '" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button> <button row-id="' + row.id + '" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>'
-                        }, title: 'Actions'
-                    }
+                    { data: 'actions', title : 'Actions'},
                 ],
                 initComplete: function () {
                     this.api().columns().every(function () {

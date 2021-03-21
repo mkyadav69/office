@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Brand;
 use Carbon\Carbon;
@@ -41,14 +42,43 @@ class BrandController extends Controller
     }
 
     public function getBrand(Request $request){
-        $brand = Brand::get();
-        return Datatables::of($brand)
-           ->editColumn('dt_created', function ($brand) {
-                $date = $brand['dt_created'];
-                if(!empty($date)){
-                    return date('d-m-Y', strtotime($date));
+        $brand = Datatables::of(Brand::query());
+
+        if(Auth::user()->hasPermission('update_brand')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
+        }
+        
+        if(Auth::user()->hasPermission('delete_brand')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>';
+        }
+        ;
+        if(Auth::user()->hasPermission(['update_brand', 'delete_brand'])){
+            $brand->addColumn('actions', function ($brand) use($action_btn){
+                return '<div class="table-data-feature">'.implode('', $action_btn).'</div>';
+               
+            })->setRowAttr([
+                'data-id' => function($brand) {
+                    return $brand->system_id;
                 }
-           })->make(true);
+            ])->rawColumns(['actions' => 'actions']);
+        }else{
+            $brand->addColumn('actions', function ($brand){
+                return '<div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View Only"><i class="fa fa-eye text-primary"></i></button></div>';
+               
+            })->setRowAttr([
+                'data-id' => function($brand) {
+                    return $brand->system_id;
+                }
+            ])->rawColumns(['actions' => 'actions']);
+        }
+        $brand->editColumn('dt_created', function ($brand) {
+            $date = $brand['dt_created'];
+            if(!empty($date)){
+                return date('d-m-Y', strtotime($date));
+            }
+        })->make(true);
+
+        return $brand->make(true);
     }
 
     public function updateBrand(Request $request, $id){

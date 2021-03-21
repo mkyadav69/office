@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Office;
 
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Parameter;
@@ -64,14 +64,42 @@ class CategoryController extends Controller
     }
 
     public function getCategory(Request $request){
-        $category = Category::get();
-        return Datatables::of($category)
-           ->editColumn('dt_created', function ($category) {
-                $date = $category['dt_created'];
-                if(!empty($date)){
-                    return date('d-m-Y', strtotime($date));
+        $category = Datatables::of(Category::query());
+        if(Auth::user()->hasPermission('update_category')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
+        }
+        
+        if(Auth::user()->hasPermission('delete_category')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>';
+        }
+
+        if(Auth::user()->hasPermission(['update_category', 'delete_category'])){
+            $category->addColumn('actions', function ($category) use($action_btn){
+                return '<div class="table-data-feature">'.implode('', $action_btn).'</div>';
+               
+            })->setRowAttr([
+                'data-id' => function($category) {
+                    return $category->system_id;
                 }
-           })->make(true);
+            ])->rawColumns(['actions' => 'actions']);
+        }else{
+            $category->addColumn('actions', function ($category){
+                return '<div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View Only"><i class="fa fa-eye text-primary"></i></button></div>';
+               
+            })->setRowAttr([
+                'data-id' => function($category) {
+                    return $category->system_id;
+                }
+            ])->rawColumns(['actions' => 'actions']);
+        }
+        $category->editColumn('dt_created', function ($category) {
+            $date = $category['dt_created'];
+            if(!empty($date)){
+                return date('d-m-Y', strtotime($date));
+            }
+        })->make(true);
+
+        return $category->make(true);
     }
 
     public function updateCategory(Request $request, $id){

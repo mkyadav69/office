@@ -95,12 +95,8 @@
                     { data: 'owner_name', title : 'Owner Name',className: "text"},
                     { data: 'owner_desc', title : 'Description', className: "text"},
                     { data: 'dt_created', title : 'Created At'},
-                    {
-                        'data': null,
-                        'render': function (data, type, row) {
-                            return '<div class="row form-group"><div class="table-data-feature"><button row-id="' + row.id + '" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button> <button row-id="' + row.id + '" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div></div>'
-                        }, title: 'Actions'
-                    }
+                    { data: 'actions', title : 'Actions'},
+                    
                 ], 
                 initComplete: function () {
                     this.api().columns().every(function () {

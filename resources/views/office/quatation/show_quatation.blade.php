@@ -91,12 +91,8 @@
                         }, title: 'Download'
                     },
                     { data: 'lead_from', className: "td-limit", title : 'Reason'},
-                    {
-                        'data': null,
-                        'render': function (data, type, row) {
-                            return '<div class="table-data-feature"><button row_in_quot_id="' + row.in_quot_id + '" row_cust_id="' + row.in_cust_id + '" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button><button row-id="' + row.id + '" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>'
-                        }, title: 'Actions'
-                    }
+                    { data: 'actions', title : 'Actions'},
+                    
                 ],  
                 initComplete: function () {
                     this.api().columns().every(function () {
