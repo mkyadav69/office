@@ -106,7 +106,7 @@ class ProductController extends Controller
     }
 
     public function getProduct(Request $request){
-        $product = Datatables::of(Product::query());
+        $product = Datatables::of(Product::query()->take(100));
         if(Auth::user()->hasPermission('update_product')){
             $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
         }
