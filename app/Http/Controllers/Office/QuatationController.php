@@ -237,7 +237,7 @@ class QuatationController extends Controller
         }else{
             $owner = '';
         }
-        $quatation_add = Datatables::of(QuatationAdd::query());
+        $quatation_add = Datatables::of(QuatationAdd::query()->take(10));
         if(Auth::user()->hasPermission('update_quatationadd')){
             $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
         }
