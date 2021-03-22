@@ -44,7 +44,9 @@ class AuthController extends Controller
     public function showUser(Request $request){
         $branch_wise = Config::get('constant.branch_wise');
         $name_branch = array_flip($branch_wise);
-        return view('auth.users.index', compact('branch_wise', 'name_branch'));
+        $roles = Role::All();
+        $permissions = Permission::All();
+        return view('auth.users.index', compact('branch_wise', 'name_branch', 'roles', 'permissions'));
     }
 
     public function getUser(Request $request){
@@ -102,13 +104,14 @@ class AuthController extends Controller
             'password' => 'required',
             'email' => 'required',
             'cc_email' => 'required',
+            'role'    => 'required|array',
             'branch' => 'required',
         ]);
         
         if ($validator->fails()) {
             return back()->withErrors($validator, 'user_add')->withInput();
         }
-        $check_status = User::insertGetId([
+        $check_status = User::create([
             'first_name'=>$request->first_name,
             'last_name'=>$request->last_name,
             'user_name'=>$request->username,
@@ -118,6 +121,14 @@ class AuthController extends Controller
             'cc_email'=>$request->cc_email,
             'dt_created'=>Carbon::now(),
         ]);
+
+        if(!empty($check_status)){
+            $check_status->roles()->attach($request->role);
+        }else{
+            return redirect()->back()->withErrors(['error', 'Fail to add user !']);
+        }
+        
+
         if(!empty($check_status)){
             return back()->with([
                 'message' => 'User created successfully !',

@@ -232,6 +232,26 @@
 
                     <div class="row form-group">
                         <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Role</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <select id="role" multiple="multiple" name="role[]">
+                                @if (!empty($roles)) 
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->id }}" {{ (is_array(old('role')) and in_array($role->id, old('role', []))) ? 'selected' : '' }}>{{  $role->display_name}}</option> 
+                                    @endforeach
+                                @else
+                                <option value="">No role available</option> 
+                                @endif
+                            </select>
+                            @if ($errors->has('role'))
+                                <span class="text-danger">{{ $errors->first('role') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
                             <label for="file-input" class=" form-control-label required">Password</label>
                         </div>
                         <div class="col-12 col-md-9">
@@ -481,3 +501,8 @@
     </div>
 <!-- end modal large -->
 @endsection
+<script>
+    $(document).ready(function() {
+        $('#role').multiselect();
+    });
+</script>
