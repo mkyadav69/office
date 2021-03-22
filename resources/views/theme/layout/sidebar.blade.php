@@ -39,7 +39,7 @@
             @permission('view_parameter')
                 <li class="{{ request()->is('show-parameter') ? 'active' : '' }} has-sub">
                     <a class="js-arrow" href="{{ route('show_parameter')}}">
-                    <i class="fas fa-glass "></i>Products</a>
+                    <i class="fas fa-glass "></i>Parameters</a>
                 </li>
             @endpermission
 
