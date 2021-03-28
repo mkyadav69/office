@@ -99,13 +99,6 @@
                     <i class="fas fa-users"></i>Users</a>
                 </li>
             @endpermission
-
-            @permission('view_role')
-                <li class="{{ request()->is('show-role') ? 'active' : '' }} has-sub">
-                    <a  href="{{route('show_role')}}">
-                    <i class="fas fa-user"></i>Roles & Permissions</a>
-                </li>
-            @endpermission
         </ul>
     </nav>
 </div>

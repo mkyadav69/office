@@ -19,18 +19,12 @@ use App\Http\Controllers\Office\NotifyController;
 
 # 1. User
 Route::get('show-user', [AuthController::class, 'showUser'])->name('show_user');
+Route::get('create-user', [AuthController::class, 'addUser'])->name('add_user');
 Route::get('get-user', [AuthController::class, 'getUser'])->name('get_user');
 Route::post('store-user', [AuthController::class, 'storeUser'])->name('store_user');
-Route::post('edit-user/{id}',  [AuthController::class, 'updateUser'])->name('edit_user');
+Route::get('edit-user/{id}',  [AuthController::class, 'updateUser'])->name('edit_user');
+Route::post('store-updated-user', [AuthController::class, 'storeUserUpdate'])->name('store_updated_user');
 Route::post('delete-user/{id}',  [AuthController::class, 'deleteUser'])->name('delete_user');
-
-# 2. Role & Permission
-Route::get('show-role', [AuthController::class, 'showRole'])->name('show_role');
-Route::get('add-role', [AuthController::class, 'addRole'])->name('add_role');
-Route::post('store-role', [AuthController::class, 'storeRole'])->name('store_role');
-Route::get('edit-role/{id}',  [AuthController::class, 'updateRole'])->name('edit_role');
-Route::post('store-role-update', [AuthController::class, 'storeUpdateRole'])->name('store_update_role');
-Route::get('delete-role/{id}',  [AuthController::class, 'deleteRole'])->name('delete_role');
 
 # 3. Authentications & Login
 Route::get('login', [AuthController::class, 'viewLogin'])->name('login');

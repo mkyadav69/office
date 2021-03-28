@@ -19,6 +19,32 @@ class AuthController extends Controller
         return view('auth.users.login');
     }
 
+    public function addUser(Request $request){
+        $branch_wise = Config::get('constant.branch_wise');
+        $name_branch = array_flip($branch_wise);
+        $roles = Role::All();
+        $permissions = Permission::All();
+        $module_name = [];
+        $permission = Permission::get()->toArray();
+        if(!empty($permission)){
+            foreach($permission as $per){
+                $feature = explode("_", $per['name'],-1)[0];
+                $name = $per['identifier'];
+               if(!isset($module_name['Modules'][$name])){
+                    $module_name['order'][$feature] = $feature;
+                    $module_name['Operations'][$feature] = $feature;
+                    $module_name['Modules'][$name][$feature] = $per;
+                }else{
+                    $feature = explode("_", $per['name'],-1)[0];
+                    $module_name['Modules'][$name][$feature] = $per;
+                    $module_name['Operations'][$feature] = $feature;
+                    $module_name['order'][$feature] = $feature;
+               }
+            }
+        }
+        return view('auth.users.create', compact('branch_wise', 'name_branch', 'roles', 'permissions', 'module_name'));
+    }
+
     public function getLogin(Request $request){
         $this->validate($request,[
             'email' => 'required',
@@ -104,115 +130,14 @@ class AuthController extends Controller
             'password' => 'required',
             'email' => 'required',
             'cc_email' => 'required',
-            'role'    => 'required|array',
+            'name'    => 'required|unique:roles',
             'branch' => 'required',
+            'permission'=>'required|array',
         ]);
         
         if ($validator->fails()) {
             return back()->withErrors($validator, 'user_add')->withInput();
         }
-        $check_status = User::create([
-            'first_name'=>$request->first_name,
-            'last_name'=>$request->last_name,
-            'user_name'=>$request->username,
-            'password'=>bcrypt($request->password),
-            'email'=>$request->email,
-            'branch_id'=>$request->branch,
-            'cc_email'=>$request->cc_email,
-            'dt_created'=>Carbon::now(),
-        ]);
-
-        if(!empty($check_status)){
-            $check_status->roles()->attach($request->role);
-        }else{
-            return redirect()->back()->withErrors(['error', 'Fail to add user !']);
-        }
-        
-
-        if(!empty($check_status)){
-            return back()->with([
-                'message' => 'User created successfully !',
-            ]);
-        }
-    }
-
-    public function updateUser(Request $request, $id){
-        $validator = Validator::make($request->all(), [
-            'update_first_name' => 'required',
-            'update_last_name' => 'required',
-            'update_username' => 'required',
-            'update_email' => 'required',
-            'update_cc_email' => 'required',
-            'update_branch' => 'required',
-        ]);
-        
-        if ($validator->fails()) {
-            return back()->withErrors($validator, 'user_update')->withInput();
-        }
-
-        $check_status = User::where('id', $id)->update([
-            'first_name'=>$request->update_first_name,
-            'last_name'=>$request->update_last_name,
-            'user_name'=>$request->update_username,
-            'email'=>$request->update_email,
-            'branch_id'=>$request->update_branch,
-            'cc_email'=>$request->update_cc_email,
-            'dt_modify'=>Carbon::now(),
-        ]);
-        if(!empty($check_status)){
-            return back()->with([
-                'message' => 'User updated successfully !',
-            ]);
-        }
-    }
-    
-    public function deleteUser(Request $request, $id){
-        $records = User::where('id', $id)->delete();
-        if($records == '1'){
-            $message =  'Records deleted successfully !';
-        }else{
-            $message ='Fail to delete record !';
-        }
-        return back()->with([
-            'message' =>$message
-        ]);
-    }
-
-    public function showRole(){
-        $roles = Role::with('permissions')->get();
-        $permissions = Permission::All();
-        return view('auth.role_permission.index',compact('roles','permissions'));
-    }
-
-    public function addRole(){
-        $module_name = [];
-        $permission = Permission::get()->toArray();
-        if(!empty($permission)){
-            foreach($permission as $per){
-                $feature = explode("_", $per['name'],-1)[0];
-                $name = $per['identifier'];
-               if(!isset($module_name['Modules'][$name])){
-                    $module_name['order'][$feature] = $feature;
-                    $module_name['Operations'][$feature] = $feature;
-                    $module_name['Modules'][$name][$feature] = $per;
-                }else{
-                    $feature = explode("_", $per['name'],-1)[0];
-                    $module_name['Modules'][$name][$feature] = $per;
-                    $module_name['Operations'][$feature] = $feature;
-                    $module_name['order'][$feature] = $feature;
-               }
-            }
-        }
-        return view('auth.role_permission.create', compact('module_name'));
-    }
-
-    public function storeRole(Request $request){
-        $this->validate($request,[
-            'name' => 'required|unique:roles',
-            'display_name' => 'required|unique:roles|min:3',
-            "description"    => "required",
-            "permission"    => "required|array",
-        ]);
 
         $per_id = [];
         $new_per_list = [];
@@ -253,19 +178,39 @@ class AuthController extends Controller
             }
         }
         $role = Role::create([
-            'name'          => $request->name,
-            'display_name'  => $request->display_name,
-            'description'   => $request->description,
-            ]);
-        if($role){
+            'name'=> $request->name,
+            'created_at'=> Carbon::now(),
+        ]);
+        if(!empty($role)){
             $role->permissions()->sync($per_id);
-            return redirect()->route('show_role')->with('message','Role added successfuly !');
         }else{
-            return redirect()->back()->withErrors(['message', 'Fail to add new role !']);
+            return redirect()->back()->withErrors(['message', 'Fail to create role or permissions !']);
+        }
+
+        $check_status = User::create([
+            'first_name'=>$request->first_name,
+            'last_name'=>$request->last_name,
+            'user_name'=>$request->username,
+            'password'=>bcrypt($request->password),
+            'email'=>$request->email,
+            'branch_id'=>$request->branch,
+            'cc_email'=>$request->cc_email,
+            'dt_created'=>Carbon::now(),
+        ]);
+        if(!empty($check_status)){
+            $check_status->roles()->attach($role->id);
+            return redirect()->route('show_user')->with('message','User created successfully !');
+        }else{
+            return redirect()->back()->withErrors(['message', 'Fail to add user !']);
         }
     }
 
-    public function updateRole(Request $request , $id){
+    public function updateUser(Request $request, $id){
+        if(empty($id)){
+            return redirect()->back()->withErrors(['message', 'Fail to get user id !']);
+        }
+        $user = User::where('id', $id)->first();
+        $branch_wise = Config::get('constant.branch_wise');
         $order = Config('constant.feature_list');
         $path = app_path() . "/Models";
         $model_list = [];
@@ -313,7 +258,8 @@ class AuthController extends Controller
                 $per_arr_list[$value['identifier']][$value['id']] = $value['name']; 
             }
         }
-        $edit_role = Role::with('permissions')->where('id',$request->id)->first();
+        $auth_role = $user->roles->first()->toArray();
+        $edit_role = Role::with('permissions')->where('id',$auth_role['id'])->first();
         $user_role = $edit_role->permissions->toArray();
         if(!empty($user_role)){
             foreach ($user_role as $key => $value) {
@@ -325,22 +271,32 @@ class AuthController extends Controller
             }
         }
         $roles = Role::with('permissions')->get();
-        if(!empty($edit_role)){
-            return view('auth.role_permission.update_role' ,compact('edit_role','permissions',  'per_arr_list', 'user_role_list' , 'per_data', 'order'));
-        }
-        return redirect()->back()->with('message','Cant find the role !');
+        return view('auth.users.edit',compact('user', 'branch_wise', 'roles', 'user_role_list', 'edit_role', 'permissions', 'per_arr_list', 'per_data', 'order', 'auth_role', 'id'));
     }
 
-    public function storeUpdateRole(Request $request){
-        $id = $request->id;
-        if(empty($id)){
+    public function storeUserUpdate(Request $request){
+        $data = $request->all();
+        if(empty($data['id'])){
             return redirect()->back()->with('error','Cant find the role id !');
         }
         $this->validate($request,[
-            'name' => "required|unique:roles,name,{$id}",
-            'display_name' => "required|unique:roles,display_name,{$id}",
-            "description"    => "required",
+            'update_first_name'=>'required',
+            'update_last_name'=>'required',
+            'update_username'=>'required',
+            'update_email'=>'required',
+            'update_cc_email'=>'required',
+            'update_branch'=>'required',
+            'name' => "required",
             "permission"    => "required|array",
+        ]);
+        $update = User::where('id', $data['id'])->update([
+            'first_name'=>$data['update_first_name'],
+            'last_name'=>$data['update_last_name'],
+            'user_name'=>$data['update_username'],
+            'email'=>$data['update_email'],
+            'branch_id'=>$data['update_branch'],
+            'cc_email'=>$data['update_cc_email'],
+            'dt_modify'=>Carbon::now(),
         ]);
         $per_id = [];
         $new_per_list = [];
@@ -380,31 +336,32 @@ class AuthController extends Controller
                 }
             }
         }
-        if(!empty($id)){
+
+        $user = User::where('id', $data['id'])->first();
+        $auth_role = $user->roles->first()->toArray();
+        if(!empty($data['id'])){
             $roles = Role::with('permissions')->get();
             $permissions = Permission::All();
-            $update_role = Role::where('id',$id)->first();
+            $update_role = Role::where('id',$auth_role['id'])->first();
             $update_role->name = $request->name;
-            $update_role->display_name = $request->display_name;
-            $update_role->description = $request->description;
             $update_role->permissions()->sync($per_id);
             $update_role->save();
             if(!empty($update_role)){
-                return redirect()->route('show_role')->with('message','Role updated successfully !');
+                return redirect()->route('show_user')->with('message','User updated successfully !');
             }
         }
-        return redirect()->back()->with('message','Cant find the role !');
+        return redirect()->back()->with('message','Cant find the user !');
     }
 
-    public function deleteRole(Request $request, $id){
-        $role = Role::where('id',$id)->first();
-        if($request->id == 1){
-            return redirect()->route('users')->with('message','Can not remove lead/super admin role !');
+    public function deleteUser(Request $request, $id){
+        $records = User::where('id', $id)->delete();
+        if($records == '1'){
+            $message =  'Records deleted successfully !';
+        }else{
+            $message ='Fail to delete record !';
         }
-        if(!empty($role)){
-            $role->delete();
-            return redirect()->route('show_role')->with('message','Role deleted successfully !');
-        }
-        return redirect()->back()->withErrors(['error', 'Fail to delete role !']);
+        return back()->with([
+            'message' =>$message
+        ]);
     }
 }

@@ -128,7 +128,7 @@
                         }else if ($(column.header()).hasClass('text')) {
                             var text = $('<input style="width:150px; height: 30px;  font-weight: normal;  border-radius: 5px;" type="text" placeholder="' + $(column.header()).html() + '" />')
                             .appendTo($(column.header()).empty())
-                            .on('keyup change', function () {
+                            .on('keypress', function () {
                                 var val = $.fn.dataTable.util.escapeRegex($(this).val());
                                 if (column.search() !== this.value) {
                                     column.search(val).draw();

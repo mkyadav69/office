@@ -1,132 +1,251 @@
-@extends('admin/layouts/default')
-
-{{-- Page title --}}
-@section('title')
-Add User
-@parent
-@stop
-
-{{-- page level styles --}}
-@section('header_styles')
-<!--page level css -->
-<link rel="stylesheet" href="{{ asset('assets/vendors/wizard/jquery-steps/css/wizard.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/vendors/wizard/jquery-steps/css/jquery.steps.css') }}">
-<link href="{{ asset('assets/vendors/jasny-bootstrap/css/jasny-bootstrap.css') }}" rel="stylesheet" />
- <link rel="stylesheet" href="{{ asset('assets/drop/mulselect/dist/css/bootstrap-multiselect.css') }}">
-@stop
-
-
-{{-- Page content --}}
+@extends('theme.layout.base_layout')
+@section('title', 'Add User')
 @section('content')
-<section class="content">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="portlet box default">
-            <div class="portlet-title">
-                    <h2 class="panel-title"> <i class="livicon" data-name="edit" data-size="18" data-loop="true" data-c="#fff" data-hc="white"></i>
-                    Add Users
-                    </h2>
-                    <span class="pull-right clickable">
-                        <i class="glyphicon glyphicon-chevron-up"></i>
-                    </span>
-                </div>
-                <div class="portlet-body">
-                     <!-- BEGIN FORM WIZARD WITH VALIDATION -->
-                    <form class="form-wizard form-horizontal" action="{{ route('create/user') }}" method="POST" id="wizard" enctype="multipart/form-data">
-                        <!-- CSRF Token -->
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                        <!-- first tab -->
-                        
-                        <section>
-                        
-                            <div class="form-group">
-                                <label for="first_name" class="col-sm-1 control-label">First Name <span class="text-danger">*</span></label>
-                                <div class="col-sm-5">
-                                    <input id="first_name" name="first_name" type="text" placeholder="First Name" class="form-control required" value="{{{ Request::old('first_name') }}}" />
-                                    @if ($errors->has('first_name'))
-                                        <span class="text-danger">{{ $errors->first('first_name') }}</span>
-                                    @endif
-                                
+<style>
+.required:after {
+    content: '*';
+    color: red;
+    padding-left: 5px;
+}
+.container-fluid {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 2px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.col-md-1 {
+    padding-left: 20px;
+}
+.table {
+    max-width: 90%;
+}
+</style>
+<div class="col col-md-12">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="addModal">Add User</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="card">
+                <form action="{{route('store_user')}}" method="post">
+                    @csrf
+                    <div class="row form-group">
+                        <div class="col col-md-1">
+                            <label for="file-input" class=" form-control-label required">First Name</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" placeholder="Fisrt Name" name="first_name" value="{{old('first_name')}}" class="form-control">
+                            @if ($errors->user_add->has('first_name'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->user_add->first('first_name') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
-                            </div>
-                        
-                            <div class="form-group">
-                                <label for="last_name" class="col-sm-1 control-label">Last Name <span class="text-danger">*</span></label>
-                                <div class="col-sm-5">
-                                    <input id="last_name" name="last_name" type="text" placeholder="Last Name" class="form-control required" value="{{{ Request::old('last_name') }}}" />
-                                    @if ($errors->has('last_name'))
-                                        <span class="text-danger">{{ $errors->first('last_name') }}</span>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="email" class="col-sm-1 control-label">Email <span class="text-danger">*</span></label>
-                                <div class="col-sm-5">
-                                    <input id="email" name="email" placeholder="E-Mail" type="text" class="form-control required email" value="{{{ Request::old('email') }}}" />
-                                    @if ($errors->has('email'))
-                                        <span class="text-danger">{{ $errors->first('email') }}</span>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label" for="selectbasic">Role <span class="text-danger">*</span></label>
-                                <div class="col-sm-10">
-                                <select id="role" multiple="multiple" name="role[]">
-                                    @if (!empty($roles)) 
-                                        @foreach ($roles as $role)
-                                            <option value="{{ $role->id }}" {{ (is_array(old('role')) and in_array($role->id, old('role', []))) ? 'selected' : '' }}>{{  $role->display_name}}</option> 
-                                        @endforeach
-                                    @else
-                                    <option value="">No role available</option> 
-                                    @endif
-                                </select>
-                                @if ($errors->has('role'))
-                                    <span class="text-danger">{{ $errors->first('role') }}</span>
-                                @endif
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="password" class="col-sm-1 control-label">Password <span class="text-danger">*</span></label>
-                                <div class="col-sm-5">
-                                    <input id="password" name="password" type="password" placeholder="Password" class="form-control required" value="{{{ Request::old('password') }}}" />
-                                    @if ($errors->has('password'))
-                                        <span class="text-danger">{{ $errors->first('password') }}</span>
-                                    @endif
-                                </div>
-                            </div>
-                        
-                            {{-- <div class="form-group">
-                                <label for="password_confirm" class="col-sm-2 control-label">Confirm Password <span class="text-danger">*</span></label>
-                                <div class="col-sm-10">
-                                    <input id="password_confirm" name="password_confirm" type="password" placeholder="Confirm Password " class="form-control required" value="{{{ Input::old('password_confirm') }}}" />
-                                </div>
-                            </div> --}}
+                            @endif
+                        </div>
+                    </div>
 
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label" for="submit"></label>
-                                <div class="col-sm-5">
-                                <button id="submit" name="submit" class="btn btn-primary" style="width:115px">Submit</button>
+                    <div class="row form-group">
+                        <div class="col col-md-1">
+                            <label for="file-input" class=" form-control-label required">Last Name</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" placeholder="Last Name" name="last_name" value="{{old('last_name')}}" class="form-control">
+                            @if ($errors->user_add->has('last_name'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->user_add->first('last_name') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
-                            </div>
-                            
-                            <p>(<span class="text-danger">*</span>) Mandatory</p>
-                        
-                        </section>                               
-                    </form>
-                    <!-- END FORM WIZARD WITH VALIDATION --> 
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-1">
+                            <label for="file-input" class=" form-control-label required">Username</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" placeholder="Username" name="username" value="{{old('username')}}" class="form-control">
+                            @if ($errors->user_add->has('username'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->user_add->first('username') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-1">
+                            <label for="file-input" class=" form-control-label required">Password</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="password" placeholder="Password" name="password" value="{{old('password')}}" class="form-control">
+                            @if ($errors->user_add->has('password'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->user_add->first('password') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-1">
+                            <label for="file-input" class=" form-control-label required">Email</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="email" placeholder="Email" name="email" value="{{old('email')}}" class="form-control">
+                            @if ($errors->user_add->has('email'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->user_add->first('email') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-1">
+                            <label for="file-input" class=" form-control-label required">CC Email</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <textarea type="email" placeholder="CC Email . . . " name="cc_email" value="{{old('cc_email')}}" class="form-control"></textarea>
+                            @if ($errors->user_add->has('cc_email'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->user_add->first('cc_email') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-1">
+                            <label for="file-input" class=" form-control-label required">Select Branch</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            @if(!empty($branch_wise))
+                                <select name="branch" class="form-control">
+                                    <option value="">Select Branch</option>
+                                    @foreach($branch_wise as $kb=>$vb)
+                                        <option  value="{{$kb}}"  {{ ($kb == old('branch',$vb))?'selected':'' }} >{{$vb}}</option>
+                                    @endforeach
+                                </select>
+                            @endif
+                            @if ($errors->user_add->has('branch'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->user_add->first('branch') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col col-md-1">
+                            <label for="file-input" class=" form-control-label required">Role</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" placeholder="Role" name="name" value="{{old('role')}}" class="form-control">
+                            @if ($errors->user_add->has('name'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->user_add->first('name') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                    </div>
+                    <div class="row form-group">
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-1">
+                            <label for="file-input" class=" form-control-label required">Permissions</label>
+                        </div>
+                   
+                        <div class="col col-md-10">
+                            <table id="customer" class="table table-borderless table--no-card m-b-30 table-striped table-earning sticky-header" style="width:100%">
+                                    <thead>
+                                        @if(!empty($module_name['Operations']))
+                                            <thead>
+                                                <tr class="capitalize persist-header">
+                                                    <th style="text-align:left; width:100%"><strong>Modules</strong></th> 
+                                                    @foreach($module_name['Operations'] as $op)
+                                                        <th style="text-align:left; width:100%"><strong>{{ $op }}</strong></th> 
+                                                    @endforeach
+                                                </tr>
+                                        @endif
+                                    <thead>
+                                    <tbody>
+                                        @if(!empty($module_name['Modules']))
+                                            @foreach($module_name['Modules'] as $modl_name=>$permsn)
+                                                <tr>
+                                                    <td style="text-align:left; background: #333; color: #fff; width:100%"><strong>{{ ucfirst(str_replace('_',' ' , $modl_name))  }}</strong></td>
+                                                    @foreach($module_name['order'] as $key=>$per)
+                                                        <td style="text-align:left; width:100%">
+                                                        @if (!empty($permsn[$key]))
+                                                            <input type="checkbox" name="permission[{{ $modl_name }}][]" value="{{ $permsn[$key]['name'] }}" {{ (is_array(old('permission')) and in_array($permsn[$key], old('permission.'.$modl_name, []))) ? ' checked' : '' }}/>
+                                                        @else
+                                                            <input type="checkbox" disabled name="" value=""style="text-align:center; vertical-align: middle;">
+                                                        @endif
+                                                        </td>
+                                                    @endforeach
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                    </tbody>
+                            </table>
+                            @if ($errors->user_add->has('permission'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->user_add->first('permission') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+        
+                <div class="modal-footer">
+                    <a href="{{route('show_user')}}">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </a>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
-    <!--row end-->
-</section>
-@stop
-
-@section('footer_scripts')
-<script src="{{ asset('assets/drop/mulselect/dist/js/bootstrap-multiselect.js') }}"></script>
-<script>
-    $(document).ready(function() {
-        $('#role').multiselect();
-    });
-</script>
-@stop
+</div>
+<!-- End Add-->
+@endsection
