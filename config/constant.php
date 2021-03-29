@@ -380,4 +380,11 @@ return [
         "EH" => "Western Sahara",
         "YU" => "Yugoslavia"	
     ],
+
+    'exclude_model'=>[
+        'userregister'=>'userregister',
+        'settings'=>'settings',
+        'quotationdetails'=>'quotationdetails',
+        'role'=>'role',
+    ],
 ];

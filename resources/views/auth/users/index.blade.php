@@ -23,9 +23,9 @@
         <div class="table-data__tool">
             <div class="table-data__tool-right">
                 @permission('add_user')
-                    <a class="au-btn-filter mb-1" href="{{route('add_user')}}">
-                        <i class="zmdi zmdi-plus"></i> Add User
-                    </a>
+                <a href="{{route('add_user')}}">
+                    <button type="button" class="au-btn-filter mb-1" data-dismiss="modal"><i class="zmdi zmdi-plus"></i> Add User</button>
+                </a>
                 @endpermission
             </div>
         </div>

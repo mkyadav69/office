@@ -46,7 +46,7 @@ class QuatationController extends Controller
 	}
 
     public function get_customer_by_id($id = null){
-		$in_branch = 1; //$this->session->userdata('in_branch');
+		$in_branch = \Auth::user()->branch_id;
         $c = Customer::where(['in_cust_id'=>$id, 'in_branch'=>$in_branch])->first();
         if(!empty($c)){
             $c = $c->toArray();
@@ -69,7 +69,7 @@ class QuatationController extends Controller
         if($id != null && $id != ''){ 
             $notify_users->where('id',$id);
         } else{
-            $notify_users->where('branch_id',1); 
+            $notify_users->where('branch_id', \Auth::user()->branch_id); 
             // $notify_users->where('branch_id',$this->session->userdata('branchname')); 
             return $notify_users = $notify_users->get()->toArray();
         }
@@ -77,7 +77,7 @@ class QuatationController extends Controller
 	}
 
     public function get_PDF_BillAddress(){
-        $result = Quatation::select('stn_branch_add')->where(['is_deleted'=>0, 'int_branch_id'=>1 /* get from session*/ ])->first();
+        $result = Quatation::select('stn_branch_add')->where(['is_deleted'=>0, 'int_branch_id'=> \Auth::user()->branch_id/* get from session*/ ])->first();
 		$query = $result;
         if(!empty($query)){
             return $query;
@@ -393,7 +393,7 @@ class QuatationController extends Controller
             $cust_info = $request->customer_info;
         }
         $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $in_branch_id = 1; //session branch id;
+        $in_branch_id = \Auth::user()->branch_id;
         $branchname = substr(str_shuffle(str_repeat($pool, 5)), 0, 3); //session branch name;
         $quotation_create_date = date('Y-m-d', strtotime($qt_info['dt_ref']));
         $generate_quot_no =	$this->generate_quot_no($branchname, $in_branch_id, $quotation_create_date);
@@ -458,7 +458,7 @@ class QuatationController extends Controller
                 'int_cust_id'	=>	$cust_info['customer_id'],
                 'stn_reason'	=>	'Open',
                 'int_reason_mode'	=> 	0,
-                'int_branch_id'	=>	1, // get branch name from session,
+                'int_branch_id'	=>	\Auth::user()->branch_id,
                 'user_id'		=>	\Auth::user()->id,
                 'notify_group'  =>  trim(!empty($cust_info['notify_group']) ? $cust_info['notify_group'] : ''),
                 'dt_created'	=>	$quotation_create_date, 
@@ -681,7 +681,7 @@ class QuatationController extends Controller
                 $inserted_quotation_detail_id = $this->insert_quotation_deatal($quotation_details_arr);
             }
             $update_quot_reason	= [
-                'int_branch_id'	=>	1, // get branch name from session,
+                'int_branch_id'	=>	\Auth::user()->branch_id, // get branch name from session,
                 'user_id'		=>	\Auth::user()->id,
                 'notify_group'  =>  trim(!empty($cust_info['notify_group']) ? $cust_info['notify_group'] : ''),
                 'dt_modify'		=>	Carbon::now(),

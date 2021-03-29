@@ -21,6 +21,7 @@ class AuthController extends Controller
 
     public function addUser(Request $request){
         $branch_wise = Config::get('constant.branch_wise');
+        $exclude_model = Config::get('constant.exclude_model');
         $name_branch = array_flip($branch_wise);
         $roles = Role::All();
         $permissions = Permission::All();
@@ -30,15 +31,25 @@ class AuthController extends Controller
             foreach($permission as $per){
                 $feature = explode("_", $per['name'],-1)[0];
                 $name = $per['identifier'];
-               if(!isset($module_name['Modules'][$name])){
-                    $module_name['order'][$feature] = $feature;
-                    $module_name['Operations'][$feature] = $feature;
-                    $module_name['Modules'][$name][$feature] = $per;
+                if($name == 'quatation'){
+                    $name = 'quatation format';
+                }
+                if($name == 'quatationadd'){
+                    $name = 'quatation';
+                }
+                if(!isset($module_name['Modules'][$name])){
+                    if(!isset($exclude_model[$name])){
+                        $module_name['order'][$feature] = $feature;
+                        $module_name['Operations'][$feature] = $feature;
+                        $module_name['Modules'][$name][$feature] = $per;
+                    }
                 }else{
                     $feature = explode("_", $per['name'],-1)[0];
-                    $module_name['Modules'][$name][$feature] = $per;
-                    $module_name['Operations'][$feature] = $feature;
-                    $module_name['order'][$feature] = $feature;
+                    if(!isset($exclude_model[$name])){
+                        $module_name['Modules'][$name][$feature] = $per;
+                        $module_name['Operations'][$feature] = $feature;
+                        $module_name['order'][$feature] = $feature;
+                    }
                }
             }
         }
