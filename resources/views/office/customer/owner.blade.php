@@ -28,7 +28,7 @@
         <div class="table-data__tool">
             <div class="table-data__tool-right">
             @permission('add_owner')
-                <button class="au-btn-filter mb-1" data-toggle="modal" data-target="#addModal">
+                <button class="au-btn-filter mb-1 add_modal" data-toggle="modal" data-target="#addModal">
                     <i class="zmdi zmdi-plus"></i> Add Owner
                 </button>
             @endpermission

@@ -219,6 +219,30 @@ table.dataTable {
     <script src="{{asset('js/dataTables.bootstrap4.min.js')}}"></script>
     <!-- Main JS-->
     <script src="{{asset('js/main.js')}}"></script>
+    <script>
+        $('#addModal').on('hidden.bs.modal', function () {
+            $(this).find('form').trigger('reset');
+        })
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('.add_modal').click(function(){
+                $('#addModal').modal({
+                    backdrop: 'static'
+                });
+            }); 
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('.edit').click(function(){
+                $('#addModal').modal({
+                    backdrop: 'static'
+                });
+            }); 
+        });
+    </script>
+    
 
 </body>
 
