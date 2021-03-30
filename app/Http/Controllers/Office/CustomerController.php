@@ -22,7 +22,6 @@ class CustomerController extends Controller
     }
 
     public function showCustomer(){
-        
         $regions_id = Config::get('constant.regions_id');
         $countries = Config::get('constant.countries');
         $branch_wise = Config::get('constant.branch_wise');
@@ -32,6 +31,7 @@ class CustomerController extends Controller
     }
 
     public function storeCustomer(Request $request){
+
         $validator = Validator::make($request->all(), [
             "customer_name" => "required",
             "customer_last_name" => "required",
@@ -46,15 +46,12 @@ class CustomerController extends Controller
             "customer_state" => "required",
             "customer_city" => "required",
             "customer_pincode" => "required",
-            "gst_no" => "required",
+            "cust_pin_no" => 'required',
             "customer_classification" => "required",
         ]);
-
         if ($validator->fails()) {
             return back()->withErrors($validator, 'cutomer_add')->withInput();
         }
-
-        
         $check_status = Customer::insertGetId([
             'st_cust_fname'=>$request->customer_name,
             'st_cust_lname'=>$request->customer_last_name,
@@ -71,8 +68,9 @@ class CustomerController extends Controller
             'st_con_person2_mobile'=>$request->persion2_mobile,
 
             'st_cust_city'=>$request->customer_city,
+            'st_country'=>$request->customer_country,
             'cust_tin_no'=>$request->tin_no,
-            'cust_pin_no'=>$request->gst_no,
+            'cust_pin_no'=>$request->cust_pin_no,
             'in_pincode'=>$request->customer_pincode,
             'st_cust_state'=>$request->customer_state,
             'st_cust_mobile'=>$request->customer_mobile,

@@ -278,7 +278,7 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
                             <label for="file-input" class=" form-control-label required">Customer Name</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text" name="customer_name" required placeholder="Name" value="{{old('customer_name')}}" class="form-control">
+                            <input type="text" name="customer_name" id="customer_name" required placeholder="Name" value="{{old('customer_name')}}" class="form-control">
                             @if ($errors->cutomer_add->has('customer_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
@@ -351,7 +351,7 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
                             <label for="file-input" class=" form-control-label">Mobile No.</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text"  name="customer_mobile"  required  placeholder="Mobile" value="{{old('customer_mobile')}}" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                            <input type="text"  name="customer_mobile"  placeholder="Mobile" value="{{old('customer_mobile')}}" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                             @if ($errors->cutomer_add->has('customer_mobile'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
@@ -466,7 +466,7 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
                         </div>
                     </div>
 
-                    <div class="row form-group">
+                    <div class="row form-group" id="country">
                         <div class="col col-md-3">
                             <label for="file-input" class=" form-control-label required">Country</label>
                         </div>
@@ -490,15 +490,6 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
                             @endif
                         </div>
                     </div>
-
-                    <div class="row form-group add_state">
-                       
-                    </div>
-
-                    <div class="row form-group input_state">
-                       
-                    </div>
-                    
 
                     <div class="row form-group">
                         <div class="col col-md-3">
@@ -536,7 +527,7 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
                         </div>
                     </div>
                     
-                    <div class="row form-group">
+                    <div class="row form-group" id="pincode">
                         <div class="col col-md-3">
                             <label for="file-input" class=" form-control-label required">Pin Code</label>
                         </div>
@@ -552,10 +543,6 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
                                 </div>
                             @endif
                         </div>
-                    </div>
-
-                    <div class="row form-group add_gst">
-                        
                     </div>
 
                     <div class="row form-group">
@@ -949,21 +936,20 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
         $('#customer_country').on('change', function(){
             var country = $( "#customer_country option:selected" ).val();
             if(country != '' && country == 'IN'){
-                $('.add_gst').show();
-                $('.add_state').show();
-                $('.input_state').hide();
-                var gst = '<div class="col col-md-3"><label for="file-input" class=" form-control-label required">GST No.</label></div><div class="col-12 col-md-9"><input type="text"  name="gst_no"  required  placeholder="GST No." maxlength="15" value="{{old("gst_no")}}" class="form-control" >@if ($errors->cutomer_add->has("gst_no"))<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show"><span class="badge badge-pill badge-danger">Error</span>{{ $errors->cutomer_add->first("gst_no") }}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>@endif</div>';
-                $('.add_gst').html(gst);
+                $('#input_state').remove();
+                var gst = '<div class="row form-group" id="gst_no"><div class="col col-md-3"><label for="file-input" class=" form-control-label required">GST No.</label></div><div class="col-12 col-md-9"><input type="text"  id="gst_no_new" name="gst_no"  required  placeholder="GST No." maxlength="15" value="{{old("gst_no")}}" class="form-control" >@if ($errors->cutomer_add->has("gst_no"))<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show"><span class="badge badge-pill badge-danger">Error</span>{{ $errors->cutomer_add->first("gst_no") }}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>@endif</div></div>';
+                $(gst).insertAfter('#pincode');
                 
-                var state =  '<div class="col col-md-3"><label for="file-input" class=" form-control-label required">State</label></div><div class="col-12 col-md-9">@if(!empty($indian_all_states))<select name="customer_state" class="form-control"  required><option value="">Select State</option>@foreach($indian_all_states as $kb=>$vb)<option  value="{{$kb}}" {{ ($kb == old("customer_state",$vb))?"selected":'' }}>{{$vb}}</option>@endforeach</select>@endif @if ($errors->cutomer_add->has("customer_state"))<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show"><span class="badge badge-pill badge-danger">Error</span>{{ $errors->cutomer_add->first("customer_state") }}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>@endif</div>';
-
-                $('.add_state').html(state);
+                var state =  '<div class="row form-group add_state" id="state"><div class="col col-md-3"><label for="file-input" class=" form-control-label required">State</label></div><div class="col-12 col-md-9">@if(!empty($indian_all_states))<select name="customer_state" class="form-control"  required><option value="">Select State</option>@foreach($indian_all_states as $kb=>$vb)<option  value="{{$kb}}" {{ ($kb == old("customer_state",$vb))?"selected":'' }}>{{$vb}}</option>@endforeach</select>@endif @if ($errors->cutomer_add->has("customer_state"))<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show"><span class="badge badge-pill badge-danger">Error</span>{{ $errors->cutomer_add->first("customer_state") }}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>@endif</div></div>';
+                $(state).insertAfter('#country');
             }else{
-                $('.input_state').show();
-                var input_state = '<div class="col col-md-3"><label for="file-input" class=" form-control-label required">State</label></div><div class="col-12 col-md-9"><input type="text"  name="customer_state"  required  placeholder="State" maxlength="15" value="{{old("customer_state")}}" class="form-control" >@if ($errors->cutomer_add->has("customer_state"))<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show"><span class="badge badge-pill badge-danger">Error</span>{{ $errors->cutomer_add->first("customer_state") }}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>@endif</div>';
-                $('.input_state').html(input_state);
-                $('.add_gst').hide();
-                $('.add_state').hide();
+               
+                if (!$("div").hasClass("input_state")) {
+                    var input_state = '<div class="row form-group input_state" id="input_state"><div class="col col-md-3"><label for="file-input" class=" form-control-label required">State</label></div><div class="col-12 col-md-9"><input type="text"  name="customer_state"  required  placeholder="State" maxlength="15" value="{{old("customer_state")}}" class="form-control" >@if ($errors->cutomer_add->has("customer_state"))<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show"><span class="badge badge-pill badge-danger">Error</span>{{ $errors->cutomer_add->first("customer_state") }}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>@endif</div></div>';
+                    $(input_state).insertAfter('#country');
+                    $('#gst_no').remove();
+                    $('#state').remove();
+                }
             }
         });
     });

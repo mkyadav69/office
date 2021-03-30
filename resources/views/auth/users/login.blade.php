@@ -68,8 +68,7 @@
     <div class="register-link">
         <p>
         © Chromatographyworld All rights reserved
-            <!-- Don't you have account?
-            <a href="{{route('register')}}">Sign Up Here</a> -->
+           
         </p>
     </div>
 </div>
