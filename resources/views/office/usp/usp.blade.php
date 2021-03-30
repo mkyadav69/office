@@ -8,7 +8,7 @@
     padding-left: 5px;
 }
 .td-limit {
-    max-width: 75px;
+    max-width: 200px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -93,11 +93,11 @@
                 [10, 20, 30, "All"]
             ],
             "columns":[
-                { data: 'category', title : 'Category', className: "text td-limit"},
-                { data: 'usp_type', title : 'Usp Type', className: "text td-limit"},
+                { data: 'category', title : 'Category', className: "text"},
+                { data: 'usp_type', title : 'Usp Type', className: "text"},
                 { data: 'packing', title : 'Packing', className: "text td-limit"},
-                { data: 'brand', title : 'Brand', className: "text td-limit"},
-                { data: 'principal', title : 'Principal', className: "select td-limit"},
+                { data: 'brand', title : 'Brand', className: "text"},
+                { data: 'principal', title : 'Principal', className: "select"},
                 { data: 'dt_created', title : 'Created At'},
                 { data: 'actions', title : 'Actions', className: "td-limit"},
             ], 

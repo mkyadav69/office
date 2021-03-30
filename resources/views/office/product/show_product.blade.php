@@ -7,12 +7,12 @@
     color: red;
     padding-left: 5px;
 }
-.td-limit {
+/* .td-limit {
     max-width: 75px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-}
+} */
 
 </style>
 <div class="row">

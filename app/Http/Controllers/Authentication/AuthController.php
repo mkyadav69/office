@@ -220,6 +220,7 @@ class AuthController extends Controller
         if(empty($id)){
             return redirect()->back()->withErrors(['message', 'Fail to get user id !']);
         }
+        $exclude_model = Config::get('constant.exclude_model');
         $user = User::where('id', $id)->first();
         $branch_wise = Config::get('constant.branch_wise');
         $order = Config('constant.feature_list');
@@ -249,20 +250,30 @@ class AuthController extends Controller
             }
         }
         if(!empty($new_permsn)){
-            foreach ($new_permsn as $v) {                
-                if(!isset($per_data[$v['identifier']])){
-                    $per_data[$v['identifier']] = [];
+            foreach ($new_permsn as $v) {  
+                if(!isset($exclude_model[$v['identifier']])){  
+                    if($v['identifier'] == 'quatation'){
+                        $v['identifier'] = 'quatation format';
+                    }
+                    if($v['identifier'] == 'quatationadd'){
+                        $v['identifier'] = 'quatation';
+                    }            
+                    if(!isset($per_data[$v['identifier']])){
+                        $per_data[$v['identifier']] = [];
+                    }
+                    $k = explode('_',  $v['name'])[0];
+                    $per_data[$v['identifier']][$k] = $v['name'];
                 }
-                $k = explode('_',  $v['name'])[0];
-                $per_data[$v['identifier']][$k] = $v['name'];
             }
         }
+
         $permissions = Permission::All();
         $permissions  = $permissions->toArray();
         $per_arr_list = [];
         $user_role_list = []; 
         if(!empty($permissions)){
             foreach ($permissions as $key => $value) {
+
                 if(!isset($per_arr_list[$value['identifier']])){
                     $per_arr_list[$value['identifier']] = [];
                 }  

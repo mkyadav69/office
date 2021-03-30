@@ -8,6 +8,7 @@
     padding-left: 5px;
 }
 
+
 </style>
 <div class="row">
     @if (session()->has('message'))
@@ -91,11 +92,31 @@
                     [10, 20, 30, "All"]
                 ],
                 "columns":[
-                    { data: 'st_cat_name', title : 'Category Name', className: "text"},
-                    { data: 'st_cat_disc', title : 'Description', className: "text"},
+                    { data: 'st_cat_name', title : 'Category Name', className: "text td_ellipsis"},
+                    { data: 'st_cat_disc', title : 'Description', className: "text td_ellipsis"},
                     { data: 'dt_created', title : 'Created At'},
                     { data: 'actions', title : 'Actions'},
                 ],
+                "drawCallback": function( settings ) {
+                    $('td.td_ellipsis').css('text-overflow', 'ellipsis');
+                    $('td.td_ellipsis').css('overflow', 'hidden');
+                    $('td.td_ellipsis').css('white-space', 'nowrap'); 
+                    $('td.td_ellipsis').addClass('ellipsisd'); 
+                    $('td.td_ellipsis').unbind('click');
+                    $('td.date').addClass('date_format');
+                    $('td.td_ellipsis').click(function(){
+                        if($(this).hasClass('ellipsisd')){
+                            $(this).removeAttr('style');
+                            $(this).removeClass('ellipsisd'); 
+                        }
+                        else{
+                            $(this).css('text-overflow', 'ellipsis');
+                            $(this).css('overflow', 'hidden');
+                            $(this).css('white-space', 'nowrap'); 
+                            $(this).addClass('ellipsisd'); 
+                        }
+                    });
+                },
                 initComplete: function () {
                     this.api().columns().every(function () {
                         var column = this;

@@ -7,12 +7,7 @@
     color: red;
     padding-left: 5px;
 }
-.td-limit {
-    max-width: 100px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
+
 </style>
 <div class="row">
     @if (session()->has('message'))

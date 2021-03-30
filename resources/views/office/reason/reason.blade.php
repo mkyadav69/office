@@ -16,6 +16,13 @@
 .section__content--p30{
     padding: 0px 0px;
 }
+
+th {
+    max-width: 200px;
+}
+td {
+    max-width: 200px;
+}
 </style>
 <div class="row">
     @if (session()->has('message'))
@@ -107,7 +114,7 @@
                         var column = this;
                         if ($(column.header()).hasClass('select')) {
                             console.log(column);
-                            var select = $('<select  tyle="width:150px; height: 30px;  font-weight: normal;  border-radius: 5px;" class="js-select2" ><option value="">' + $(column.header()).html() + '</option></select>')
+                            var select = $('<select  tyle="font-weight: normal;  border-radius: 5px;" class="js-select2" ><option value="">' + $(column.header()).html() + '</option></select>')
                                     .appendTo($(column.header()).empty())
                                     .on('change', function (e) {
                                         e.stopImmediatePropagation();

@@ -85,6 +85,23 @@ img {
     height: auto;
     margin-left: -33px;
 }
+table.dataTable {
+    border-collapse: separate !important;
+    border-spacing: 2px;
+}
+
+.table-earning thead th {
+	background: #333;
+	font-size: 16px;
+	color: #fff;
+	vertical-align: middle;
+	font-weight: 400;
+	text-transform: capitalize;
+	line-height: 1;
+	padding: 9px 3px;
+	white-space: nowrap;
+}
+
 </style>
 
 <body class="animsition">

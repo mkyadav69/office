@@ -46,7 +46,7 @@
 
             @permission('view_usp')
                 <li class="{{ request()->is('show-usp') ? 'active' : '' }} has-sub">
-                    <a class="js-arrow" href="{{ route('show_parameter')}}">
+                    <a class="js-arrow" href="{{ route('show_usp')}}">
                     <i class="fas fa-tasks "></i>USP</a>
                 </li>
             @endpermission

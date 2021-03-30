@@ -20,6 +20,7 @@
 .table {
     max-width: 90%;
 }
+
 </style>
 <div class="col col-md-12">
 <div class="modal-content">
