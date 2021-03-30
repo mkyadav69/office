@@ -118,7 +118,6 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
                     { data: 'st_com_name', className: "text td_ellipsis td-limit", title : 'Company Name'},
                     { data: 'st_cust_city', className: "select td_ellipsis td-limit", title : 'View Branch Wise'},
                     { data: 'st_cust_state', className: "select td_ellipsis td-limit", title : 'State'},
-                    { data: 'st_regions', className: "select td_ellipsis",title : 'View Regions Wise'},
                     { data: 'dt_created', title : 'Created At'},
                     { data: 'actions', title : 'Actions'},
                     
@@ -334,7 +333,7 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
                             <label for="file-input" class=" form-control-label required">Email</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text" name="customer_email"  required  placeholder="Email" value="{{old('customer_email')}}" class="form-control">
+                            <input type="email" name="customer_email"  required  placeholder="Email" value="{{old('customer_email')}}" class="form-control">
                             @if ($errors->cutomer_add->has('customer_email'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
@@ -349,36 +348,7 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
 
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Select Region</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            @if(!empty($regions_id))
-                                <select name="customer_region"  required class="form-control">
-                                    <option value="">Select Region</option>
-                                    @foreach($regions_id as $rk=>$rv)
-                                        @if (old('customer_region') == $rk)
-                                            <option value="{{$rk}}" selected>{{ $rv }}</option>
-                                        @else
-                                            <option value="{{ $rk }}">{{ $rv }}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                            @endif
-                            @if ($errors->cutomer_add->has('customer_region'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('customer_region') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Mobile No.</label>
+                            <label for="file-input" class=" form-control-label">Mobile No.</label>
                         </div>
                         <div class="col-12 col-md-9">
                             <input type="text"  name="customer_mobile"  required  placeholder="Mobile" value="{{old('customer_mobile')}}" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
@@ -393,90 +363,54 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
                             @endif
                         </div>
                     </div>
-
+                   
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">GST No.</label>
+                            <label for="file-input" class=" form-control-label required">First Person Details</label>
                         </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text"  name="gst_no"  required  placeholder="GST No." maxlength="15" value="{{old('gst_no')}}" class="form-control" >
-                            @if ($errors->cutomer_add->has('gst_no'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('gst_no') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Tin No.</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text"  name="tin_no" placeholder="Tin No."  required  maxlength="15" value="{{old('tin_no')}}" class="form-control" >
-                            @if ($errors->cutomer_add->has('tin_no'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('tin_no') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="file-input" class=" form-control-label required">First Person Details</label>
+                    
+                        <div class="col-3">
+                            <div class="form-group">
+                                <input type="text" name="persion1_name"  required  placeholder="Name" value="{{old('persion1_name')}}"  class="form-control">
+                                @if ($errors->cutomer_add->has('persion1_name'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('persion1_name') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
-                        <div class="card cd">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <input type="text" name="persion1_name"  required  placeholder="Name" value="{{old('persion1_name')}}"  class="form-control">
-                                    @if ($errors->cutomer_add->has('persion1_name'))
-                                        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                            <span class="badge badge-pill badge-danger">Error</span>
-                                            {{ $errors->cutomer_add->first('persion1_name') }}
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
+                        </div>
                           
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <input type="text" name="persion1_email"  required  placeholder="Email" value="{{old('persion1_email')}}"  class="form-control">
-                                    @if ($errors->cutomer_add->has('persion1_email'))
-                                        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                            <span class="badge badge-pill badge-danger">Error</span>
-                                            {{ $errors->cutomer_add->first('persion1_email') }}
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    @endif
-                                </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <input type="email" name="persion1_email"  required  placeholder="Email" value="{{old('persion1_email')}}"  class="form-control">
+                                @if ($errors->cutomer_add->has('persion1_email'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('persion1_email') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
+                        </div>
                             
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <input type="text"  name="persion1_mobile"  required  placeholder="Mobile" value="{{old('persion1_mobile')}}"  class="form-control" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                                    @if ($errors->cutomer_add->has('persion1_mobile'))
-                                        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                            <span class="badge badge-pill badge-danger">Error</span>
-                                            {{ $errors->cutomer_add->first('persion1_mobile') }}
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    @endif
-                                </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <input type="text"  name="persion1_mobile"  placeholder="Mobile" value="{{old('persion1_mobile')}}"  class="form-control" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                @if ($errors->cutomer_add->has('persion1_mobile'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('persion1_mobile') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -485,54 +419,104 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
                         <div class="col col-md-3">
                             <label for="file-input" class="form-control-label required">Second Person Details</label>
                         </div>
-                        <div class="card cd">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <input type="text" name="persion2_name"  required  placeholder="name" value="{{old('persion2_name')}}" class="form-control">
-                                    @if ($errors->cutomer_add->has('persion2_name'))
-                                        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                            <span class="badge badge-pill badge-danger">Error</span>
-                                            {{ $errors->cutomer_add->first('persion2_name') }}
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    @endif
-                                </div>
+                       
+                        <div class="col-3">
+                            <div class="form-group">
+                                <input type="text" name="persion2_name"  required  placeholder="Name" value="{{old('persion2_name')}}" class="form-control">
+                                @if ($errors->cutomer_add->has('persion2_name'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('persion2_name') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
+                        </div>
                             
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <input type="text" name= "persion2_email"  required  value="{{old('persion2_email')}}" placeholder="email" class="form-control">
-                                    @if ($errors->cutomer_add->has('persion2_email'))
-                                        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                            <span class="badge badge-pill badge-danger">Error</span>
-                                            {{ $errors->cutomer_add->first('persion2_email') }}
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    @endif
-                                </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <input type="email" name= "persion2_email"  required  value="{{old('persion2_email')}}" placeholder="email" class="form-control">
+                                @if ($errors->cutomer_add->has('persion2_email'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('persion2_email') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
+                        </div>
                            
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <input type="text"  name="persion2_mobile"  required  value="{{old('persion2_mobile')}}" placeholder="Mobile" class="form-control" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                                    @if ($errors->cutomer_add->has('persion2_mobile'))
-                                        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                            <span class="badge badge-pill badge-danger">Error</span>
-                                            {{ $errors->cutomer_add->first('persion2_mobile') }}
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    @endif
-                                </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <input type="text"  name="persion2_mobile"  value="{{old('persion2_mobile')}}" placeholder="Mobile" class="form-control" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                @if ($errors->cutomer_add->has('persion2_mobile'))
+                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-danger">Error</span>
+                                        {{ $errors->cutomer_add->first('persion2_mobile') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
 
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">Country</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            @if(!empty($countries))
+                                <select name="customer_country" id="customer_country" class="form-control"  required >
+                                    <option value="">Select Country</option>
+                                    @foreach($countries as $kb=>$vb)
+                                        <option  value="{{$kb}}"  {{ ($kb == old('customer_country',$vb))?'selected':'' }} >{{$vb}}</option>
+                                    @endforeach
+                                </select>
+                            @endif
+                            @if ($errors->cutomer_add->has('customer_country'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->cutomer_add->first('customer_country') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row form-group add_state">
+                       
+                    </div>
+
+                    <div class="row form-group input_state">
+                       
+                    </div>
+                    
+
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="file-input" class=" form-control-label required">City</label>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <input type="text" name= "customer_city" placeholder="City"  required  value="{{old('customer_city')}}" class="form-control">
+                            @if ($errors->cutomer_add->has('customer_city'))
+                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+                                    <span class="badge badge-pill badge-danger">Error</span>
+                                    {{ $errors->cutomer_add->first('customer_city') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
 
                     <div class="row form-group">
                         <div class="col col-md-3">
@@ -551,44 +535,7 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
                             @endif
                         </div>
                     </div>
-
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">City</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text" name= "customer_city" placeholder="city"  required  value="{{old('customer_city')}}" class="form-control">
-                            @if ($errors->cutomer_add->has('customer_city'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('customer_city') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">State</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <input type="text"  name="customer_state" placeholder="State"  required  value="{{old('customer_state')}}" class="form-control">
-                            @if ($errors->cutomer_add->has('customer_state'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('customer_state') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
+                    
                     <div class="row form-group">
                         <div class="col col-md-3">
                             <label for="file-input" class=" form-control-label required">Pin Code</label>
@@ -607,23 +554,27 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
                         </div>
                     </div>
 
+                    <div class="row form-group add_gst">
+                        
+                    </div>
+
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Select Branch</label>
+                            <label for="file-input" class=" form-control-label required">Customer Classification</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            @if(!empty($branch_wise))
-                                <select name="customer_branch" class="form-control"  required >
-                                    <option value="">Select Branch</option>
-                                    @foreach($branch_wise as $kb=>$vb)
-                                        <option  value="{{$kb}}"  {{ ($kb == old('customer_branch',$vb))?'selected':'' }} >{{$vb}}</option>
+                            @if(!empty($customer_classifications))
+                                <select name="customer_classification" class="form-control"  required >
+                                    <option value="">Select Classification</option>
+                                    @foreach($customer_classifications as $kb=>$vb)
+                                        <option  value="{{$kb}}"  {{ ($kb == old('customer_classification',$vb))?'selected':'' }} >{{$vb}}</option>
                                     @endforeach
                                 </select>
                             @endif
-                            @if ($errors->cutomer_add->has('customer_branch'))
+                            @if ($errors->cutomer_add->has('customer_classification'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('customer_branch') }}
+                                    {{ $errors->cutomer_add->first('customer_classification') }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -723,35 +674,6 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
                                     {{ $errors->cutomer_add->first('update_customer_email') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Select Region</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            @if(!empty($regions_id))
-                                <select id="customer_region" name="update_customer_region" class="form-control" required>
-                                    <option value="">Select Region</option>
-                                    @foreach($regions_id as $rk=>$rv)
-                                        @if (old('customer_region') == $rk)
-                                            <option value="{{$rk}}" selected>{{ $rv }}</option>
-                                        @else
-                                            <option value="{{ $rk }}">{{ $rv }}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                            @endif
-                            @if ($errors->cutomer_add->has('update_customer_region'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('update_customer_region') }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -918,26 +840,6 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
                         </div>
                     </div>
 
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Address</label>
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <textarea type="text" id="customer_address" name="update_customer_address"  required  placeholder="Address . . . !" value="{{old('update_customer_address')}}" class="form-control"></textarea>
-                            @if ($errors->cutomer_add->has('update_customer_address'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('update_customer_address') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-
                     <div class="row form-group">
                         <div class="col col-md-3">
                             <label for="file-input" class=" form-control-label required">City</label>
@@ -976,14 +878,14 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
 
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Pin Code</label>
+                            <label for="file-input" class=" form-control-label required">Address</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            <input type="text"  id="customer_pincode" name="update_customer_pincode"  required  placeholder="Pin Code" value="{{old('update_customer_pincode')}}" class="form-control">
-                            @if ($errors->cutomer_add->has('update_customer_pincode'))
+                            <textarea type="text" id="customer_address" name="update_customer_address"  required  placeholder="Address . . . !" value="{{old('update_customer_address')}}" class="form-control"></textarea>
+                            @if ($errors->cutomer_add->has('update_customer_address'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('update_customer_pincode') }}
+                                    {{ $errors->cutomer_add->first('update_customer_address') }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -994,21 +896,14 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
 
                     <div class="row form-group">
                         <div class="col col-md-3">
-                            <label for="file-input" class="form-control-label required">Select Branch</label>
+                            <label for="file-input" class=" form-control-label required">Pin Code</label>
                         </div>
                         <div class="col-12 col-md-9">
-                            @if(!empty($branch_wise))
-                                <select id="customer_branch" name="update_customer_branch" class="form-control"  required >
-                                    <option value="">Select Branch</option>
-                                    @foreach($branch_wise as $kb=>$vb)
-                                        <option  value="{{$kb}}"  {{ ($kb == old('customer_branch',$vb))?'selected':'' }} >{{$vb}}</option>
-                                    @endforeach
-                                </select>
-                            @endif
-                            @if ($errors->cutomer_add->has('update_customer_branch'))
+                            <input type="text"  id="customer_pincode" name="update_customer_pincode"  required  placeholder="Pin Code" value="{{old('update_customer_pincode')}}" class="form-control">
+                            @if ($errors->cutomer_add->has('update_customer_pincode'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                     <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('update_customer_branch') }}
+                                    {{ $errors->cutomer_add->first('update_customer_pincode') }}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -1049,4 +944,28 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
         </form>
     </div>
 <!-- end modal large -->
+<script>
+    $(document).ready(function(){
+        $('#customer_country').on('change', function(){
+            var country = $( "#customer_country option:selected" ).val();
+            if(country != '' && country == 'IN'){
+                $('.add_gst').show();
+                $('.add_state').show();
+                $('.input_state').hide();
+                var gst = '<div class="col col-md-3"><label for="file-input" class=" form-control-label required">GST No.</label></div><div class="col-12 col-md-9"><input type="text"  name="gst_no"  required  placeholder="GST No." maxlength="15" value="{{old("gst_no")}}" class="form-control" >@if ($errors->cutomer_add->has("gst_no"))<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show"><span class="badge badge-pill badge-danger">Error</span>{{ $errors->cutomer_add->first("gst_no") }}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>@endif</div>';
+                $('.add_gst').html(gst);
+                
+                var state =  '<div class="col col-md-3"><label for="file-input" class=" form-control-label required">State</label></div><div class="col-12 col-md-9">@if(!empty($indian_all_states))<select name="customer_state" class="form-control"  required><option value="">Select State</option>@foreach($indian_all_states as $kb=>$vb)<option  value="{{$kb}}" {{ ($kb == old("customer_state",$vb))?"selected":'' }}>{{$vb}}</option>@endforeach</select>@endif @if ($errors->cutomer_add->has("customer_state"))<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show"><span class="badge badge-pill badge-danger">Error</span>{{ $errors->cutomer_add->first("customer_state") }}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>@endif</div>';
+
+                $('.add_state').html(state);
+            }else{
+                $('.input_state').show();
+                var input_state = '<div class="col col-md-3"><label for="file-input" class=" form-control-label required">State</label></div><div class="col-12 col-md-9"><input type="text"  name="customer_state"  required  placeholder="State" maxlength="15" value="{{old("customer_state")}}" class="form-control" >@if ($errors->cutomer_add->has("customer_state"))<div class="sufee-alert alert with-close alert-danger alert-dismissible fade show"><span class="badge badge-pill badge-danger">Error</span>{{ $errors->cutomer_add->first("customer_state") }}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>@endif</div>';
+                $('.input_state').html(input_state);
+                $('.add_gst').hide();
+                $('.add_state').hide();
+            }
+        });
+    });
+</script>
 @endsection

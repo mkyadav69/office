@@ -26,36 +26,29 @@ class CustomerController extends Controller
         $regions_id = Config::get('constant.regions_id');
         $countries = Config::get('constant.countries');
         $branch_wise = Config::get('constant.branch_wise');
-        return view('office.customer.customer', compact('regions_id', 'countries', 'branch_wise'));
+        $indian_all_states = Config::get('constant.indian_all_states');
+        $customer_classifications = Config::get('constant.customer_classifications');
+        return view('office.customer.customer', compact('regions_id', 'countries', 'branch_wise', 'indian_all_states', 'customer_classifications'));
     }
 
     public function storeCustomer(Request $request){
         $validator = Validator::make($request->all(), [
-            'customer_name' => 'required',
-            'customer_last_name' =>  'required',
-            'customer_company_name' =>  'required',
-            'customer_region' =>  'required',
-            'customer_mobile' =>  'required',
-            'gst_no' =>  'required',
-            'tin_no' =>  'required',
-            'customer_email'=> 'required',
-            'customer_branch'=> 'required',
-
-            'persion1_name' => 'required',
-            'persion1_email' => 'required',
-            'persion1_mobile' => 'required',
-
-            'persion2_name' =>  'required',
-            'persion2_email' =>  'required',
-            'persion2_mobile' =>  'required',
-
-            'customer_address' =>  'required',
-            'customer_city' =>  'required',
-            'customer_state' =>  'required',
-            'customer_pincode' =>  'required',
+            "customer_name" => "required",
+            "customer_last_name" => "required",
+            "customer_company_name" => "required",
+            "customer_email" => "required",
+            "persion1_name" => "required",
+            "persion1_email" => "required",
+            "persion2_name" => "required",
+            "persion2_email" => "required",
+            "customer_address" => "required",
+            "customer_country" => "required",
+            "customer_state" => "required",
+            "customer_city" => "required",
+            "customer_pincode" => "required",
+            "gst_no" => "required",
+            "customer_classification" => "required",
         ]);
-
-
 
         if ($validator->fails()) {
             return back()->withErrors($validator, 'cutomer_add')->withInput();
