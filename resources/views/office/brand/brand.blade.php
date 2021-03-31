@@ -139,6 +139,9 @@
             $('div #brand_name').val(data['brand_name']);
 
             $('#editForm').attr('action', '/edit-brand/'+data['id']);
+            $('#editModal').modal({
+                backdrop: 'static'
+            });
             $('#editModal').modal('show');  
         });
 
@@ -149,6 +152,9 @@
             }
             var data = table.row($tr).data();
             $('#deleteForm').attr('action', '/delete-brand/'+data['id']);
+            $('#deleteModal').modal({
+                backdrop: 'static'
+            });
             $('#deleteModal').modal('show');  
         });
     });

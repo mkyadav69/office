@@ -243,6 +243,9 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
             $('div #customer_branch').val(data['in_branch']);
 
             $('#editForm').attr('action', '/edit-customer/'+data['in_cust_id']);
+            $('#editModal').modal({
+                backdrop: 'static'
+            });
             $('#editModal').modal('show');  
         });
 
@@ -253,6 +256,9 @@ table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thea
             }
             var data = table.row($tr).data();
             $('#deleteForm').attr('action', '/delete-customer/'+data['in_cust_id']);
+            $('#deleteModal').modal({
+                backdrop: 'static'
+            });
             $('#deleteModal').modal('show');  
         });
     });

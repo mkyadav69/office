@@ -140,6 +140,9 @@
             $('div #select_branch').val(data['in_branch_id']);
         
             $('#editForm').attr('action', '/edit-courier/'+data['in_courier_id']);
+            $('#editModal').modal({
+                backdrop: 'static'
+            });
             $('#editModal').modal('show');  
         });
 
@@ -150,6 +153,9 @@
             }
             var data = table.row($tr).data();
             $('#deleteForm').attr('action', '/delete-courier/'+data['in_courier_id']);
+            $('#deleteModal').modal({
+                backdrop: 'static'
+            });
             $('#deleteModal').modal('show');  
         });
     });

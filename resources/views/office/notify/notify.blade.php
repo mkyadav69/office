@@ -154,6 +154,9 @@
                 $('div #select_branch').val('');
             }
             $('#editForm').attr('action', '/edit-notify/'+data['id']);
+            $('#editModal').modal({
+                backdrop: 'static'
+            });
             $('#editModal').modal('show');  
         });
 
@@ -164,6 +167,9 @@
             }
             var data = table.row($tr).data();
             $('#deleteForm').attr('action', '/delete-notify/'+data['id']);
+            $('#deleteModal').modal({
+                backdrop: 'static'
+            });
             $('#deleteModal').modal('show');  
         });
     });

@@ -137,6 +137,9 @@
             }
             var data = table.row($tr).data();
             $('#deleteForm').attr('action', '/delete-product/'+data['pro_id']);
+            $('#deleteModal').modal({
+                backdrop: 'static'
+            });
             $('#deleteModal').modal('show');  
         });
     });

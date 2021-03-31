@@ -136,6 +136,9 @@
             $('div #column_name').val(data['column_name']);
 
             $('#editForm').attr('action', '/edit-parameter/'+data['id']);
+            $('#editModal').modal({
+                backdrop: 'static'
+            });
             $('#editModal').modal('show');  
         });
 
@@ -146,6 +149,9 @@
             }
             var data = table.row($tr).data();
             $('#deleteForm').attr('action', '/delete-parameter/'+data['id']);
+            $('#deleteModal').modal({
+                backdrop: 'static'
+            });
             $('#deleteModal').modal('show');  
         });
     });

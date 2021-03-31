@@ -140,6 +140,9 @@
             $('div #owner_desciption').val(data['owner_desc']);
 
             $('#editForm').attr('action', '/edit-owner/'+data['id']);
+            $('#editModal').modal({
+                backdrop: 'static'
+            });
             $('#editModal').modal('show');  
         });
 
@@ -150,6 +153,9 @@
             }
             var data = table.row($tr).data();
             $('#deleteForm').attr('action', '/delete-owner/'+data['id']);
+            $('#deleteModal').modal({
+                backdrop: 'static'
+            });
             $('#deleteModal').modal('show');  
         });
     });

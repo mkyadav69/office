@@ -138,6 +138,9 @@
             $('div #select_principal').val(data['make_type']);
           
             $('#editForm').attr('action', '/edit-principals/'+data['in_make_id']);
+            $('#editModal').modal({
+                backdrop: 'static'
+            });
             $('#editModal').modal('show');  
         });
 
@@ -148,6 +151,9 @@
             }
             var data = table.row($tr).data();
             $('#deleteForm').attr('action', '/delete-principals/'+data['in_make_id']);
+            $('#deleteModal').modal({
+                backdrop: 'static'
+            });
             $('#deleteModal').modal('show');  
         });
     });

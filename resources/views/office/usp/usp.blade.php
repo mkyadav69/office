@@ -164,6 +164,9 @@
             $('div #select_category').val(data['category']);
             $('div #principal').val(data['principal']);
             $('#editForm').attr('action', '/edit-usp/'+data['id']);
+            $('#editModal').modal({
+                backdrop: 'static'
+            });
             $('#editModal').modal('show');  
         });
 
@@ -174,6 +177,9 @@
             }
             var data = table.row($tr).data();
             $('#deleteForm').attr('action', '/delete-usp/'+data['id']);
+            $('#deleteModal').modal({
+                backdrop: 'static'
+            });
             $('#deleteModal').modal('show');  
         });
     

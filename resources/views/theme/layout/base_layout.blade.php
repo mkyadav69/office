@@ -233,17 +233,6 @@ table.dataTable {
             }); 
         });
     </script>
-    <script>
-        $(document).ready(function(){
-            $('.edit').click(function(){
-                $('#addModal').modal({
-                    backdrop: 'static'
-                });
-            }); 
-        });
-    </script>
-    
-
 </body>
 
 </html>

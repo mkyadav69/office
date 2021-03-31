@@ -189,6 +189,9 @@
             }
 
             $('#editForm').attr('action', '/edit-quatation-format/'+data['int_quotformat_id']);
+            $('#editModal').modal({
+                backdrop: 'static'
+            });
             $('#editModal').modal('show');  
         });
 
@@ -199,6 +202,9 @@
             }
             var data = table.row($tr).data();
             $('#deleteForm').attr('action', '/delete-quatation-format/'+data['int_quotformat_id']);
+            $('#deleteModal').modal({
+                backdrop: 'static'
+            });
             $('#deleteModal').modal('show');  
         });
     });

@@ -182,6 +182,9 @@
             }
         
             $('#editForm').attr('action', '/edit-category/'+data['cat_id']);
+            $('#editModal').modal({
+                backdrop: 'static'
+            });
             $('#editModal').modal('show');  
         });
 
@@ -192,6 +195,9 @@
             }
             var data = table.row($tr).data();
             $('#deleteForm').attr('action', '/delete-category/'+data['cat_id']);
+            $('#deleteModal').modal({
+                backdrop: 'static'
+            });
             $('#deleteModal').modal('show');  
         });
     });

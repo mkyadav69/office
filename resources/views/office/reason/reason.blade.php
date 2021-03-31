@@ -158,6 +158,9 @@ td {
             $('div #select_mode').val(r_field);
 
             $('#editForm').attr('action', '/edit-reason/'+data['int_id']);
+            $('#editModal').modal({
+                backdrop: 'static'
+            });
             $('#editModal').modal('show');  
         });
 
@@ -168,6 +171,9 @@ td {
             }
             var data = table.row($tr).data();
             $('#deleteForm').attr('action', '/delete-reason/'+data['int_id']);
+            $('#deleteModal').modal({
+                backdrop: 'static'
+            });
             $('#deleteModal').modal('show');  
         });
     });
