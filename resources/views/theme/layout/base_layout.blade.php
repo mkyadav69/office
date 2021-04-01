@@ -150,6 +150,7 @@ table.dataTable {
                 @yield('addModal')
             </div>
         </div>
+
         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 @yield('editModal')
@@ -198,6 +199,11 @@ table.dataTable {
             </div>
         </div>
 
+        <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                @yield('viewModal')
+            </div>
+        </div>
         
 
         

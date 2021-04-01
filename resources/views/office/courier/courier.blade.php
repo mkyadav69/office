@@ -13,6 +13,9 @@
     white-space: nowrap;
     overflow: hidden;
 }
+.col-md-3 {
+    padding-left: 20px;
+}
 </style>
 <div class="row">
     @if (session()->has('message'))
@@ -179,7 +182,7 @@
                     <div class="col col-md-3">
                         <label for="file-input" class=" form-control-label required">Courier Name</label>
                     </div>
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-9">
                         <input type="text" name="courier_name" required placeholder="Enter courier name" value="{{old('courier_name')}}" class="form-control">
                         @if ($errors->courier_add->has('courier_name'))
                             <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
@@ -197,7 +200,7 @@
                     <div class="col col-md-3">
                         <label for="file-input" class=" form-control-label required">Select Branch</label>
                     </div>
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-9">
                         <select name="select_branch" required class="form-control">
                             <option value="">Select Branch</option>
                             @if(!empty($branch_wise))

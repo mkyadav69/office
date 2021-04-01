@@ -129,8 +129,7 @@ Route::post('filter-product', [QuatationController::class, 'filterProduct'])->na
 Route::get('preview-quatation', [QuatationController::class, 'previewQuatation'])->name('preview_quatation');
 Route::get('edit-quatation/{id}',  [QuatationController::class, 'updateQuatation'])->name('edit_quatation');
 Route::post('store-update-quatation', [QuatationController::class, 'storeUpdateQuatation'])->name('store_update_quatation');
-
-// Route::post('delete-quatation-format/{id}',  [QuatationFormatController::class, 'deleteQuatationFormat'])->name('delete_quatation_format');
+Route::post('delete-quatation/{id}',  [QuatationController::class, 'deleteQuatation'])->name('delete_quatation');
 
 # 13. Notification
 Route::get('show-notify', [NotifyController::class, 'showNotify'])->name('show_notify');

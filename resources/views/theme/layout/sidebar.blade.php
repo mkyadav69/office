@@ -15,6 +15,13 @@
                 </li>
             @endpermission
 
+            @permission('view_user')
+                <li class="{{ request()->is('show-user') ? 'active' : '' }} has-sub">
+                    <a  href="{{route('show_user')}}">
+                    <i class="fas fa-users"></i>Users</a>
+                </li>
+            @endpermission
+
             @permission('view_quatationadd')
                 <li class="{{ request()->is('show-quatation') ? 'active' : (request()->is('add-quatation') ? 'active' : (request()->is('edit-quatation/*') ? 'active' : '')) }} has-sub">
                     <a class="js-arrow" href="{{route('show_quatation')}}">
@@ -90,13 +97,6 @@
                 <li class="{{ request()->is('show-courier') ? 'active' : '' }} has-sub">
                     <a  href="{{route('show_courier')}}">
                     <i class="fas fa-envelope"></i>Couriers</a>
-                </li>
-            @endpermission
-
-            @permission('view_user')
-                <li class="{{ request()->is('show-user') ? 'active' : '' }} has-sub">
-                    <a  href="{{route('show_user')}}">
-                    <i class="fas fa-users"></i>Users</a>
                 </li>
             @endpermission
         </ul>

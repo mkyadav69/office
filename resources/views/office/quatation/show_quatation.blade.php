@@ -7,6 +7,9 @@
     color: red;
     padding-left: 5px;
 }
+.col-md-3 {
+    padding-left: 20px;
+}
 
 </style>
 <div class="row">
@@ -85,7 +88,7 @@
                             return '<a href="'+window.location.origin+'/pdf_'+new Date().getFullYear()+'/'+row.stn_pdf_name+'" target="_blank"><div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Download"><i class="zmdi zmdi-download text-success"></i></button></div></a>'
                         }, title: 'Download'
                     },
-                    { data: 'lead_from', className: "td-limit", title : 'Reason'},
+                    { data: 'reason', className: "td-limit", title : 'Reason'},
                     { data: 'actions', title : 'Actions'},
                     
                 ],  
@@ -142,11 +145,110 @@
             });
             $('#deleteModal').modal('show');  
         });
+
+        table.on('click', '.view', function(){
+            $tr = $(this).closest('tr');
+            if($($tr).hasClass('child')){
+                $tr = $tr.prev('.parent');
+            }
+            var data = table.row($tr).data();
+
+            $('div #number').val(data['in_quot_num']);
+            $('div #follow_date').val(data['dt_date_created']);
+            $('div #value').val(data['final_amount']);
+            if(data['dt_date_modified'] != null){
+                var date = new Date(data['dt_date_modified']);
+            }else{
+                var date = '';
+            }
+            $('div #last_update').val(date);
+            $('#viewModal').modal({
+                backdrop: 'static'
+            });
+            $('#viewModal').modal('show');  
+        });
+
+        table.on('click', '.add', function(){
+            // 
+        });
     });
     
 </script>
 @endsection
 
+@section('viewModal')
+<!-- Add  Data-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="card">
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="file-input" class=" form-control-label required">Quotation No.</label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <input type="text" placeholder="Quote No." disabled id="number" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="file-input" class=" form-control-label required">Follow Up Date</label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <input type="text" placeholder="Follow Date" disabled id="follow_date" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="file-input" class=" form-control-label required">Quotation Value</label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <input type="text" placeholder="column name" disabled id="value" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="file-input" class=" form-control-label required">Reason</label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <input type="text" placeholder="Reason" disabled id="reason" value="Open" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="file-input" class=" form-control-label required">User Name</label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <input type="text" placeholder="User Name" disabled id="name" value="{{ \Auth::user()->user_name }}" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="file-input" class=" form-control-label required"> Last Update</label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <input type="text" placeholder="Last Update"  disabled id="last_update" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- End Add-->
+@endsection
 
 @section('deleteModal')
 <!-- Delete-->

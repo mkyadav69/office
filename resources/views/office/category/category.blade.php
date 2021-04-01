@@ -8,6 +8,9 @@
     padding-left: 5px;
 }
 
+.col-md-3 {
+    padding-left: 20px;
+}
 
 </style>
 <div class="row">
@@ -221,7 +224,7 @@
                         <div class="col col-md-3">
                             <label for="file-input" class=" form-control-label required">Category Name</label>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-9">
                             <input type="text" name="category_name" required value="{{old('category_name')}}" placeholder="Enter category name" class="form-control">
                             @if ($errors->category_add->has('category_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">

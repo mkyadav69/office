@@ -7,7 +7,9 @@
     color: red;
     padding-left: 5px;
 }
-
+.col-md-3 {
+    padding-left: 20px;
+}
 </style>
 <div class="row">
     @if (session()->has('message'))

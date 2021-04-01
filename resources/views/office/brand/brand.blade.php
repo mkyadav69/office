@@ -7,6 +7,9 @@
     color: red;
     padding-left: 5px;
 }
+.col-md-3 {
+    padding-left: 20px;
+}
 
 </style>
 <div class="row">
@@ -178,7 +181,7 @@
                         <div class="col col-md-3">
                             <label for="file-input" class=" form-control-label required">Brand Name</label>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-9">
                             <input type="text" name="brand_name" required value="{{old('brand_name')}}" placeholder="brand" class="form-control">
                             @if ($errors->brand_add->has('brand_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">

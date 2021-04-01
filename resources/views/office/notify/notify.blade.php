@@ -13,6 +13,9 @@
     white-space: nowrap;
     overflow: hidden;
 }
+.col-md-3 {
+    padding-left: 20px;
+}
 
 </style>
 <div class="row">
@@ -193,7 +196,7 @@
                         <div class="col col-md-3">
                             <label for="file-input" class=" form-control-label required">Name</label>
                         </div>
-                        <div class="col-12 col-md-8">
+                        <div class="col-12 col-md-9">
                             <input type="text" placeholder="Name" name="name" required value="{{old('name')}}" class="form-control">
                             @if ($errors->notify_add->has('name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
@@ -211,7 +214,7 @@
                         <div class="col col-md-3">
                             <label for="file-input" class=" form-control-label required">Email Address 1</label>
                         </div>
-                        <div class="col-12 col-md-8">
+                        <div class="col-12 col-md-9">
                             <input type="text" placeholder="Email" name="email1"  required value="{{old('email1')}}" class="form-control">
                             @if ($errors->notify_add->has('email1'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
@@ -229,7 +232,7 @@
                         <div class="col col-md-3">
                             <label for="file-input" class=" form-control-label required">Email Address 2</label>
                         </div>
-                        <div class="col-12 col-md-8">
+                        <div class="col-12 col-md-9">
                             <textarea type="text" placeholder="List of emails . . . " required name="email2"  value="{{old('email2')}}" class="form-control">{{old('email2')}}</textarea>
                             @if ($errors->notify_add->has('email2'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
@@ -248,7 +251,7 @@
                         <div class="col col-md-3">
                             <label for="file-input" class=" form-control-label required">Branch Name</label>
                         </div>
-                        <div class="col-12 col-md-8">
+                        <div class="col-12 col-md-9">
                         @if(!empty($branch_wise))
                             <select name="select_branch" required class="form-control" >
                                 <option value="">Select Branch</option>

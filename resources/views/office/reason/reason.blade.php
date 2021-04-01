@@ -23,6 +23,9 @@ th {
 td {
     max-width: 200px;
 }
+.col-md-3 {
+    padding-left: 20px;
+}
 </style>
 <div class="row">
     @if (session()->has('message'))
@@ -216,7 +219,7 @@ td {
                         <div class="col col-md-3">
                             <label for="file-input" class=" form-control-label required">Reason Mode</label>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-9">
                             <select name="select_mode" required class="form-control">
                                 <option value="">Select Reason</option>
                                 <option value="1" {{ old('select_mode') == 1 ? "selected" : "" }} >Pending Order</option>
@@ -281,8 +284,8 @@ td {
                         <div class="col col-md-3">
                             <label for="file-input" class=" form-control-label required">Reason Mode</label>
                         </div>
-                        <div class="col-12 col-md-6">
-                            <select name="update_select_mode" id="select_mode" required class="form-control">
+                        <div class="col-12 col-md-9">
+                            <select  name="update_select_mode" id="select_mode" required class="form-control">
                                 <option value="">Select Reason</option>
                                 <option value="1" {{old('update_select_mode')== '1' ? 'selected' : ''}}>Pending Order</option>
                                 <option value="2" {{old('update_select_mode')== '2' ? 'selected' : ''}}>Pending Shipment</option>

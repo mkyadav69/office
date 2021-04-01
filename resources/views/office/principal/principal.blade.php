@@ -7,7 +7,9 @@
     color: red;
     padding-left: 5px;
 }
-
+.col-md-3 {
+    padding-left: 20px;
+}
 </style>
 <div class="row">
     @if (session()->has('message'))
@@ -177,7 +179,7 @@
                         <div class="col col-md-3">
                             <label for="file-input" class=" form-control-label required">Principal Name</label>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-9">
                             <input type="text" placeholder="Name" required name="principal_name"  value="{{old('principal_name')}}" class="form-control">
                             @if ($errors->principal_add->has('principal_name'))
                                 <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
@@ -196,7 +198,7 @@
                         <div class="col col-md-3">
                             <label for="file-input" class=" form-control-label required">Principal Type</label>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-9">
                             <select name="select_principal" required class="form-control" >
                                 <option value="">Select Principals</option>
                                 <option value="Authorised" {{ old('select_principal') == 'Authorised' ? "selected" : "" }} >Authorized</option>

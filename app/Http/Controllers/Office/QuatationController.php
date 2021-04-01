@@ -254,7 +254,7 @@ class QuatationController extends Controller
                 'data-id' => function($quatation_add) {
                     return $quatation_add->system_id;
                 }
-            ])->rawColumns(['actions' => 'actions']);
+            ]);
         }else{
             $quatation_add->addColumn('actions', function ($quatation_add){
                 return '<div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View Only"><i class="fa fa-eye text-primary"></i></button></div>';
@@ -262,8 +262,16 @@ class QuatationController extends Controller
                 'data-id' => function($quatation_add) {
                     return $quatation_add->system_id;
                 }
-            ])->rawColumns(['actions' => 'actions']);
+            ]);
         }
+        $quatation_add->addColumn('reason', function ($quatation_add) use($action_btn){
+            return '<div class="table-data-feature"><div class="table-data-feature"><button row-id="" class="item view" data-toggle="tooltip" data-placement="top" title="View"><i class="fa fa-eye text-primary"></i></button></div><div class="table-data-feature"></div><div class="table-data-feature"><button row-id="" class="item add" data-toggle="tooltip" data-placement="top" title="Add More"><i class="fa fa-box text-warning"></i></button></div></div>';
+        })->setRowAttr([
+            'data-id' => function($quatation_add) {
+                return $quatation_add->system_id;
+            }
+        ])->rawColumns(['actions' => 'actions', 'reason' => 'reason']);
+
         $quatation_add->editColumn('dt_date_created', function ($quatation_add) {
             $date = $quatation_add['dt_date_created'];
             if(!empty($date)){
