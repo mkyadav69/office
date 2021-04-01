@@ -136,7 +136,7 @@
                 $tr = $tr.prev('.parent');
             }
             var data = table.row($tr).data();
-            $('#deleteForm').attr('action', '/delete-product/'+data['pro_id']);
+            $('#deleteForm').attr('action', '/delete-quatation/'+data['in_quot_id']);
             $('#deleteModal').modal({
                 backdrop: 'static'
             });

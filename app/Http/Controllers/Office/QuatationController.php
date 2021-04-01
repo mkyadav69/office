@@ -731,9 +731,16 @@ class QuatationController extends Controller
         }
     }
 
-    public function test(){
-        $pdf = \App::make('dompdf.wrapper');
-        $pdf->loadView('office/quatation/test');
-        $pdf->stream();
+    public function deleteQuatation(Request $request, $id){
+        $records = QuatationAdd::where('in_quot_id', $id)->delete();
+        if($records == 1){
+            $remove_quotation_details  = \DB::table('quotation_details')->where('in_quot_id', $id)->delete(); 
+            $message =  'Records deleted successfully !';
+        }else{
+            $message ='Fail to delete records !';
+        }
+        return back()->with([
+            'message' =>$message
+        ]);
     }
 }
