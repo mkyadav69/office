@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Quatation extends Model
 {
+    
     protected $table = 'tbl_quot_format';
     public $timestamps = false;
 }
