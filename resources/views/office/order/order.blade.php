@@ -1,5 +1,5 @@
 @extends('theme.layout.base_layout')
-@section('title', 'Update Quotations')
+@section('title', 'Update Orders')
 @section('content')
 <style>
 .required:after {
@@ -102,97 +102,73 @@ datepicker,
         @endif
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Update Quotations</h5>
+                <h5 class="modal-title" id="largeModalLabel">Update Order</h5>
             </div>
-            <div class="modal-header">
-                <h5 class="modal-title" id="largeModalLabel">Lead & Group</h5>
-            </div>
+           
             <form action="" name="quotation_form" id="quotation_form"  role="form">
-                    <div class="modal-body">
-                        <input type="hidden" name="in_quot_id" id="in_quot_id" value="{{$data['in_quot_id']}}"/>
-                        <input type="hidden" name="flg_same_as_bill_add" id="flg_same_as_bill_add" value=""/>
-                        <input type="hidden" name="in_quot_num" id="in_quot_num" value="{{$data['in_quot_num']}}"/>
-                        <input type="hidden" name="in_cust_id" id="in_cust_id" value="{{$data['in_cust_id']}}"/>
-                        <div class="row form-group">
-                            <div class="form-group col-4">
-                                <label for="company" class="form-control-label required">Quatation Prepared By </label>
-                                <input type="text" name="preparing_by" required id="preparing_by" placeholder="Quatation Prepared By" value="{{ old('preparing_by', !empty($data['quotation_info']['preparing_by']) ? $data['quotation_info']['preparing_by'] : '') }}" class="form-control">
-                                <b><small class="help-block form-text text-danger" id="error_preparing_by"></small></b>
-                            </div>
-                            <div class="form-group col-4">
-                                <label for="lead_from" class=" form-control-label required">Lead From</label>
-                                <input type="text" name="lead_from" required id="lead_from" placeholder="Lead From" value="{{ old('lead_from', !empty($data['quotation_info']['lead_from']) ? $data['quotation_info']['lead_from'] : '') }}" class="form-control">
-                                <small class="help-block form-text text-danger" id="error_lead_from"></small>
-                            </div>
-                            <input type="hidden" name="_token"  id="token" value="{{ csrf_token() }}">
-                            <div class="form-group col-4">
-                                <label for="vat" class=" form-control-label required">Notify Group</label>
-                                <select id="notify_group" required name="notify_group" class="form-control">
-                                    <option value="">Select Notify Group</option>
-                                    @if(!empty($notify))
-                                        @foreach($notify as $id=>$name)
-                                            <option value="{{$id}}" {{ old('notify_group' , $id) == (!empty($data['quotation_info']['notify_group']) ? $data['quotation_info']['notify_group'] : '' ) ? "selected" : "" }}>{{$name}}</option>
-                                        @endforeach
-                                    @else
-                                        <p>Notification are not available.</p>
-                                    @endif
-                                </select>
-                                <small class="help-block form-text text-danger" id="error_notify_group"></small>
-                            </div>
-                        </div>
-                    </div>
+                    <input type="hidden" name="in_quot_id" id="in_quot_id" value="{{$data['in_quot_id']}}"/>
+                    <input type="hidden" name="flg_same_as_bill_add" id="flg_same_as_bill_add" value=""/>
+                    <input type="hidden" name="in_quot_num" id="in_quot_num" value="{{$data['in_quot_num']}}"/>
+                    <input type="hidden" name="in_cust_id" id="in_cust_id" value="{{$data['in_cust_id']}}"/>
+                    <input type="hidden" name="_token"  id="token" value="{{ csrf_token() }}">
+                   
                     <div class="modal-header">
                         <h5 class="modal-title" id="largeModalLabel">Customer Details</h5>
                     </div>
                     <div class="modal-body">
                         <div class="row form-group">
                             <div class="form-group col-3">
-                                <label for="vat" class=" form-control-label required">Select Company</label>
-                                <select id="customer_id" required name="customer_id" class="form-control">
-                                    <option value="">Select Company</option>
-                                    @if(!empty($company))
-                                        @foreach($company as $id=>$name)
-                                            <option value="{{$id}}" {{ old('customer_id' , $id) == (!empty($data['customer_info']['in_cust_id']) ? $data['customer_info']['in_cust_id'] : '' ) ? "selected" : "" }} >{{$name}}</option>
-                                        @endforeach
-                                    @else
-                                        <p>Company are not available.</p>
-                                    @endif
-                                </select>
-                                <small class="help-block form-text text-danger" id="error_in_cust_id"></small>
+                                <label for="company" class="form-control-label required">Company Name </label>
+                                    <input type="text" id="company_name" required disabled name="company_name" placeholder="Company Name" value="{{ old('company_name', !empty($data['customer_info']['st_com_name']) ? $data['customer_info']['st_com_name'] : '') }}" class="form-control auto_pop_company">
+                                    <small class="help-block form-text text-danger" id="error_st_com_name"></small>
                             </div>
+
+                            
                             <div class="form-group col-3">
-                                <label for="company" class="form-control-label required">Enq Ref. No. </label>
-                                    <input type="text" id="enq_ref_no" required  name="enq_ref_no" placeholder="Enq Ref. No." value="{{ old('enq_ref_no', !empty($data['quotation_info']['st_enq_ref_number']) ? $data['quotation_info']['st_enq_ref_number'] : '') }}" class="form-control">
-                                    <small class="help-block form-text text-danger" id="error_st_enq_ref_number"></small>
+                                <label for="company" class="form-control-label required">Qoutation No.</label>
+                                    <input type="text" id="qoute_no" required disabled  name="qoute_no" value="{{ old('qoute_no', !empty($data['in_quot_num']) ? $data['in_quot_num'] : '') }}" class="form-control">
+                                    <small class="help-block form-text text-danger" id="qoute_no"></small>
                             </div>
 
                             <div class="form-group col-3">
-                                <label for="company" class="form-control-label required">Ref. Date </label>
-                                <input type="text" name="reference_date" required id="datepicker" class="form-control" value="{{ old('reference_date', date('d-m-Y', strtotime($data['quotation_info']['dt_ref']))) }}" placeholder="DD-MM-YYY" />
-                                <small class="help-block form-text text-danger" id="error_dt_ref"></small>
+                                <label for="lead_from" class=" form-control-label required">Lead From</label>
+                                <input type="text" name="lead_from" required disabled id="lead_from" placeholder="Lead From" value="{{ old('lead_from', !empty($data['quotation_info']['lead_from']) ? $data['quotation_info']['lead_from'] : '') }}" class="form-control">
+                                <small class="help-block form-text text-danger" id="error_lead_from"></small>
                             </div>
 
+                             
                             <div class="form-group col-3">
-                                <label for="company" class="form-control-label required">Add Customer</label>
-                                    <span id="datepicker" class="form-control btn btn-primary" data-toggle="modal" data-target="#addModal"><i class="zmdi zmdi-plus"></i> Add Customer</span>
+                                <label for="company" class="form-control-label required">Reference No.</label>
+                                <input type="text" name="preparing_by" required disabled id="preparing_by" placeholder="Quatation Prepared By" value="{{ old('preparing_by', !empty($data['quotation_info']['preparing_by']) ? $data['quotation_info']['preparing_by'] : '') }}" class="form-control">
+                                <b><small class="help-block form-text text-danger" id="error_preparing_by"></small></b>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="form-group col-3">
-                                <label for="company" class="form-control-label required">Company Name </label>
-                                    <input type="text" id="company_name" required name="company_name" placeholder="Company Name" value="{{ old('company_name', !empty($data['customer_info']['st_com_name']) ? $data['customer_info']['st_com_name'] : '') }}" class="form-control auto_pop_company">
-                                    <small class="help-block form-text text-danger" id="error_st_com_name"></small>
+                                <label for="company" class="form-control-label required">Contact Person</label>
+                                <input type="text" id="auto_pop_cust_name" required name="auto_pop_cust_name" placeholder="Contact Person" value="{{ old('auto_pop_cust_name', !empty($data['customer_info']['st_con_person1']) ? $data['customer_info']['st_con_person1'] : '') }}" class="form-control auto_pop_cust_name">
+                                <small class="help-block form-text text-danger" id="error_auto_pop_cust_name"></small>
+                            </div>
+                           
+
+                            <div class="form-group col-3">
+                                <label for="company" class="form-control-label required">Order No. </label>
+                                    <input type="text" id="order_no" required  name="order_no" placeholder="Order No." value="{{ old('order_no') }}" class="form-control">
+                                    <small class="help-block form-text text-danger" id="order_no"></small>
                             </div>
 
                             <div class="form-group col-3">
-                                <label for="company" class="form-control-label required">Contact Person</label>
-                                    <input type="text" id="auto_pop_cust_name" required name="auto_pop_cust_name" placeholder="Contact Person" value="{{ old('auto_pop_cust_name', !empty($data['customer_info']['st_con_person1']) ? $data['customer_info']['st_con_person1'] : '') }}" class="form-control auto_pop_cust_name">
-                                    <small class="help-block form-text text-danger" id="error_auto_pop_cust_name"></small>
+                                <label for="company" class="form-control-label required">Order Date. </label>
+                                <input type="text" name="order_date" required id="order_date" class="form-control" value="{{ old('order_date') }}" placeholder="DD-MM-YYY" />
+                                <small class="help-block form-text text-danger" id="order_date"></small>
                             </div>
-
-                            <div class="form-group col-3" id="owner">
-
+                            
+                            <div class="form-group col-3">
+                                <label for="company" class="form-control-label required">Order Prepared By </label>
+                                <input type="text" name="preparing_by" required id="preparing_by" placeholder="Order Prepared By" value="{{ old('preparing_by') }}" class="form-control">
+                                <b><small class="help-block form-text text-danger" id="error_preparing_by"></small></b>
                             </div>
+                           
                         </div>
                     </div>
                     <div class="modal-header">
@@ -379,7 +355,7 @@ datepicker,
                         </div> 
                     </div>
                    <div class="modal-header">
-                        <h5 class="modal-title" id="largeModalLabel">Product Details</h5>
+                        <h5 class="modal-title" id="largeModalLabel">Manage Products</h5>
                     </div>
                     <div class="modal-body">
                         <div class="row form-group">
@@ -398,26 +374,50 @@ datepicker,
                                 <label for="vat" class=" form-control-label required">Add Product</label>
                                 <span href="" placeholder="Qty" value="1" class="form-control add_prod btn btn-primary"> Add Product</span>
                             </div>
-                            <div class="form-group col-2">
-                                <label for="vat" class=" form-control-label required">Add New Product</label>
-                                <a href="{{route('add_product')}}" style="background:gree" required name="stn_hsn_no" target="_blank" placeholder="Qty" value="1" class="form-control btn btn-primary"><i class="zmdi zmdi-plus"></i> Add New Product</a>
-                            </div>
-                            <div class="form-group col-2">
-                                <label for="vat" class=" form-control-label required">Product Filter</label>
-                                <a href="{{route('show_product')}}" style="background:gree" placeholder="Qty" target="_blank" class="form-control btn btn-primary">Product Filter</a>
-                            </div>
+                           
                         </div>
                     </div>
                     <div class="modal-header">
-                        <h5 class="modal-title" id="largeModalLabel">Quotation Summary</h5>
+                        <h5 class="modal-title" id="largeModalLabel">Order Summary</h5>
                     </div>
                     <div class="modal-body">
                         <div class="row form-group">
+                            <div class="col-lg-12">
+                                <table id="tblsummary" class="table table-borderless table-striped table-earning">
+                                    <thead>
+                                        <tr>
+                                            <th>Part No.</th>
+                                            <th>Description</th>
+                                            <th>HSN Code</th>
+                                            <th >Qty</th>
+                                            <th >Instock</th>
+                                            <th >Price [<span id="currencysymbol">INR</span>]</th>
+                                            <th >Disc %</th>
+                                            <th>Net Price</th>
+                                            <th>IGST %</th>
+                                            <th>Total</th>
+                                            <th>Notes</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="odd gradeX classOdd tr-subtotal">
+                                            <td colspan="9" ><strong class="pull-right pull-right">Sub Total  &ensp;</strong> </td>
+                                            <td id="row_sub_total" style="text-align: left;"><strong class="final_subtotal">0.00</strong></td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row form-group">
+                            </div>
                             <div class="form-group col-3">
-                                <label for="vat" class=" form-control-label required">Currrency</label>
-                                <select id="currency" required name="currency" class="form-control">
-                                    @if(!empty($currency))
-                                        @foreach($currency as $id=>$cur)
+                                <label for="vat" class=" form-control-label required">Preferred Courier</label>
+                                <select id="courier" required name="courier" class="form-control">
+                                    @if(!empty($courier))
+                                            <option value="">Select Courier</option>
+                                        @foreach($courier as $id=>$cur)
                                             <option value="{{$id}}">{{$cur}}</option>
                                         @endforeach
                                     @else
@@ -454,57 +454,10 @@ datepicker,
                             <input type="hidden" name="bill_add_id" id="bill_add_id" value="<?php //echo //$this->uri->segment(3);?>"/>
                             <input type="hidden" name="hid_appliedCurrency" id="hid_appliedCurrency" value="rupees">
                             <input type="hidden" id="is_submit_quotation" value="0">
-                            <div class="col-lg-12">
-                              
-                                    <table id="tblsummary" class="table table-borderless table-striped table-earning">
-                                        <thead>
-                                            <tr>
-                                                <th>Part No.</th>
-                                                <th>Description</th>
-                                                <th>HSN Code</th>
-                                                <th >Qty</th>
-                                                <th >Instock</th>
-                                                <th >Price [<span id="currencysymbol">INR</span>]</th>
-                                                <th >Disc %</th>
-                                                <th>Net Price</th>
-                                                <th>IGST %</th>
-                                                <th>Total</th>
-                                                <th>Notes</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr class="odd gradeX classOdd tr-subtotal">
-                                                <td colspan="9" ><strong class="pull-right pull-right">Sub Total  &ensp;</strong> </td>
-                                                <td id="row_sub_total" style="text-align: left;"><strong class="final_subtotal">0.00</strong></td>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                               
-                            </div>
+                            
                         </div>
                     </div>
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="largeModalLabel">Terms & Conditions</h5>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <div class="form-group col-4">
-                                <small> Payment Terms : </small>
-                            </div>
-                            <div class="form-group col-4">
-                                <small> Tax :  </small>
-                            </div>
-                            <div class="form-group col-4">
-                                <small> Quotation is valid for 30 days </small>
-                            </div>
-                            <div class="form-group col-6">
-                                <small> Any Government / Local Body Levies, taxes, Cess, Duties, Octroi will be extra “At Actuals”  </small>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="modal-footer">
                         <a href="{{route('show_quatation')}}">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -711,17 +664,10 @@ $(document).ready(function(){
 	$("#currency").on('focus', function () {
         previous = this.value;
     }).change(function() {
-            var pastvalue = previous;
-            previous = this.value;
-            var currencytxt = $( "#currency option:selected" ).text();
-            var currval = $( "#currency option:selected" ).val();                    
-        if (!confirm('Are sure to change the currency ?')) {
-                $("#currencysymbol").text('');
-                $('#currency').val(pastvalue);
-            return false;
-        } else {
-            $("#currencysymbol").text(currencytxt);
-        }
+        var pastvalue = previous;
+        previous = this.value;
+        var currencytxt = $( "#currency option:selected" ).text();
+        var currval = $( "#currency option:selected" ).val();                   
     });
 
     $('html').click(function(e) {                    
@@ -731,7 +677,7 @@ $(document).ready(function(){
     }); 
 
     $.fn.datepicker.defaults.format = "dd-mm-yyyy";
-    $('#datepicker').datepicker({
+    $('#order_date').datepicker({
         leftArrow: '&laquo;',
         rightArrow: '&raquo;',
         daysOfWeekHighlighted: "7,0",

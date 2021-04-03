@@ -16,6 +16,10 @@ use App\Http\Controllers\Office\ProductParameter;
 use App\Http\Controllers\Office\CategoryController;
 use App\Http\Controllers\Office\ProductController;
 use App\Http\Controllers\Office\NotifyController;
+use App\Http\Controllers\Office\OrderController;
+
+
+
 
 # 1. User
 Route::get('show-user', [AuthController::class, 'showUser'])->name('show_user');
@@ -139,7 +143,7 @@ Route::post('edit-notify/{id}',  [NotifyController::class, 'updateNotify'])->nam
 Route::post('delete-notify/{id}',  [NotifyController::class, 'deleteNotify'])->name('delete_notify');
 
 # 14. Order
-Route::get('show-order', [QuatationController::class, 'showOrder'])->name('show_order');
+Route::get('update-order/{id}', [orderController::class, 'updateOrder'])->name('update_order');
 // Route::get('add-quatation', [QuatationController::class, 'addQuatation'])->name('add_quatation');
 // Route::post('store-quatation', [QuatationController::class, 'storeQuatation'])->name('store_quatation');
 // Route::get('get-quatation', [QuatationController::class, 'getQuatation'])->name('get_quatation');

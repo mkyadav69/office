@@ -1,6 +1,12 @@
 <div class="menu-sidebar__content js-scrollbar1">
     <nav class="navbar-sidebar">
         <ul class="list-unstyled navbar__list">
+        
+            <li class="{{ request()->is('/') ? 'active' : '' }} has-sub">
+                <a class="js-arrow" href="{{route('dashboard')}}">
+                    <i class="fas fa-tv "></i>Dashboard</a>
+            </li>
+            
             @permission('view_customer')
                 <li class="{{ request()->is('show-customer') ? 'active' : '' }} has-sub">
                     <a class="js-arrow" href="{{route('show_customer')}}">

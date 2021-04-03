@@ -38,7 +38,14 @@
         <table id="product" class="table table-borderless table-striped table-earning" style="width:100%">
         </table>
     </div>
-                       
+
+    <div id="dialog" title="Confirmation Required">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p>Are you sure, you want to generate order for this quotation ?</p>
+            </div>
+        </div>
+    </div>                       
 </div>
 <script>
     $(document).ready(function(){
@@ -178,11 +185,19 @@
                 $tr = $tr.prev('.parent');
             }
             var data = table.row($tr).data();
-            $('#confirmModal').attr('action', '/delete-quatation/'+data['in_quot_id']);
-            $('#confirmModal').modal({
-                backdrop: 'static'
+            var url = '{{ route("update_order", ":id") }}';
+            url = url.replace(':id', data['in_quot_id']);
+            $("#dialog").dialog({
+                buttons : {
+                    "Cancel" : function() {
+                        $(this).dialog("close");
+                        $(this).addClass("btn btn-primary");
+                    },
+                    "Confirm" : function() {
+                        window.location.replace(url); 
+                    },
+                },
             });
-            $('#confirmModal').modal('show');  
         });
     });
     
@@ -288,23 +303,6 @@
 
 @section('confirmModal')
 <!-- Delete-->
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="largeModalLabel">Please Confirm</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <form method="post" id="deleteForm">
-            @csrf
-            <div class="modal-body">
-                <p>Are you sure, you want to generate order for this quotation ?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary">Confirm</button>
-            </div>
-        </form>
-    </div>
+    
 <!-- end modal large -->
 @endsection
