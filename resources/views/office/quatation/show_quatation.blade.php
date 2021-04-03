@@ -80,15 +80,15 @@
                     { data: 'final_amount', className: "text td-limit", title : 'Total'},
                     { data: 'lead_from', className: "text td-limit", title : 'Lead From'},
                     { data: 'in_branch_id', className: "select td-limit", title : 'Branch'},
-                    { data: 'dt_date_created', className: "td-limit", title : 'Created At'},
-                    { data: 'lead_from', className: "td-limit", title : 'Status'},
+                    { data: 'status', className: "td-limit", title : 'Status'},
                     {
                         'data': null,
                         'render': function (data, type, row) {
-                            return '<a href="'+window.location.origin+'/pdf_'+new Date().getFullYear()+'/'+row.stn_pdf_name+'" target="_blank"><div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Download"><i class="zmdi zmdi-download text-success"></i></button></div></a>'
+                            return '<a href="'+window.location.origin+'/pdf_'+new Date().getFullYear()+'/'+row.stn_pdf_name+'" target="_blank"><div class="table-data-feature text-success">Download<button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Download"><i class="zmdi zmdi-download text-success"></i></button></div></a>'
                         }, title: 'Download'
                     },
                     { data: 'reason', className: "td-limit", title : 'Reason'},
+                    { data: 'dt_date_created', className: "td-limit", title : 'Created At'},
                     { data: 'actions', title : 'Actions'},
                     
                 ],  
@@ -170,6 +170,19 @@
 
         table.on('click', '.add', function(){
             // 
+        });
+
+        table.on('click', '.generate_order', function(){
+            $tr = $(this).closest('tr');
+            if($($tr).hasClass('child')){
+                $tr = $tr.prev('.parent');
+            }
+            var data = table.row($tr).data();
+            $('#confirmModal').attr('action', '/delete-quatation/'+data['in_quot_id']);
+            $('#confirmModal').modal({
+                backdrop: 'static'
+            });
+            $('#confirmModal').modal('show');  
         });
     });
     
@@ -263,6 +276,29 @@
             @csrf
             <div class="modal-body">
                 <p>Are you sure to delete the record ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Confirm</button>
+            </div>
+        </form>
+    </div>
+<!-- end modal large -->
+@endsection
+
+@section('confirmModal')
+<!-- Delete-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="largeModalLabel">Please Confirm</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form method="post" id="deleteForm">
+            @csrf
+            <div class="modal-body">
+                <p>Are you sure, you want to generate order for this quotation ?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

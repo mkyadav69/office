@@ -162,6 +162,12 @@ table.dataTable {
             </div>
         </div>
 
+        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                @yield('confirmModal')
+            </div>
+        </div>
+
         <div class="modal fade" id="minProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 @yield('minProduct')

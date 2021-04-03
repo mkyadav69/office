@@ -11,7 +11,7 @@
             @permission('view_owner')
                 <li class="{{ request()->is('show-owner') ? 'active' :( request()->is('show-owner') ? 'active' : '' )}} has-sub">
                     <a class="js-arrow" href="{{route('show_owner')}}">
-                        <i class="fas fa-users "></i>Owners</a>
+                        <i class="fas fa-user-md "></i>Owners</a>
                 </li>
             @endpermission
 
@@ -28,7 +28,22 @@
                     <i class="fas fa-book "></i>Quotations</a>
                 </li>
             @endpermission
-            
+
+           
+            <li class="has-sub">
+                <a class="js-arrow" href="#">
+                    <i class="fas fa-shopping-cart"></i>Orders</a>
+                <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                    <li>
+                        <a href="index.html">Orders</a>
+                    </li>
+                    <li>
+                        <a href="index2.html">Partial Orders</a>
+                    </li>
+                </ul>
+            </li>
+           
+
             @permission('view_reason')
                 <li class="{{ request()->is('show-reason') ? 'active' : '' }} has-sub">
                     <a class="js-arrow" href="{{route('show_reason')}}">
@@ -67,8 +82,8 @@
 
             @permission('view_category')
                 <li class="{{ request()->is('show-category') ? 'active' : '' }} has-sub">
-                <a href="{{route('show_category')}}">
-                    <i class="fas   fa-shopping-cart "></i>Categories</a>
+                    <a href="{{route('show_category')}}">
+                    <i class="fas  fa-list "></i>Categories</a>
                 </li>
             @endpermission
 

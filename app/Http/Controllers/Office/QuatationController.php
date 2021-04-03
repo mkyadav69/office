@@ -265,12 +265,18 @@ class QuatationController extends Controller
             ]);
         }
         $quatation_add->addColumn('reason', function ($quatation_add) use($action_btn){
-            return '<div class="table-data-feature"><div class="table-data-feature"><button row-id="" class="item view" data-toggle="tooltip" data-placement="top" title="View"><i class="fa fa-eye text-primary"></i></button></div><div class="table-data-feature"></div><div class="table-data-feature"><button row-id="" class="item add" data-toggle="tooltip" data-placement="top" title="Add More"><i class="fa fa-box text-warning"></i></button></div></div>';
+            return '<div class="table-data-feature"><div class="table-data-feature text-secondary view">View<button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View"><i class="fa fa-eye text-secondary"></i></button></div><div class="table-data-feature add text-warning"> &nbsp <b> <h4>/</h4> </b> &nbsp Add More</div> <div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Add More"><i class="fa fa-box text-warning"></i></button></div></div>';
         })->setRowAttr([
             'data-id' => function($quatation_add) {
                 return $quatation_add->system_id;
             }
-        ])->rawColumns(['actions' => 'actions', 'reason' => 'reason']);
+        ])->addColumn('status', function ($quatation_add) use($action_btn){
+            return '<div class="table-data-feature text-primary generate_order">Generate Order<button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Generate Order"><i class="fa fa-shopping-cart text-primary"></i></button></div>';
+        })->setRowAttr([
+            'data-id' => function($quatation_add) {
+                return $quatation_add->system_id;
+            }
+        ])->rawColumns(['actions' => 'actions', 'reason' => 'reason', 'status'=>'status']);
 
         $quatation_add->editColumn('dt_date_created', function ($quatation_add) {
             $date = $quatation_add['dt_date_created'];
