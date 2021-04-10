@@ -193,6 +193,13 @@ table.dataTable {
             </div>
         </div>
 
+        <div class="modal fade" id="order-preview-model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog quote-preview">
+                @yield('order-preview-model')
+            </div>
+        </div>
+     
+
         <div class="modal fade" id="quoteUpdate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 @yield('quoteUpdate')
@@ -204,7 +211,13 @@ table.dataTable {
                 @yield('viewModal')
             </div>
         </div>
-        
+
+        <div class="modal fade" id="orderUpdate" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                @yield('orderUpdate')
+            </div>
+        </div>
+    
 
         
     <!-- Vendor JS       -->

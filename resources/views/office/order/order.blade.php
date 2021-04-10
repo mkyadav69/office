@@ -111,7 +111,11 @@ datepicker,
                     <input type="hidden" name="in_quot_num" id="in_quot_num" value="{{$data['in_quot_num']}}"/>
                     <input type="hidden" name="in_cust_id" id="in_cust_id" value="{{$data['in_cust_id']}}"/>
                     <input type="hidden" name="_token"  id="token" value="{{ csrf_token() }}">
-                   
+                    <input type="hidden" id="currency" name="currency" value="{{$data['currency']}}">
+                    <input type="hidden" id="gst_no" name="gst_no" value="{{$data['customer_info']['cust_pin_no']}}">
+                    <input type="hidden" id="cust_id" name="cust_id" value="{{$data['in_cust_id']}}">
+
+                    
                     <div class="modal-header">
                         <h5 class="modal-title" id="largeModalLabel">Customer Details</h5>
                     </div>
@@ -139,14 +143,14 @@ datepicker,
                              
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Reference No.</label>
-                                <input type="text" name="preparing_by" required disabled id="preparing_by" placeholder="Quatation Prepared By" value="{{ old('preparing_by', !empty($data['quotation_info']['preparing_by']) ? $data['quotation_info']['preparing_by'] : '') }}" class="form-control">
-                                <b><small class="help-block form-text text-danger" id="error_preparing_by"></small></b>
+                                <input type="text" name="st_enq_ref_number" required disabled id="st_enq_ref_number" placeholder="Reference No." value="{{ old('st_enq_ref_number', !empty($data['st_enq_ref_number']) ? $data['st_enq_ref_number'] : '') }}" class="form-control">
+                                <b><small class="help-block form-text text-danger" id="st_enq_ref_number"></small></b>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Contact Person</label>
-                                <input type="text" id="auto_pop_cust_name" required name="auto_pop_cust_name" placeholder="Contact Person" value="{{ old('auto_pop_cust_name', !empty($data['customer_info']['st_con_person1']) ? $data['customer_info']['st_con_person1'] : '') }}" class="form-control auto_pop_cust_name">
+                                <input type="text" id="auto_pop_cust_name" required disabled name="auto_pop_cust_name" placeholder="Contact Person" value="{{ old('auto_pop_cust_name', !empty($data['customer_info']['st_con_person1']) ? $data['customer_info']['st_con_person1'] : '') }}" class="form-control auto_pop_cust_name">
                                 <small class="help-block form-text text-danger" id="error_auto_pop_cust_name"></small>
                             </div>
                            
@@ -557,7 +561,7 @@ $(document).ready(function(){
                 var shipping_pin_code       = $("#shipping_pincod").val();
                 var shipping_state          = $('#shipping_state').val();
                 var shipping_city           = $('#shipping_city').val();
-                var enq_ref_no              = $('#enq_ref_no').val();
+                var enq_ref_no              = $('#st_enq_ref_number').val();
                 var dt_ref                  = $('#datepicker').val();
                 var fl_fleight_pack_charg   = $('input[name="frieght_pack_charges"]').val();
                 var st_tax_text             = $("#prod_tax option:selected" ).text();
@@ -566,7 +570,7 @@ $(document).ready(function(){
                 var bill_add_id             = $('#bill_add_id').val();
                 var preparing_by            = $('#preparing_by').val();
                 var lead_from               = $('#lead_from').val();
-                var currency  				= $( "#currency option:selected" ).text();
+                var currency  				= $( "#currency").val();
                 var auto_pop_landline       = $('#auto_pop_landline').val();
                 var payment_turm            = $("#payment_turm option:selected" ).text();
                 var notify_group            = $('#notify_group').val();
@@ -582,7 +586,14 @@ $(document).ready(function(){
                 var ext_note                = $('#ext_note').val();
                 var in_quot_id              = $('#in_quot_id').val();
                 var flg_same_as_bill_add    = $('#flg_same_as_bill_add').val();
-               
+                var order_no                = $('#order_no').val();
+                var order_date              = $('#order_date').val();
+                var in_quot_num             = $('#in_quot_num').val();
+                var courier                 = $('#courier').val();
+                var gst_no                  = $('#gst_no').val();
+                var cust_id                  = $('#cust_id').val();
+                
+
                 quotation_info = {
                     'in_quot_id'    : in_quot_id,
                     'st_shiping_add' 	    : shipping_addr,
@@ -604,32 +615,37 @@ $(document).ready(function(){
                     'fl_nego_amt' 			: fl_nego_amt,
                     'product_search'        : product_search,
                     'prod_qty'              : prod_qty,
-                    'flg_same_as_bill_add'  : flg_same_as_bill_add
+                    'flg_same_as_bill_add'  : flg_same_as_bill_add,
+                    'in_quot_num'           : in_quot_num
                 };
                 var auto_pop_phone = $("#auto_pop_phone").val();
                 var auto_pop_company = $(".auto_pop_company").val();
                 var auto_pop_cust_name = $("#auto_pop_cust_name").val();
                 var auto_pop_state = $("#auto_pop_state").val();
                 customer_info = {
-                            'st_com_name' 		    : auto_pop_company,
-                            'auto_pop_cust_name'	: auto_pop_cust_name,
-                            'st_cust_mobile'	    : auto_pop_phone,
-                            'auto_pop_state'	    : auto_pop_state,
-                            'preparing_by' 		    : preparing_by,
-                            'notify_group'          : notify_group,
-                            'select_owner'          : select_owner,
-                            'auto_pop_addr'         : auto_pop_addr,
-                            'auto_pop_state'        : auto_pop_state,
-                            'auto_pop_city'         : auto_pop_city,
-                            'auto_pop_pincod'       : auto_pop_pincod,
-                            'auto_pop_phone'        : auto_pop_phone,
-                            'auto_pop_email'        : auto_pop_email,
-                            'auto_pop_landline'     : auto_pop_landline,
-                            'ext_note'              : ext_note,
-                            'lead_from'				: lead_from,
-
+                    'st_com_name' 		    : auto_pop_company,
+                    'auto_pop_cust_name'	: auto_pop_cust_name,
+                    'st_cust_mobile'	    : auto_pop_phone,
+                    'auto_pop_state'	    : auto_pop_state,
+                    'preparing_by' 		    : preparing_by,
+                    'notify_group'          : notify_group,
+                    'select_owner'          : select_owner,
+                    'auto_pop_addr'         : auto_pop_addr,
+                    'auto_pop_state'        : auto_pop_state,
+                    'auto_pop_city'         : auto_pop_city,
+                    'auto_pop_pincod'       : auto_pop_pincod,
+                    'auto_pop_phone'        : auto_pop_phone,
+                    'auto_pop_email'        : auto_pop_email,
+                    'auto_pop_landline'     : auto_pop_landline,
+                    'ext_note'              : ext_note,
+                    'lead_from'				: lead_from,
+                    'order_no'              : order_no,
+                    'order_date'            : order_date,
+                    'courier'               : courier,
+                    'gst_no'                : gst_no,
+                    'cust_id'               : cust_id
                 };
-                var filepath = "{{route('preview_quatation')}}"
+                var filepath = "{{route('preview_order')}}";
                 $.ajax({
                     url:filepath,
                     target: "_blank",
@@ -639,7 +655,7 @@ $(document).ready(function(){
                     data: {'sel_prods_details' : sel_prods_details, 'customer_info' : customer_info, 'quotation_info' : quotation_info, "_token": "{{ csrf_token() }}"},
                     success: function(response) {
                         $("#is_submit_quotation").val('1');
-						$("#privew-quote").html(response.quotation_data);
+						$("#privew-quote").html(response.order_data);
                     },error: function(error) {
                         if(error.status == 400){
                             var err = error.responseText;
@@ -653,7 +669,7 @@ $(document).ready(function(){
                         }
                     }
                 });
-                $('#quotation-preview-model').modal('show');
+                $('#order-preview-model').modal('show');
             }
         }else{
             $('#minProduct').modal('show');
@@ -912,7 +928,7 @@ $(document).ready(function(){
         }
     });
 
-    $(".add-quotation").click(function(){
+    $(".add-order").click(function(){
         sel_prods_details.length = 0;
         $(".prod_row_deatails").each(function(key,obj){
             var prod_comments='';
@@ -936,22 +952,20 @@ $(document).ready(function(){
             if($('#comments_'+prod_id).val() != 'undefined' &&  $('#comments_'+prod_id).val() != '' && $('#comments_'+prod_id).val() != null){
                 prod_comments          = $('#comments_'+prod_id).val().trim();
             }
-            var customer_id = $( "#customer_id option:selected" ).val();
             sel_prods_details.push({
-                        'in_cust_id':           customer_id,
-                        'in_product_id':        prod_id, 
-                        'st_part_no':           prod_part_No,
-                        'st_product_desc':      prod_desc,
-                        'stn_hsn_no':           prod_hsn,
-                        'st_maker':             prod_maker,
-                        'in_pro_qty':           prodqty,
-                        'fl_pro_unitprice':     prod_unit_price,
-                        'fl_discount':          prod_disc_price,
-                        'in_pro_deli_period':   30,
-                        'in_igst_rate':         prod_igst_rate,
-                        'fl_net_price':         prod_net_price,
-                        'fl_row_total':         prod_row_total,
-                        'prod_comments':        prod_comments
+                'in_product_id':        prod_id, 
+                'st_part_no':           prod_part_No,
+                'st_product_desc':      prod_desc,
+                'stn_hsn_no':           prod_hsn,
+                'st_maker':             prod_maker,
+                'in_pro_qty':           prodqty,
+                'fl_pro_unitprice':     prod_unit_price,
+                'fl_discount':          prod_disc_price,
+                'in_pro_deli_period':   30,
+                'in_igst_rate':         prod_igst_rate,
+                'fl_net_price':         prod_net_price,
+                'fl_row_total':         prod_row_total,
+                'prod_comments':        prod_comments,
             });
         });
         $("#hid_order_prod_details").val(JSON.stringify(sel_prods_details)); 
@@ -971,20 +985,17 @@ $(document).ready(function(){
                 var shipping_pin_code       = $("#shipping_pincod").val();
                 var shipping_state          = $('#shipping_state').val();
                 var shipping_city           = $('#shipping_city').val();
-                var enq_ref_no              = $('#enq_ref_no').val();
+                var st_enq_ref_number       = $('#st_enq_ref_number').val();
                 var dt_ref                  = $('#datepicker').val();
-                var fl_fleight_pack_charg   = $('input[name="frieght_pack_charges"]').val();
                 var st_tax_text             = $("#prod_tax option:selected" ).text();
                 var vat_tax                 = $('#vat_tax').text();
                 var fl_nego_amt             = $('.final_subtotal').text();
                 var bill_add_id             = $('#bill_add_id').val();
                 var preparing_by            = $('#preparing_by').val();
                 var lead_from               = $('#lead_from').val();
-                var currency  				= $( "#currency option:selected" ).text();
+                var currency  				= $( "#currency").text();
                 var auto_pop_landline       = $('#auto_pop_landline').val();
                 var payment_turm            = $("#payment_turm option:selected" ).text();
-                var notify_group            = $('#notify_group').val();
-                var select_owner            = $( "#select_owner option:selected" ).val();
                 var auto_pop_addr           = $("#auto_pop_addr").val();
                 var auto_pop_state          = $("#auto_pop_state").val();
                 var auto_pop_city           = $("#auto_pop_city").val();
@@ -998,8 +1009,11 @@ $(document).ready(function(){
                 var flg_same_as_bill_add    = $('#flg_same_as_bill_add').val();
                 var in_quot_num             = $('#in_quot_num').val();
                 var existing_cust_id        = $('#in_cust_id').val();
-                var customer_id             = $( "#customer_id option:selected" ).val();
-
+                var order_no                = $('#order_no').val();
+                var order_date              = $('#order_date').val();
+                var courier                 = $('#courier').val();
+                var gst_no                  = $('#gst_no').val();
+                var cust_id                 = $('#cust_id').val();
                 quotation_info = {
                     'in_quot_id'            : in_quot_id,
                     'in_quot_num'           : in_quot_num,
@@ -1012,9 +1026,8 @@ $(document).ready(function(){
                     'st_shipping_email'     : shipping_email,
                     'st_shipping_phone'     : shipping_telephone,
                     'shipping_lanline'      : shipping_lanline,
-                    'st_enq_ref_number'     : enq_ref_no,
+                    'st_enq_ref_number'     : st_enq_ref_number,
                     'dt_ref'                : dt_ref,
-                    'fl_fleight_pack_charg' : fl_fleight_pack_charg,
                     'st_tax_text' 			: st_tax_text,
                     'fl_sales_tax_amt' 		: vat_tax,
                     'bill_add_id' 			: bill_add_id,
@@ -1023,7 +1036,7 @@ $(document).ready(function(){
                     'st_landline'			: auto_pop_landline,
                     'fl_nego_amt' 			: fl_nego_amt,
                     'product_search'        : product_search,
-                    'prod_qty'               : prod_qty
+                    'prod_qty'               : prod_qty,
                 };
 
                 var auto_pop_phone = $("#auto_pop_phone").val();
@@ -1032,39 +1045,46 @@ $(document).ready(function(){
                 var auto_pop_state = $("#auto_pop_state").val();
                 var customer_id = $( "#customer_id option:selected" ).val();
                 customer_info = {
-                            'st_com_name' 		    : auto_pop_company,
-                            'auto_pop_cust_name'	: auto_pop_cust_name,
-                            'st_cust_mobile'	    : auto_pop_phone,
-                            'auto_pop_state'	    : auto_pop_state,
-                            'preparing_by' 		    : preparing_by,
-                            'notify_group'          : notify_group,
-                            'select_owner'          : select_owner,
-                            'auto_pop_addr'         : auto_pop_addr,
-                            'auto_pop_state'        : auto_pop_state,
-                            'auto_pop_city'         : auto_pop_city,
-                            'auto_pop_pincod'       : auto_pop_pincod,
-                            'auto_pop_phone'        : auto_pop_phone,
-                            'auto_pop_email'        : auto_pop_email,
-                            'auto_pop_landline'     : auto_pop_landline,
-                            'ext_note'              : ext_note,
-                            'lead_from'				: lead_from,
-                            'customer_id'           : customer_id
+                    'st_com_name' 		    : auto_pop_company,
+                    'auto_pop_cust_name'	: auto_pop_cust_name,
+                    'st_cust_mobile'	    : auto_pop_phone,
+                    'auto_pop_state'	    : auto_pop_state,
+                    'preparing_by' 		    : preparing_by,
+                    'auto_pop_addr'         : auto_pop_addr,
+                    'auto_pop_state'        : auto_pop_state,
+                    'auto_pop_city'         : auto_pop_city,
+                    'auto_pop_pincod'       : auto_pop_pincod,
+                    'auto_pop_phone'        : auto_pop_phone,
+                    'auto_pop_email'        : auto_pop_email,
+                    'auto_pop_landline'     : auto_pop_landline,
+                    'ext_note'              : ext_note,
+                    'lead_from'				: lead_from,
+                    'order_no'              : order_no,
+                    'order_date'            : order_date,
+                    'courier'               : courier,
+                    'gst_no'                : gst_no,
+                    'cust_id'               : cust_id
                 };
-                var filepath = "{{route('store_update_quatation')}}";
-                var home_page = "{{route('show_quatation')}}"; 
+                var filepath = "{{route('store_order')}}";
+                alert("lll");
+                console.log("customer_info");
+                console.log(customer_info);
+                console.log('quotation_info');
+                console.log(quotation_info);
+
                 $.ajax({
                     url:filepath,
                     type:'POST',
 					async:false,
 					dataType: 'json',
-                    data: {'sel_prods_details' : sel_prods_details, 'customer_info' : customer_info, 'quotation_info' : quotation_info, "_token": "{{ csrf_token() }}"},
+                    data: {'sel_prods_details' : sel_prods_details, 'customer_info' : customer_info, 'quotation_info' : quotation_info, "_token": '{{ csrf_token() }}'},
                     success: function(response) {
                         if(response.code == 200){
                             $('div .success-response').html(response.success);
-                            $('#quotation-preview-model').modal('hide');
+                            $('#order-preview-model').modal('hide');
                             $('#quoteUpdate').modal('show');
                         } 
-                        setTimeout(function(){ window.location = home_page; }, 2000);
+                        
                     },error: function(error) {
                        console.log(error);
                     }
@@ -1259,7 +1279,7 @@ $(document).ready(function(){
     }
 
     function quotation_edit(){
-        $('#quotation-preview-model').modal('hide');
+        $('#order-preview-model').modal('hide');
         $("#is_submit_quotation").val("0");
     }
 
@@ -1308,389 +1328,6 @@ $(function(){
     });
 });
 </script>
-@endsection
-@section('addModal')
-<!-- add records -->
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="largeModalLabel">Add Customer</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="card">
-                <form action="{{route('store_customer')}}" method="post">
-                    @csrf
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Customer Name</label>
-                        </div>
-                        <div class="col-12 col-md-8">
-                            <input type="text" name="customer_name" required placeholder="Name" value="{{old('customer_name')}}" class="form-control">
-                            @if ($errors->cutomer_add->has('customer_name'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('customer_name') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Last Name</label>
-                        </div>
-                        <div class="col-12 col-md-8">
-                            <input type="text" name="customer_last_name"  required  placeholder="Last name" value="{{old('customer_last_name')}}" class="form-control">
-                            @if ($errors->cutomer_add->has('customer_last_name'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('customer_last_name') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Company Name</label>
-                        </div>
-                        <div class="col-12 col-md-8">
-                            <input type="text" name="customer_company_name"  required  placeholder="company name" value="{{old('customer_company_name')}}" class="form-control">
-                            @if ($errors->cutomer_add->has('customer_company_name'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('customer_company_name') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Email</label>
-                        </div>
-                        <div class="col-12 col-md-8">
-                            <input type="text" name="customer_email"  required  placeholder="Email" value="{{old('customer_email')}}" class="form-control">
-                            @if ($errors->cutomer_add->has('customer_email'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('customer_email') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Select Region</label>
-                        </div>
-                        <div class="col-12 col-md-8">
-                            @if(!empty($regions_id))
-                                <select name="customer_region"  required class="form-control">
-                                    <option value="">Select Region</option>
-                                    @foreach($regions_id as $rk=>$rv)
-                                        @if (old('customer_region') == $rk)
-                                            <option value="{{$rk}}" selected>{{ $rv }}</option>
-                                        @else
-                                            <option value="{{ $rk }}">{{ $rv }}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                            @endif
-                            @if ($errors->cutomer_add->has('customer_region'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('customer_region') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Mobile No.</label>
-                        </div>
-                        <div class="col-12 col-md-8">
-                            <input type="text"  name="customer_mobile"  required  placeholder="Mobile" value="{{old('customer_mobile')}}" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                            @if ($errors->cutomer_add->has('customer_mobile'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('customer_mobile') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">GST No.</label>
-                        </div>
-                        <div class="col-12 col-md-8">
-                            <input type="text"  name="gst_no"  required  placeholder="GST No." maxlength="15" value="{{old('gst_no')}}" class="form-control" >
-                            @if ($errors->cutomer_add->has('gst_no'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('gst_no') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Tin No.</label>
-                        </div>
-                        <div class="col-12 col-md-8">
-                            <input type="text"  name="tin_no" placeholder="Tin No."  required  maxlength="15" value="{{old('tin_no')}}" class="form-control" >
-                            @if ($errors->cutomer_add->has('tin_no'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('tin_no') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">First Person Details</label>
-                        </div>
-                        <div class="col-8">
-                            <div class="form-group">
-                                <input type="text" name="persion1_name"  required  placeholder="Name" value="{{old('persion1_name')}}"  class="form-control">
-                                @if ($errors->cutomer_add->has('persion1_name'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->cutomer_add->first('persion1_name') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col col-md-3">
-                        </div>
-                        <div class="col-8">
-                            <div class="form-group">
-                                <input type="text" name="persion1_email"  required  placeholder="Email" value="{{old('persion1_email')}}"  class="form-control">
-                                @if ($errors->cutomer_add->has('persion1_email'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->cutomer_add->first('persion1_email') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col col-md-3">
-                        </div>
-                        <div class="col-8">
-                            <div class="form-group">
-                                <input type="text"  name="persion1_mobile"  required  placeholder="Mobile" value="{{old('persion1_mobile')}}"  class="form-control" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                                @if ($errors->cutomer_add->has('persion1_mobile'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->cutomer_add->first('persion1_mobile') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class="form-control-label required">Second Person Details</label>
-                        </div>
-                        <div class="col-8">
-                            <div class="form-group">
-                                <input type="text" name="persion2_name"  required  placeholder="name" value="{{old('persion2_name')}}" class="form-control">
-                                @if ($errors->cutomer_add->has('persion2_name'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->cutomer_add->first('persion2_name') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col col-md-3">
-                        </div>
-                        <div class="col-8">
-                            <div class="form-group">
-                                <input type="text" name= "persion2_email"  required  value="{{old('persion2_email')}}" placeholder="email" class="form-control">
-                                @if ($errors->cutomer_add->has('persion2_email'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->cutomer_add->first('persion2_email') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col col-md-3">
-                        </div>
-                        <div class="col-8">
-                            <div class="form-group">
-                                <input type="text"  name="persion2_mobile"  required  value="{{old('persion2_mobile')}}" placeholder="Mobile" class="form-control" maxlength="10" pattern="\d{10}" title="Please enter exactly 10 digits"  class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                                @if ($errors->cutomer_add->has('persion2_mobile'))
-                                    <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                        <span class="badge badge-pill badge-danger">Error</span>
-                                        {{ $errors->cutomer_add->first('persion2_mobile') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Address</label>
-                        </div>
-                        <div class="col-12 col-md-8">
-                            <textarea type="text" name="customer_address"  required  placeholder="Address . . . !" value="{{old('customer_address')}}" class="form-control"></textarea>
-                            @if ($errors->cutomer_add->has('customer_address'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('customer_address') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">City</label>
-                        </div>
-                        <div class="col-12 col-md-8">
-                            <input type="text" name= "customer_city" placeholder="city"  required  value="{{old('customer_city')}}" class="form-control">
-                            @if ($errors->cutomer_add->has('customer_city'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('customer_city') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">State</label>
-                        </div>
-                        <div class="col-12 col-md-8">
-                            <input type="text"  name="customer_state" placeholder="State"  required  value="{{old('customer_state')}}" class="form-control">
-                            @if ($errors->cutomer_add->has('customer_state'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('customer_state') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Pin Code</label>
-                        </div>
-                        <div class="col-12 col-md-8">
-                            <input type="text"  name="customer_pincode"  required  placeholder="Pin Code" value="{{old('customer_pincode')}}" class="form-control">
-                            @if ($errors->cutomer_add->has('customer_pincode'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('customer_pincode') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="file-input" class=" form-control-label required">Select Branch</label>
-                        </div>
-                        <div class="col-12 col-md-8">
-                            @if(!empty($branch_wise))
-                                <select name="customer_branch" class="form-control"  required >
-                                    <option value="">Select Branch</option>
-                                    @foreach($branch_wise as $kb=>$vb)
-                                        <option  value="{{$kb}}"  {{ ($kb == old('customer_branch',$vb))?'selected':'' }} >{{$vb}}</option>
-                                    @endforeach
-                                </select>
-                            @endif
-                            @if ($errors->cutomer_add->has('customer_branch'))
-                                <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
-                                    <span class="badge badge-pill badge-danger">Error</span>
-                                    {{ $errors->cutomer_add->first('customer_branch') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                    <input type="hidden"  name="type" value="quatation">
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Confirm</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- end add records -->
 @endsection
 
 @section('minProduct')
@@ -1773,7 +1410,7 @@ $(function(){
     </div>
 @endsection
 
-@section('quoteUpdate')
+@section('orderUpdate')
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="largeModalLabel">Updates</h5>
@@ -1782,7 +1419,7 @@ $(function(){
             </button>
         </div>
         <div class="modal-body">
-            <p class="text-success">Quotation updated Successfully. </p>
+            <p class="text-success">Order generated Successfully. </p>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -1792,8 +1429,8 @@ $(function(){
 
 
 
-<!-- Quatation Preview-->
-@section('quotation-preview-model')
+<!-- order Preview-->
+@section('order-preview-model')
 <div class="modal-content">
     <div class="modal-header">
         <h5 class="modal-title" id="largeModalLabel">Quotation Preview</h5>
@@ -1806,7 +1443,7 @@ $(function(){
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Edit</button>
-        <button type="button" class="btn btn-primary add-quotation">Update Quotation</button>&nbsp;&nbsp;
+        <button type="button" class="btn btn-primary add-order">Generate Order</button>&nbsp;&nbsp;
     </div>
 </div>
 @endsection

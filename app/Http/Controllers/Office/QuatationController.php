@@ -77,7 +77,7 @@ class QuatationController extends Controller
 	}
 
     public function get_PDF_BillAddress(){
-        $result = Quatation::select('stn_branch_add')->where(['is_deleted'=>0, 'int_branch_id'=> \Auth::user()->branch_id/* get from session*/ ])->first();
+        $result = Quatation::select('stn_branch_add')->where(['is_deleted'=>0, 'int_branch_id'=> \Auth::user()->branch_id])->first();
 		$query = $result;
         if(!empty($query)){
             return $query;
@@ -86,7 +86,8 @@ class QuatationController extends Controller
 	}
 
     public function get_PDF_format_by_id($id){
-        $result = \DB::table('tbl_quot_format')->where(['is_deleted'=>0, 'int_branch_id'=>$id /* get from session*/ ])->get();
+        $in_branch = \Auth::user()->branch_id;
+        $result = \DB::table('tbl_quot_format')->where(['is_deleted'=>0, 'int_branch_id'=>$in_branch])->get();
 		if(!empty($result)){
 			return $result;
 		}

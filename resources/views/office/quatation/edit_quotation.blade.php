@@ -537,11 +537,20 @@ $(document).ready(function(){
         $('#flg_same_as_bill_add').val(0);
     }
     var product_field = {!! json_encode($data['quotation_details']) !!};
-    console.log(product_field);
     if (product_field != null && product_field != ''){
         var html = '';
         $.each(product_field, function (key, products) {
-            html = html+'<tr id="prod_row_'+products.in_product_id+'" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="'+products.st_maker+'" name="prod_maker" class="prod_maker"><td class="prod_part_No">'+products.st_part_no+'</td><td  style="word-break:break-all;" class="prod_desc td-limit">'+products.st_product_desc+'</td><td  style="word-break:break-all;" class="prod_hsn">'+products.stn_hsn_no+'</td><td style="word-break:break-all;"  class="prod_qty"><input style="width: 35px; box-shadow: 2px 5px #888888;" placeholder="Qty" type="text" class="quentity_changed prodqty_'+products.in_product_id+'" id="'+products.in_product_id+'" value="'+products.in_pro_qty+'" onchange="quentity_changed(this);"></td><td style="word-break:break-all;" >'+products.in_pro_qty+'</td><td style="word-break:break-all;" ><div class="tooltips"><input style="width: 75px; box-shadow: 2px 5px #888888;" type="text" placeholder="Price" class="prod_unit_price prod_unit_price_'+products.in_product_id+'" value="'+products.fl_pro_unitprice+'" onchange="prod_price_changed(this,'+products.in_product_id+');"></div></td><td style="word-break:break-all;" ><input type="text" style="width: 55px; box-shadow: 2px 5px #888888;" placeholder="Disc %" class="prod_disc_price prod_disc_price_'+products.in_product_id+'" value="'+products.fl_discount+'" onchange="prod_discount_price_changed(this,'+products.in_product_id+');"></td><td style="width: 75px; text-align: left;word-break:break-all;"  class="prod_net_price prod_netprice_'+products.in_product_id+'">'+products.fl_net_price+'</td><td style="text-align: left;word-break:break-all;width: 60px;" class=" "><input style="width: 45px; box-shadow: 2px 5px #888888;" type="text" placeholder="IGST" class="prod_igst_rate prod_igst_rate_'+products.in_product_id+'" id="'+products.in_product_id+'" value="'+products.in_igst_rate+'" onchange="igsttaxrate_changed(this);"></td><td style="text-align: left;word-break:break-all;width: 75px;" class="prod_row_total prod_row_total_'+products.pro_id+'">'+products.fl_row_total+' &ensp;</td><td class="prod_deli_period prod_deli_period_'+products.in_product_id+'" style="word-break:break-all;"><textarea type="text" style="word-break:break-all; width:75px; box-shadow: 2px 5px #888888; background:#FFFFE3;" placeholder="Write . . . !" name="prod_deli_period" id="prod_deli_period_'+products.in_product_id+'" value=""></textarea></td><td><div class="row"><div class="form-group col-2"><a href="javascript:void(0);" title="Add Comments" class="addCF_'+products.in_product_id+' btn" style="float:left;padding:0" onClick=addCF('+products.in_product_id+'); data-id='+products.in_product_id+'><span class="pull-left"> </span>  <i class="fa fa-comment"></i></a></div><div class="form-group col-2"><a href="javascript:void(0);" title="Delete Product" onClick=delete_row('+products.in_product_id+'); class="btn" style="float:left;padding:0"><span class="pull-left"> </span>  <i class="fa fa-trash text-danger"></i></a></div></td></div>\n\</tr>';
+            if(products.stn_hsn_no == null){ 
+                var hsn = '';
+            }else{
+                var hsn = products.stn_hsn_no;
+            }
+            if(products.in_igst_rate == null){ 
+                var igst =  '';
+            }else{
+                var igst = products.in_igst_rate;
+            }
+            html = html+'<tr id="prod_row_'+products.in_product_id+'" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="'+products.st_maker+'" name="prod_maker" class="prod_maker"><td class="prod_part_No">'+products.st_part_no+'</td><td  style="word-break:break-all;" class="prod_desc td-limit">'+products.st_product_desc+'</td><td  style="word-break:break-all;" class="prod_hsn">'+hsn+'</td><td style="word-break:break-all;"  class="prod_qty"><input style="width: 35px; box-shadow: 2px 5px #888888;" placeholder="Qty" type="text" class="quentity_changed prodqty_'+products.in_product_id+'" id="'+products.in_product_id+'" value="'+products.in_pro_qty+'" onchange="quentity_changed(this);"></td><td style="word-break:break-all;" >'+products.in_pro_qty+'</td><td style="word-break:break-all;" ><div class="tooltips"><input style="width: 75px; box-shadow: 2px 5px #888888;" type="text" placeholder="Price" class="prod_unit_price prod_unit_price_'+products.in_product_id+'" value="'+products.fl_pro_unitprice+'" onchange="prod_price_changed(this,'+products.in_product_id+');"></div></td><td style="word-break:break-all;" ><input type="text" style="width: 55px; box-shadow: 2px 5px #888888;" placeholder="Disc %" class="prod_disc_price prod_disc_price_'+products.in_product_id+'" value="'+products.fl_discount+'" onchange="prod_discount_price_changed(this,'+products.in_product_id+');"></td><td style="width: 75px; text-align: left;word-break:break-all;"  class="prod_net_price prod_netprice_'+products.in_product_id+'">'+products.fl_net_price+'</td><td style="text-align: left;word-break:break-all;width: 60px;" class=" "><input style="width: 45px; box-shadow: 2px 5px #888888;" type="text" placeholder="IGST" class="prod_igst_rate prod_igst_rate_'+igst+'" id="'+products.in_product_id+'" value="'+igst+'" onchange="igsttaxrate_changed(this);"></td><td style="text-align: left;word-break:break-all;width: 75px;" class="prod_row_total prod_row_total_'+products.in_product_id+'">'+products.fl_row_total+' &ensp;</td><td class="prod_deli_period prod_deli_period_'+products.in_product_id+'" style="word-break:break-all;"><textarea type="text" style="word-break:break-all; width:75px; box-shadow: 2px 5px #888888; background:#FFFFE3;" placeholder="Write . . . !" name="prod_deli_period" id="prod_deli_period_'+products.in_product_id+'" value=""></textarea></td><td><div class="row"><div class="form-group col-2"><a href="javascript:void(0);" title="Add Comments" class="addCF_'+products.in_product_id+' btn" style="float:left;padding:0" onClick=addCF('+products.in_product_id+'); data-id='+products.in_product_id+'><span class="pull-left"> </span>  <i class="fa fa-comment"></i></a></div><div class="form-group col-2"><a href="javascript:void(0);" title="Delete Product" onClick=delete_row('+products.in_product_id+'); class="btn" style="float:left;padding:0"><span class="pull-left"> </span>  <i class="fa fa-trash text-danger"></i></a></div></td></div>\n\</tr>';
         });
         $( html ).insertBefore( "#tblsummary .tr-subtotal" );
     }
@@ -911,6 +920,7 @@ $(document).ready(function(){
                     prod_discount = products.in_pro_disc;
                     prod_net_price = parseFloat(prod_price - parseFloat((prod_price*prod_discount)/(100)));
                     hsn = products.stn_hsn_no;
+                    
                     if(prod_igst_rate != '' && prod_igst_rate != null){
                         prod_row_total = parseFloat(prod_net_price + parseFloat((prod_net_price*prod_igst_rate)/(100)));
                     }else{ 
@@ -930,6 +940,9 @@ $(document).ready(function(){
                     prod_part_No = products.st_part_No;
                     cat_name = products.st_cat_name;
                     hsn = products.stn_hsn_no;
+                    if(hsn == null){
+                        hsn = '';
+                    }
                     prod_price = products.fl_pro_price;
                     prod_desc = products.st_pro_desc;
                     prod_igst_rate = products.str_igst_rate;
@@ -1133,10 +1146,6 @@ $(document).ready(function(){
     });
 });
 
-    // $(window).load(function(){
-    //     $('#editquotation_msg_err').modal('show');
-    // });
-
     var admin_rights = '<?php //echo $this->session->userdata('admin_rights');?>';
     var sel_prods_details = [];
 
@@ -1190,6 +1199,7 @@ $(document).ready(function(){
         if((prodqty <= 0) || ($.isNumeric(prodqty) == false)){
             $('#validQuantity').modal('show');
         }else{
+            alert(prod_row_total);
             $(".prod_netprice_"+prod_id).html(prod_net_price);
             $(".prod_row_total_"+prod_id).html(prod_row_total.toFixed(2));
             get_prod_row_sub_total();
@@ -1284,12 +1294,15 @@ $(document).ready(function(){
         var prod_net_price = parseFloat(prod_price - parseFloat((prod_price*prod_discount)/(100)));
         var prod_row_without_igst_total = parseFloat(prod_net_price*prodqty);
         if(prod_igst_rate != '' || prod_igst_rate != null){
-            var prod_row_total = parseFloat(prod_row_without_igst_total + parseFloat((prod_row_without_igst_total*prod_igst_rate)/(100)));
+            alert("in if");
+            var prod_row_total = parseFloat(x + parseFloat((prod_row_without_igst_total*prod_igst_rate)/(100)));
         }else{
+            alert("in ifelse");
             var  prod_row_total = parseFloat(prod_net_price*prodqty);
         }
         qty_change(prod_id, prodqty, prod_row_without_igst_total, prod_row_total);
     }
+
 
     function prod_discount_price_changed(obj, prod_id){
         var prod_disc_price = obj.value;

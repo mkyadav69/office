@@ -144,12 +144,11 @@ Route::post('delete-notify/{id}',  [NotifyController::class, 'deleteNotify'])->n
 
 # 14. Order
 Route::get('update-order/{id}', [orderController::class, 'updateOrder'])->name('update_order');
-// Route::get('add-quatation', [QuatationController::class, 'addQuatation'])->name('add_quatation');
-// Route::post('store-quatation', [QuatationController::class, 'storeQuatation'])->name('store_quatation');
+Route::get('preview-order', [orderController::class, 'orderPreview'])->name('preview_order');
+Route::post('store-updated-order', [orderController::class, 'storeUpdatedOrder'])->name('store_order');
 // Route::get('get-quatation', [QuatationController::class, 'getQuatation'])->name('get_quatation');
 // Route::get('all-product', [QuatationController::class, 'allProduct'])->name('all_product');
 // Route::post('filter-product', [QuatationController::class, 'filterProduct'])->name('get_filter_product');
-// Route::get('preview-quatation', [QuatationController::class, 'previewQuatation'])->name('preview_quatation');
 // Route::get('edit-quatation/{id}',  [QuatationController::class, 'updateQuatation'])->name('edit_quatation');
 // Route::post('store-update-quatation', [QuatationController::class, 'storeUpdateQuatation'])->name('store_update_quatation');
 // Route::post('delete-quatation/{id}',  [QuatationController::class, 'deleteQuatation'])->name('delete_quatation');

@@ -1235,6 +1235,7 @@ $(document).ready(function(){
     }
 
     function prod_price_changed(obj, prod_id){
+        alert("ll");
         var prod_unit_price = obj.value;
         var prodqty = $(".prodqty_"+prod_id).val();				
         var prod_price = prod_unit_price;
