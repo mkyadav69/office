@@ -41,7 +41,7 @@
                     <i class="fas fa-shopping-cart"></i>Orders</a>
                 <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                     <li>
-                        <a href="index.html">Orders</a>
+                        <a href="{{route('show_order')}}">Orders</a>
                     </li>
                     <li>
                         <a href="index2.html">Partial Orders</a>

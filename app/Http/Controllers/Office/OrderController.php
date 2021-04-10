@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Office;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use App\Models\QoutationDetails;
+use Illuminate\Http\Request;
 use App\Models\Notify;
 use App\Models\Customer;
 use App\Models\Product;
@@ -15,11 +16,6 @@ use App\Models\QuatationAdd;
 use App\Models\PendingQuotation;
 use App\Models\OrderDetails;
 use App\Models\Order;
-use App\Models\QoutationDetails;
-
-
-
-
 use App\Models\Courier;
 use Carbon\Carbon;
 use DataTables;
@@ -66,7 +62,7 @@ class OrderController extends Controller
 	}
 
     public function get_order_info($order_id, $in_cust_id){
-        $get_order = Order::where(['in_order_id'=>$order_id, 'in_cust_id'=>$in_cust_id, 'flg_deleted'=>0])->get();
+        $get_order = Order::where(['in_order_id'=>$order_id, 'in_cust_id'=>$in_cust_id, 'flg_deleted'=>0])->first();
         if(!empty($get_order)){
            return $get_order = $get_order->toArray();
         }
@@ -146,6 +142,78 @@ class OrderController extends Controller
         }
 		return false;
 	}
+
+    public function showOrder(Request $request){
+        return view('office.order.show_order');
+    }
+    public function getOrder(Request $request){
+        $customer  = Customer::get()->toArray();
+        if(!empty($customer)){
+            $customer = collect($customer)->pluck('st_com_name', 'in_cust_id')->toArray();
+        }else{
+            $customer = '';
+        }
+        $quatation_add = Datatables::of(Order::query()->take(10000));
+        if(Auth::user()->hasPermission('update_quatationadd')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
+        }
+        
+        if(Auth::user()->hasPermission('delete_quatationadd')){
+            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>';
+        }
+
+        if(Auth::user()->hasPermission(['update_quatationadd', 'delete_quatationadd'])){
+            $quatation_add->addColumn('actions', function ($quatation_add) use($action_btn){
+                return '<div class="table-data-feature">'.implode('', $action_btn).'</div>';
+               
+            })->setRowAttr([
+                'data-id' => function($quatation_add) {
+                    return $quatation_add->system_id;
+                }
+            ]);
+        }else{
+            $quatation_add->addColumn('actions', function ($quatation_add){
+                return '<div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View Only"><i class="fa fa-eye text-primary"></i></button></div>';
+            })->setRowAttr([
+                'data-id' => function($quatation_add) {
+                    return $quatation_add->system_id;
+                }
+            ]);
+        }
+        $quatation_add->addColumn('reason', function ($quatation_add) use($action_btn){
+            return '<div class="table-data-feature"><div class="table-data-feature text-secondary view">View<button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View"><i class="fa fa-eye text-secondary"></i></button></div><div class="table-data-feature add text-warning"> &nbsp <b> <h4>/</h4> </b> &nbsp Add More</div> <div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Add More"><i class="fa fa-box text-warning"></i></button></div></div>';
+        })->setRowAttr([
+            'data-id' => function($quatation_add) {
+                return $quatation_add->system_id;
+            }
+        ])->addColumn('status', function ($quatation_add) use($action_btn){
+            if($quatation_add['is_order_pending'] == 0){
+                return '<div class="table-data-feature text-primary generate_order">Generate Order<button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Generate Order"><i class="fa fa-shopping-cart text-primary"></i></button></div>';
+            }
+            if($quatation_add['is_order_pending'] == 1){
+                return '<div class="table-data-feature" style="color: brown">Order Generated<button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Generate Order"><i class="fa fa-shopping-cart" style="color: brown"></i></button></div>';
+            }
+
+        })->setRowAttr([
+            'data-id' => function($quatation_add) {
+                return $quatation_add->system_id;
+            }
+        ])->rawColumns(['actions' => 'actions', 'reason' => 'reason', 'status'=>'status']);
+
+        $quatation_add->editColumn('dt_date_created', function ($quatation_add) {
+            $date = $quatation_add['dt_date_created'];
+            if(!empty($date)){
+                return date('d-m-Y', strtotime($date));
+            }
+        })->editColumn('in_cust_id', function ($quatation_add) use($customer){
+            if(isset($customer[$quatation_add['in_cust_id']])){
+                    return $customer[$quatation_add['in_cust_id']];
+                }
+        })->make(true);
+        
+
+        return $quatation_add->make(true);
+    }
     public function updateOrder(Request $request, $in_quot_id){
         if(empty($in_quot_id)){
             return back()->with([
@@ -325,6 +393,8 @@ class OrderController extends Controller
 
         # Genarate Order id
         $branch = Config::get('constant.branch_wise');
+        $state = Config::get('constant.indian_all_states');
+        
         $in_branch_id = \Auth::user()->branch_id;
         $branchname = substr(str_shuffle(str_repeat($branch[$in_branch_id], 5)), 0, 3); 
         $quotation_create_date = date('Y-m-d', strtotime($cust_info['order_date']));
@@ -339,7 +409,7 @@ class OrderController extends Controller
             'st_cust_order_num'         =>  !empty($cust_info['order_no'])  ? $cust_info['order_no'] : '' ,
             'dt_cust_order_date'        =>   date('Y-m-d', strtotime($cust_info['order_date'])),
             'st_ord_ship_adds'          =>  !empty($qt_info['st_shiping_add']) ? $qt_info['st_shiping_add'] : '',
-            'st_ord_ship_state'         =>  !empty($qt_info['st_shiping_state']) ? $branch[$qt_info['st_shiping_state']] : '',
+            'st_ord_ship_state'         =>  !empty($qt_info['st_shiping_state']) ? $state[$qt_info['st_shiping_state']] : '',
             'st_ord_ship_pincode'       =>  !empty($qt_info['st_shiping_pincode']) ? $qt_info['st_shiping_pincode'] : '',
             'st_ord_ship_city'          =>  !empty($qt_info['st_shiping_city']) ? $qt_info['st_shiping_city'] : '',
             'in_ord_ship_tel'           =>  !empty($qt_info['st_shipping_phone']) ? $qt_info['st_shipping_phone'] : '',
@@ -358,6 +428,7 @@ class OrderController extends Controller
             'st_currency_applied' 		=>  !empty($qt_info['currency']) ? $qt_info['currency'] : 0,
             'int_ord_status' 		    =>  0,
             'log_in_id'			        =>  $admin_user_id,
+            'stn_pdf_name'               => $pdfFilePath,
             'in_branch_id'              =>  $in_branch_id,
             'lead_from' 			    =>  !empty($cust_info['lead_from'])  ? $cust_info['lead_from'] : '' ,
             'dt_modify' 			    =>  Carbon::now(),
@@ -379,12 +450,13 @@ class OrderController extends Controller
         $this->delete_pending_quotation($qt_info['in_quot_num']);
         $this->update_pending_order($qt_info['in_quot_num']);
         $totalproarray = 0;
-
-        if($inserted_order_id != FALSE && $inserted_order_id > 0){
+        
+        if($inserted_order_id > 0){
             foreach($quotation_prod_details_arr as $quotation_details_k => $quotation_details_v){
+                $quotation_details_v['in_quot_id'] = $qt_info['in_quot_id'];
+                $quotation_details_v['in_cust_id'] = $cust_info['cust_id'];
                 # Quotation details
                 $qoute_details[$quotation_details_k] = $quotation_details_v;
-
                 # Order details
                 $insert_order_detail_arr = [
                     'in_order_id'		    => $inserted_order_id,
@@ -406,13 +478,6 @@ class OrderController extends Controller
                 ];
                 $inserted_orders_details = OrderDetails::insert($insert_order_detail_arr);
 			}
-            $qoute_details  = [
-                'dt_created' => Carbon::now(),
-                'dt_modify' => Carbon::now(),
-                'in_quot_id' => $qt_info['in_quot_id'],
-                'in_cust_id'=> $cust_info['cust_id'],
-            ];
-
             $status = QoutationDetails::where(['in_quot_id'=> $qt_info['in_quot_id'], 'in_cust_id'=> $cust_info['cust_id']])->delete();
             if($status == true){
                 $add_qoute_info = QoutationDetails::insert($qoute_details);
@@ -424,12 +489,16 @@ class OrderController extends Controller
             $data['customer_info'] 		= $this->get_customer_by_id($cust_info['cust_id']);
             $data['format']				= $this->get_PDF_format_by_id();
             $data['BillAddress']		= $this->get_PDF_BillAddress();
-            $date['orderCreateDate'] = date('d-m-Y', strtotime(str_replace('/', '-', Carbon::now())));
-
+            $date['orderCreateDate']    = date('d-m-Y', strtotime(str_replace('/', '-', Carbon::now())));
+            $data['preparing_by']       =  $cust_info['preparing_by'];
             $cur = Config::get('constant.currency');
             $currencyCodes = Config::get('constant.currencyCodes');
             $c_format = $qt_info['currency'];
-            $data['currency']  = $currencyCodes[$cur[$c_format]];
+            if(!empty($c_format)){
+                $data['currency']  = $currencyCodes[$cur[$c_format]];
+            }else{
+                $data['currency'] = '';
+            }
 
             # Generate PDF
             $year = date("Y");    
@@ -437,9 +506,8 @@ class OrderController extends Controller
             if(file_exists($path)==false){
                 mkdir($path,0777);
             }
-            dd("jj");
             $path = public_path($path.'/');
-            $pdf = PDF::loadView('email.view_order_pdf', $data)->setPaper('a4', 'landscape');
+            $pdf = PDF::loadView('email.view_order_pdf', compact('data'))->setPaper('a4', 'landscape');
             $pdf->save($path.$pdfFilePath);
             $pdf = public_path($path.$pdfFilePath);
             # Send Mail
@@ -459,7 +527,7 @@ class OrderController extends Controller
             // $this->email->message($emailbody);
             // $this->email->attach("quotationpdf/".$pdfFilePath);
             // $this->email->send();
-            return response()->json(['code'=>200, 'success' => 'Quotation added successfully.']);
+            return response()->json(['code'=>200, 'success' => 'Order generated successfully.']);
         }else{
             return response()->json(['code'=>400, 'error' => 'Something went wrong while adding quotation, please try again.']);
         }			

@@ -272,7 +272,13 @@ class QuatationController extends Controller
                 return $quatation_add->system_id;
             }
         ])->addColumn('status', function ($quatation_add) use($action_btn){
-            return '<div class="table-data-feature text-primary generate_order">Generate Order<button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Generate Order"><i class="fa fa-shopping-cart text-primary"></i></button></div>';
+            if($quatation_add['is_order_pending'] == 0){
+                return '<div class="table-data-feature text-primary generate_order">Generate Order<button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Generate Order"><i class="fa fa-shopping-cart text-primary"></i></button></div>';
+            }
+            if($quatation_add['is_order_pending'] == 1){
+                return '<div class="table-data-feature" style="color: brown">Order Generated<button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Generate Order"><i class="fa fa-shopping-cart" style="color: brown"></i></button></div>';
+            }
+
         })->setRowAttr([
             'data-id' => function($quatation_add) {
                 return $quatation_add->system_id;

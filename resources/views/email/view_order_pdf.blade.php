@@ -60,43 +60,6 @@ div[style*="margin: 16px 0"] {
     <center class="wrapper">
         <div class="webkit">
             <table class="table-outer" align="center" style="page-break-inside: avoid;background:#ffffff; max-width:1000px; width: 100%; margin:0 auto;">
-             
-                <!--<tr style="background:#f1f1f1;">
-                    <td>
-                        <table class="header" style="font-size:12px; max-width:1000px; padding:0; width: 100%; background: #f1f1f1;">
-                            <tr>
-                                 <td rowspan="2"  style="padding:15px">
-                                       <img src="http://office.chromatographyworld.com/assets/images/logo.png" width="200">
-                                </td>
-                                <td>
-                                        <p style="color:#333333;"><Strong>Regd Add:</Strong> 217, 2nd Floor, Champaklal Industrial Estate, Sion East, Mumbai - 400022. India     &nbsp;&nbsp;   &nbsp;&nbsp;
-                                    <strong style="color:#074e90;"> GSTN No. 27AAGFC1217K1ZM</strong>
-                                        </p>
-                                </td>
-                                
-                               
-                            </tr>
-                            <tr>
-                                <td colspan="2" align="center" ><strong style="color:#074e90;">
-                                     <strong>Call:</strong> 91-022-43159100/24082098/99 &nbsp;&nbsp;&nbsp;&nbsp;
-
-                                      <strong>Email:</strong> sales@chromatographyworld.com  &nbsp;&nbsp;
-                                www.chromatographyworld.com</strong> &nbsp;&nbsp;  &nbsp;&nbsp;
-                                    <p style="color:#333333;"><strong>Bank Name:</strong> Kotak Mahindra Bank  &nbsp;&nbsp; &nbsp;&nbsp;
-                        <strong>Branch:</strong>  Matunga  &nbsp;&nbsp; &nbsp;&nbsp;
-                              
-                                    <strong>IFSC Code:</strong>    KKBK0000644 &nbsp;&nbsp; &nbsp;&nbsp;
-                                <strong>Current A/C:</strong> 4611234274</p>
-                                 </td>
-                            </tr>
-                            <tr>
-                                <td align="center" colspan="2" style="background:#0b91d5; color:#ffffff; padding:8px; font-size:13px;">Authorised For: Perkin Elmer, Macherey Nagel , E.S. Industries, Mitsubishi Chemical Corporation, G. L. Science - Inertcap , Sepax, Vigour, SAS Corporation, Qualisil</td>
-                            </tr>
-                           
-                        </table>
-                    </td>
-                </tr>-->
-              
 
                <tr style="background:#f1f1f1;">
                     <td>
@@ -112,15 +75,15 @@ div[style*="margin: 16px 0"] {
                              <tr style="background: #f1f1f1;">
                                 <td style="border-left:1px solid #808080; padding:5px; border-right:1px solid #808080;  border-top:1px solid #808080; color:#052390;"><strong>Customer Order No. #</strong></td>
 
-                               <td style="padding:5px;border-right:1px solid #808080;  border-top:1px solid #808080;"><?php echo $order_info['st_cust_order_num']; ?></td>
+                               <td style="padding:5px;border-right:1px solid #808080;  border-top:1px solid #808080;"><?php echo $data['order_info']['st_cust_order_num']; ?></td>
 
                                 <td style="padding:5px;border-right:1px solid #808080;  border-top:1px solid #808080; color:#052390;"><strong>Order Date</strong></td>
                                
-                                <td style="padding:5px;border-right:1px solid #808080;  border-top:1px solid #808080;"><?php echo  date("d/m/Y", strtotime($order_info['dt_cust_order_date']));?></td>
+                                <td style="padding:5px;border-right:1px solid #808080;  border-top:1px solid #808080;"><?php echo  date("d/m/Y", strtotime($data['order_info']['dt_cust_order_date']));?></td>
 
                                  <td style="padding:5px;border-right:1px solid #808080;  border-top:1px solid #808080; color:#052390;"><strong>Quotation No.</strong></td>
                                
-                                 <td style="padding:5px;border-right:1px solid #808080; border-top:1px solid #808080;"><?php echo $order_info['in_qoute_uniqu_id'] ?></td> 
+                                 <td style="padding:5px;border-right:1px solid #808080; border-top:1px solid #808080;"><?php echo $data['order_info']['in_qoute_uniqu_id'] ?></td> 
 
                                 <td style="padding:5px;border-right:1px solid #808080;  border-top:1px solid #808080; color:#052390;"><strong>GSTN No.</strong></td>
                                
@@ -130,7 +93,7 @@ div[style*="margin: 16px 0"] {
                             <tr style="background: #f1f1f1;">
                                 <td style="border-left:1px solid #808080; padding:5px; border-right:1px solid #808080;  border-top:1px solid #808080; color:#052390;"><strong> Order Ref No. #</strong></td>
 
-                               <td style="padding:5px;border-right:1px solid #808080;  border-top:1px solid #808080;"><?php echo $order_info['in_uniq_order_id'] ?></td>
+                               <td style="padding:5px;border-right:1px solid #808080;  border-top:1px solid #808080;"><?php echo $data['order_info']['in_uniq_order_id'] ?></td>
 
                                 <td style="padding:5px;border-right:1px solid #808080;  border-top:1px solid #808080; color:#052390;"><strong> Date</strong></td>
                                
@@ -139,21 +102,21 @@ div[style*="margin: 16px 0"] {
 
                                  <td style="padding:5px;border-right:1px solid #808080;  border-top:1px solid #808080; color:#052390;"><strong>Credit Terms</strong></td>
                                
-                                <td style="padding:5px;border-right:1px solid #808080; border-top:1px solid #808080;"><?php echo $order_info['st_pay_turm']; ?></td> 
+                                <td style="padding:5px;border-right:1px solid #808080; border-top:1px solid #808080;"><?php echo $data['order_info']['st_pay_turm']; ?></td> 
 
                                 <td style="padding:5px;border-right:1px solid #808080;  border-top:1px solid #808080; color:#052390;"><strong>Prefered Courier</strong></td>
                                
-                                <td style="padding:5px;border-right:1px solid #808080; border-top:1px solid #808080;"><?php echo $order_info['st_courier_option']; ?></td> 
+                                <td style="padding:5px;border-right:1px solid #808080; border-top:1px solid #808080;"><?php echo $data['order_info']['st_courier_option']; ?></td> 
                             </tr>
 
 
                             <tr style=" background: #f1f1f1;">
                                 <td style="border-left:1px solid #808080; border-top:1px solid #808080; padding:5px; border-right:1px solid #808080; border-bottom:1px solid #808080; color:#052390;"><strong>Company Name</strong></td>
 
-                               <td colspan="3" style="border-top:1px solid #808080; padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080;"> <?php echo $customer_info['st_com_name']; ?></td>
+                               <td colspan="3" style="border-top:1px solid #808080; padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080;"> <?php echo $data['customer_info']['st_com_name']; ?></td>
                                 <td colspan="2" style="border-top:1px solid #808080; padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080; color:#052390;"><strong>Contact Person</strong></td>
                                
-                                <td colspan="3" style="border-top:1px solid #808080; padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080;"><?php echo $customer_info['st_con_person1']; ?></td>
+                                <td colspan="3" style="border-top:1px solid #808080; padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080;"><?php echo $data['customer_info']['st_con_person1']; ?></td>
 
                                  
                             </tr>
@@ -163,25 +126,25 @@ div[style*="margin: 16px 0"] {
                             <tr style="background: #f1f1f1;">
                                 <td style="border-left:1px solid #808080; padding:5px; border-right:1px solid #808080;  border-bottom:1px solid #808080; color:#052390;"><strong>Billiing Address</strong></td>
 
-                               <td colspan="5" style="padding:5px;  border-bottom:1px solid #808080;"> <?php if(isset($customer_info['st_com_address'])) {  echo $customer_info['st_com_address']; }?></td>
+                               <td colspan="5" style="padding:5px;  border-bottom:1px solid #808080;"> <?php if(isset($data['customer_info']['st_com_address'])) {  echo $data['customer_info']['st_com_address']; }?></td>
 
                                <td style="border-left:1px solid #808080; padding:5px;   border-bottom:1px solid #808080; color:#052390;"><strong>Pincode </strong></td>
 
-                               <td style="border-left:1px solid #808080; padding:5px; border-right:1px solid #808080;  border-bottom:1px solid #808080; color:#052390;"> <?php echo $customer_info['in_pincode']; ?></td>
+                               <td style="border-left:1px solid #808080; padding:5px; border-right:1px solid #808080;  border-bottom:1px solid #808080; color:#052390;"> <?php echo $data['customer_info']['in_pincode']; ?></td>
                               
                             </tr>
 
                              <tr style="background: #f1f1f1;">
                                 <td style="border-left:1px solid #808080; padding:5px; border-right:1px solid #808080;  border-bottom:1px solid #808080; color:#052390;"><strong>Phone</strong></td>
 
-                               <td colspan="2" style="padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080;">  <?php echo $customer_info['st_cust_mobile'];?></td>
+                               <td colspan="2" style="padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080;">  <?php echo $data['customer_info']['st_cust_mobile'];?></td>
                                 <td style="padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080; color:#052390;"><strong>Mobile</strong></td>
                                
-                                <td style="padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080;"><?php echo isset($customer_info['st_con_person1_mobile'])?$customer_info['st_con_person1_mobile']:''; ?></td>
+                                <td style="padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080;"><?php echo isset($data['customer_info']['st_con_person1_mobile'])? $data['customer_info']['st_con_person1_mobile']:''; ?></td>
 
                                  <td style="padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080; color:#052390;"><strong>Email Id</strong></td>
                                
-                                <td  colspan="2" style="padding:5px;border-right:1px solid #808080; border-bottom:1px solid #808080;"><?php echo $customer_info['st_con_person1_email']; ?></td> 
+                                <td  colspan="2" style="padding:5px;border-right:1px solid #808080; border-bottom:1px solid #808080;"><?php echo $data['customer_info']['st_con_person1_email']; ?></td> 
                             </tr>
 							<?php 
 							/* Billiing Address end here */
@@ -191,11 +154,11 @@ div[style*="margin: 16px 0"] {
                                 <td style="border-left:1px solid #808080; padding:5px; border-right:1px solid #808080;  border-bottom:1px solid #808080; color:#052390;"><strong>Shipping Address</strong></td>
 
                             
-                               <td colspan="5" style="padding:5px;  border-bottom:1px solid #808080;"><?php echo $order_info['st_ord_ship_adds']; ?></td>
+                               <td colspan="5" style="padding:5px;  border-bottom:1px solid #808080;"><?php echo $data['order_info']['st_ord_ship_adds']; ?></td>
 
                                <td style="border-left:1px solid #808080; padding:5px;   border-bottom:1px solid #808080; color:#052390;"><strong>Pincode </strong></td>
 
-                               <td style="border-left:1px solid #808080; padding:5px; border-right:1px solid #808080;  border-bottom:1px solid #808080; color:#052390;"><?php echo $order_info['st_ord_ship_pincode']; ?></td>
+                               <td style="border-left:1px solid #808080; padding:5px; border-right:1px solid #808080;  border-bottom:1px solid #808080; color:#052390;"><?php echo $data['order_info']['st_ord_ship_pincode']; ?></td>
                               
                             </tr>
 							<tr style="background: #f1f1f1;">
@@ -205,23 +168,23 @@ div[style*="margin: 16px 0"] {
 								</td>
                                 <td style="padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080; color:#052390;"><strong>State</strong></td>
                                
-                                <td style="padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080;"><?php echo isset($order_info['st_ord_ship_state'])?$order_info['st_ord_ship_state']:''; ?></td>
+                                <td style="padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080;"><?php echo isset($data['order_info']['st_ord_ship_state'])? $data['order_info']['st_ord_ship_state']:''; ?></td>
 
                                  <td style="padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080; color:#052390;"><strong>City</strong></td>
                                
-                                <td  colspan="2" style="padding:5px;border-right:1px solid #808080; border-bottom:1px solid #808080;"><?php echo isset($order_info['st_ord_ship_city'])?$order_info['st_ord_ship_city']:''; ?></td> 
+                                <td  colspan="2" style="padding:5px;border-right:1px solid #808080; border-bottom:1px solid #808080;"><?php echo isset($data['order_info']['st_ord_ship_city'])? $data['order_info']['st_ord_ship_city']:''; ?></td> 
                             </tr>
                              <tr style="background: #f1f1f1;">
                                 <td style="border-left:1px solid #808080; padding:5px; border-right:1px solid #808080;  border-bottom:1px solid #808080; color:#052390;"><strong>Lanline </strong></td>
 
-                               <td  colspan="2" style="padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080;">  <?php echo $order_info['st_landline'];?></td>
+                               <td  colspan="2" style="padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080;">  <?php echo $data['order_info']['st_landline'];?></td>
                                 <td style="padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080; color:#052390;"><strong>Mobile</strong></td>
                                
-                                <td style="padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080;"><?php echo $order_info['in_ord_ship_tel'];?></td>
+                                <td style="padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080;"><?php echo $data['order_info']['in_ord_ship_tel'];?></td>
 
                                  <td style="padding:5px;border-right:1px solid #808080;  border-bottom:1px solid #808080; color:#052390;"><strong>Email Id</strong></td>
                                
-                                <td  colspan="2" style="padding:5px;border-right:1px solid #808080; border-bottom:1px solid #808080;"><?php echo $order_info['st_ord_ship_email']; ?></td> 
+                                <td  colspan="2" style="padding:5px;border-right:1px solid #808080; border-bottom:1px solid #808080;"><?php echo $data['order_info']['st_ord_ship_email']; ?></td> 
                             </tr>
 							<?php 
 							/* Shiping Address end here */ ?>
@@ -244,7 +207,7 @@ div[style*="margin: 16px 0"] {
                                 <th style="color:#052390; border-top:1px solid #808080;border-right:1px solid #808080; border-bottom:1px solid #808080;padding: 10px 5px;">List</th>
                                 <th style="color:#052390; border-top:1px solid #808080;border-right:1px solid #808080; border-bottom:1px solid #808080;padding: 10px 5px;">Disc</th>
                                 <th style="color:#052390; border-top:1px solid #808080;border-right:1px solid #808080; border-bottom:1px solid #808080;padding: 10px 5px;">Net Amount</th>
-								<?php if(isset($customer_info['st_cust_state']) and $customer_info['st_cust_state'] != 'Maharashtra'){
+								<?php if(isset($data['customer_info']['st_cust_state']) and $data['customer_info']['st_cust_state'] != 'Maharashtra'){
 											
 								?>
                                 <th colspan="2"  style="color:#052390; border-top:1px solid #808080;border-right:1px solid #808080; border-bottom:1px solid #808080;padding: 10px 5px;">IGST </th>
@@ -272,7 +235,7 @@ div[style*="margin: 16px 0"] {
                                 <th style="border-right:1px solid #808080; border-bottom:1px solid #808080;padding: 10px 5px;">&nbsp;</th>
                                 <th style="border-right:1px solid #808080; border-bottom:1px solid #808080;padding: 10px 5px;">&nbsp;</th>
                                 <th style="border-right:1px solid #808080; border-bottom:1px solid #808080;padding: 10px 5px;">&nbsp;</th>
-								<?php if(isset($customer_info['st_cust_state']) and $customer_info['st_cust_state'] != 'Maharashtra'){
+								<?php if(isset($data['customer_info']['st_cust_state']) and $data['customer_info']['st_cust_state'] != 'Maharashtra'){
 											
 								?>
                                 <th  style="color:#052390; border-right:1px solid #808080; border-bottom:1px solid #808080;padding: 10px 5px;">Rate </th>
@@ -282,7 +245,7 @@ div[style*="margin: 16px 0"] {
 								else
 								{
 								?>
-                                <th  style="color:#052390; border-right:1px solid #808080; border-bottom:1px solid #808080;padding: 10px 5px;">Rate </th>
+                                <th style="color:#052390; border-right:1px solid #808080; border-bottom:1px solid #808080;padding: 10px 5px;">Rate </th>
                                 <th style="color:#052390; border-right:1px solid #808080; border-bottom:1px solid #808080;padding: 10px 5px;">Amount</th>
                                 <th  style="color:#052390; border-right:1px solid #808080; border-bottom:1px solid #808080;padding: 10px 5px;">Rate </th>
                                 <th style="color:#052390; border-right:1px solid #808080; border-bottom:1px solid #808080;padding: 10px 5px;">Amount</th>
@@ -303,7 +266,7 @@ div[style*="margin: 16px 0"] {
 							$prod_qty_total = 0;
 
 							// echo "<pre>";print_r($order_details);echo "</pre>";exit; 
-							foreach($order_details as $row_key => $row_val):
+							foreach($data['order_details'] as $row_key => $row_val):
 							$prod_unit_price_total += $row_val['flt_ord_pro_price'];
 							$prod_net_amt_total += $row_val['flt_ord_pro_net_price'];
 							$prod_qty_total += $row_val['in_ord_pro_qty'];
@@ -323,12 +286,12 @@ div[style*="margin: 16px 0"] {
 -->
                             <td style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><?php echo $row_val['in_ord_pro_qty']; ?></td>
 
-                            <td   style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><?php echo $this->common_function->currencyCodes[$order_info['st_currency_applied']]." ".number_format($row_val['flt_ord_pro_price']);?></td>
+                            <td   style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><?php echo $data['order_info']['st_currency_applied']." ".number_format($row_val['flt_ord_pro_price']);?></td>
 
                             <td align="right" style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $row_val['flt_ord_pro_disct']; ?>%</td>
 
-                            <td   style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><?php echo $this->common_function->currencyCodes[$order_info['st_currency_applied']]." ".number_format($row_val['flt_ord_pro_net_price']);?></td>
-							<?php if(isset($customer_info['st_cust_state']) and $customer_info['st_cust_state'] != 'Maharashtra'){
+                            <td   style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><?php echo $data['order_info']['st_currency_applied']." ".number_format($row_val['flt_ord_pro_net_price']);?></td>
+							<?php if(isset($data['customer_info']['st_cust_state']) and $data['customer_info']['st_cust_state'] != 'Maharashtra'){
 
 							$igst_amt_calculation = $row_val['flt_ord_pro_net_price']*$row_val['in_igst_rate']/100;
 							
@@ -349,14 +312,14 @@ div[style*="margin: 16px 0"] {
 							?>
 
                            <td  style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $igst_cgst_rate; ?>%</td>
-                           <td  style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><?php echo $this->common_function->currencyCodes[$order_info['st_currency_applied']]." ".number_format($gst_amt_calculation); ?></td>
+                           <td  style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><?php echo $data['order_info']['st_currency_applied']." ".number_format($gst_amt_calculation); ?></td>
 
                             <td  style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><?php echo $igst_cgst_rate; ?>%</td>
-                            <td  style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><?php echo $this->common_function->currencyCodes[$order_info['st_currency_applied']]." ".number_format($gst_amt_calculation); ?></td>
+                            <td  style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><?php echo $data['order_info']['st_currency_applied']." ".number_format($gst_amt_calculation); ?></td>
 							<?php
 							}
 							?>
-                            <td  style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><?php echo $this->common_function->currencyCodes[$order_info['st_currency_applied']]." ".number_format($row_val['flt_ord_pro_row_total']);?></td>
+                            <td  style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><?php echo $data['order_info']['st_currency_applied']." ".number_format($row_val['flt_ord_pro_row_total']);?></td>
                             <!--<td style="border-top:1px solid #808080;border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;">-</td>
 -->
                             </tr>
@@ -381,29 +344,29 @@ div[style*="margin: 16px 0"] {
 
                             <td  style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><strong><?php echo $prod_qty_total;?></strong></td>
 
-                            <td  style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><?php echo $this->common_function->currencyCodes[$order_info['st_currency_applied']]." ".number_format($prod_unit_price_total); ?></td>
+                            <td  style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><?php echo $data['order_info']['st_currency_applied']." ".number_format($prod_unit_price_total); ?></td>
 
                             <td align="right" style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"></td>
 
-                            <td  style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><strong><?php echo $this->common_function->currencyCodes[$order_info['st_currency_applied']]." ".number_format($prod_net_amt_total); ?></strong></td>
-							<?php if(isset($customer_info['st_cust_state']) and $customer_info['st_cust_state'] != 'Maharashtra'){
+                            <td  style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><strong><?php echo $data['order_info']['st_currency_applied']." ".number_format($prod_net_amt_total); ?></strong></td>
+							<?php if(isset($data['customer_info']['st_cust_state']) and $data['customer_info']['st_cust_state'] != 'Maharashtra'){
 											
 							?>
                              <td  style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><strong>IGST</strong></td>
-                             <td  style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><Strong><?php echo $this->common_function->currencyCodes[$order_info['st_currency_applied']]." ".number_format($out_of_mh_gst_total); ?></Strong></td>
+                             <td  style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><Strong><?php echo $data['order_info']['st_currency_applied']." ".number_format($out_of_mh_gst_total); ?></Strong></td>
 							<?php
 							 }
 							else
 							{
 						   ?>
                            <td  style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><strong>SGST</strong></td>
-                           <td  style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><strong><?php echo $this->common_function->currencyCodes[$order_info['st_currency_applied']]." ".number_format($mh_gst_total); ?></strong></td>
+                           <td  style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><strong><?php echo $data['order_info']['st_currency_applied']." ".number_format($mh_gst_total); ?></strong></td>
 						   
 
                             <td  style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><strong>CGST</strong></td>
-                            <td  style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><strong><?php echo $this->common_function->currencyCodes[$order_info['st_currency_applied']]." ".number_format($mh_gst_total); ?></strong></td>
+                            <td  style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;"><strong><?php echo $data['order_info']['st_currency_applied']." ".number_format($mh_gst_total); ?></strong></td>
 							<?php } ?>
-                            <td  style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><strong><?php echo $this->common_function->currencyCodes[$order_info['st_currency_applied']]." ".number_format($order_info['flt_ord_total']);?></strong></td>
+                            <td  style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;text-align: right;"><strong><?php echo $data['order_info']['st_currency_applied']." ".number_format($data['order_info']['flt_ord_total']);?></strong></td>
                             <!--<td style="border-right:1px solid #808080;border-bottom:1px solid #808080;padding: 10px 5px;">-</td>-->
 
                             </tr>

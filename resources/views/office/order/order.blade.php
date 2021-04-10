@@ -136,7 +136,7 @@ datepicker,
 
                             <div class="form-group col-3">
                                 <label for="lead_from" class=" form-control-label required">Lead From</label>
-                                <input type="text" name="lead_from" required disabled id="lead_from" placeholder="Lead From" value="{{ old('lead_from', !empty($data['quotation_info']['lead_from']) ? $data['quotation_info']['lead_from'] : '') }}" class="form-control">
+                                <input type="text" name="lead_from" required id="lead_from" placeholder="Lead From" value="{{ old('lead_from', !empty($data['quotation_info']['lead_from']) ? $data['quotation_info']['lead_from'] : '') }}" class="form-control">
                                 <small class="help-block form-text text-danger" id="error_lead_from"></small>
                             </div>
 
@@ -655,6 +655,7 @@ $(document).ready(function(){
                     data: {'sel_prods_details' : sel_prods_details, 'customer_info' : customer_info, 'quotation_info' : quotation_info, "_token": "{{ csrf_token() }}"},
                     success: function(response) {
                         $("#is_submit_quotation").val('1');
+                        
 						$("#privew-quote").html(response.order_data);
                     },error: function(error) {
                         if(error.status == 400){
@@ -993,7 +994,7 @@ $(document).ready(function(){
                 var bill_add_id             = $('#bill_add_id').val();
                 var preparing_by            = $('#preparing_by').val();
                 var lead_from               = $('#lead_from').val();
-                var currency  				= $( "#currency").text();
+                var currency  				= $( "#currency").val();
                 var auto_pop_landline       = $('#auto_pop_landline').val();
                 var payment_turm            = $("#payment_turm option:selected" ).text();
                 var auto_pop_addr           = $("#auto_pop_addr").val();
@@ -1066,11 +1067,8 @@ $(document).ready(function(){
                     'cust_id'               : cust_id
                 };
                 var filepath = "{{route('store_order')}}";
-                alert("lll");
-                console.log("customer_info");
-                console.log(customer_info);
-                console.log('quotation_info');
-                console.log(quotation_info);
+                var home_page = "{{route('show_order')}}"; 
+            
 
                 $.ajax({
                     url:filepath,
@@ -1082,7 +1080,8 @@ $(document).ready(function(){
                         if(response.code == 200){
                             $('div .success-response').html(response.success);
                             $('#order-preview-model').modal('hide');
-                            $('#quoteUpdate').modal('show');
+                            $('#orderUpdate').modal('show');
+                            setTimeout(function(){ window.location = home_page; }, 2000);
                         } 
                         
                     },error: function(error) {
