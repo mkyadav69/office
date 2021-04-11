@@ -311,7 +311,7 @@ datepicker,
                                                     <select id="shipping_state" required name="shipping_state" class="form-control">
                                                         <option value="">Select State</option>
                                                         @foreach($indian_all_states as $rk=>$rv)
-                                                            @if (old('shipping_state', $data['quotation_info']['st_shiping_state']) == $rv)
+                                                            @if (old('shipping_state', $data['quotation_info']['st_shiping_state']) == $rk)
                                                                 <option value="{{$rk}}" selected>{{ $rv }}</option>
                                                             @else
                                                                 <option value="{{ $rk }}">{{ $rv }}</option>

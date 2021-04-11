@@ -36,7 +36,7 @@
             @endpermission
 
            
-            <li class="has-sub">
+            <li class="{{ request()->is('show-order') ? 'active' : (request()->is('update-order/*') ? 'active' : (request()->is('edit-order/*') ? 'active' : '')) }} has-sub">
                 <a class="js-arrow" href="#">
                     <i class="fas fa-shopping-cart"></i>Orders</a>
                 <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">

@@ -250,6 +250,7 @@ class OrderController extends Controller
         $data['currency']           =  $existing_quote['st_currency_applied'];
         $data['st_enq_ref_number']   =  $existing_quote['st_enq_ref_number'];
         $indian_all_states          =   Config::get('constant.indian_all_states');
+        $flip_indian_all_states = array_flip($indian_all_states);
         $notify = Notify::get();
         $company = Customer::get();
         $product = Product::all('pro_id', 'st_part_No', 'str_igst_rate', 'fl_pro_price', 'in_pro_disc', 'st_pro_desc', 'stn_hsn_no', 'in_pro_qty', 'dt_price_update');
@@ -317,7 +318,7 @@ class OrderController extends Controller
         }else{
             $customer = ''; 
         }
-        return view('office.order.order', compact('courier', 'data', 'notify', 'company', 'currency', 'payment_term', 'owner', 'cust_details', 'new_product_list','indian_all_states'));
+        return view('office.order.order', compact('flip_indian_all_states', 'courier', 'data', 'notify', 'company', 'currency', 'payment_term', 'owner', 'cust_details', 'new_product_list','indian_all_states'));
     }
 
     public function orderPreview(Request $request){

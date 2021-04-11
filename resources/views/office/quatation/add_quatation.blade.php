@@ -788,13 +788,13 @@ $(document).ready(function(){
     $('div #owner').html(sel);
 
     $('#shippingchk').on('click', function(){
+        var all_state = {!! json_encode($flip_indian_all_states) !!}; 
         if($("#shippingchk").prop('checked') == true){
             var address = $('#auto_pop_addr').val();
             $('#shipping_addr').val(address);
             $('#flg_same_as_bill_add').val(1);
             var state = $('#auto_pop_state').val();
-            $('#shipping_state').val(state);
-
+            $('#shipping_state').val(all_state[state]);
             var pincode = $('#auto_pop_pincod').val();
             $('#shipping_pincod').val(pincode);
 
@@ -810,6 +810,7 @@ $(document).ready(function(){
             var land_line = $('#auto_pop_landline').val();
             $('#shipping_lanline').val(land_line);
         }else{
+            alert("in else");
             // Clear shiping address
             $('#shippingchk').prop('checked', false);
             $('#flg_same_as_bill_add').val(0);
@@ -1235,7 +1236,6 @@ $(document).ready(function(){
     }
 
     function prod_price_changed(obj, prod_id){
-        alert("ll");
         var prod_unit_price = obj.value;
         var prodqty = $(".prodqty_"+prod_id).val();				
         var prod_price = prod_unit_price;

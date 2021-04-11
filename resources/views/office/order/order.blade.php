@@ -291,7 +291,7 @@ datepicker,
                                                     <select id="shipping_state" required name="shipping_state" class="form-control">
                                                         <option value="">Select State</option>
                                                         @foreach($indian_all_states as $rk=>$rv)
-                                                            @if (old('shipping_state', $data['quotation_info']['st_shiping_state']) == $rv)
+                                                            @if (old('shipping_state', $data['quotation_info']['st_shiping_state']) == $rk)
                                                                 <option value="{{$rk}}" selected>{{ $rv }}</option>
                                                             @else
                                                                 <option value="{{ $rk }}">{{ $rv }}</option>
@@ -787,11 +787,12 @@ $(document).ready(function(){
 
     $('#shippingchk').on('click', function(){
         if($("#shippingchk").prop('checked') == true){
+            var all_state = {!! json_encode($flip_indian_all_states) !!}; 
             var address = $('#auto_pop_addr').val();
             $('#shipping_addr').val(address);
             $('#flg_same_as_bill_add').val(1);
             var state = $('#auto_pop_state').val();
-            $('#shipping_state').val(state);
+            $('#shipping_state').val(all_state[state]);
 
             var pincode = $('#auto_pop_pincod').val();
             $('#shipping_pincod').val(pincode);

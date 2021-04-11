@@ -156,6 +156,7 @@ class QuatationController extends Controller
 
     public function addQuatation(){
         $indian_all_states = Config::get('constant.indian_all_states');
+        $flip_indian_all_states = array_flip($indian_all_states);
         $notify = Notify::get();
         $company = Customer::get();
         $product = Product::all('pro_id', 'st_part_No', 'str_igst_rate', 'fl_pro_price', 'in_pro_disc', 'st_pro_desc', 'stn_hsn_no', 'in_pro_qty', 'dt_price_update');
@@ -220,7 +221,7 @@ class QuatationController extends Controller
         }else{
             $customer = ''; 
         }
-        return view('office.quatation.add_quatation', compact('notify', 'company', 'currency', 'payment_term', 'owner', 'cust_details', 'new_product_list','indian_all_states'));
+        return view('office.quatation.add_quatation', compact('notify', 'company', 'currency', 'payment_term', 'owner', 'cust_details', 'new_product_list','indian_all_states', 'flip_indian_all_states'));
     }
 
     public function getQuatation(){
@@ -238,7 +239,7 @@ class QuatationController extends Controller
         }else{
             $owner = '';
         }
-        $quatation_add = Datatables::of(QuatationAdd::query()->take(10));
+        $quatation_add = Datatables::of(QuatationAdd::query());
         if(Auth::user()->hasPermission('update_quatationadd')){
             $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
         }
@@ -413,9 +414,8 @@ class QuatationController extends Controller
         if(!empty($request->customer_info)){
             $cust_info = $request->customer_info;
         }
-        $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $in_branch_id = \Auth::user()->branch_id;
-        $branchname = substr(str_shuffle(str_repeat($pool, 5)), 0, 3); //session branch name;
+        $branchname = substr(str_shuffle(str_repeat($branch[$in_branch_id], 5)), 0, 3); 
         $quotation_create_date = date('Y-m-d', strtotime($qt_info['dt_ref']));
         $generate_quot_no =	$this->generate_quot_no($branchname, $in_branch_id, $quotation_create_date);
         $pdfFilePath = "quotation_".time()."_".date('dmy').".pdf";
@@ -517,7 +517,7 @@ class QuatationController extends Controller
                 mkdir($path,0777);
             }
             $path = public_path($path.'/');
-            $pdf = PDF::loadView('email.view_quotenew', $data)->setPaper('a4', 'landscape');
+            $pdf = PDF::loadView('email.view_quotation_pdf', $data)->setPaper('a4', 'landscape');
             $pdf->save($path.$pdfFilePath);
             $pdf = public_path($path.$pdfFilePath);
             # Send Mail
@@ -729,7 +729,7 @@ class QuatationController extends Controller
                 mkdir($path,0777);
             }
             $path = public_path($path.'/');
-            $pdf = PDF::loadView('email.view_quotenew', $data)->setPaper('a4', 'landscape');
+            $pdf = PDF::loadView('email.view_quotation_pdf', $data)->setPaper('a4', 'landscape');
             $pdf->save($path.$pdfFilePath);
             $pdf = public_path($path.$pdfFilePath);
             // $cc_cust_emails = explode("," , $data['customer_info']['st_cust_email_cc']);
