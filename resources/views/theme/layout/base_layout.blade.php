@@ -217,7 +217,12 @@ table.dataTable {
                 @yield('orderUpdate')
             </div>
         </div>
-    
+        <div class="modal fade" id="addMoreModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                @yield('addMoreModal')
+            </div>
+        </div>
+        
 
         
     <!-- Vendor JS       -->

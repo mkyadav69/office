@@ -53,6 +53,43 @@ div[style*="margin: 16px 0"] {
     <center class="wrapper">
         <div class="webkit">
             <table class="table-outer" align="center" style="background:#ffffff; max-width:1000px; width: 100%; margin:0 auto;">
+            <!--<tr style="background:#f1f1f1;">
+                    <td>
+                        <table class="header" style="font-size:12px; max-width:1000px; padding:0; width: 100%; background: #f1f1f1;">
+                            <tr>
+                                 <td rowspan="2"  style="padding:15px">
+                                       <img src="http://office.chromatographyworld.com/assets/images/logo.png" width="200">
+                                </td>
+                                <td>
+                                        <p style="color:#333333;"><Strong>Regd Add:</Strong> 217, 2nd Floor, Champaklal Industrial Estate, Sion East, Mumbai - 400022. India     &nbsp;&nbsp;   &nbsp;&nbsp;
+                                    <strong style="color:#074e90;"> GSTN No. 27AAGFC1217K1ZM</strong>
+                                        </p>
+                                </td>
+                                
+                               
+                            </tr>
+                            <tr>
+                                <td colspan="2" align="center" ><strong style="color:#074e90;">
+                                     <strong>Call:</strong> 91-022-43159100/24082098/99 &nbsp;&nbsp;&nbsp;&nbsp;
+
+                                      <strong>Email:</strong> sales@chromatographyworld.com  &nbsp;&nbsp;
+                                www.chromatographyworld.com</strong> &nbsp;&nbsp;  &nbsp;&nbsp;
+                                    <p style="color:#333333;"><strong>Bank Name:</strong> Kotak Mahindra Bank  &nbsp;&nbsp; &nbsp;&nbsp;
+                        <strong>Branch:</strong>  Matunga  &nbsp;&nbsp; &nbsp;&nbsp;
+                              
+                                    <strong>IFSC Code:</strong>    KKBK0000644 &nbsp;&nbsp; &nbsp;&nbsp;
+                                <strong>Current A/C:</strong> 4611234274</p>
+                                 </td>
+                            </tr>
+                            <tr>
+                                <td align="center" colspan="2" style="background:#0b91d5; color:#ffffff; padding:8px; font-size:13px;">Authorised For: Perkin Elmer, Macherey Nagel , E.S. Industries, Mitsubishi Chemical Corporation, G. L. Science - Inertcap , Sepax, Vigour, SAS Corporation, Qualisil</td>
+                            </tr>
+                           
+                        </table>
+                    </td>
+                </tr>-->
+              
+
                <tr style="background:#f1f1f1;">
                     <td>
                         <table class="body" style="font-size:12px;  max-width:1100px; padding:0px 20px; width: 100%; background: #ffffff;">

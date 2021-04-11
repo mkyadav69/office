@@ -10,11 +10,13 @@
 .col-md-3 {
     padding-left: 20px;
 }
-datepicker,
-.table-condensed {
-  width: 450px;
-  height:250px;
-}
+
+/* .td-limit {
+    max-width: 75px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+} */
 
 </style>
 <div class="row">
@@ -27,15 +29,9 @@ datepicker,
         </div>
     @endif
     <div class="col-md-12">
-        <h3 class="title-5 m-b-35">Manage Quotation</h3>
+        <h3 class="title-5 m-b-35">Manage Orders</h3>
         <div class="table-data__tool">
-            <div class="table-data__tool-right">
-            @permission('add_quatationadd')
-                <a href="{{route('add_quatation')}}">
-                    <button type="button" class="au-btn-filter mb-1" data-dismiss="modal"><i class="zmdi zmdi-plus"></i> Add Quotation</button>
-                </a>
-            @endpermission
-            </div>
+            
         </div>
     </div>
  
@@ -67,7 +63,7 @@ datepicker,
                 cache: true,
                 responsive: true,
                 ajax: {
-                    url:'{{ route("get_quatation") }}',
+                    url:'{{ route("get_order") }}',
                 },
                 columnDefs: [{ 
                     'orderable': true,
@@ -85,14 +81,11 @@ datepicker,
                     [10, 20, 30, "All"]
                 ],
                 "columns":[
-                    { data: 'in_cust_id', className: "text td-limit", title : 'Customer'},
-                    { data: 'owner_id', className: "select td-limit", title : 'Owner'},
-                    { data: 'st_currency_applied', className: "select td-limit", title : 'Currency'},
-                    { data: 'in_quot_num', className: "text td-limit", title : 'Quatation Id'},
-                    { data: 'final_amount', className: "text td-limit", title : 'Total'},
+                    { data: 'in_cust_id', className: "text td-limit", title : 'Company Name'},
+                    { data: 'in_uniq_order_id', className: "text td-limit", title : 'Order No'},
+                    { data: 'st_cust_order_num', className: "text td-limit", title : 'Customer Order No'},
+                    { data: 'flt_ord_net_total', className: "text td-limit", title : 'Total Amount'},
                     { data: 'lead_from', className: "text td-limit", title : 'Lead From'},
-                    { data: 'in_branch_id', className: "select td-limit", title : 'Branch'},
-                    { data: 'status', className: "td-limit", title : 'Status'},
                     {
                         'data': null,
                         'render': function (data, type, row) {
@@ -100,8 +93,9 @@ datepicker,
                         }, title: 'Download'
                     },
                     { data: 'reason', className: "td-limit", title : 'Reason'},
-                    { data: 'dt_date_created', className: "td-limit", title : 'Created At'},
-                    { data: 'actions', title : 'Actions'},
+                    { data: 'actions', className: "td-limit", title : 'Actions'},
+                    // { data: 'dt_date_created', className: "td-limit", title : 'Created At'},
+                    // { data: 'actions', title : 'Actions'},
                     
                 ],  
                 initComplete: function () {
@@ -187,9 +181,15 @@ datepicker,
             }
             var data = table.row($tr).data();
 
-            $('div #number').val(data['in_quot_num']);
-            $('div #follow_date').val(data['dt_date_created']);
-            $('div #value').val(data['final_amount']);
+            $('div #order_number').val(data['in_uniq_order_id']);
+            $('div #order_date').val(data['dt_cust_order_date']);
+            $('div #order_value').val(data['flt_ord_net_total']);
+            $('div #customer_name').val(data['in_cust_id']);
+
+            
+            // var customer = {!! json_encode($customer) !!};
+        
+            
             if(data['dt_date_modified'] != null){
                 var date = new Date(data['dt_date_modified']);
             }else{
@@ -224,15 +224,14 @@ datepicker,
         });
         $('#dialog').hide();
     });
-     
+   
 </script>
 @endsection
-
 @section('addMoreModal')
 <!-- Add  Data-->
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="largeModalLabel">Details</h5>
+            <h5 class="modal-title" id="largeModalLabel">Add Reason</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -241,53 +240,65 @@ datepicker,
             <div class="card">
                 <div class="row form-group">
                     <div class="col col-md-3">
-                        <label for="file-input" class=" form-control-label required">Quotation No.</label>
+                        <label for="file-input" class=" form-control-label required">Order No.</label>
                     </div>
                     <div class="col-12 col-md-9">
-                        <input type="text" placeholder="Quote No." disabled id="number" class="form-control">
+                        <input type="text" placeholder="Order No." disabled id="order_number" class="form-control">
                     </div>
                 </div>
 
                 <div class="row form-group">
                     <div class="col col-md-3">
-                        <label for="file-input" class=" form-control-label required">Follow Up Date</label>
+                        <label for="file-input" class=" form-control-label required">Order Date</label>
                     </div>
                     <div class="col-12 col-md-9">
-                        <input type="text" placeholder="Follow Date" name="datepicker" id="datepicker" class="form-control">
+                        <input type="text" placeholder="Order Date" disabled name="order_date" id="order_date" class="form-control">
                     </div>
                 </div>
 
                 <div class="row form-group">
                     <div class="col col-md-3">
-                        <label for="file-input" class=" form-control-label required">Quotation Value</label>
+                        <label for="file-input" class=" form-control-label required">Order Value</label>
                     </div>
                     <div class="col-12 col-md-9">
-                        <input type="text" placeholder="column name" disabled id="value" class="form-control">
+                        <input type="text" placeholder="Order Name" disabled name="order_value" id="order_value" class="form-control">
                     </div>
                 </div>
 
                 <div class="row form-group">
                     <div class="col col-md-3">
-                        <label for="file-input" class=" form-control-label required">Quotation Status</label>
+                        <label for="file-input" class=" form-control-label required">Company Name</label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <input type="text" placeholder="Customer name" name="customer_name" disabled id="customer_name" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="file-input" class=" form-control-label required">Reason Name</label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <input type="text" placeholder="Reason name" name="reason_name" id="reason_name" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label for="file-input" class="form-control-label required">Reason</label>
                     </div>
                      <div class="col-12 col-md-9">
-                        <select id="notify_group" required name="notify_group" class="form-control">
-                            <option value="">Select Status</option>
-                            <option value="2">Lost</option>
-                            <option value="3">Close</option>
+                        <select id="reason" required name="reason" class="form-control">
+                            <option value="">Selet Reason</option>
+                            <option value="Make &amp; Model not specified.">Make &amp; Model not specified.</option>
+                            <option value="In Process.">In Process.</option>
+                            <option value="Old payment pending">Old payment pending</option>
                         </select>
-                        <small class="help-block form-text text-danger" id="error_notify_group"></small>
+                        <small class="help-block form-text text-danger" id="error_reason"></small>
                     </div>
                 </div>
 
-                <div class="row form-group">
-                    <div class="col col-md-3">
-                        <label for="file-input" class=" form-control-label required">Add Reason</label>
-                    </div>
-                    <div class="col-12 col-md-9">
-                        <input type="text" placeholder="Reason" name="reason" id="reason" class="form-control">
-                    </div>
-                </div>
+               
                 
                 <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -315,7 +326,7 @@ $.fn.datepicker.defaults.format = "dd-mm-yyyy";
 <!-- Add  Data-->
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="largeModalLabel">Update Reason</h5>
+            <h5 class="modal-title" id="largeModalLabel">Details</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>

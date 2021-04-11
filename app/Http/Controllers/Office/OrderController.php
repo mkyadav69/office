@@ -144,7 +144,13 @@ class OrderController extends Controller
 	}
 
     public function showOrder(Request $request){
-        return view('office.order.show_order');
+        $customer  = Customer::get()->toArray();
+        if(!empty($customer)){
+            $customer = collect($customer)->pluck('st_com_name', 'in_cust_id')->toArray();
+        }else{
+            $customer = [];
+        }
+        return view('office.order.show_order', compact('customer'));
     }
     public function getOrder(Request $request){
         $customer  = Customer::get()->toArray();
@@ -153,7 +159,7 @@ class OrderController extends Controller
         }else{
             $customer = '';
         }
-        $quatation_add = Datatables::of(Order::query()->take(10000));
+        $orders = Datatables::of(Order::query()->take(1000));
         if(Auth::user()->hasPermission('update_quatationadd')){
             $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
         }
@@ -163,56 +169,62 @@ class OrderController extends Controller
         }
 
         if(Auth::user()->hasPermission(['update_quatationadd', 'delete_quatationadd'])){
-            $quatation_add->addColumn('actions', function ($quatation_add) use($action_btn){
+            $orders->addColumn('actions', function ($orders) use($action_btn){
                 return '<div class="table-data-feature">'.implode('', $action_btn).'</div>';
                
             })->setRowAttr([
-                'data-id' => function($quatation_add) {
-                    return $quatation_add->system_id;
+                'data-id' => function($orders) {
+                    return $orders->system_id;
                 }
             ]);
         }else{
-            $quatation_add->addColumn('actions', function ($quatation_add){
+            $orders->addColumn('actions', function ($orders){
                 return '<div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View Only"><i class="fa fa-eye text-primary"></i></button></div>';
             })->setRowAttr([
-                'data-id' => function($quatation_add) {
-                    return $quatation_add->system_id;
+                'data-id' => function($orders) {
+                    return $orders->system_id;
                 }
             ]);
         }
-        $quatation_add->addColumn('reason', function ($quatation_add) use($action_btn){
+        $orders->addColumn('reason', function ($orders) use($action_btn){
             return '<div class="table-data-feature"><div class="table-data-feature text-secondary view">View<button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View"><i class="fa fa-eye text-secondary"></i></button></div><div class="table-data-feature add text-warning"> &nbsp <b> <h4>/</h4> </b> &nbsp Add More</div> <div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Add More"><i class="fa fa-box text-warning"></i></button></div></div>';
         })->setRowAttr([
-            'data-id' => function($quatation_add) {
-                return $quatation_add->system_id;
+            'data-id' => function($orders) {
+                return $orders->system_id;
             }
-        ])->addColumn('status', function ($quatation_add) use($action_btn){
-            if($quatation_add['is_order_pending'] == 0){
+        ])->addColumn('status', function ($orders) use($action_btn){
+            if($orders['is_order_pending'] == 0){
                 return '<div class="table-data-feature text-primary generate_order">Generate Order<button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Generate Order"><i class="fa fa-shopping-cart text-primary"></i></button></div>';
             }
-            if($quatation_add['is_order_pending'] == 1){
+            if($orders['is_order_pending'] == 1){
                 return '<div class="table-data-feature" style="color: brown">Order Generated<button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Generate Order"><i class="fa fa-shopping-cart" style="color: brown"></i></button></div>';
             }
 
         })->setRowAttr([
-            'data-id' => function($quatation_add) {
-                return $quatation_add->system_id;
+            'data-id' => function($orders) {
+                return $orders->system_id;
+            }
+        ])->addColumn('reason', function ($orders) use($action_btn){
+            return '<div class="table-data-feature"><div class="table-data-feature add text-warning">Add Reason</div> <div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Add More"><i class="fa fa-box text-warning"></i></button></div></div>';
+        })->setRowAttr([
+            'data-id' => function($orders) {
+                return $orders->system_id;
             }
         ])->rawColumns(['actions' => 'actions', 'reason' => 'reason', 'status'=>'status']);
 
-        $quatation_add->editColumn('dt_date_created', function ($quatation_add) {
-            $date = $quatation_add['dt_date_created'];
+        $orders->editColumn('dt_date_created', function ($orders) {
+            $date = $orders['dt_date_created'];
             if(!empty($date)){
                 return date('d-m-Y', strtotime($date));
             }
-        })->editColumn('in_cust_id', function ($quatation_add) use($customer){
-            if(isset($customer[$quatation_add['in_cust_id']])){
-                    return $customer[$quatation_add['in_cust_id']];
+        })->editColumn('in_cust_id', function ($orders) use($customer){
+            if(isset($customer[$orders['in_cust_id']])){
+                    return $customer[$orders['in_cust_id']];
                 }
         })->make(true);
         
 
-        return $quatation_add->make(true);
+        return $orders->make(true);
     }
     public function updateOrder(Request $request, $in_quot_id){
         if(empty($in_quot_id)){
