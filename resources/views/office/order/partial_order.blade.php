@@ -112,19 +112,25 @@ datepicker,
                     </div>
                     <div class="modal-body">
                         <div class="row form-group">
-                            <div class="form-group col-4">
+                            <div class="form-group col-3">
+                                <label for="company" class="form-control-label required">Reference No. </label>
+                                    <input type="text" id="order_uniq_no" required disabled name="order_uniq_no" placeholder="Quotaion No." value="{{ old('order_uniq_no', !empty($data['order_uniq_no']) ? $data['order_uniq_no'] : '') }}" class="form-control">
+                                    <small class="help-block form-text text-danger" id="order_uniq_no"></small>
+                            </div>
+
+                            <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Quotation No. </label>
                                     <input type="text" id="company_name" required disabled name="quotation_no" placeholder="Quotaion No." value="{{ old('quotation_no', !empty($data['quotaion_no']) ? $data['quotaion_no'] : '') }}" class="form-control">
                                     <small class="help-block form-text text-danger" id="error_st_com_name"></small>
                             </div>
 
-                            <div class="form-group col-4">
+                            <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Company Name</label>
                                     <input type="text" id="company_name" disabled required  name="company_name" placeholder="Customer Name" value="{{ old('comapany_name', !empty($data['comapany_name']) ? $data['comapany_name'] : '') }}" class="form-control">
                                     <small class="help-block form-text text-danger" id="comapany_name"></small>
                             </div>
 
-                            <div class="form-group col-4">
+                            <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Contact Person</label>
                                 <input type="text" id="contact_person" required disabled name="contact_person" placeholder="Contact Person" value="{{ old('contact_person', !empty($data['contact_person']) ? $data['contact_person'] : '') }}" class="form-control contact_person">
                                 <small class="help-block form-text text-danger" id="contact_person"></small>
@@ -132,19 +138,19 @@ datepicker,
                         </div>
                         <div class="row form-group">
                            
-                            <div class="form-group col-4">
+                            <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Order Prepared By </label>
                                 <input type="text" name="preparing_by" required id="preparing_by" placeholder="Order Prepared By" value="{{ old('preparing_by') }}" class="form-control">
                                 <b><small class="help-block form-text text-danger" id="error_preparing_by"></small></b>
                             </div>
                            
-                            <div class="form-group col-4">
+                            <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Customer Order No.</label>
                                     <input type="text" id="customer_order_no" required  name="customer_order_no" value="{{ old('customer_order_no') }}" class="form-control">
                                     <small class="help-block form-text text-danger" id="qoute_no"></small>
                             </div>
 
-                            <div class="form-group col-4">
+                            <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Customer Order Date. </label>
                                 <input type="text" name="order_date" required id="order_date" class="form-control" value="{{ old('customer_order_date') }}" placeholder="DD-MM-YYY" />
                                 <small class="help-block form-text text-danger" id="customer_order_date"></small>
@@ -502,17 +508,34 @@ $(document).ready(function(){
     var order_details = {!! json_encode($order_details) !!};
         var html = '';
         $.each(order_details, function (key, products) {
-            if(products.stn_hsn_no == null){ 
-                var hsn = '';
-            }else{
-                var hsn = products.stn_hsn_no;
+            var in_ord_pro_sent_qty = 0;
+            var in_ord_pro_bal_qty = 0;
+            var flt_ord_pro_disct = 0;
+            var in_igst_rate = 0;
+            var flt_ord_pro_row_total = 0;
+
+            if(products.in_ord_pro_sent_qty !=null && products.in_ord_pro_sent_qty != ''){ 
+                in_ord_pro_sent_qty = products.in_ord_pro_sent_qty;
             }
-            if(products.in_igst_rate == null){ 
-                var igst =  '';
-            }else{
-                var igst = products.in_igst_rate;
+
+            if(products.in_ord_pro_bal_qty !=null && products.in_ord_pro_bal_qty != ''){ 
+                in_ord_pro_bal_qty = products.in_ord_pro_bal_qty;
             }
-            html = html+'<tr id="prod_row_'+products.in_product_id+'" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="'+products.st_maker+'" name="prod_maker" class="prod_maker"><td class="prod_part_No"><input type="checkbox" value="" id="select_prod" checked name="select_prod"></td><td class="prod_part_No">'+products.st_part_no+'</td><td  style="word-break:break-all;" class="prod_desc td-limit">'+products.st_product_desc+'</td><td  style="word-break:break-all;" class="prod_hsn">'+hsn+'</td><td style="word-break:break-all;"  class="prod_qty"><input style="width: 35px; box-shadow: 2px 5px #888888;" placeholder="Qty" type="text" class="quentity_changed prodqty_'+products.in_product_id+'" id="'+products.in_product_id+'" value="'+products.in_pro_qty+'" onchange="quentity_changed(this);"></td><td style="word-break:break-all;" >'+products.in_pro_qty+'</td><td style="word-break:break-all;" ><div class="tooltips"><input style="width: 75px; box-shadow: 2px 5px #888888;" type="text" placeholder="Price" class="prod_unit_price prod_unit_price_'+products.in_product_id+'" value="'+products.fl_pro_unitprice+'" onchange="prod_price_changed(this,'+products.in_product_id+');"></div></td><td style="word-break:break-all;" ><input type="text" style="width: 55px; box-shadow: 2px 5px #888888;" placeholder="Disc %" class="prod_disc_price prod_disc_price_'+products.in_product_id+'" value="'+products.fl_discount+'" onchange="prod_discount_price_changed(this,'+products.in_product_id+');"></td><td style="width: 75px; text-align: left;word-break:break-all;"  class="prod_net_price prod_netprice_'+products.in_product_id+'">'+products.fl_net_price+'</td><td style="text-align: left;word-break:break-all;width: 60px;" class=" "><input style="width: 45px; box-shadow: 2px 5px #888888;" type="text" placeholder="IGST" class="prod_igst_rate prod_igst_rate_'+igst+'" id="'+products.in_product_id+'" value="'+igst+'" onchange="igsttaxrate_changed(this);"></td><td style="text-align: left;word-break:break-all;width: 75px;" class="prod_row_total prod_row_total_'+products.in_product_id+'">'+products.fl_row_total+' &ensp;</td><td class="prod_deli_period prod_deli_period_'+products.in_product_id+'" style="word-break:break-all;"><textarea type="text" style="word-break:break-all; width:75px; box-shadow: 2px 5px #888888; background:#FFFFE3;" placeholder="Write . . . !" name="prod_deli_period" id="prod_deli_period_'+products.in_product_id+'" value=""></textarea></td><td><div class="row"><div class="form-group col-2"><a href="javascript:void(0);" title="Add Comments" class="addCF_'+products.in_product_id+' btn" style="float:left;padding:0" onClick=addCF('+products.in_product_id+'); data-id='+products.in_product_id+'><span class="pull-left"> </span>  <i class="fa fa-comment"></i></a></div><div class="form-group col-2"><a href="javascript:void(0);" title="Delete Product" onClick=delete_row('+products.in_product_id+'); class="btn" style="float:left;padding:0"><span class="pull-left"> </span>  <i class="fa fa-trash text-danger"></i></a></div></td></div>\n\</tr>';
+
+            if(products.flt_ord_pro_disct !=null && products.flt_ord_pro_disct != ''){ 
+                flt_ord_pro_disct = products.flt_ord_pro_disct;
+            }
+
+            if(products.in_igst_rate !=null && products.in_igst_rate != ''){ 
+                in_igst_rate = products.in_igst_rate;
+            }
+
+            if(products.flt_ord_pro_row_total !=null && products.flt_ord_pro_row_total != ''){ 
+                flt_ord_pro_row_total = products.flt_ord_pro_row_total;
+            }
+
+           
+            html = html+'<tr id="prod_row_'+products.in_product_id+'" class="prod_row_deatails"><input type="hidden" style="width: 100px;" value="'+products.st_maker+'" name="prod_maker" class="prod_maker"> <td class="prod_part_No"><input type="checkbox" value="" id="select_prod" checked name="select_prod"></td><td class="prod_part_No">'+products.st_part_no+'</td><td  style="word-break:break-all;" class="prod_desc td-limit">'+products.in_ord_pro_desc+'</td><td  style="word-break:break-all;" class="prod_hsn">'+products.in_ord_pro_qty+'</td><td style="word-break:break-all;"  class="prod_qty"><input style="width: 35px; box-shadow: 2px 5px #888888;" placeholder="Qty" type="text" class="quentity_changed prodqty_'+products.in_product_id+'" id="'+products.in_product_id+'" value="'+in_ord_pro_sent_qty+'" onchange="quentity_changed(this);"></td> <td style="word-break:break-all;" >'+products.in_ord_pro_bal_qty+'</td><td style="word-break:break-all;" ><div class="tooltips"><input style="width: 75px; box-shadow: 2px 5px #888888;" type="text" placeholder="Price" class="prod_unit_price prod_unit_price_'+products.in_product_id+'" value="'+products.flt_ord_pro_price+'" onchange="prod_price_changed(this,'+products.in_product_id+');"></div></td><td style="word-break:break-all;" ><input type="text" style="width: 55px; box-shadow: 2px 5px #888888;" placeholder="Disc %" class="prod_disc_price prod_disc_price_'+products.in_product_id+'" value="'+products.flt_ord_pro_disct+'" onchange="prod_discount_price_changed(this,'+products.in_product_id+');"></td><td style="width: 75px; text-align: left;word-break:break-all;"  class="prod_net_price prod_netprice_'+products.in_product_id+'">'+products.in_igst_rate+'</td><td style="text-align: left;word-break:break-all;width: 60px;" class=" "><input style="width: 45px; box-shadow: 2px 5px #888888;" type="text" placeholder="IGST" class="prod_igst_rate prod_igst_rate_'+in_igst_rate+'" id="'+products.in_product_id+'" value="'+products.flt_ord_pro_net_price+'" onchange="igsttaxrate_changed(this);"></td><td style="text-align: left;word-break:break-all;width: 75px;" class="prod_row_total prod_row_total_'+products.in_product_id+'">'+products.flt_ord_pro_row_total+' &ensp;</td><td class="prod_deli_period prod_deli_period_'+products.in_product_id+'" style="word-break:break-all;"><textarea type="text" style="word-break:break-all; width:75px; box-shadow: 2px 5px #888888; background:#FFFFE3;" placeholder="Write . . . !" name="prod_deli_period" id="prod_deli_period_'+products.in_product_id+'" value=""></textarea></td><td><div class="row"><div class="form-group col-2"><a href="javascript:void(0);" title="Add Comments" class="addCF_'+products.in_product_id+' btn" style="float:left;padding:0" onClick=addCF('+products.in_product_id+'); data-id='+products.in_product_id+'><span class="pull-left"> </span>  <i class="fa fa-comment"></i></a></div><div class="form-group col-2"><a href="javascript:void(0);" title="Delete Product" onClick=delete_row('+products.in_product_id+'); class="btn" style="float:left;padding:0"><span class="pull-left"> </span>  <i class="fa fa-trash text-danger"></i></a></div></td></div>\n\</tr>';
         });
         $( html ).insertBefore( "#tblsummary .tr-subtotal" );
 

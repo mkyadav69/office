@@ -34,6 +34,7 @@ class PartialOrderController extends Controller
         $existing_order = Order::where('in_order_id', $in_order_id)->first()->toArray();
         $data['quotaion_no'] = $existing_order['in_qoute_uniqu_id'];
         $data['contact_person'] = $existing_order['st_cont_person_for_payment'];
+        $data['order_uniq_no'] = $existing_order['in_uniq_order_id'];
         $customer = Customer::where('in_cust_id', $existing_order['in_cust_id'])->first();
         if(!empty($customer)){
             $customer = $customer->toArray();
