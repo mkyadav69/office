@@ -160,9 +160,6 @@ class OrderController extends Controller
             $customer = '';
         }
         $orders = Datatables::of(Order::query()->take(1000));
-        if(Auth::user()->hasPermission('update_quatationadd')){
-            $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
-        }
         
         if(Auth::user()->hasPermission('delete_quatationadd')){
             $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>';
@@ -192,12 +189,9 @@ class OrderController extends Controller
             'data-id' => function($orders) {
                 return $orders->system_id;
             }
-        ])->addColumn('status', function ($orders) use($action_btn){
+        ])->addColumn('operation', function ($orders) use($action_btn){
             if($orders['is_order_pending'] == 0){
-                return '<div class="table-data-feature text-primary generate_order">Generate Order<button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Generate Order"><i class="fa fa-shopping-cart text-primary"></i></button></div>';
-            }
-            if($orders['is_order_pending'] == 1){
-                return '<div class="table-data-feature" style="color: brown">Order Generated<button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Generate Order"><i class="fa fa-shopping-cart" style="color: brown"></i></button></div>';
+                return '<div class="table-data-feature"><div class="table-data-feature text-primary generate_order">Generate Partial Order<button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Generate Partial Order"><i class="fa fa-shopping-cart text-primary"></i></button></div><div class="table-data-feature close_order text-danger"> &nbsp <b> <h4>/</h4> </b> &nbsp Close Order</div> <div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Close Order"><i class="fa fa-close text-danger"></i></button></div></div>';
             }
 
         })->setRowAttr([
@@ -210,7 +204,7 @@ class OrderController extends Controller
             'data-id' => function($orders) {
                 return $orders->system_id;
             }
-        ])->rawColumns(['actions' => 'actions', 'reason' => 'reason', 'status'=>'status']);
+        ])->rawColumns(['actions' => 'actions', 'reason' => 'reason', 'status'=>'status', 'operation'=>'operation']);
 
         $orders->editColumn('dt_date_created', function ($orders) {
             $date = $orders['dt_date_created'];
@@ -544,5 +538,18 @@ class OrderController extends Controller
         }else{
             return response()->json(['code'=>400, 'error' => 'Something went wrong while adding quotation, please try again.']);
         }			
+    }
+
+    public function deleteOrder(Request $request, $id){
+        $records = Order::where('in_order_id', $id)->delete();
+        if($records == 1){
+            $remove_order_details  = OrderDetails::where('in_order_id', $id)->delete(); 
+            $message =  'Records deleted successfully !';
+        }else{
+            $message ='Fail to delete records !';
+        }
+        return back()->with([
+            'message' =>$message
+        ]);
     }
 }

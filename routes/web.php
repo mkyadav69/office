@@ -17,9 +17,7 @@ use App\Http\Controllers\Office\CategoryController;
 use App\Http\Controllers\Office\ProductController;
 use App\Http\Controllers\Office\NotifyController;
 use App\Http\Controllers\Office\OrderController;
-
-
-
+use App\Http\Controllers\Office\PartialOrderController;
 
 # 1. User
 Route::get('show-user', [AuthController::class, 'showUser'])->name('show_user');
@@ -143,13 +141,13 @@ Route::post('edit-notify/{id}',  [NotifyController::class, 'updateNotify'])->nam
 Route::post('delete-notify/{id}',  [NotifyController::class, 'deleteNotify'])->name('delete_notify');
 
 # 14. Order
-Route::get('update-order/{id}', [orderController::class, 'updateOrder'])->name('update_order');
-Route::get('preview-order', [orderController::class, 'orderPreview'])->name('preview_order');
-Route::get('get-order', [orderController::class, 'getOrder'])->name('get_order');
-Route::get('preview-order', [orderController::class, 'orderPreview'])->name('preview_order');
-Route::post('store-update-order', [orderController::class, 'storeUpdatedOrder'])->name('store_order');
-Route::get('show-order', [orderController::class, 'showOrder'])->name('show_order');
-// Route::get('all-product', [QuatationController::class, 'allProduct'])->name('all_product');
-// Route::get('edit-quatation/{id}',  [QuatationController::class, 'updateQuatation'])->name('edit_quatation');
-// Route::post('store-update-quatation', [QuatationController::class, 'storeUpdateQuatation'])->name('store_update_quatation');
-// Route::post('delete-quatation/{id}',  [QuatationController::class, 'deleteQuatation'])->name('delete_quatation');
+Route::get('update-order/{id}', [OrderController::class, 'updateOrder'])->name('update_order');
+Route::get('preview-order', [OrderController::class, 'orderPreview'])->name('preview_order');
+Route::get('get-order', [OrderController::class, 'getOrder'])->name('get_order');
+Route::get('preview-order', [OrderController::class, 'orderPreview'])->name('preview_order');
+Route::post('store-update-order', [OrderController::class, 'storeUpdatedOrder'])->name('store_order');
+Route::get('show-order', [OrderController::class, 'showOrder'])->name('show_order');
+Route::post('delete-order/{id}',  [OrderController::class, 'deleteOrder'])->name('delete_order');
+
+# 15 Partial Order
+Route::get('update-partial-order/{id}', [PartialOrderController::class, 'viewPartialOrder'])->name('update_partial_order');

@@ -1,5 +1,5 @@
 @extends('theme.layout.base_layout')
-@section('title', 'Quotations')
+@section('title', 'Orders')
 @section('content')
 <style>
 .required:after {
@@ -86,6 +86,7 @@
                     { data: 'st_cust_order_num', className: "text td-limit", title : 'Customer Order No'},
                     { data: 'flt_ord_net_total', className: "text td-limit", title : 'Total Amount'},
                     { data: 'lead_from', className: "text td-limit", title : 'Lead From'},
+                    { data: 'operation', className: "text td-limit", title : 'Operation'},
                     {
                         'data': null,
                         'render': function (data, type, row) {
@@ -94,8 +95,7 @@
                     },
                     { data: 'reason', className: "td-limit", title : 'Reason'},
                     { data: 'actions', className: "td-limit", title : 'Actions'},
-                    // { data: 'dt_date_created', className: "td-limit", title : 'Created At'},
-                    // { data: 'actions', title : 'Actions'},
+                  
                     
                 ],  
                 initComplete: function () {
@@ -128,16 +128,6 @@
                     });
                 }
         });
-        table.on('click', '.edit', function(){
-            $tr = $(this).closest('tr');
-            if($($tr).hasClass('child')){
-                $tr = $tr.prev('.parent');
-            }
-            var data = table.row($tr).data();
-            var url = '{{ route("edit_quatation", ":id") }}';
-            url = url.replace(':id', data['in_quot_id']);
-            window.location.replace(url);
-        });
 
         table.on('click', '.delete', function(){
             $tr = $(this).closest('tr');
@@ -145,7 +135,7 @@
                 $tr = $tr.prev('.parent');
             }
             var data = table.row($tr).data();
-            $('#deleteForm').attr('action', '/delete-quatation/'+data['in_quot_id']);
+            $('#deleteForm').attr('action', '/delete-order/'+data['in_order_id']);
             $('#deleteModal').modal({
                 backdrop: 'static'
             });
@@ -185,16 +175,13 @@
             $('div #order_date').val(data['dt_cust_order_date']);
             $('div #order_value').val(data['flt_ord_net_total']);
             $('div #customer_name').val(data['in_cust_id']);
-
-            
-            // var customer = {!! json_encode($customer) !!};
-        
-            
+ 
             if(data['dt_date_modified'] != null){
                 var date = new Date(data['dt_date_modified']);
             }else{
                 var date = '';
             }
+
             $('div #last_update').val(date);
             $('#addMoreModal').modal({
                 backdrop: 'static'
@@ -208,8 +195,8 @@
                 $tr = $tr.prev('.parent');
             }
             var data = table.row($tr).data();
-            var url = '{{ route("update_order", ":id") }}';
-            url = url.replace(':id', data['in_quot_id']);
+            var url = '{{ route("update_partial_order", ":id") }}';
+            url = url.replace(':id', data['in_order_id']);
             $("#dialog").dialog({
                 buttons : {
                     "Cancel" : function() {

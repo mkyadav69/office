@@ -19,7 +19,7 @@ body {
 table {
     border-spacing: 0;
     font-family: sans-serif;
-    color: #333333;
+    color: #333333;  
 }
 td {
     padding: 0;
