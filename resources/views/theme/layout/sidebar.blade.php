@@ -58,7 +58,7 @@
             @endpermission
 
             @permission('view_product')
-                <li class="{{ request()->is('show-product') ? 'active' :( request()->is('add-product') ? 'active' : '') }} has-sub">
+                <li class="{{ request()->is('show-product') ? 'active' :( request()->is('add-product') ? 'active' : ( request()->is('edit-product/*') ? 'active' : '')) }} has-sub">
                     <a class="js-arrow" href="{{ route('show_product')}}">
                     <i class="fas fa-briefcase"></i>Products</a>
                 </li>
@@ -83,6 +83,20 @@
                 <li class="{{ request()->is('show-brand') ? 'active' : '' }} has-sub">
                     <a class="js-arrow" href="{{route('show_brand')}}">
                     <i class="fas fa-square "></i>Brands</a>
+                </li>
+            @endpermission
+
+            @permission('view_source')
+                <li class="{{ request()->is('show-source') ? 'active' : '' }} has-sub">
+                    <a class="js-arrow" href="{{route('show_source')}}">
+                    <i class="fas fa-fax"></i>Sources</a>
+                </li>
+            @endpermission
+
+            @permission('view_supplier')
+            <li class="{{ request()->is('show-supplier') ? 'active' :( request()->is('add-supplier') ? 'active' : ( request()->is('edit-supplier') ? 'active' : '')) }} has-sub">
+                    <a class="js-arrow" href="{{route('show_supplier')}}">
+                    <i class="fas fa-truck"></i>Suppliers</a>
                 </li>
             @endpermission
 

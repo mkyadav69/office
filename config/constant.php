@@ -398,5 +398,8 @@ return [
         'settings'=>'settings',
         'quotationdetails'=>'quotationdetails',
         'role'=>'role',
+        'orderdetails'=>'orderdetails',
+        'qoutationdetails' =>'qoutationdetails',
+        'pendingquotation'=>'pendingquotation'
     ],
 ];

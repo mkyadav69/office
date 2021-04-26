@@ -261,12 +261,14 @@ class AuthController extends Controller
                     if(!isset($per_data[$v['identifier']])){
                         $per_data[$v['identifier']] = [];
                     }
-                    $k = explode('_',  $v['name'])[0];
-                    $per_data[$v['identifier']][$k] = $v['name'];
+
+                    if(!isset($exclude_model[$v['identifier']])){
+                        $k = explode('_',  $v['name'])[0];
+                        $per_data[$v['identifier']][$k] = $v['name'];
+                    }
                 }
             }
         }
-
         $permissions = Permission::All();
         $permissions  = $permissions->toArray();
         $per_arr_list = [];
@@ -328,6 +330,12 @@ class AuthController extends Controller
         if(!empty($permissions)){
             foreach ($permissions as $key => $value) {
                 if(!isset($per_arr_list[$value['identifier']])){
+                    if($value['identifier'] == 'quatation'){
+                        $value['identifier'] = 'quatation format';
+                    }
+                    if($value['identifier']  == 'quatationadd'){
+                        $value['identifier'] = 'quatation';
+                    }   
                     $per_arr_list[$value['identifier']] = [];
                 }  
                 $per_arr_list[$value['identifier']][] = $value['name']; 

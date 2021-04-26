@@ -10,6 +10,8 @@ use App\Http\Controllers\Office\CourierController;
 use App\Http\Controllers\Office\QuatationFormatController;
 use App\Http\Controllers\Office\QuatationController;
 use App\Http\Controllers\Office\BrandController;
+use App\Http\Controllers\Office\SourceController;
+use App\Http\Controllers\Office\SupplierController;
 use App\Http\Controllers\Office\ReasonController;
 use App\Http\Controllers\Office\UspController;
 use App\Http\Controllers\Office\ProductParameter;
@@ -151,3 +153,20 @@ Route::post('delete-order/{id}',  [OrderController::class, 'deleteOrder'])->name
 
 # 15 Partial Order
 Route::get('update-partial-order/{id}', [PartialOrderController::class, 'viewPartialOrder'])->name('update_partial_order');
+
+# 16. Source
+Route::get('show-source', [SourceController::class, 'showSource'])->name('show_source');
+Route::post('store-source', [SourceController::class, 'storeSource'])->name('store_source');
+Route::get('get-source', [SourceController::class, 'getSource'])->name('get_source');
+Route::post('edit-source/{id}',  [SourceController::class, 'updateSource'])->name('edit_source');
+Route::post('delete-source/{id}',  [SourceController::class, 'deleteSource'])->name('delete_source');
+
+# 16. Supplier
+Route::get('show-supplier', [SupplierController::class, 'showSupplier'])->name('show_supplier');
+Route::get('add-supplier', [SupplierController::class, 'addSupplier'])->name('add_supplier');
+Route::get('get-part-info', [SupplierController::class, 'getPartInfo'])->name('get_part_info');
+Route::post('store-supplier', [SupplierController::class, 'storeSupplier'])->name('store_supplier');
+Route::get('get-supplier', [SupplierController::class, 'getSupplier'])->name('get_supplier');
+Route::get('edit-supplier/{id}',  [SupplierController::class, 'updateSupplier'])->name('edit_supplier');
+Route::post('update-supplier/{id}',  [SupplierController::class, 'storeUpdateSupplier'])->name('store_update_supplier');
+Route::post('delete-supplier/{id}',  [SupplierController::class, 'deleteSupplier'])->name('delete_supplier');

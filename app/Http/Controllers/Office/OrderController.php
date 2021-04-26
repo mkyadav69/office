@@ -161,11 +161,11 @@ class OrderController extends Controller
         }
         $orders = Datatables::of(Order::query()->take(1000));
         
-        if(Auth::user()->hasPermission('delete_quatationadd')){
+        if(Auth::user()->hasPermission('delete_order')){
             $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item delete" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div>';
         }
 
-        if(Auth::user()->hasPermission(['update_quatationadd', 'delete_quatationadd'])){
+        if(Auth::user()->hasPermission(['update_order', 'delete_order'])){
             $orders->addColumn('actions', function ($orders) use($action_btn){
                 return '<div class="table-data-feature">'.implode('', $action_btn).'</div>';
                
@@ -183,13 +183,13 @@ class OrderController extends Controller
                 }
             ]);
         }
-        $orders->addColumn('reason', function ($orders) use($action_btn){
+        $orders->addColumn('reason', function ($orders){
             return '<div class="table-data-feature"><div class="table-data-feature text-secondary view">View<button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="View"><i class="fa fa-eye text-secondary"></i></button></div><div class="table-data-feature add text-warning"> &nbsp <b> <h4>/</h4> </b> &nbsp Add More</div> <div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Add More"><i class="fa fa-box text-warning"></i></button></div></div>';
         })->setRowAttr([
             'data-id' => function($orders) {
                 return $orders->system_id;
             }
-        ])->addColumn('operation', function ($orders) use($action_btn){
+        ])->addColumn('operation', function ($orders){
             if($orders['is_order_pending'] == 0){
                 return '<div class="table-data-feature"><div class="table-data-feature text-primary generate_order">Generate Partial Order<button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Generate Partial Order"><i class="fa fa-shopping-cart text-primary"></i></button></div><div class="table-data-feature close_order text-danger"> &nbsp <b> <h4>/</h4> </b> &nbsp Close Order</div> <div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Close Order"><i class="fa fa-close text-danger"></i></button></div></div>';
             }
@@ -198,7 +198,7 @@ class OrderController extends Controller
             'data-id' => function($orders) {
                 return $orders->system_id;
             }
-        ])->addColumn('reason', function ($orders) use($action_btn){
+        ])->addColumn('reason', function ($orders){
             return '<div class="table-data-feature"><div class="table-data-feature add text-warning">Add Reason</div> <div class="table-data-feature"><button row-id="" class="item" data-toggle="tooltip" data-placement="top" title="Add More"><i class="fa fa-box text-warning"></i></button></div></div>';
         })->setRowAttr([
             'data-id' => function($orders) {

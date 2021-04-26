@@ -102,6 +102,10 @@ table.dataTable {
 	white-space: nowrap;
 }
 
+.form-control {
+    border-radius : 20px;
+}
+
 </style>
 
 <body class="animsition">
