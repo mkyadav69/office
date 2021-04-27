@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Source;
 use App\Models\Supplier;
+use App\Models\Principal;
 use App\Models\Product;
 use Carbon\Carbon;
 use DataTables;
@@ -42,62 +43,54 @@ class SupplierController extends Controller
     function getPartInfo(Request $request){
         $part_no =  $request->part_no;
         if(!empty($part_no)){
-            $info = Product::where('st_part_No', $part_no)->first('st_pro_desc', );
+            $info = Product::where('st_part_No', $part_no)->first(['st_pro_desc', 'st_pro_maker']);
+            if(!empty($info)){
+                $info = $info->toArray();
+                return $info;
+            }
+           return false;
         }
     }
 
-    public function storeProduct(Request $request){
+    public function storeSupplier(Request $request){
         $this->validate($request,[
-            'st_part_No'=>'required',
-            'stn_hsn_no'=>'required',
-            'principal_id'=>'required',
-            'in_cat_id'=>'required',
-            'stn_brand'=>'required',
-            'fl_pro_price'=>'required',
-            'str_igst_rate'=>'required',
-            'in_pro_disc'=>'required',
-            'in_pro_qty'=>'required',
-            // 'st_img_path'=>'required',
-            'st_pro_desc'=>'required',
-            'extra_desc'=>'required',
+            'reference_date' => 'required',
+            "product_search" =>'required',
+            "payment_turm" => 'required',
+            "currency" => 'required',
+            "rate_fc" => 'required',
+            "factor_fc" => 'required',
+            "total_cost" => 'required',
+            "discount" => 'required',
+            "net_cost" => 'required',
+            "profit" => 'required',
+            "selling_price" => 'required',
         ]);
 
-        $principal_id = $request->principal_id;
-        $category = $request->in_cat_id;
-        
-        if(!empty($principal_id)){
-            $sep_name_id = explode("_", $principal_id);
-            $st_pro_maker = ['st_pro_maker'=>$sep_name_id[0]];
-            $p_id = ['principal_id'=>$sep_name_id[1]];
-        }else{
-            $st_pro_maker = [];
-            $p_id = [];
-        }
-
-        if(!empty($category)){
-            $sep_name_id = explode("_/", $category);
-            $in_cat_id = ['in_cat_id'=>$sep_name_id[0]];
-            $category_id = ['category_id'=>$sep_name_id[1]];
-        }else{
-            $st_pro_maker = [];
-            $p_id = [];
-        }
-
-        $product_seo_url = ['product_seo_url'=>''];
-        $all_filed = $request->all();
-        unset($all_filed['_token']);
-        unset($all_filed['principal_id']);
-        unset($all_filed['in_cat_id']);
-        if(!empty($all_filed)){
-            $new_arr = [];
-            foreach($all_filed as $ky=>$fld){
-                $new_arr[$ky] = $request->$ky;
+        $data = [];
+        $suppliers_details = [];
+        $get_source      = $this->source_model->get_source();
+        $data['get_source'] =  $get_source;
+        $data['error_msg'] 	= '';
+        $opt_source = array('' => 'All Source');
+        foreach ($get_source as $source) { 
+            $opt_source[$source->pro_source] = $source->pro_source;
+        }       
+        if($this->input->post('suppliers_details') !=''){
+            $s_date =   date("Y-m-d", strtotime($this->input->post('date_from')));
+            foreach($this->input->post('suppliers_details') as $key => $val ){
+                $suppliers_details = json_decode($val);
             }
-            $x = $new_arr+['dt_created'=>Carbon::now()]+$st_pro_maker+$p_id+$product_seo_url+$in_cat_id+$category_id;
-            $check_status = Product::insertGetId($x);
-            if(!empty($check_status)){
-                return redirect()->route('show_product')->with('message', 'Product created successfully.');
+            foreach($suppliers_details as $key => $val_arr){
+                foreach($val_arr as $val_arr_key => $val_arr_val){
+                    $quotation_details_arr[$val_arr_key] = $val_arr_val;
+                }
+                $quotation_details_arr['dt_source']=$s_date;
+                $quotation_details_arr['dt_created'] = date("Y-m-d");
+                $this->suppliers_model->insert_suppliers($quotation_details_arr);
             }
+            $this->session->set_flashdata('add_suppliers', 'Suppliers added successfully.');
+            redirect(base_url('suppliers'));
         }
     }
 
