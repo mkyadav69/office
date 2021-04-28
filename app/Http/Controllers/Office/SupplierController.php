@@ -56,7 +56,7 @@ class SupplierController extends Controller
         $this->validate($request,[
             'reference_date' => 'required',
             "product_search" =>'required',
-            "payment_turm" => 'required',
+            "name" => 'required',
             "currency" => 'required',
             "rate_fc" => 'required',
             "factor_fc" => 'required',
@@ -66,36 +66,44 @@ class SupplierController extends Controller
             "profit" => 'required',
             "selling_price" => 'required',
         ]);
-
-        $data = [];
-        $suppliers_details = [];
-        $get_source      = $this->source_model->get_source();
-        $data['get_source'] =  $get_source;
-        $data['error_msg'] 	= '';
-        $opt_source = array('' => 'All Source');
-        foreach ($get_source as $source) { 
-            $opt_source[$source->pro_source] = $source->pro_source;
-        }       
-        if($this->input->post('suppliers_details') !=''){
-            $s_date =   date("Y-m-d", strtotime($this->input->post('date_from')));
-            foreach($this->input->post('suppliers_details') as $key => $val ){
-                $suppliers_details = json_decode($val);
+        $data = $request->all();
+        $arr_data = [];
+        if(!empty($data['name'])){
+            foreach($data['name'] as $key=>$name){
+                $tem_arr =[];
+                $tem_arr['s_make']  = $data['principal'];
+                $tem_arr['s_partno']  = $data['product_search'];
+                $tem_arr['s_description']  = $data['decsription'];
+                $tem_arr['s_source']  = $name;
+                $tem_arr['s_currency']  = $data['currency'][$key];
+                $tem_arr['s_rate_fc']  = $data['rate_fc'][$key];
+                $tem_arr['s_factor_fc']  = $data['factor_fc'][$key];
+                $tem_arr['s_totalcost']  =  round($data['total_cost'][$key]);
+                $tem_arr['s_discount']   =   $data['discount'][$key];
+                $tem_arr['s_netprice']   =   round($data['net_cost'][$key]);
+                $tem_arr['s_profit']     =   $data['profit'][$key];
+                $tem_arr['s_cust_price'] =    round($data['selling_price'][$key]);
+                $tem_arr['user_id'] =    \Auth::user()->id;
+                $tem_arr['is_deleted'] =   0;
+                $tem_arr['dt_source']=  date("Y-m-d", strtotime($data['reference_date']));
+                $tem_arr['dt_created'] = Carbon::now();
+                $arr_data[] = $tem_arr;
+            }   
+        }
+        if(!empty($arr_data)){
+            $check_status = \DB::table('tbl_suppliers')->insert($arr_data);
+            if(!empty($check_status)){
+                return redirect()->route('show_supplier')->with('message', 'Supplier created successfully.');
             }
-            foreach($suppliers_details as $key => $val_arr){
-                foreach($val_arr as $val_arr_key => $val_arr_val){
-                    $quotation_details_arr[$val_arr_key] = $val_arr_val;
-                }
-                $quotation_details_arr['dt_source']=$s_date;
-                $quotation_details_arr['dt_created'] = date("Y-m-d");
-                $this->suppliers_model->insert_suppliers($quotation_details_arr);
-            }
-            $this->session->set_flashdata('add_suppliers', 'Suppliers added successfully.');
-            redirect(base_url('suppliers'));
+        }else{
+            return back()->with([
+                'error' =>'Fail to created new supplier',
+            ]);
         }
     }
 
     public function getSupplier(Request $request){
-        $product = Datatables::of(Supplier::query()->take(100));
+        $product = Datatables::of(Supplier::query());
         if(Auth::user()->hasPermission('update_supplier')){
             $action_btn[] = '<div class="table-data-feature"><button row-id="" class="item edit" data-toggle="tooltip" data-placement="top" title="Edit"><i class="zmdi zmdi-edit text-primary"></i></button></div>';
         }

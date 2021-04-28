@@ -117,7 +117,7 @@ datepicker,
                         <div class="row form-group">
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Date Created </label>
-                                <input type="text" name="reference_date"  id="datepicker" class="form-control" value="{{old('reference_date')}}" placeholder="DD-MM-YYY" />
+                                <input type="text" name="reference_date"  required id="datepicker" class="form-control" value="{{old('reference_date')}}" placeholder="DD-MM-YYY" />
                                 @if ($errors->has('reference_date'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -130,7 +130,7 @@ datepicker,
                             </div>
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Part No.</label>
-                                <input type="text" id="product_search" name="product_search" placeholder="Part No." value="{{old('product_search')}}" class="form-control">
+                                <input type="text" id="product_search" required name="product_search" placeholder="Part No." value="{{old('product_search')}}" class="form-control">
                                 @if ($errors->has('product_search'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -144,7 +144,8 @@ datepicker,
                             <input type="hidden" name="_token"  id="token" value="{{ csrf_token() }}">
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Principal </label>
-                                <input type="text" id="principal" name="principal" disabled placeholder="Principal" value="{{old('principal')}}"  class="form-control">
+                                <input type="text" id="principal" required name="principal" readonly placeholder="Principal" value="{{old('principal')}}"  class="form-control">
+                                
                                 @if ($errors->has('principal'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -157,7 +158,7 @@ datepicker,
                             </div>
                             <div class="form-group col-3">
                                 <label for="company" class="form-control-label required">Desciptions</label>
-                                <input type="text" id="decsription"  name="decsription" disabled placeholder="Descriptions" value="{{old('decsription')}}" class="form-control">
+                                <input type="text" id="decsription"  required name="decsription" readonly placeholder="Descriptions" value="{{old('decsription')}}" class="form-control">
                                 @if ($errors->has('decsription'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -191,20 +192,20 @@ datepicker,
                             </tr>
                             <tr class="prod_row_deatails">
                                 <td class="col-sm-2" >
-                                    <select id="payment_turm" name="payment_turm" class="form-control">
+                                    <select id="source_name" required name="name[]" class="form-control">
                                         @if(!empty($source))
                                             <option value="">Select Source</option>
                                             @foreach($source as $id=>$name)
-                                                <option value="{{$id}}">{{$name}}</option>
+                                                <option value="{{$name}}">{{$name}}</option>
                                             @endforeach
                                         @else
                                             <p>Source are not available.</p>
                                         @endif
                                     </select>
-                                    @if ($errors->has('payment_turm'))
+                                    @if ($errors->has('name'))
                                         <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                             <span class="badge badge-pill badge-danger">Error</span>
-                                            {{ $errors->first('payment_turm') }}
+                                            {{ $errors->first('name') }}
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -214,7 +215,7 @@ datepicker,
                                     
                                 </td>
                                 <td class="col-sm-2"> 
-                                    <select class="form-control currency" name="currency" id="currency">
+                                    <select class="form-control currency" required name="currency[]" id="currency">
                                     <option value="">Currency</option> 
                                     <?php  $currency	=	$currency;
                                         if(!empty($currency)){
@@ -236,7 +237,7 @@ datepicker,
                                 </td>
                                
                                 <td class="col-sm-1">
-                                    <input type="text" name="rate_fc" id="rate_fc" onBlur="updateData();" class="form-control rate_fc" placeholder="Rate FC " />
+                                    <input type="text" required name="rate_fc[]" id="rate_fc" onBlur="updateData();" class="form-control rate_fc" placeholder="Rate FC " />
                                     @if ($errors->has('rate_fc'))
                                         <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                             <span class="badge badge-pill badge-danger">Error</span>
@@ -248,7 +249,7 @@ datepicker,
                                     @endif   
                                 </td>
                                 <td class="col-sm-1">
-                                    <input type="text" name="factor_fc" id="factor_fc" onBlur="updateData();" class="form-control factor_fc" placeholder="Factor FC" />
+                                    <input type="text" required name="factor_fc[]" id="factor_fc" onBlur="updateData();" class="form-control factor_fc" placeholder="Factor FC" />
                                     @if ($errors->has('factor_fc'))
                                         <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                             <span class="badge badge-pill badge-danger">Error</span>
@@ -260,7 +261,7 @@ datepicker,
                                     @endif   
                                 </td>
                                 <td class="col-sm-1">
-                                    <input type="text" name="total_cost" id="total_cost" onBlur="updateData();" class="form-control total_cost" nBlur="calTotalCost(this.value)"  placeholder="Total Cost in INR" readonly="readonly"  />
+                                    <input type="text" required name="total_cost[]" id="total_cost" onBlur="updateData();" class="form-control total_cost" nBlur="calTotalCost(this.value)"  placeholder="Total Cost in INR" readonly="readonly"  />
                                     @if ($errors->has('total_cost'))
                                         <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                             <span class="badge badge-pill badge-danger">Error</span>
@@ -272,7 +273,7 @@ datepicker,
                                     @endif   
                                 </td>
                                 <td class="col-sm-1">
-                                    <input type="text" name="discount" id="discount" onBlur="updateData();" class="form-control discount" placeholder="Discount" />
+                                    <input type="text" required name="discount[]" id="discount" onBlur="updateData();" class="form-control discount" placeholder="Discount" />
                                     @if ($errors->has('discount'))
                                     <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                         <span class="badge badge-pill badge-danger">Error</span>
@@ -284,7 +285,7 @@ datepicker,
                                     @endif   
                                 </td>
                                 <td class="col-sm-1">
-                                    <input type="text" name="net_cost" id="net_cost" class="form-control net_cost" placeholder="Net Cost" readonly="readonly" />
+                                    <input type="text" required name="net_cost[]" id="net_cost" class="form-control net_cost" placeholder="Net Cost" readonly="readonly" />
                                     @if ($errors->has('net_cost'))
                                         <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                             <span class="badge badge-pill badge-danger">Error</span>
@@ -296,7 +297,7 @@ datepicker,
                                     @endif  
                                 </td>
                                 <td class="col-sm-1">
-                                    <input type="text" name="profit" id="profit" onBlur="updateData();" class="form-control profit" placeholder="Profit" />
+                                    <input type="text" required name="profit[]" id="profit" onBlur="updateData();" class="form-control profit" placeholder="Profit" />
                                     @if ($errors->has('profit'))
                                         <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                             <span class="badge badge-pill badge-danger">Error</span>
@@ -308,7 +309,7 @@ datepicker,
                                     @endif  
                                 </td>
                                 <td class="col-sm-">
-                                    <input type="text" name="selling_price" id="selling_price" class="form-control selling_price" placeholder="Selling Price[INR]" readonly="readonly" />
+                                    <input type="text" required name="selling_price[]" id="selling_price" class="form-control selling_price" placeholder="Selling Price[INR]" readonly="readonly" />
                                     @if ($errors->has('selling_price'))
                                         <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
                                             <span class="badge badge-pill badge-danger">Error</span>
@@ -366,23 +367,23 @@ $(document).ready(function () {
     $("#more").on("click", function () {
         var newRow = $("<tr class='prod_row_deatails'>");
         var cols = "";
-        cols += '<td><select class="form-control supplier_name" name="name'+counter+'" id="name'+counter+'"> <option value="">Source</option><?php   if(!empty($source)){ foreach($source as $k=>$v){  ?> <option <?php echo $selected; ?> value="<?php echo $v;?>"><?php echo $v;?></option><?php  } }?>  </select></td>';
+        cols += '<td><select class="form-control supplier_name" required name="name[]" id="name'+counter+'"> <option value="">Source</option><?php   if(!empty($source)){ foreach($source as $k=>$v){  ?> <option <?php echo $selected; ?> value="<?php echo $v;?>"><?php echo $v;?></option><?php  } }?>  </select></td>';
 
-        cols += '<td><select class="form-control currency" name="currency'+counter+'" id="currency'+counter+'"> <option value="">Currency</option><?php  $currency; if(!empty($currency)){ foreach($currency as $k=>$v){  ?> <option <?php echo $selected; ?> value="<?php echo $v;?>"><?php echo $v;?></option><?php  } }?>  </select></td>';
+        cols += '<td><select class="form-control currency" required name="currency[]" id="currency'+counter+'"> <option value="">Currency</option><?php  $currency; if(!empty($currency)){ foreach($currency as $k=>$v){  ?> <option <?php echo $selected; ?> value="<?php echo $v;?>"><?php echo $v;?></option><?php  } }?>  </select></td>';
 
-        cols += '<td><input type="text" class="form-control rate_fc"   id="rate_fc' + counter + '"  name="rate_fc' + counter + '" placeholder="Rate FC " /></td>';
+        cols += '<td><input type="text" class="form-control rate_fc"   id="rate_fc' + counter + '" required  name="rate_fc[]" placeholder="Rate FC " /></td>';
 
-        cols += '<td><input type="text" class="form-control factor_fc" data-id="'+counter+'"  onchange="factorfc(this);" id="factor_fc' + counter + '"  name="factor_fc' + counter + '" placeholder="Factor FC"/></td>';
+        cols += '<td><input type="text" class="form-control factor_fc" data-id="'+counter+'"  onchange="factorfc(this);" id="factor_fc' + counter + '"  required name="factor_fc[]" placeholder="Factor FC"/></td>';
         
-        cols += '<td><input type="text" class="form-control total_cost" id="total_cost' + counter + '"  name="total_cost' + counter + '" readonly="readonly" placeholder="Total Cost in INR" /></td>';
+        cols += '<td><input type="text" class="form-control total_cost" id="total_cost' + counter + '"  required name="total_cost[]" readonly="readonly" placeholder="Total Cost in INR" /></td>';
 
-        cols += '<td><input type="text" class="form-control discount" data-id="'+counter+'" discount' + counter +'" onchange="discountamt(this);" id="discount' + counter + '"  name="discount' + counter + '" placeholder="Discount"/></td>';
+        cols += '<td><input type="text" class="form-control discount" data-id="'+counter+'" discount' + counter +'" onchange="discountamt(this);" id="discount' + counter + '"  required name="discount[]" placeholder="Discount"/></td>';
 
-        cols += '<td><input type="text" class="form-control net_cost" id="net_cost' + counter + '"  name="net_cost' + counter + '" readonly="readonly" placeholder="Net Cost"/></td>';
+        cols += '<td><input type="text" class="form-control net_cost" id="net_cost' + counter + '"  required name="net_cost[]" readonly="readonly" placeholder="Net Cost"/></td>';
         
-        cols += '<td><input type="text" class="form-control profit" data-id="'+counter+'" profit' + counter + '" onchange="profitperctg(this);" id="profit' + counter + '"  name="profit' + counter + '" placeholder="Profit"/></td>';
+        cols += '<td><input type="text" class="form-control profit" data-id="'+counter+'" profit' + counter + '" onchange="profitperctg(this);" id="profit' + counter + '"  required name="profit[]" placeholder="Profit"/></td>';
 
-        cols += '<td><input type="text" class="form-control selling_price" id="selling_price' + counter + '"  name="selling_price' + counter + '" readonly="readonly" placeholder="Selling Price[INR]" /></td>';
+        cols += '<td><input type="text" class="form-control selling_price" id="selling_price' + counter + '"  required name="selling_price[]" readonly="readonly" placeholder="Selling Price[INR]" /></td>';
         
         cols += '<td><div class="table-data-feature"><button type="button" row-id="" class="item delete ibtnDel" data-toggle="tooltip" data-placement="top" title="Delete"><i class="zmdi zmdi-delete text-danger"></i></button></div></td>';
         newRow.append(cols);
